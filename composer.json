@@ -1,11 +1,11 @@
 {
     "name": "pragmarx/ci",
 
-    "description": "<Full package description.>",
+    "description": "A Continuous Integration Dashboard Package for Laravel",
 
     "keywords": ["laravel"],
 
-    "license": "MIT",
+    "license": "BSD-3-Clause",
 
     "authors": [
         {
@@ -16,11 +16,14 @@
     ],
 
     "require": {
-        "php": ">=5.3.7"
-    },
-
-    "require-dev": {
-        "mockery/mockery": "0.8.0"
+        "php": ">=5.4.0",
+		"laravel/framework": "dev-master as 4.2.0",
+        "illuminate/support": "dev-master as 4.2.0",
+        "illuminate/filesystem": "dev-master as 4.2.0",
+        "pragmarx/support": "dev-master as 0.2.0",
+        "pragmarx/ci": "dev-master as 0.1.0",
+        "jasonlewis/resource-watcher": "~1",
+        "sensiolabs/ansi-to-html": "~1"
     },
 
     "autoload": {
@@ -31,13 +34,7 @@
 
     "extra": {
             "component": "package",
-            "frameworks": ["Laravel 4"],
-            "versions": {
-                    "0.1.0": "master"
-            },
-            "branch-alias": {
-                    "dev-master": "0.1.0-dev"
-            }
+            "frameworks": ["Laravel 5"]
     },
 
     "minimum-stability": "dev"

@@ -1,20 +1,16 @@
-<?php namespace PragmaRX\Ci\Vendor\Laravel;
+<?php
+
+namespace PragmaRX\Ci\Vendor\Laravel;
  
 use PragmaRX\Ci\Ci;
 
-use PragmaRX\Ci\Support\Config;
-use PragmaRX\Ci\Support\FileSystem;
+use PragmaRX\Ci\Vendor\Laravel\Console\Commands\TestCommand;
+use PragmaRX\Ci\Vendor\Laravel\Console\Commands\WatchCommand;
+use PragmaRX\Support\ServiceProvider as PragmaRXServiceProvider;
 
-use PragmaRX\Ci\Data\Repositories\RepositoryExample;
-
-use PragmaRX\Ci\Data\RepositoryManager;
-
-use PragmaRX\Ci\Vendor\Laravel\Models\ModelExample;
-
-use Illuminate\Support\ServiceProvider as IlluminateServiceProvider;
 use Illuminate\Foundation\AliasLoader as IlluminateAliasLoader;
 
-class ServiceProvider extends IlluminateServiceProvider {
+class ServiceProvider extends PragmaRXServiceProvider {
 
     const PACKAGE_NAMESPACE = 'pragmarx/ci';
 
@@ -51,12 +47,22 @@ class ServiceProvider extends IlluminateServiceProvider {
      * @return void
      */
     public function register()
-    {   
-        $this->registerConfig();
-
-        $this->registerRepositories();
+    {
+	    parent::register();
 
         $this->registerCi();
+
+	    $this->registerResourceWatcher();
+
+	    $this->registerWatcher();
+
+	    $this->registerTester();
+
+	    $this->registerWatchCommand();
+
+	    $this->registerTestCommand();
+
+	    $this->registerRoutes();
     }
 
     /**
@@ -82,39 +88,67 @@ class ServiceProvider extends IlluminateServiceProvider {
             $app['ci.loaded'] = true;
 
             return new Ci(
-                                    $app['ci.config'],
-                                    $app['ci.repository.manager']
-                                );
+                $app['ci.config'],
+                $app['ci.repository.manager']
+            );
         });
     }
 
-    public function registerRepositories()
-    {
-        $this->app['ci.repository.manager'] = $this->app->share(function($app)
+	private function registerWatchCommand()
+	{
+        $this->app['ci.watch.command'] = $this->app->share(function($app)
         {
-            return new RepositoryManager(
-                                            $app['ci.config'],
-                                            new RepositoryExample(new ModelExample)
-                                        );
+            return new WatchCommand();
         });
-    }
 
-    public function registerConfig()
-    {
-        $this->app['ci.config'] = $this->app->share(function($app)
+		$this->commands('ci.watch.command');
+	}
+
+	private function registerTestCommand()
+	{
+        $this->app['ci.test.command'] = $this->app->share(function($app)
         {
-            return new Config($app['config'], self::PACKAGE_NAMESPACE);
+            return new TestCommand();
         });
-    }
 
-    private function wakeUp()
-    {
-        $this->app['ci']->boot();
-    }
+		$this->commands('ci.test.command');
+	}
 
-    private function getConfig($key)
-    {
-        return $this->app['config']->get(self::PACKAGE_NAMESPACE.'::'.$key);
-    }
+	private function registerWatcher()
+	{
+		$this->app->singleton('ci.watcher', function($app)
+		{
+			return $this->app->make('PragmaRX\Ci\Services\Watcher');
+		});
+	}
+
+	private function registerTester()
+	{
+		$this->app->singleton('ci.tester', function($app)
+		{
+			return $this->app->make('PragmaRX\Ci\Services\Tester');
+		});
+	}
+
+	private function registerResourceWatcher()
+	{
+		$this->app->register('JasonLewis\ResourceWatcher\Integration\LaravelServiceProvider');
+	}
+
+	private function registerRoutes()
+	{
+		$router = $this->app->make('router');
+
+		$router->group(['namespace' => 'PragmaRX\Ci\Vendor\Laravel\Http\Controllers'], function() use ($router)
+		{
+			$router->get('tests/run/{test_id?}', 'DashboardController@runTest');
+
+			$router->get('tests/enable/{enable}/{project_id}/{test_id?}', 'DashboardController@enableTests');
+
+			$router->get('tests/{project_id?}', 'DashboardController@allTests');
+
+			$router->get('projects', 'DashboardController@allProjects');
+		});
+	}
 
 }

@@ -1,29 +1,57 @@
 <?php
-/**
- * Part of the Ci package.
- *
- * NOTICE OF LICENSE
- *
- * Licensed under the 3-clause BSD License.
- *
- * This source file is subject to the 3-clause BSD License that is
- * bundled with this package in the LICENSE file.  It is also available at
- * the following URL: http://www.opensource.org/licenses/BSD-3-Clause
- *
- * @package    Ci
- * @version    1.0.0
- * @author     Antonio Carlos Ribeiro @ PragmaRX
- * @license    BSD License (3-clause)
- * @copyright  (c) 2013, PragmaRX
- * @link       http://pragmarx.com
- */
 
-return array(
+return [
 
-    'create_ci_alias' => true,
+	'show_progress' => false,
 
-    'ci_alias' => 'Ci',
+//	'testers' => [
+//		'codeception' => [
+//			'command' => 'sh %project_path%/vendor/bin/codecept run',
+//		],
+//
+//		'phpunit' => [
+//			'command' => 'phpunit',
+//		],
+//	],
+//
+//	'projects' => [
+//		'myproject' => [
+//			'path' => '/var/www/myproject.dev',
+//			'watch_folders' => ['app', 'tests', 'vendor/laravel/framework/tests'],
+//			'exclude_folders' => ['tests/_output'],
+//			'tests_path' => 'tests',
+//			'suites' => [
+//				'functional' => [
+//					'tester' => 'codeception',
+//					'tests_path' => 'functional',
+//					'command_options' => 'functional',
+//					'file_mask' => '*Cept.php',
+//					'retries' => 3,
+//				]
+//			],
+//		],
+//
+//		'laravel/framework' => [
+//			'path' => '/var/www/myproject.dev/vendor/laravel/framework',
+//			'watch_folders' => ['src', 'tests'],
+//			'exclude_folders' => [
+//				'tests/View/fixtures',
+//				'tests/Support/stubs',
+//			    'tests/Routing/results',
+//			    'tests/Routing/fixtures',
+//			    'tests/Database/stubs/EloquentModelNamespacedStub.php',
+//			],
+//			'tests_path' => 'tests',
+//		    'suites' => [
+//				'unit' => [
+//					'tester' => 'phpunit',
+//					'tests_path' => '',
+//				    'command_options' => '',
+//				    'file_mask' => '*.php',
+//				    'retries' => 3,
+//				]
+//		    ],
+//		]
+//	],
 
-    'enabled' => true,
-
-);
+];
