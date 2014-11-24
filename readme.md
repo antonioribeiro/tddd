@@ -55,7 +55,7 @@ So you'll probably be able to use it with many others like Behat and phpspec.
 
 ## Installing
 
-Using [Composer](http://getcomposer.org/):
+Require it with [Composer](http://getcomposer.org/):
 
     $ composer require pragmarx/ci
 
