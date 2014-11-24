@@ -1,0 +1,24 @@
+{
+    "name": "jasonlewis/resource-watcher",
+    "description": "Simple PHP resource watcher library.",
+    "keywords": ["resource", "assets", "laravel"],
+    "authors": [
+        {
+            "name": "Jason Lewis",
+            "email": "jason.lewis1991@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0",
+        "illuminate/support": "~4.0",
+        "illuminate/filesystem": "~4.0"
+    },
+    "require-dev": {
+        "mockery/mockery": "~0.9"
+    },
+    "autoload": {
+        "psr-0": {
+            "JasonLewis\\ResourceWatcher": "src/"
+        }
+    }
+}

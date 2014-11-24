@@ -18,13 +18,13 @@
     "require": {
         "php": ">=5.4.0",
         "pragmarx/support": "~0.3",
-        "jasonlewis/resource-watcher": "~1",
         "sensiolabs/ansi-to-html": "~1"
     },
 
     "autoload": {
         "psr-4": {
-            "PragmaRX\\Ci\\": "src/"
+            "PragmaRX\\Ci\\": "src/",
+            "JasonLewis\\ResourceWatcher\\": "src/Support/jasonlewis/resource-watcher/src"
         }
     },
 
