@@ -15,6 +15,14 @@ The Dashboard displays and gives you control of your projects and project tests,
 * Current Test "State": tests states are "running", "queued", "ok" and "failed".
 * "Show" button, to display the error log of failed tests.
 
+###Screenshots
+
+####Dashboard
+![visits](https://raw.githubusercontent.com/antonioribeiro/ci/master/src/views/screenshots/dashboard.png)
+
+####Error Log
+![visits](https://raw.githubusercontent.com/antonioribeiro/ci/master/src/views/screenshots/errorlog.png)
+
 ##Command Line Interface
 
 The Artisan commands **Watcher** and **Tester** are responsible for watching resources and firing tests, respectively:
@@ -30,19 +38,6 @@ Keep track of your files and enqueue your tests every time a project or test fil
 Responsible for taking tests from the run queue, execute it and log the results. Tester will only execute enabled tests. This is how you run it:
 
     php artisan ci:test
-
-###Screenshots
-
-####Dashboard
-![visits](https://raw.githubusercontent.com/antonioribeiro/ci/master/src/views/screenshots/dashboard.png)
-
-####Error Log
-![visits](https://raw.githubusercontent.com/antonioribeiro/ci/master/src/views/screenshots/errorlog.png)
-
-## Requirements
-
-- Laravel 4.1+
-- PHP 5.3.7+
 
 ## Test Framework Compatibility
 
@@ -118,6 +113,11 @@ Also your projects and test suites:
 For the Dashboard you just need to create a route and add render this view:
 
     return View::make('pragmarx/ci::dashboard');
+
+## Requirements
+
+- Laravel 4.1+
+- PHP 5.3.7+
 
 ## Author
 
