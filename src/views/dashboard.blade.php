@@ -8,12 +8,7 @@
 	</head>
 
     <style>
-        tr.dim {
-        	filter: alpha(opacity=40); /* internet explorer */
-        	-khtml-opacity: 0.4;      /* khtml, old safari */
-        	-moz-opacity: 0.4;       /* mozilla, netscape */
-        	opacity: 0.4;           /* fx, safari, opera */
-        }
+        @include('pragmarx/ci::css.app')
     </style>
 
 	<body>
