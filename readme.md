@@ -6,7 +6,7 @@
 
 ##Dashboard View
 
-The Dashboard displays and gives you control of your projects and project tests, this is what you see and can do with it:
+The Dashboard, built using [Facebook's React Javascript Library](http://facebook.github.io/react/), displays and gives you control of your projects and project tests, this is what you see and can do with it:
 
 * Project List: click a project link to see all its tests.
 * Checkboxes to enable/disable a test. Once disabled if the watcher catches a change in resources, that test will not fire.
