@@ -24,7 +24,9 @@
     "autoload": {
         "psr-4": {
             "PragmaRX\\Ci\\": "src/",
-            "JasonLewis\\ResourceWatcher\\": "src/Support/jasonlewis/resource-watcher/src"
+        },
+        "psr-0": {
+            "JasonLewis\\ResourceWatcher": "src/Support/jasonlewis/resource-watcher/src"
         }
     },
 
