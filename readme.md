@@ -1,108 +1,84 @@
-# Laravel Stats SDK
+# Laravel CI
 
-[![Latest Stable Version](https://poser.pugx.org/pragmarx/sdk/v/stable.png)](https://packagist.org/packages/pragmarx/sdk) [![License](https://poser.pugx.org/pragmarx/sdk/license.png)](https://packagist.org/packages/pragmarx/sdk)
+[![Latest Stable Version](https://poser.pugx.org/pragmarx/ci/v/stable.png)](https://packagist.org/packages/pragmarx/ci) [![License](https://poser.pugx.org/pragmarx/ci/license.png)](https://packagist.org/packages/pragmarx/ci)
 
-###SDK gathers a lot of information from your requests to identify and store:
+###A Continuous Integration service you can host yourself and a Dashboard.
 
 ## Requirements
 
 - Laravel 4.1+
 - PHP 5.3.7+
-- Package "geoip/geoip":"~1.14" (If you are planning to store Geo IP information)
 
 ## Installing
 
-Require the `sdk` package by **executing** the following command in your command line:
+Add to your composer.json:
 
-    composer require "pragmarx/sdk":"0.6.*"
-
-**Or** add to your composer.json:
-
-    "require": {
-        "pragmarx/sdk": "0.6.*"
-    }
-
-And execute
-
-    composer update
+    "pragmarx/ci": "~0.1"
 
 Add the service provider to your app/config/app.php:
 
-    'PragmaRX\SDK\Vendor\Laravel\ServiceProvider',
+    'PragmaRX\Ci\Vendor\Laravel\ServiceProvider',
 
-Create the migration:
+Create a database, configure on your Laravel app and migrate it
 
-    php artisan sdk:tables
+    php artisan migrate --package=pragmarx/ci
 
-Migrate it
+Publish ci configuration:
 
-    php artisan migrate
+    php artisan config:publish pragmarx/ci
 
-Publish sdk configuration:
+Edit the file `app/config/packages/pragmarx/ci/config.php` add your testers:
 
-    php artisan config:publish pragmarx/sdk
+	'testers' => [
+		'codeception' => [
+			'command' => 'sh %project_path%/vendor/bin/codecept run',
+		],
 
-Create the UA Parser regex file (every time you run `composer update` you must also execute this command):
-
-    php artisan sdk:updateparser
-
-And edit the file `app/config/packages/pragmarx/sdk/config.php` to enable SDK.
-
-    'enabled' => true,
-
-Note that the logging function is disabled by default, because it may write too much data to your database, but you can enable it by changing:
-
-    'log_enabled' => true,
-
-If you are planning to store Geo IP information, also install the geoip package:
-
-    composer require "geoip/geoip":"~1.14"
-
-And make sure you don't have the PHP module installed. This is a Debian/Ubuntu example:
-
-	sudo apt-get purge php5-geoip
-
-## Database Connections & Query Logs
-
-If you are planning to store your query logs, to avoid recursion while logging SQL queries, you will need to create a different database connection for it:
-
-This is a main connection:
-
-	'postgresql' => [
-		'driver'   => 'pgsql',
-		'host'     => 'localhost',
-		'database' => getenv('MAIN.DATABASE_NAME'),
-		'username' => getenv('MAIN.DATABASE_USER'),
-		'password' => getenv('MAIN.DATABASE_PASSWORD'),
-		'charset'  => 'utf8',
-		'prefix'   => '',
-		'schema'   => 'public',
+		'phpunit' => [
+			'command' => 'phpunit',
+		],
 	],
 
-This is the sdk connection pointing to the same database:
+Also your projects and test suites:
 
-	'sdk' => [
-		'driver'   => 'pgsql',
-		'host'     => 'localhost',
-		'database' => getenv('MAIN.DATABASE_NAME'),
-		'username' => getenv('MAIN.DATABASE_USER'),
-		'password' => getenv('MAIN.DATABASE_PASSWORD'),
-		'charset'  => 'utf8',
-		'prefix'   => '',
-		'schema'   => 'public',
+	'projects' => [
+		'myproject' => [
+			'path' => '/var/www/myproject.dev',
+			'watch_folders' => ['app', 'tests'],
+			'exclude_folders' => ['tests/_output'],
+			'tests_path' => 'tests',
+			'suites' => [
+				'functional' => [
+					'tester' => 'codeception',
+					'tests_path' => 'functional',
+					'command_options' => 'functional',
+					'file_mask' => '*Cept.php',
+					'retries' => 3,
+				]
+			],
+		],
+
 	],
 
-On your `sdk/config.php` file, set the SDK connection to the one you created for it:
+Then you'll have access to the Watcher:
 
-	'connection' => 'sdk',
+    php artisan ci:watch
 
-And ignore this connection for SQL queries logging:
+This command will keep track of your files and fire your tests every time a project or test file is changed.
 
-	'do_not_log_sql_queries_connections' => array(
-		'sdk'
-	),
 
-You don't need to use a different database, but, since SDK may generate a huge number of records, this would be a good practice.
+Adnd the Tester:
+
+    php artisan ci:test
+
+This command is responsible for taking tests from the queue, execute and log their results.
+
+## Dashboard
+
+The Dashboard shows all your projects and project tests, their current state (running, queued, ok, failed), allowing you to enable/disable them and see the result when they fail, you can also manually run a test by pressing a button.
+
+http://puu.sh/d30Le/1486a57177.png
+http://puu.sh/d30Ok/f19752c9c2.png
 
 ## Author
 
@@ -110,8 +86,8 @@ You don't need to use a different database, but, since SDK may generate a huge n
 
 ## License
 
-SDK is licensed under the BSD 3-Clause License - see the `LICENSE` file for details
+Laravel Ci is licensed under the BSD 3-Clause License - see the `LICENSE` file for details
 
 ## Contributing
 
-Pull requests and issues are more than welcome.
+Pull requests and issues are welcome.
