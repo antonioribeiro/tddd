@@ -73,12 +73,15 @@ Adnd the Tester:
 
 This command is responsible for taking tests from the queue, execute and log their results.
 
-## Dashboard
+## Dashboard View
 
 The Dashboard shows all your projects and project tests, their current state (running, queued, ok, failed), allowing you to enable/disable them and see the result when they fail, you can also manually run a test by pressing a button.
 
-http://puu.sh/d30Le/1486a57177.png
-http://puu.sh/d30Ok/f19752c9c2.png
+####Dashboard
+![visits](https://raw.githubusercontent.com/antonioribeiro/ci/master/src/views/screenshots/dashboard.png)
+
+####Error Log
+![visits](https://raw.githubusercontent.com/antonioribeiro/ci/master/src/views/screenshots/errorlog.png)
 
 ## Author
 
