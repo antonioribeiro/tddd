@@ -29,10 +29,7 @@ class Data {
 	{
 		Tester::updateOrCreate(
 			['name' => $name],
-			[
-				'command' => $data['command'],
-			    'ok_matcher' => $data['ok_matcher'],
-			]
+			['command' => $data['command']]
 		);
 	}
 
@@ -191,21 +188,6 @@ class Data {
 		$this->removeTestFromQueue($test);
 
 		return $ok;
-	}
-
-	public function testIsOk($test, $lines)
-	{
-		$lines = array_reverse($lines);
-
-		for ($count = 0; $count <= 1; $count++)
-		{
-			if (starts_with($lines[$count], $test->suite->tester->ok_matcher))
-			{
-				return true;
-			}
-		}
-
-		return false;
 	}
 
 	private function removeTestFromQueue($test)
@@ -392,12 +374,12 @@ class Data {
 
 		$test->save();
 
-		if (!$enable)
+		if ( ! $enable)
 		{
 			return $this->removeTestFromQueue($test);
 		}
 
-		if (in_array($test->state, [self::STATE_IDLE, self::STATE_FAILED]))
+		if ($test->state !== self::STATE_OK)
 		{
 			$this->addTestToQueue($test);
 		}

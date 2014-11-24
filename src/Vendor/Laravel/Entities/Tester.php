@@ -8,8 +8,7 @@ class Tester extends Model {
 
 	protected $fillable = [
 		'name',
-		'command',
-	    'ok_matcher',
+		'command'
 	];
 
 }

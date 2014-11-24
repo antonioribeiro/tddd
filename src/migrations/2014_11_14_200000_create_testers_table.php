@@ -20,8 +20,6 @@ class CreateTestersTable extends Migration {
 
 			$table->string('command');
 
-			$table->string('ok_matcher');
-
 			$table->timestamps();
 		});
 	}

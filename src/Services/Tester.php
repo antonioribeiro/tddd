@@ -57,11 +57,11 @@ class Tester {
 	/**
 	 * Start the timed tester.
 	 *
-	 * @param int $interval
+	 * @param int $interval - Defaults to 100ms between tests.
 	 * @param null $timeout
 	 * @param Closure $callback
 	 */
-	public function startTester($interval = 1000000, $timeout = null, Closure $callback = null)
+	public function startTester($interval = 100000, $timeout = null, Closure $callback = null)
 	{
 		$this->testing = true;
 
@@ -96,7 +96,7 @@ class Tester {
 
 			if ( ! is_null($timeout) and $timeTesting >= $timeout)
 			{
-				$this->stopTest();
+				$this->stopTester();
 			}
 		}
 	}
@@ -106,7 +106,7 @@ class Tester {
 	 *
 	 * @return void
 	 */
-	public function stopTest()
+	public function stopTester()
 	{
 		$this->testing = false;
 	}
