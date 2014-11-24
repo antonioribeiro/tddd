@@ -2,11 +2,36 @@
 
 [![Latest Stable Version](https://poser.pugx.org/pragmarx/ci/v/stable.png)](https://packagist.org/packages/pragmarx/ci) [![License](https://poser.pugx.org/pragmarx/ci/license.png)](https://packagist.org/packages/pragmarx/ci)
 
-###A self-hosted Continuous Integration Service and a Dashboard, to control and see test results.
+###A Laravel 4 & 5 Self-Hosted Continuous Integration Service and a Dashboard.
 
-## Dashboard View
+##Dashboard View
 
-The Dashboard shows all your projects and project tests, their current state (running, queued, ok, failed), allowing you to enable/disable them and see the result when they fail, you can also manually run a test by pressing a button.
+The Dashboard displays and gives you control of your projects and project tests, this is what you see and can do with it:
+
+* Project List: click a project link to see all its tests.
+* Checkboxes to enable/disable a test. Once disabled if the watcher catches a change in resources, that test will not fire.
+* "Run" button, to manually fire a test.
+* Test 'last run' time.
+* Current Test "State": tests states are "running", "queued", "ok" and "failed".
+* "Show" button, to display the error log of failed tests.
+
+##Command Line Interface
+
+The Artisan commands **Watcher** and **Tester** are responsible for watching resources and firing tests, respectively:
+
+###Watcher
+
+Keep track of your files and enqueue your tests every time a project or test file is changed. If a project file changes, it will enqueue all your tests, if a test file changes, it will enqueue only that particular test. This is how you run it:
+
+    php artisan ci:watch
+
+###Tester
+
+Responsible for taking tests from the run queue, execute it and log the results. Tester will only execute enabled tests. This is how you run it:
+
+    php artisan ci:test
+
+###Screenshots
 
 ####Dashboard
 ![visits](https://raw.githubusercontent.com/antonioribeiro/ci/master/src/views/screenshots/dashboard.png)
@@ -19,11 +44,25 @@ The Dashboard shows all your projects and project tests, their current state (ru
 - Laravel 4.1+
 - PHP 5.3.7+
 
+## Test Framework Compatibility
+
+This package was tested and is known to be compatible with [Codeception](http://codeception.com/) and [PHPUnit](https://phpunit.de/), but for it to work you just need to provide a command lines, like
+
+PHPUnit example
+
+    'command' => 'phpunit',
+
+Codeception example being run using the 'sh' interpreter, when the file executable flag cannot be set for some reason:
+
+    'command' => 'sh %project_path%/vendor/bin/codecept run',
+
+So you'll probably be able to use it with many others like Behat and phpspec.
+
 ## Installing
 
 Add to your composer.json:
 
-    "pragmarx/ci": "~0.1"
+    "pragmarx/ci":"~0.1"
 
 Add the service provider to your app/config/app.php:
 
@@ -75,19 +114,6 @@ Also your projects and test suites:
 		],
 
 	],
-
-Then you'll have access to the Watcher:
-
-    php artisan ci:watch
-
-This command will keep track of your files and fire your tests every time a project or test file is changed.
-
-
-Adnd the Tester:
-
-    php artisan ci:test
-
-This command is responsible for taking tests from the queue, execute and log their results.
 
 For the Dashboard you just need to create a route and add render this view:
 
