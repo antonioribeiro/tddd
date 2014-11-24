@@ -55,9 +55,9 @@ So you'll probably be able to use it with many others like Behat and phpspec.
 
 ## Installing
 
-Add to your composer.json:
+Using [Composer](http://getcomposer.org/):
 
-    "pragmarx/ci":"~0.1"
+    $ composer require pragmarx/ci
 
 Add the service provider to your app/config/app.php:
 
