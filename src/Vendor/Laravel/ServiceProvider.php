@@ -2,8 +2,6 @@
 
 namespace PragmaRX\Ci\Vendor\Laravel;
  
-use PragmaRX\Ci\Ci;
-
 use PragmaRX\Ci\Vendor\Laravel\Console\Commands\TestCommand;
 use PragmaRX\Ci\Vendor\Laravel\Console\Commands\WatchCommand;
 use PragmaRX\Support\ServiceProvider as PragmaRXServiceProvider;
@@ -50,8 +48,6 @@ class ServiceProvider extends PragmaRXServiceProvider {
     {
 	    parent::register();
 
-        $this->registerCi();
-
 	    $this->registerResourceWatcher();
 
 	    $this->registerWatcher();
@@ -73,25 +69,6 @@ class ServiceProvider extends PragmaRXServiceProvider {
     public function provides()
     {
         return array('ci');
-    }
-
-    /**
-     * Takes all the components of Ci and glues them
-     * together to create Ci.
-     *
-     * @return void
-     */
-    private function registerCi()
-    {
-        $this->app['ci'] = $this->app->share(function($app)
-        {
-            $app['ci.loaded'] = true;
-
-            return new Ci(
-                $app['ci.config'],
-                $app['ci.repository.manager']
-            );
-        });
     }
 
 	private function registerWatchCommand()
