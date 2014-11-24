@@ -33,9 +33,15 @@ Create a database, configure on your Laravel app and migrate it
 
     php artisan migrate --package=pragmarx/ci
 
-Publish ci configuration:
+Publish Ci configuration:
+
+On Laravel 4.*
 
     php artisan config:publish pragmarx/ci
+
+On Laravel 5.*
+
+    php artisan publish:config pragmarx/ci
 
 Edit the file `app/config/packages/pragmarx/ci/config.php` add your testers:
 
@@ -82,6 +88,10 @@ Adnd the Tester:
     php artisan ci:test
 
 This command is responsible for taking tests from the queue, execute and log their results.
+
+For the Dashboard you just need to create a route and add render this view:
+
+    return View::make('pragmarx/ci::dashboard');
 
 ## Author
 
