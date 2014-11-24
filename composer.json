@@ -17,11 +17,8 @@
 
     "require": {
         "php": ">=5.4.0",
-		"laravel/framework": "dev-master as 4.2.0",
-        "illuminate/support": "dev-master as 4.2.0",
-        "illuminate/filesystem": "dev-master as 4.2.0",
-        "pragmarx/support": "dev-master as 0.2.0",
-        "pragmarx/ci": "dev-master as 0.1.0",
+		"laravel/framework": ">=4.1.0",
+        "pragmarx/support": "~0",
         "jasonlewis/resource-watcher": "~1",
         "sensiolabs/ansi-to-html": "~1"
     },
