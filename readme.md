@@ -2,7 +2,17 @@
 
 [![Latest Stable Version](https://poser.pugx.org/pragmarx/ci/v/stable.png)](https://packagist.org/packages/pragmarx/ci) [![License](https://poser.pugx.org/pragmarx/ci/license.png)](https://packagist.org/packages/pragmarx/ci)
 
-###A Continuous Integration service you can host yourself and a Dashboard.
+###A self-hosted Continuous Integration Service and a Dashboard, to control and see test results.
+
+## Dashboard View
+
+The Dashboard shows all your projects and project tests, their current state (running, queued, ok, failed), allowing you to enable/disable them and see the result when they fail, you can also manually run a test by pressing a button.
+
+####Dashboard
+![visits](https://raw.githubusercontent.com/antonioribeiro/ci/master/src/views/screenshots/dashboard.png)
+
+####Error Log
+![visits](https://raw.githubusercontent.com/antonioribeiro/ci/master/src/views/screenshots/errorlog.png)
 
 ## Requirements
 
@@ -72,16 +82,6 @@ Adnd the Tester:
     php artisan ci:test
 
 This command is responsible for taking tests from the queue, execute and log their results.
-
-## Dashboard View
-
-The Dashboard shows all your projects and project tests, their current state (running, queued, ok, failed), allowing you to enable/disable them and see the result when they fail, you can also manually run a test by pressing a button.
-
-####Dashboard
-![visits](https://raw.githubusercontent.com/antonioribeiro/ci/master/src/views/screenshots/dashboard.png)
-
-####Error Log
-![visits](https://raw.githubusercontent.com/antonioribeiro/ci/master/src/views/screenshots/errorlog.png)
 
 ## Author
 
