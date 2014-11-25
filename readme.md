@@ -21,7 +21,11 @@ The Dashboard, built using [Facebook's React Javascript Library](http://facebook
 ![visits](https://raw.githubusercontent.com/antonioribeiro/ci/master/src/views/screenshots/dashboard.png)
 
 ####Error Log
-![visits](https://raw.githubusercontent.com/antonioribeiro/ci/master/src/views/screenshots/errorlog.png)
+![visits](https://raw.githubusercontent.com/antonioribeiro/ci/master/src/views/screenshots/errorlog1.png)
+
+![visits](https://raw.githubusercontent.com/antonioribeiro/ci/master/src/views/screenshots/errorlog2.png)
+
+![visits](https://raw.githubusercontent.com/antonioribeiro/ci/master/src/views/screenshots/errorlog3.png)
 
 ##Command Line Interface
 
