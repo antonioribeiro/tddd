@@ -1,9 +1,9 @@
 {
     "name": "pragmarx/ci",
 
-    "description": "A Continuous Integration Dashboard Package for Laravel",
+    "description": "A Continuous Integration Service & Dashboard Package",
 
-    "keywords": ["laravel"],
+    "keywords": ["laravel", "ci", "continuous integration", "test", "testing", "tdd"],
 
     "license": "BSD-3-Clause",
 
