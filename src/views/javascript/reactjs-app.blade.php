@@ -30,6 +30,7 @@ var BootstrapModal = React.createClass(
 	render: function()
 	{
 		var confirmButton = null;
+
 		var cancelButton = null;
 
 		if (this.props.confirm) {
@@ -42,6 +43,7 @@ var BootstrapModal = React.createClass(
 				</BootstrapButton>
 			);
 		}
+
 		if (this.props.cancel) {
 			cancelButton = (
 				<BootstrapButton
@@ -56,7 +58,7 @@ var BootstrapModal = React.createClass(
 
         var tabStyle = {
           fontFamily: 'Courier New',
-          maxHeight: 'calc(100vh - 250px)',
+          maxHeight: 'calc(100vh - 280px)',
           overflowY: 'auto',
           overflowX: 'auto',
           whiteSpace: 'pre',
@@ -64,13 +66,15 @@ var BootstrapModal = React.createClass(
         };
 
         var tabLogStyle = {
+          fontFamily: 'Courier New',
+          maxHeight: 'calc(100vh - 250px)',
+          overflowY: 'auto',
+          overflowX: 'auto',
+          whiteSpace: 'pre',
+          padding: '10px',
           backgroundColor: 'black',
           color: 'white',
         };
-
-        // merge the styles
-
-        for (var attrname in tabStyle) { tabLogStyle[attrname] = tabStyle[attrname]; }
 
         var modalDialogStyle = {
             width: '90%',
