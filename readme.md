@@ -1,8 +1,10 @@
-# Laravel CI
+# Continuous Integration Package
 
 [![Latest Stable Version](https://poser.pugx.org/pragmarx/ci/v/stable.png)](https://packagist.org/packages/pragmarx/ci) [![License](https://poser.pugx.org/pragmarx/ci/license.png)](https://packagist.org/packages/pragmarx/ci)
 
-###A Laravel 4 & 5 Self-Hosted Continuous Integration Service and a Dashboard.
+###A Self-Hosted Continuous Integration Service and a Dashboard.
+
+####Compatible with Laravel 4 & 5 (currently in alpha)
 
 ##Dashboard View
 
