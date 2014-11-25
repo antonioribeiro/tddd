@@ -21,8 +21,7 @@ class Suite extends Model {
 	{
 		return make_path(
 				[
-					$this->project->path,
-					$this->project->tests_path,
+					$this->project->tests_full_path,
 					$this->tests_path
 				]
 		);

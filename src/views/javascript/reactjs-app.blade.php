@@ -54,15 +54,23 @@ var BootstrapModal = React.createClass(
 			);
 		}
 
-        var modalBodyStyle = {
-          backgroundColor: 'black',
-          color: 'white',
+        var tabStyle = {
           fontFamily: 'Courier New',
           maxHeight: 'calc(100vh - 250px)',
           overflowY: 'auto',
           overflowX: 'auto',
           whiteSpace: 'pre',
+          padding: '10px',
         };
+
+        var tabLogStyle = {
+          backgroundColor: 'black',
+          color: 'white',
+        };
+
+        // merge the styles
+
+        for (var attrname in tabStyle) { tabLogStyle[attrname] = tabStyle[attrname]; }
 
         var modalDialogStyle = {
             width: '90%',
@@ -83,8 +91,30 @@ var BootstrapModal = React.createClass(
 							<h3>{this.props.title}</h3>
 						</div>
 
-						<div className="modal-body" style={modalBodyStyle}>
-                            {this.props.children}
+						<div className="modal-body">
+                            <ul id="tabs" className="nav nav-tabs" data-tabs="tabs">
+                                <li className="active"><a href={"#tab-log-"+this.props.test.id} data-toggle="tab">Command Output</a></li>
+                                <li><a href={"#tab-screenshot-"+this.props.test.id} data-toggle="tab">Screenshot</a></li>
+                                <li><a href={"#tab-html-"+this.props.test.id} data-toggle="tab">HTML</a></li>
+                            </ul>
+
+                            <div id="my-tab-content" className="tab-content">
+                                <div className="tab-pane active" id={"tab-log-"+this.props.test.id}>
+                                    <div style={tabLogStyle}>
+                                        {this.props.children}
+                                    </div>
+                                </div>
+                                <div className="tab-pane" id={"tab-screenshot-"+this.props.test.id}>
+                                    <div style={tabStyle}>
+                                        <img src={this.props.image} alt=""/>
+                                    </div>
+                                </div>
+                                <div className="tab-pane" id={"tab-html-"+this.props.test.id}>
+                                    <div style={tabStyle}>
+                                        {this.props.html}
+                                    </div>
+                                </div>
+                            </div>
 						</div>
 
 						<div className="modal-footer">
@@ -342,7 +372,16 @@ var TestRow = React.createClass(
                 <td>{this.props.test.name}</td>
                 <td>{this.props.test.updated_at}</td>
                 <td><State type={this.props.test.state} /></td>
-                <td><LogButton type={this.props.test.state} log={this.props.test.log} name={this.props.test.name} /></td>
+                <td>
+                    <LogButton
+                        test={this.props.test}
+                        type={this.props.test.state}
+                        log={this.props.test.log}
+                        name={this.props.test.name}
+                        html={this.props.test.html}
+                        image={this.props.test.image}
+                    />
+                </td>
             </tr>
         );
     }
@@ -404,6 +443,9 @@ var LogButton = React.createClass(
                     onConfirm={this.closeModal}
                     onCancel={this.closeModal}
                     title={this.props.name}
+                    html={this.props.html}
+                    image={this.props.image}
+                    test={this.props.test}
                 >
                     {body}
                 </BootstrapModal>

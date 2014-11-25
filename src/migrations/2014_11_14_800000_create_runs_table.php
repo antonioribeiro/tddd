@@ -22,6 +22,10 @@ class CreateRunsTable extends Migration {
 
 			$table->text('log');
 
+			$table->text('html')->nullable();
+
+			$table->text('png')->nullable();
+
 			$table->timestamps();
 		});
 

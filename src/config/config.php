@@ -7,6 +7,9 @@ return [
 //	'testers' => [
 //		'codeception' => [
 //			'command' => 'sh %project_path%/vendor/bin/codecept run',
+//          'output_folder' => 'tests/_output',
+//          'output_html_fail_extension' => '.fail.html',
+//          'output_png_fail_extension' => '.fail.png'
 //		],
 //
 //		'phpunit' => [

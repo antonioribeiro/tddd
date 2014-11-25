@@ -29,7 +29,12 @@ class Data {
 	{
 		Tester::updateOrCreate(
 			['name' => $name],
-			['command' => $data['command']]
+			[
+				'command' => $data['command'],
+				'output_folder' => isset($data['output_folder']) ? $data['output_folder'] : null,
+				'output_html_fail_extension' => isset($data['output_html_fail_extension']) ? $data['output_html_fail_extension'] : null,
+				'output_png_fail_extension' => isset($data['output_png_fail_extension']) ? $data['output_png_fail_extension'] : null,
+			]
 		);
 	}
 
@@ -179,6 +184,8 @@ class Data {
 	        'test_id' => $test->id,
 	        'was_ok' => $ok,
 	        'log' => $lines ?: '(empty)',
+		    'html' => $this->getOutput($test, $test->suite->tester->output_folder, $test->suite->tester->output_html_fail_extension),
+		    'png' => $this->getOutput($test, $test->suite->tester->output_folder, $test->suite->tester->output_png_fail_extension),
 		]);
 
 		$test->state = $ok ? self::STATE_OK : self::STATE_FAILED;
@@ -288,6 +295,10 @@ class Data {
 		{
 			if ($log = Run::where('test_id', $test->id)->orderBy('created_at', 'desc')->first())
 			{
+				$html = $log->html;
+
+				$image = $log->png;
+
 				$log = $this->formatLog($log);
 			}
 
@@ -297,6 +308,8 @@ class Data {
 			    'updated_at' => $test->updated_at->diffForHumans(),
 			    'state' => $test->state,
 			    'log' => $log,
+			    'html' => isset($html) ? $html : null,
+			    'image' => isset($image) ? $image : null,
 			    'enabled' => $test->enabled,
 			];
 		}
@@ -383,6 +396,39 @@ class Data {
 		{
 			$this->addTestToQueue($test);
 		}
+	}
+
+	private function getOutput($test, $outputFolder, $extension)
+	{
+		if ( ! $outputFolder)
+		{
+			return null;
+		}
+
+		$name = str_replace(['.php', '::', '\\', '/'],['', '.', '', ''], $test->name);
+
+		$path = make_path([$test->suite->project->path, $outputFolder]);
+
+		if (file_exists($file = make_path([$path, $name . $extension])))
+		{
+			return $this->encodeFile($file);
+		}
+
+		return null;
+	}
+
+	private function encodeFile($file)
+	{
+		$type = pathinfo($file, PATHINFO_EXTENSION);
+
+		$data = file_get_contents($file);
+
+		if ($type == 'html')
+		{
+			return htmlentities($data);
+		}
+
+		return 'data:image/' . $type . ';base64,' . base64_encode($data);
 	}
 
 }

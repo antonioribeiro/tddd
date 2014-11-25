@@ -10,6 +10,8 @@ class Run extends Model {
 		'test_id',
 		'was_ok',
 	    'log',
+	    'html',
+	    'png',
 	];
 
 }

@@ -20,6 +20,12 @@ class CreateTestersTable extends Migration {
 
 			$table->string('command');
 
+			$table->string('output_folder')->nullable();
+
+			$table->string('output_html_fail_extension')->nullable();
+
+			$table->string('output_png_fail_extension')->nullable();
+
 			$table->timestamps();
 		});
 	}

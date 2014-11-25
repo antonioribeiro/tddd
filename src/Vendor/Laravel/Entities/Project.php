@@ -12,4 +12,14 @@ class Project extends Model {
 	    'tests_path',
 	];
 
+	public function getTestsFullPathAttribute($value)
+	{
+		return make_path(
+				[
+					$this->path,
+					$this->tests_path,
+				]
+		);
+	}
+
 }
