@@ -219,6 +219,11 @@ class Watcher {
 	 */
 	public function fireEvent($event, $resource, $path)
 	{
+		if ($event->getCode() == Event::RESOURCE_CREATED)
+		{
+			$this->loadTests();
+		}
+
 		$message = "File {$path} was ".$this->getEventName($event->getCode());
 
 		$this->command->drawLine($message);

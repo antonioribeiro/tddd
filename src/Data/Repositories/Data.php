@@ -76,7 +76,10 @@ class Data {
 			]
 		);
 
-		$this->addTestToQueue($test);
+		if ( ! $test->exists)
+		{
+			$this->addTestToQueue($test);
+		}
 	}
 
 	public function syncTests($exclusions)
