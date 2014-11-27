@@ -8,23 +8,23 @@ var BootstrapModal = React.createClass(
 	componentDidMount: function()
 	{
 		// When the component is added, turn it into a modal
-		$(this.getDOMNode())
+		jQuery(this.getDOMNode())
 			.modal({backdrop: 'static', keyboard: false, show: false})
 	},
 
 	componentWillUnmount: function()
 	{
-		$(this.getDOMNode()).off('hidden', this.handleHidden);
+		jQuery(this.getDOMNode()).off('hidden', this.handleHidden);
 	},
 
 	close: function()
 	{
-		$(this.getDOMNode()).modal('hide');
+		jQuery(this.getDOMNode()).modal('hide');
 	},
 
 	open: function()
 	{
-		$(this.getDOMNode()).modal('show');
+		jQuery(this.getDOMNode()).modal('show');
 	},
 
 	render: function()
@@ -70,7 +70,7 @@ var BootstrapModal = React.createClass(
           color: 'white',
         };
 
-        $.extend( tabLogStyle, tabStyle );
+        jQuery.extend( tabLogStyle, tabStyle );
 
         var modalDialogStyle = {
             width: '90%',
@@ -210,7 +210,7 @@ var TestsTable = React.createClass(
     {
         if (this.state.selected.id)
         {
-            $.ajax(
+            jQuery.ajax(
             {
                 url: this.props.url + this.state.selected.id,
 
@@ -273,7 +273,7 @@ var TestList = React.createClass(
 
     toogleAll: function(event, whatever)
     {
-        $.ajax({
+        jQuery.ajax({
             url: '/tests/enable/'+event.target.checked+'/'+this.state.selected.id,
 
             dataType: 'json',
@@ -337,7 +337,7 @@ var TestRow = React.createClass(
 {
     toogleOne: function(event, whatever)
     {
-        $.ajax({
+        jQuery.ajax({
             url: '/tests/enable/'+event.target.checked+'/'+this.props.projectId+'/'+this.props.test.id,
 
             dataType: 'json',
@@ -510,7 +510,7 @@ var RunButton = React.createClass(
 
     runTest: function()
     {
-        $.ajax({
+        jQuery.ajax({
             url: '/tests/run/'+this.props.test.id,
 
             dataType: 'json',
@@ -536,7 +536,7 @@ var ProjectsMenu = React.createClass(
 
     loadFromServer: function()
     {
-        $.ajax({
+        jQuery.ajax({
             url: this.props.url,
 
             dataType: 'json',

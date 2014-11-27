@@ -429,7 +429,7 @@ class Data {
 
 		if ($type == 'html')
 		{
-			return htmlentities($data);
+			return $data;
 		}
 
 		return 'data:image/' . $type . ';base64,' . base64_encode($data);
