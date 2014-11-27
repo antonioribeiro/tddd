@@ -66,17 +66,18 @@ class Data {
 
 	public function createOrUpdateTest($file, $suite)
 	{
+		$exists = Test::where('name', $file->getRelativePathname())
+					->where('suite_id', $suite->id)
+					->first();
+
 		$test = Test::updateOrCreate(
 			[
 	            'name' => $file->getRelativePathname(),
 	            'suite_id' => $suite->id,
-			],
-			[
-				'state' => self::STATE_IDLE,
 			]
 		);
 
-		if ( ! $test->exists)
+		if ( ! $exists)
 		{
 			$this->addTestToQueue($test);
 		}
@@ -155,7 +156,7 @@ class Data {
 
 	public function addTestToQueue($test)
 	{
-		if ($test->enabled)
+		if ($test->enabled && ! $this->isEnqueued($test))
 		{
 			Queue::updateOrCreate(['test_id' => $test->id]);
 
@@ -432,6 +433,14 @@ class Data {
 		}
 
 		return 'data:image/' . $type . ';base64,' . base64_encode($data);
+	}
+
+	private function isEnqueued($test)
+	{
+		return
+			$test->state == self::STATE_QUEUED
+			&&
+			Queue::where('test_id', $test->id)->first();
 	}
 
 }

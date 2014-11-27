@@ -20,7 +20,7 @@ class CreateTestsTable extends Migration {
 
 			$table->string('name');
 
-			$table->string('state');
+			$table->string('state')->default('idle');
 
 			$table->boolean('enabled')->default(true);
 
