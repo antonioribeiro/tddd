@@ -66,15 +66,11 @@ var BootstrapModal = React.createClass(
         };
 
         var tabLogStyle = {
-          fontFamily: 'Courier New',
-          maxHeight: 'calc(100vh - 250px)',
-          overflowY: 'auto',
-          overflowX: 'auto',
-          whiteSpace: 'pre',
-          padding: '10px',
           backgroundColor: 'black',
           color: 'white',
         };
+
+        $.extend( tabLogStyle, tabStyle );
 
         var modalDialogStyle = {
             width: '90%',
