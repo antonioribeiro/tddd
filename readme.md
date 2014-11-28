@@ -49,9 +49,9 @@ Responsible for taking tests from the run queue, execute it and log the results.
 
 This package was tested and is known to be compatible with
 
-(1) [Codeception](http://codeception.com/)
-(2) [PHPUnit](https://phpunit.de/)
-(3) [phpspec](http://www.phpspec.net/)
+* [Codeception](http://codeception.com/)
+* [PHPUnit](https://phpunit.de/)
+* [phpspec](http://www.phpspec.net/)
 
 ## Installing
 
