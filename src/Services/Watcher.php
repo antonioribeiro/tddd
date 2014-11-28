@@ -190,12 +190,21 @@ class Watcher {
 
 	private function watch()
 	{
-		$this->command->line('Watching...');
+		$this->command->line('Booting watchers...');
 
 		$me = $this;
 
 		foreach($this->watchFolders as $folder)
 		{
+			if ( ! file_exists($folder))
+			{
+				$this->command->line("Folder {$folder} does not exists");
+
+				continue;
+			}
+
+			$this->command->line('Watching '.$folder);
+
 			$this->listeners[$folder] = $this->watcher->watch($folder);
 
 			$this->listeners[$folder]->anything(function($event, $resource, $path) use ($me)
