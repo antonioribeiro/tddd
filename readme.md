@@ -52,6 +52,7 @@ This package was tested and is known to be compatible with
 * [Codeception](http://codeception.com/)
 * [PHPUnit](https://phpunit.de/)
 * [phpspec](http://www.phpspec.net/)
+* [behat](http://docs.behat.org/)
 
 ## Installing
 
