@@ -28,6 +28,11 @@ return [
 //		'atoum' => [
 //			'command' => 'sh vendor/bin/atoum',
 //		],
+//
+//      'tester' => [
+//	        'command' => 'sh vendor/bin/tester',
+//      ],
+//
 //	],
 
 
@@ -114,6 +119,23 @@ return [
 //			'suites' => [
 //				'spec' => [
 //					'tester' => 'atoum',
+//					'tests_path' => '',
+//					'command_options' => '',
+//					'file_mask' => '*.php',
+//					'retries' => 0,
+//				]
+//			],
+//		],
+
+
+//		'nette/tester' => [
+//			'path' => '/var/www/laravel-ci',
+//			'watch_folders' => ['tester'],
+//			'exclude_folders' => [ ],
+//			'tests_path' => 'tester/tests',
+//			'suites' => [
+//				'spec' => [
+//					'tester' => 'tester',
 //					'tests_path' => '',
 //					'command_options' => '',
 //					'file_mask' => '*.php',

@@ -54,6 +54,7 @@ This package was tested and is known to be compatible with
 * [phpspec](http://www.phpspec.net/)
 * [behat](http://docs.behat.org/)
 * [atoum](https://github.com/atoum/atoum)
+* [Nette Tester](http://tester.nette.org/en/)
 
 ## Installing
 
