@@ -53,6 +53,7 @@ This package was tested and is known to be compatible with
 * [PHPUnit](https://phpunit.de/)
 * [phpspec](http://www.phpspec.net/)
 * [behat](http://docs.behat.org/)
+* [atoum](https://github.com/atoum/atoum)
 
 ## Installing
 
