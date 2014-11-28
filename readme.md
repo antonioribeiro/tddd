@@ -47,17 +47,11 @@ Responsible for taking tests from the run queue, execute it and log the results.
 
 ## Test Framework Compatibility
 
-This package was tested and is known to be compatible with [Codeception](http://codeception.com/) and [PHPUnit](https://phpunit.de/), but for it to work you just need to provide a command lines, like
+This package was tested and is known to be compatible with
 
-PHPUnit example
-
-    'command' => 'phpunit',
-
-Codeception example being run using the 'sh' interpreter, when the file executable flag cannot be set for some reason:
-
-    'command' => 'sh %project_path%/vendor/bin/codecept run',
-
-So you'll probably be able to use it with many others like Behat and phpspec.
+(1) [Codeception](http://codeception.com/)
+(2) [PHPUnit](https://phpunit.de/)
+(3) [phpspec](http://www.phpspec.net/)
 
 ## Installing
 

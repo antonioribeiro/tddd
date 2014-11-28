@@ -4,6 +4,7 @@ return [
 
 	'show_progress' => false,
 
+
 //	'testers' => [
 //		'codeception' => [
 //			'command' => 'sh %project_path%/vendor/bin/codecept run',
@@ -12,11 +13,16 @@ return [
 //          'output_png_fail_extension' => '.fail.png'
 //		],
 //
+//      'phpspec' => [
+//	        'command' => 'phpspec run',
+//      ],
+//
 //		'phpunit' => [
 //			'command' => 'phpunit',
 //		],
 //	],
-//
+
+
 //	'projects' => [
 //		'myproject' => [
 //			'path' => '/var/www/myproject.dev',
@@ -33,7 +39,8 @@ return [
 //				]
 //			],
 //		],
-//
+
+
 //		'laravel/framework' => [
 //			'path' => '/var/www/myproject.dev/vendor/laravel/framework',
 //			'watch_folders' => ['src', 'tests'],
@@ -54,7 +61,25 @@ return [
 //				    'retries' => 3,
 //				]
 //		    ],
-//		]
+//		],
+
+
+//		'league/flysystem' => [
+//			'path' => '/var/www/myproject.dev/vendor/league/flysystem/',
+//			'watch_folders' => ['src', 'spec'],
+//			'exclude_folders' => [ ],
+//			'tests_path' => 'spec',
+//		    'suites' => [
+//				'spec' => [
+//					'tester' => 'phpspec',
+//					'tests_path' => '',
+//				    'command_options' => '',
+//				    'file_mask' => '*.php',
+//				    'retries' => 0,
+//				]
+//		    ],
+//		],
+
 //	],
 
 ];
