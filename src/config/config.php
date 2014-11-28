@@ -24,6 +24,10 @@ return [
 //		'behat' => [
 //			'command' => 'sh vendor/bin/behat',
 //		],
+//
+//		'atoum' => [
+//			'command' => 'sh vendor/bin/atoum',
+//		],
 //	],
 
 
@@ -96,6 +100,23 @@ return [
 //					'tests_path' => '',
 //					'command_options' => '',
 //					'file_mask' => '*.feature',
+//					'retries' => 0,
+//				]
+//			],
+//		],
+
+
+//		'atoum/tests' => [
+//			'path' => '/var/www/laravel-ci',
+//			'watch_folders' => ['atoum'],
+//			'exclude_folders' => [ ],
+//			'tests_path' => 'atoum',
+//			'suites' => [
+//				'spec' => [
+//					'tester' => 'atoum',
+//					'tests_path' => '',
+//					'command_options' => '',
+//					'file_mask' => '*.php',
 //					'retries' => 0,
 //				]
 //			],
