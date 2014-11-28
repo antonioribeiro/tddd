@@ -20,6 +20,10 @@ return [
 //		'phpunit' => [
 //			'command' => 'phpunit',
 //		],
+//
+//		'behat' => [
+//			'command' => 'sh vendor/bin/behat',
+//		],
 //	],
 
 
@@ -78,6 +82,23 @@ return [
 //				    'retries' => 0,
 //				]
 //		    ],
+//		],
+
+
+//		'behat/tests' => [
+//			'path' => '/var/www/laravel-ci',
+//			'watch_folders' => ['features'],
+//			'exclude_folders' => [ 'features/bootstrap' ],
+//			'tests_path' => 'features',
+//			'suites' => [
+//				'spec' => [
+//					'tester' => 'behat',
+//					'tests_path' => '',
+//					'command_options' => '',
+//					'file_mask' => '*.feature',
+//					'retries' => 0,
+//				]
+//			],
 //		],
 
 //	],
