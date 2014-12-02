@@ -154,6 +154,15 @@ class Data {
 		}
 	}
 
+	public function queueTestsForSuite($suite_id)
+	{
+		$tests = Test::where('suite_id', $suite_id)->get();
+		foreach($tests as $test)
+		{
+			$this->addTestToQueue($test);
+		}
+	}
+
 	public function addTestToQueue($test)
 	{
 		if ($test->enabled && ! $this->isEnqueued($test))
