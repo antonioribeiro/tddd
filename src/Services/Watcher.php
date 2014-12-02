@@ -250,7 +250,7 @@ class Watcher {
 			return;
 		}
 
-		if ($this->queue_test_suites($path)) {
+		if ($this->queueTestSuites($path)) {
 			return;
 		}
 
@@ -284,36 +284,23 @@ class Watcher {
 		return $this->dataRepository->isExcluded($this->exclusions, $folder);
 	}
 
-	/**
-	 * @param $path
-	 * @return bool tests were queued
-	 */
-	private function queue_test_suites($path)
-	{
-		$queued = false;
-		// At this point we know a project file changed. Let's see if we
-		// can figure out which project's tests should be queued ...
-		// get all projects
-		$projects = Project::all();
+    /**
+     * @param $path
+     *
+     * @return bool tests were queued
+     */
+    private function queueTestSuites($path)
+    {
+        $queued = false;
 
-		// Reduce the collection of projects by those whose path properties
-		// (should be only 1) are contained in the fullpath of our
-		// changed file
-		$filtered_projects = $projects->filter(function ($project) use ($path) {
-			return substr_count($path, $project->path) > 0;
-		});
+        $suites = $this->dataRepository->getSuitesForPath($path);
 
-		// at this point we have (hopefully only 1) project. Now we need
-		// the suite(s) associated with the project.
-		$suites = Suite::whereIn('project_id', $filtered_projects->lists('id'))
-			->get();
-
-		foreach ($suites as $suite) {
-			$queued = true;
-			$this->command->line('Adding all tests for the ' . $suite->name . ' suite');
-			$this->dataRepository->queueTestsForSuite($suite->id);
-		}
-		return $queued;
-	}
+        foreach ($suites as $suite) {
+            $queued = true;
+            $this->command->line('Adding all tests for the ' . $suite->name . ' suite');
+            $this->dataRepository->queueTestsForSuite($suite->id);
+        }
+        return $queued;
+    }
 
 }
