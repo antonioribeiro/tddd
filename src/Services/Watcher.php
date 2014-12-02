@@ -7,6 +7,8 @@ use Config;
 use App;
 use Illuminate\Console\Command;
 use JasonLewis\ResourceWatcher\Event;
+use PragmaRX\Ci\Vendor\Laravel\Entities\Project;
+use PragmaRX\Ci\Vendor\Laravel\Entities\Suite;
 
 class Watcher {
 
@@ -248,6 +250,10 @@ class Watcher {
 			return;
 		}
 
+		if ($this->queue_test_suites($path)) {
+			return;
+		}
+
 		$this->command->line('All tests added to queue');
 
 		$this->dataRepository->queueAllTests();
@@ -276,6 +282,38 @@ class Watcher {
 	public function isExcluded($folder)
 	{
 		return $this->dataRepository->isExcluded($this->exclusions, $folder);
+	}
+
+	/**
+	 * @param $path
+	 * @return bool tests were queued
+	 */
+	private function queue_test_suites($path)
+	{
+		$queued = false;
+		// At this point we know a project file changed. Let's see if we
+		// can figure out which project's tests should be queued ...
+		// get all projects
+		$projects = Project::all();
+
+		// Reduce the collection of projects by those whose path properties
+		// (should be only 1) are contained in the fullpath of our
+		// changed file
+		$filtered_projects = $projects->filter(function ($project) use ($path) {
+			return substr_count($path, $project->path) > 0;
+		});
+
+		// at this point we have (hopefully only 1) project. Now we need
+		// the suite(s) associated with the project.
+		$suites = Suite::whereIn('project_id', $filtered_projects->lists('id'))
+			->get();
+
+		foreach ($suites as $suite) {
+			$queued = true;
+			$this->command->line('Adding all tests for the ' . $suite->name . ' suite');
+			$this->dataRepository->queueTestsForSuite($suite->id);
+		}
+		return $queued;
 	}
 
 }
