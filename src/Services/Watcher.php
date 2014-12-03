@@ -8,8 +8,7 @@ use Illuminate\Console\Command;
 use JasonLewis\ResourceWatcher\Event;
 use PragmaRX\Ci\Data\Repositories\Data as DataRepository;
 
-class Watcher
-{
+class Watcher {
 
 	/**
 	 * Is the watcher initialized?
@@ -182,6 +181,12 @@ class Watcher
 		}
 	}
 
+	/**
+	 * Add path to exclusions list.
+	 *
+	 * @param $path
+	 * @param $exclude_folders
+	 */
 	private function addToExclusions($path, $exclude_folders)
 	{
 		foreach($exclude_folders as $folder)
@@ -190,6 +195,9 @@ class Watcher
 		}
 	}
 
+	/**
+	 * Watch folders for changes
+	 */
 	private function watch()
 	{
 		$this->command->line('Booting watchers...');
@@ -250,7 +258,8 @@ class Watcher
 			return;
 		}
 
-		if ($this->queueTestSuites($path)) {
+		if ($this->queueTestSuites($path))
+		{
 			return;
 		}
 
@@ -279,15 +288,22 @@ class Watcher
 		return $event;
 	}
 
+
+	/**
+	 * Check if folder is excluded.
+	 *
+	 * @param $folder
+	 * @return bool
+	 */
 	public function isExcluded($folder)
 	{
 		return $this->dataRepository->isExcluded($this->exclusions, $folder);
 	}
 
-
     /**
-     * @param $path
+     * Queue tests for suites.
      *
+     * @param $path
      * @return bool tests were queued
      */
     private function queueTestSuites($path)
@@ -296,11 +312,15 @@ class Watcher
 
         $suites = $this->dataRepository->getSuitesForPath($path);
 
-        foreach ($suites as $suite) {
+        foreach ($suites as $suite)
+        {
             $queued = true;
+
             $this->command->line('Adding all tests for the ' . $suite->name . ' suite');
+
             $this->dataRepository->queueTestsForSuite($suite->id);
         }
+
         return $queued;
     }
 
