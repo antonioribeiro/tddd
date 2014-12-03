@@ -284,23 +284,24 @@ class Watcher
 		return $this->dataRepository->isExcluded($this->exclusions, $folder);
 	}
 
-	/**
-	 * @param $path
+
+    /**
+     * @param $path
      *
-	 * @return bool tests were queued
-	 */
-	private function queueTestSuites($path)
-	{
-		$queued = false;
+     * @return bool tests were queued
+     */
+    private function queueTestSuites($path)
+    {
+        $queued = false;
 
-		$suites = $this->dataRepository->getSuitesForPath($path);
+        $suites = $this->dataRepository->getSuitesForPath($path);
 
-		foreach ($suites as $suite) {
-			$queued = true;
-			$this->command->line('Adding all tests for the ' . $suite->name . ' suite');
-			$this->dataRepository->queueTestsForSuite($suite->id);
-		}
-		return $queued;
-	}
+        foreach ($suites as $suite) {
+            $queued = true;
+            $this->command->line('Adding all tests for the ' . $suite->name . ' suite');
+            $this->dataRepository->queueTestsForSuite($suite->id);
+        }
+        return $queued;
+    }
 
 }
