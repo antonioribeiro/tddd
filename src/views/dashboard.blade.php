@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="UTF-8">
-		<title>Laravel PHP Framework</title>
+		<title>Continuous Integration Package - Dashboard</title>
 		<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" media="all" rel="stylesheet" type="text/css" />
 		<link href="assets/css/app.css" media="all" rel="stylesheet" type="text/css" />
 	</head>
@@ -21,7 +21,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="/">Laravel CI</a>
+                    <a class="navbar-brand" href="/">Continuous Integration Package - Dashboard</a>
                 </div>
             </div>
         </nav>
