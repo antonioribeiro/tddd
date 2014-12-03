@@ -154,6 +154,15 @@ class Data {
 		}
 	}
 
+	public function queueTestsForSuite($suite_id)
+	{
+		$tests = Test::where('suite_id', $suite_id)->get();
+		foreach($tests as $test)
+		{
+			$this->addTestToQueue($test);
+		}
+	}
+
 	public function addTestToQueue($test)
 	{
 		if ($test->enabled && ! $this->isEnqueued($test))
@@ -441,6 +450,23 @@ class Data {
 			$test->state == self::STATE_QUEUED
 			&&
 			Queue::where('test_id', $test->id)->first();
+	}
+
+	public function getSuitesForPath($path)
+	{
+		$projects = $this->getProjects();
+
+		// Reduce the collection of projects by those whose path properties
+		// (should be only 1) are contained in the fullpath of our
+		// changed file
+		$filtered_projects = $projects->filter(function ($project) use ($path) {
+			return substr_count($path, $project->path) > 0;
+		});
+
+		// at this point we have (hopefully only 1) project. Now we need
+		// the suite(s) associated with the project.
+		return Suite::whereIn('project_id', $filtered_projects->lists('id'))
+			->get();
 	}
 
 }

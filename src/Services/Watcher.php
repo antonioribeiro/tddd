@@ -2,13 +2,14 @@
 
 namespace PragmaRX\Ci\Services;
 
-use PragmaRX\Ci\Data\Repositories\Data as DataRepository;
-use Config;
 use App;
+use Config;
 use Illuminate\Console\Command;
 use JasonLewis\ResourceWatcher\Event;
+use PragmaRX\Ci\Data\Repositories\Data as DataRepository;
 
-class Watcher {
+class Watcher
+{
 
 	/**
 	 * Is the watcher initialized?
@@ -75,6 +76,7 @@ class Watcher {
 	 * Watch for file changes.
 	 *
 	 * @param Command $command
+     *
 	 * @return bool
 	 */
 	public function run(Command $command)
@@ -248,6 +250,10 @@ class Watcher {
 			return;
 		}
 
+		if ($this->queueTestSuites($path)) {
+			return;
+		}
+
 		$this->command->line('All tests added to queue');
 
 		$this->dataRepository->queueAllTests();
@@ -277,5 +283,25 @@ class Watcher {
 	{
 		return $this->dataRepository->isExcluded($this->exclusions, $folder);
 	}
+
+
+    /**
+     * @param $path
+     *
+     * @return bool tests were queued
+     */
+    private function queueTestSuites($path)
+    {
+        $queued = false;
+
+        $suites = $this->dataRepository->getSuitesForPath($path);
+
+        foreach ($suites as $suite) {
+            $queued = true;
+            $this->command->line('Adding all tests for the ' . $suite->name . ' suite');
+            $this->dataRepository->queueTestsForSuite($suite->id);
+        }
+        return $queued;
+    }
 
 }
