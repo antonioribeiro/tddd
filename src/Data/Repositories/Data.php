@@ -459,14 +459,15 @@ class Data {
 		// Reduce the collection of projects by those whose path properties
 		// (should be only 1) are contained in the fullpath of our
 		// changed file
-		$filtered_projects = $projects->filter(function ($project) use ($path) {
+		$filtered_projects = $projects->filter(function ($project) use ($path)
+		{
 			return substr_count($path, $project->path) > 0;
 		});
 
 		// at this point we have (hopefully only 1) project. Now we need
 		// the suite(s) associated with the project.
 		return Suite::whereIn('project_id', $filtered_projects->lists('id'))
-			->get();
+				->get();
 	}
 
 }
