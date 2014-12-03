@@ -26,7 +26,6 @@
             "PragmaRX\\Ci\\": "src/"
         },
         "psr-0": {
-            "PragmaRX\\Ci": "src",
             "JasonLewis\\ResourceWatcher": "src/Support/jasonlewis/resource-watcher/src"
         }
     },
