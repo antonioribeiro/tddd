@@ -384,8 +384,6 @@ class Data {
 	public function runTest($test_id)
 	{
 		$this->addTestToQueue(Test::find($test_id));
-
-		return $this->success();
 	}
 
 	/**
