@@ -118,6 +118,8 @@ class ServiceProvider extends PragmaRXServiceProvider {
 
 		$router->group(['namespace' => 'PragmaRX\Ci\Vendor\Laravel\Http\Controllers'], function() use ($router)
 		{
+			$router->get('tests/run/all/{project_id}', 'DashboardController@runAll');
+
 			$router->get('tests/run/{test_id?}', 'DashboardController@runTest');
 
 			$router->get('tests/enable/{enable}/{project_id}/{test_id?}', 'DashboardController@enableTests');

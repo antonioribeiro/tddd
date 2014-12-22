@@ -271,6 +271,18 @@ var TestList = React.createClass(
         this.setState({selected: event.selected});
     },
 
+    runAll: function(event)
+    {
+        jQuery.ajax({
+            url: '/tests/run/all/'+this.state.selected.id,
+
+            error: function(xhr, status, err)
+            {
+                console.error(this.props.url, status, err.toString());
+            }.bind(this)
+        });
+    },
+
     toogleAll: function(event, whatever)
     {
         jQuery.ajax({
@@ -301,7 +313,21 @@ var TestList = React.createClass(
 
         return (
             <div>
-                <h2>{this.state.selected.name} - Tests</h2>
+                <div className="row">
+                    <div className="col-md-9">
+                        <h2>{this.state.selected.name} - Tests</h2>
+                    </div>
+
+                    <div className="col-md-3 text-right">
+                        <BootstrapButton
+                                onClick={this.runAll}
+                                className="btn-danger"
+                                dataKeyboard="true"
+                                >
+                            Run All
+                        </BootstrapButton>
+                    </div>
+                </div>
 
                 <table className="table table-striped">
                     <thead>

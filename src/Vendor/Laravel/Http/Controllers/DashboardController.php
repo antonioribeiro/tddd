@@ -42,6 +42,13 @@ class DashboardController extends Controller {
 		return $this->success();
 	}
 
+	public function runAll($project_id)
+	{
+		$this->dataRepository->runAll($project_id);
+
+		return $this->success();
+	}
+
 	private function success($result = [])
 	{
 		return Response::json(array_merge(['success' => true], $result));
