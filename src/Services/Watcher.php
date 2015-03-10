@@ -3,12 +3,11 @@
 namespace PragmaRX\Ci\Services;
 
 use App;
-use Config;
 use Illuminate\Console\Command;
 use JasonLewis\ResourceWatcher\Event;
 use PragmaRX\Ci\Data\Repositories\Data as DataRepository;
 
-class Watcher {
+class Watcher extends Base {
 
 	/**
 	 * Is the watcher initialized?
@@ -127,12 +126,12 @@ class Watcher {
 	 */
 	private function loadTesters()
 	{
-		foreach(Config::get('pragmarx/ci::testers') as $name => $data)
+		foreach($this->getConfig('testers') as $name => $data)
 		{
 			$this->dataRepository->createOrUpdateTester($name, $data);
 		}
 
-		$this->dataRepository->deleteUnavailableTesters(array_keys(Config::get('pragmarx/ci::testers')));
+		$this->dataRepository->deleteUnavailableTesters(array_keys($this->getConfig('testers')));
 	}
 
 	/**
@@ -141,7 +140,7 @@ class Watcher {
 	 */
 	private function loadProjects()
 	{
-		foreach(Config::get('pragmarx/ci::projects') as $name => $data)
+		foreach($this->getConfig('projects') as $name => $data)
 		{
 			$project = $this->dataRepository->createOrUpdateProject($name, $data['path'], $data['tests_path']);
 
@@ -155,7 +154,7 @@ class Watcher {
 			$this->addToExclusions($data['path'], $data['exclude_folders']);
 		}
 
-		$this->dataRepository->deleteUnavailableProjects(array_keys(Config::get('pragmarx/ci::projects')));
+		$this->dataRepository->deleteUnavailableProjects(array_keys($this->getConfig('projects')));
 	}
 
 	/**

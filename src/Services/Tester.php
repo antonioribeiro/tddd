@@ -2,12 +2,11 @@
 
 namespace PragmaRX\Ci\Services;
 
-use PragmaRX\Ci\Data\Repositories\Data as DataRepository;
-use PragmaRX\Ci\Support\ShellExec;
 use Illuminate\Console\Command;
-use Config;
+use PragmaRX\Ci\Support\ShellExec;
+use PragmaRX\Ci\Data\Repositories\Data as DataRepository;
 
-class Tester {
+class Tester extends Base {
 
 	/**
 	 * Is it testing?
@@ -136,7 +135,7 @@ class Tester {
 		{
 			$process = $this->shell->exec($test->testCommand, $test->suite->project->path, function($type, $buffer) use ($me)
 			{
-				if (Config::get('pragmarx/ci::show_progress'))
+				if ($this->getConfig('show_progress'))
 				{
 					$me->showProgress($buffer);
 				}
