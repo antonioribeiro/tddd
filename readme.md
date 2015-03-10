@@ -4,7 +4,7 @@
 
 ###A Self-Hosted Continuous Integration Service and a Dashboard.
 
-####Compatible with Laravel 4 & 5 (currently in alpha)
+####Compatible with Laravel 4 & 5
 
 ##Dashboard View
 
