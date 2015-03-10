@@ -119,7 +119,7 @@ For the Dashboard you just need to create a route and add render this view:
 
 ## Requirements
 
-- Laravel 4.1+
+- Laravel 4.1+ or 5
 - PHP 5.3.7+
 
 ## Author
