@@ -6,11 +6,17 @@ use PragmaRX\Ci\Vendor\Laravel\Console\Commands\TestCommand;
 use PragmaRX\Ci\Vendor\Laravel\Console\Commands\WatchCommand;
 use PragmaRX\Support\ServiceProvider as PragmaRXServiceProvider;
 
-use Illuminate\Foundation\AliasLoader as IlluminateAliasLoader;
-
 class ServiceProvider extends PragmaRXServiceProvider {
 
     const PACKAGE_NAMESPACE = 'pragmarx/ci';
+
+	protected $packageVendor = 'pragmarx';
+
+	protected $packageVendorCapitalized = 'PragmaRX';
+
+	protected $packageName = 'ci';
+
+	protected $packageNameCapitalized = 'Ci';
 
     /**
      * Indicates if loading of the provider is deferred.
@@ -18,26 +24,6 @@ class ServiceProvider extends PragmaRXServiceProvider {
      * @var bool
      */
     protected $defer = false;
-
-    /**
-     * Bootstrap the application events.
-     *
-     * @return void
-     */
-    public function boot()
-    {
-        $this->package(self::PACKAGE_NAMESPACE, self::PACKAGE_NAMESPACE, __DIR__.'/../..');
-
-        if( $this->app['config']->get(self::PACKAGE_NAMESPACE.'::create_ci_alias') )
-        {
-            IlluminateAliasLoader::getInstance()->alias(
-                                                            $this->getConfig('ci_alias'),
-                                                            'PragmaRX\Ci\Vendor\Laravel\Facade'
-                                                        );
-        }
-
-        $this->wakeUp();
-    }
 
     /**
      * Register the service provider.
@@ -93,17 +79,29 @@ class ServiceProvider extends PragmaRXServiceProvider {
 
 	private function registerWatcher()
 	{
-		$this->app->singleton('ci.watcher', function($app)
+		$me = $this;
+
+		$this->app->singleton('ci.watcher', function($app) use ($me)
 		{
-			return $this->app->make('PragmaRX\Ci\Services\Watcher');
+			$watcher = $this->app->make('PragmaRX\Ci\Services\Watcher');
+
+			$watcher->setConfig($me->getConfig());
+
+			return $watcher;
 		});
 	}
 
 	private function registerTester()
 	{
-		$this->app->singleton('ci.tester', function($app)
+		$me = $this;
+
+		$this->app->singleton('ci.tester', function($app) use ($me)
 		{
-			return $this->app->make('PragmaRX\Ci\Services\Tester');
+			$tester = $this->app->make('PragmaRX\Ci\Services\Tester');
+
+			$tester->setConfig($me->getConfig());
+
+			return $tester;
 		});
 	}
 
@@ -128,6 +126,16 @@ class ServiceProvider extends PragmaRXServiceProvider {
 
 			$router->get('projects', 'DashboardController@allProjects');
 		});
+	}
+
+	/**
+	 * Get the root directory for this ServiceProvider
+	 *
+	 * @return string
+	 */
+	public function getRootDirectory()
+	{
+		return __DIR__.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'..';
 	}
 
 }
