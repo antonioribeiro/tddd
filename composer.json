@@ -32,7 +32,11 @@
 
     "extra": {
         "component": "package",
-        "frameworks": ["Laravel 4", "Laravel 5"]
+        "laravel": {
+            "providers": [
+                "PragmaRX\\Ci\\Vendor\\Laravel\\ServiceProvider"
+            ]
+        }
     },
 
     "minimum-stability": "dev"
