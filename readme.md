@@ -1,10 +1,11 @@
 # Continuous Integration Package
 
-[![Latest Stable Version](https://img.shields.io/packagist/v/pragmarx/ci.svg?style=flat-square)](https://packagist.org/packages/pragmarx/ci) [![License](https://img.shields.io/badge/license-BSD_3_Clause-brightgreen.svg?style=flat-square)](LICENSE)
+[![Latest Stable Version](https://img.shields.io/packagist/v/pragmarx/ci.svg?style=flat-square)](https://packagist.org/packages/pragmarx/ci) 
+[![License](https://img.shields.io/badge/license-BSD_3_Clause-brightgreen.svg?style=flat-square)](LICENSE)
 
-###A Self-Hosted Continuous Integration Service and a Dashboard.
+### A Self-Hosted Continuous Integration Service and a Dashboard.
 
-####Compatible with Laravel 4 & 5 (currently in alpha)
+#### Compatible with Laravel 4 & 5 (currently in alpha)
 
 ##Dashboard View
 
@@ -17,12 +18,12 @@ The Dashboard, built using [Facebook's React Javascript Library](http://facebook
 * Current Test "State": tests states are "running", "queued", "ok" and "failed".
 * "Show" button, to display the error log of failed tests.
 
-###Screenshots
+### Screenshots
 
-####Dashboard
+#### Dashboard
 ![visits](https://raw.githubusercontent.com/antonioribeiro/ci/master/src/views/screenshots/dashboard.png)
 
-####Error Log
+#### Error Log
 ![visits](https://raw.githubusercontent.com/antonioribeiro/ci/master/src/views/screenshots/errorlog1.png)
 
 ![visits](https://raw.githubusercontent.com/antonioribeiro/ci/master/src/views/screenshots/errorlog2.png)
@@ -33,13 +34,13 @@ The Dashboard, built using [Facebook's React Javascript Library](http://facebook
 
 The Artisan commands **Watcher** and **Tester** are responsible for watching resources and firing tests, respectively:
 
-###Watcher
+### Watcher
 
 Keep track of your files and enqueue your tests every time a project or test file is changed. If a project file changes, it will enqueue all your tests, if a test file changes, it will enqueue only that particular test. This is how you run it:
 
     php artisan ci:watch
 
-###Tester
+### Tester
 
 Responsible for taking tests from the run queue, execute it and log the results. Tester will only execute enabled tests. This is how you run it:
 
