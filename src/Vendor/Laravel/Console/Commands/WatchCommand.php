@@ -38,4 +38,13 @@ class WatchCommand extends BaseCommand {
 		$this->getLaravel()->make('ci.watcher')->run($this);
 	}
 
+    /**
+     * Execute the console command.
+     *
+     * @return mixed
+     */
+    public function handle()
+    {
+        $this->fire();
+    }
 }

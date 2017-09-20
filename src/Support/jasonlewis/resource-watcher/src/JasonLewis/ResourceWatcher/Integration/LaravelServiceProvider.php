@@ -20,7 +20,7 @@ class LaravelServiceProvider extends ServiceProvider {
 	 */
 	public function register()
 	{
-		$this->app['watcher'] = $this->app->share(function($app)
+		$this->app->singleton('watcher', function($app)
 		{
 			$tracker = new Tracker;
 

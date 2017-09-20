@@ -80,7 +80,7 @@ On Laravel 4.*
 
 On Laravel 5.*
 
-    php artisan publish:config pragmarx/ci
+    php artisan vendor:publish --provider="PragmaRX\Ci\Vendor\Laravel\ServiceProvider"
 
 Edit the file `app/config/packages/pragmarx/ci/config.php` add your testers:
 

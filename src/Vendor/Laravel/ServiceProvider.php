@@ -4,20 +4,10 @@ namespace PragmaRX\Ci\Vendor\Laravel;
  
 use PragmaRX\Ci\Vendor\Laravel\Console\Commands\TestCommand;
 use PragmaRX\Ci\Vendor\Laravel\Console\Commands\WatchCommand;
-use PragmaRX\Support\ServiceProvider as PragmaRXServiceProvider;
+use Illuminate\Support\ServiceProvider as IlluminateServiceProvider;
 
-class ServiceProvider extends PragmaRXServiceProvider {
-
-    const PACKAGE_NAMESPACE = 'pragmarx/ci';
-
-	protected $packageVendor = 'pragmarx';
-
-	protected $packageVendorCapitalized = 'PragmaRX';
-
-	protected $packageName = 'ci';
-
-	protected $packageNameCapitalized = 'Ci';
-
+class ServiceProvider extends IlluminateServiceProvider
+{
     /**
      * Indicates if loading of the provider is deferred.
      *
@@ -26,14 +16,43 @@ class ServiceProvider extends PragmaRXServiceProvider {
     protected $defer = false;
 
     /**
+     * Boot Service Provider.
+     *
+     */
+    public function boot()
+    {
+        $this->publishConfiguration();
+
+        $this->loadMigrations();
+    }
+
+    /**
+     * Configura migrations path.
+     *
+     */
+    private function loadMigrations()
+    {
+        $this->loadMigrationsFrom(__DIR__.'/migrations');
+    }
+
+    /**
+     * Configure config path.
+     *
+     */
+    private function publishConfiguration()
+    {
+        $this->publishes([
+            __DIR__.'/../../config/config.php' => config_path('ci.php'),
+        ]);
+    }
+
+    /**
      * Register the service provider.
      *
      * @return void
      */
     public function register()
     {
-	    parent::register();
-
 	    $this->registerResourceWatcher();
 
 	    $this->registerWatcher();
@@ -54,12 +73,16 @@ class ServiceProvider extends PragmaRXServiceProvider {
      */
     public function provides()
     {
-        return array('ci');
+        return ['ci'];
     }
 
-	private function registerWatchCommand()
+    /**
+     * Register the watch command.
+     *
+     */
+    private function registerWatchCommand()
 	{
-        $this->app['ci.watch.command'] = $this->app->share(function($app)
+        $this->app->singleton('ci.watch.command', function($app)
         {
             return new WatchCommand();
         });
@@ -67,9 +90,13 @@ class ServiceProvider extends PragmaRXServiceProvider {
 		$this->commands('ci.watch.command');
 	}
 
-	private function registerTestCommand()
+    /**
+     * Register the test command.
+     *
+     */
+    private function registerTestCommand()
 	{
-        $this->app['ci.test.command'] = $this->app->share(function($app)
+        $this->app->singleton('ci.test.command', function($app)
         {
             return new TestCommand();
         });
@@ -77,7 +104,11 @@ class ServiceProvider extends PragmaRXServiceProvider {
 		$this->commands('ci.test.command');
 	}
 
-	private function registerWatcher()
+    /**
+     * Register service watcher.
+     *
+     */
+    private function registerWatcher()
 	{
 		$me = $this;
 
@@ -91,7 +122,11 @@ class ServiceProvider extends PragmaRXServiceProvider {
 		});
 	}
 
-	private function registerTester()
+    /**
+     * Register service tester.
+     *
+     */
+    private function registerTester()
 	{
 		$me = $this;
 
@@ -105,12 +140,20 @@ class ServiceProvider extends PragmaRXServiceProvider {
 		});
 	}
 
-	private function registerResourceWatcher()
+    /**
+     * Register the resource watcher.
+     *
+     */
+    private function registerResourceWatcher()
 	{
 		$this->app->register('JasonLewis\ResourceWatcher\Integration\LaravelServiceProvider');
 	}
 
-	private function registerRoutes()
+    /**
+     * Register all routes.
+     *
+     */
+    private function registerRoutes()
 	{
 		$router = $this->app->make('router');
 
@@ -137,5 +180,4 @@ class ServiceProvider extends PragmaRXServiceProvider {
 	{
 		return __DIR__.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'..';
 	}
-
 }
