@@ -3,8 +3,8 @@
 use Illuminate\Database\Schema\Blueprint;
 use PragmaRX\Support\Migration;
 
-class CreateQueueTable extends Migration {
-
+class CreateCiRunsTable extends Migration
+{
 	/**
 	 * Run the migrations.
 	 *
@@ -12,20 +12,28 @@ class CreateQueueTable extends Migration {
 	 */
 	public function migrateUp()
 	{
-		Schema::create('queue', function(Blueprint $table)
+		Schema::create('ci_runs', function(Blueprint $table)
 		{
 			$table->increments('id');
 
 			$table->integer('test_id')->unsigned();
 
+			$table->boolean('was_ok');
+
+			$table->text('log');
+
+			$table->text('html')->nullable();
+
+			$table->text('png')->nullable();
+
 			$table->timestamps();
 		});
 
-		Schema::table('queue', function(Blueprint $table)
+		Schema::table('ci_runs', function(Blueprint $table)
 		{
 			$table->foreign('test_id')
 				->references('id')
-				->on('tests')
+				->on('ci_tests')
 				->onDelete('cascade')
 				->onUpdate('cascade');
 		});
@@ -38,7 +46,6 @@ class CreateQueueTable extends Migration {
 	 */
 	public function migrateDown()
 	{
-		Schema::drop('queue');
+		Schema::drop('ci_runs');
 	}
-
 }

@@ -151,7 +151,7 @@ class Watcher extends Base {
 
 			$this->addToWatchFolders($data['path'], $data['watch_folders']);
 
-			$this->addToExclusions($data['path'], $data['exclude_folders']);
+			$this->addToExclusions($data['path'], $data['exclude']);
 		}
 
 		$this->dataRepository->deleteUnavailableProjects(array_keys($this->getConfig('projects')));
@@ -184,11 +184,11 @@ class Watcher extends Base {
 	 * Add path to exclusions list.
 	 *
 	 * @param $path
-	 * @param $exclude_folders
+	 * @param $exclude
 	 */
-	private function addToExclusions($path, $exclude_folders)
+	private function addToExclusions($path, $exclude)
 	{
-		foreach($exclude_folders as $folder)
+		foreach($exclude as $folder)
 		{
 			$this->exclusions[] = make_path([$path, $folder]);
 		}

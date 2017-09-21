@@ -3,8 +3,8 @@
 use Illuminate\Database\Schema\Blueprint;
 use PragmaRX\Support\Migration;
 
-class CreateTestsTable extends Migration {
-
+class CreateCiTestsTable extends Migration
+{
 	/**
 	 * Run the migrations.
 	 *
@@ -12,7 +12,7 @@ class CreateTestsTable extends Migration {
 	 */
 	public function migrateUp()
 	{
-		Schema::create('tests', function(Blueprint $table)
+		Schema::create('ci_tests', function(Blueprint $table)
 		{
 			$table->increments('id');
 
@@ -29,11 +29,11 @@ class CreateTestsTable extends Migration {
 			$table->timestamps();
 		});
 
-		Schema::table('tests', function(Blueprint $table)
+		Schema::table('ci_tests', function(Blueprint $table)
 		{
 			$table->foreign('suite_id')
 				->references('id')
-				->on('suites')
+				->on('ci_suites')
 				->onDelete('cascade')
 				->onUpdate('cascade');
 		});
@@ -46,7 +46,6 @@ class CreateTestsTable extends Migration {
 	 */
 	public function migrateDown()
 	{
-		Schema::drop('tests');
+		Schema::drop('ci_tests');
 	}
-
 }

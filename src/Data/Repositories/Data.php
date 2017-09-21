@@ -12,8 +12,8 @@ use PragmaRX\Ci\Vendor\Laravel\Entities\Tester;
 use PragmaRX\Ci\Vendor\Laravel\Entities\Project;
 use SensioLabs\AnsiConverter\AnsiToHtmlConverter;
 
-class Data {
-
+class Data
+{
 	/**
 	 * Internal constants.
 	 *
@@ -119,7 +119,12 @@ class Data {
 		}
 	}
 
-	/**
+    private function linkFiles($lines)
+    {
+        var_dump($lines);
+    }
+
+    /**
 	 * Sync all tests.
 	 *
 	 * @param $exclusions
@@ -259,8 +264,8 @@ class Data {
 	 */
 	public function getNextTestFromQueue()
 	{
-		$query = Queue::join('tests', 'tests.id', '=', 'queue.test_id')
-						->where('tests.enabled', true);
+		$query = Queue::join('ci_tests', 'ci_tests.id', '=', 'ci_queue.test_id')
+						->where('ci_tests.enabled', true);
 
 		if ( ! $queue = $query->first() )
 		{
@@ -283,7 +288,7 @@ class Data {
 		$run = Run::create([
 	        'test_id' => $test->id,
 	        'was_ok' => $ok,
-	        'log' => $lines ?: '(empty)',
+	        'log' => $this->linkFiles($lines) ?: '(empty)',
 		    'html' => $this->getOutput($test, $test->suite->tester->output_folder, $test->suite->tester->output_html_fail_extension),
 		    'png' => $this->getOutput($test, $test->suite->tester->output_folder, $test->suite->tester->output_png_fail_extension),
 		]);
@@ -419,8 +424,8 @@ class Data {
 
 			        updated_at desc";
 
-		$query = Test::select('tests.*')
-					->join('suites', 'suites.id', '=', 'suite_id')
+		$query = Test::select('ci_tests.*')
+					->join('ci_suites', 'ci_suites.id', '=', 'suite_id')
 					->orderByRaw($order);
 
 		if ($project_id)
@@ -539,12 +544,13 @@ class Data {
 		$this->addTestToQueue($test, $force);
 	}
 
-	/**
-	 * Enable a test.
-	 *
-	 * @param $enable
-	 * @param $test
-	 */
+    /**
+     * Enable a test.
+     *
+     * @param $enable
+     * @param $test
+     * @return mixed
+     */
 	private function enableTest($enable, $test)
 	{
 		$test->timestamps = false;
@@ -645,7 +651,7 @@ class Data {
 
 		// at this point we have (hopefully only 1) project. Now we need
 		// the suite(s) associated with the project.
-		return Suite::whereIn('project_id', $filtered_projects->lists('id'))
+		return Suite::whereIn('project_id', $filtered_projects->pluck('id'))
 				->get();
 	}
 
@@ -676,20 +682,19 @@ class Data {
 	 */
 	private function queryTests($project_id = null, $test_id = null)
 	{
-		$query = Test::select('tests.*')
-					->join('suites', 'suites.id', '=', 'tests.suite_id');
+		$query = Test::select('ci_tests.*')
+					->join('ci_suites', 'ci_suites.id', '=', 'ci_tests.suite_id');
 
 		if ($project_id)
 		{
-			$query->where('suites.project_id', $project_id);
+			$query->where('ci_suites.project_id', $project_id);
 		}
 
 		if ($test_id)
 		{
-			$query->where('tests.id', $test_id);
+			$query->where('ci_tests.id', $test_id);
 		}
 
 		return $query;
 	}
-
 }

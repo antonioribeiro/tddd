@@ -2,8 +2,8 @@
 
 namespace PragmaRX\Ci\Vendor\Laravel\Console\Commands;
 
-class TestCommand extends BaseCommand {
-
+class TestCommand extends BaseCommand
+{
 	/**
 	 * The console command name.
 	 *
@@ -38,4 +38,13 @@ class TestCommand extends BaseCommand {
 		$this->getLaravel()->make('ci.tester')->run($this);
 	}
 
+    /**
+     * Handle command.
+     *
+     * @return mixed
+     */
+    public function handle()
+    {
+        $this->fire();
+    }
 }

@@ -6,8 +6,8 @@ use Illuminate\Routing\Controller;
 use PragmaRX\Ci\Data\Repositories\Data;
 use Response;
 
-class DashboardController extends Controller {
-
+class DashboardController extends Controller
+{
 	/**
 	 * @var Data
 	 */
@@ -17,6 +17,11 @@ class DashboardController extends Controller {
 	{
 		$this->dataRepository = $dataRepository;
 	}
+
+    public function index()
+    {
+        return view('pragmarx/ci::dashboard');
+    }
 
 	public function allTests($project_id = null)
 	{
@@ -53,5 +58,4 @@ class DashboardController extends Controller {
 	{
 		return Response::json(array_merge(['success' => true], $result));
 	}
-
 }

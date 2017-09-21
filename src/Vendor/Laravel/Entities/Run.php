@@ -2,16 +2,15 @@
 
 namespace PragmaRX\Ci\Vendor\Laravel\Entities;
 
-use Illuminate\Database\Eloquent\Model;
+class Run extends Model
+{
+    protected $table = 'ci_runs';
 
-class Run extends Model {
-
-	protected $fillable = [
+    protected $fillable = [
 		'test_id',
 		'was_ok',
 	    'log',
 	    'html',
 	    'png',
 	];
-
 }

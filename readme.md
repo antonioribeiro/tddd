@@ -100,7 +100,10 @@ Also your projects and test suites:
 		'myproject' => [
 			'path' => '/var/www/myproject.dev',
 			'watch_folders' => ['app', 'tests'],
-			'exclude_folders' => ['tests/_output'],
+			'exclude' => [
+			    'folder' => 'tests/_output',
+			    'file' => 'tests/database.sqlite',
+			],
 			'tests_path' => 'tests',
 			'suites' => [
 				'functional' => [

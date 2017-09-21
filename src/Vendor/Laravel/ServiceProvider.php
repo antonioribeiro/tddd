@@ -24,15 +24,28 @@ class ServiceProvider extends IlluminateServiceProvider
         $this->publishConfiguration();
 
         $this->loadMigrations();
+
+        $this->loadRoutes();
+
+        $this->loadViews();
     }
 
     /**
-     * Configura migrations path.
+     * Configure migrations path.
      *
      */
     private function loadMigrations()
     {
-        $this->loadMigrationsFrom(__DIR__.'/migrations');
+        $this->loadMigrationsFrom(__DIR__.'/../../migrations');
+    }
+
+    /**
+     * Configure views path.
+     *
+     */
+    private function loadViews()
+    {
+        $this->loadViewsFrom(__DIR__.'/../../views', 'pragmarx/ci');
     }
 
     /**
@@ -62,8 +75,6 @@ class ServiceProvider extends IlluminateServiceProvider
 	    $this->registerWatchCommand();
 
 	    $this->registerTestCommand();
-
-	    $this->registerRoutes();
     }
 
     /**
@@ -116,7 +127,7 @@ class ServiceProvider extends IlluminateServiceProvider
 		{
 			$watcher = $this->app->make('PragmaRX\Ci\Services\Watcher');
 
-			$watcher->setConfig($me->getConfig());
+			$watcher->setConfig(config('ci'));
 
 			return $watcher;
 		});
@@ -134,7 +145,7 @@ class ServiceProvider extends IlluminateServiceProvider
 		{
 			$tester = $this->app->make('PragmaRX\Ci\Services\Tester');
 
-			$tester->setConfig($me->getConfig());
+			$tester->setConfig(config('ci'));
 
 			return $tester;
 		});
@@ -153,22 +164,9 @@ class ServiceProvider extends IlluminateServiceProvider
      * Register all routes.
      *
      */
-    private function registerRoutes()
+    private function loadRoutes()
 	{
-		$router = $this->app->make('router');
-
-		$router->group(['namespace' => 'PragmaRX\Ci\Vendor\Laravel\Http\Controllers'], function() use ($router)
-		{
-			$router->get('tests/run/all/{project_id}', 'DashboardController@runAll');
-
-			$router->get('tests/run/{test_id?}', 'DashboardController@runTest');
-
-			$router->get('tests/enable/{enable}/{project_id}/{test_id?}', 'DashboardController@enableTests');
-
-			$router->get('tests/{project_id?}', 'DashboardController@allTests');
-
-			$router->get('projects', 'DashboardController@allProjects');
-		});
+        $this->loadRoutesFrom(__DIR__.'/../../config/routes.php');
 	}
 
 	/**

@@ -2,11 +2,11 @@
 
 namespace PragmaRX\Ci\Vendor\Laravel\Entities;
 
-use Illuminate\Database\Eloquent\Model;
+class Test extends Model
+{
+    protected $table = 'ci_tests';
 
-class Test extends Model {
-
-	protected $fillable = [
+    protected $fillable = [
 		'suite_id',
 		'name',
 		'state',
@@ -33,5 +33,4 @@ class Test extends Model {
 	{
 		return $this->hasMany('PragmaRX\Ci\Vendor\Laravel\Entities\Run');
 	}
-
 }

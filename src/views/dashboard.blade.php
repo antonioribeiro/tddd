@@ -2,8 +2,8 @@
 <html lang="en">
 	<head>
 		<meta charset="UTF-8">
-		<title>Continuous Integration Package - Dashboard</title>
-		<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" media="all" rel="stylesheet" type="text/css" />
+		<title>Laravel CI-Watcher - Dashboard</title>
+		<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" media="all" rel="stylesheet" type="text/css" />
 		<link href="assets/css/app.css" media="all" rel="stylesheet" type="text/css" />
 	</head>
 
@@ -21,7 +21,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="/">Continuous Integration Package - Dashboard</a>
+                    <a class="navbar-brand" href="/">Laravel CI-Watcher - Dashboard</a>
                 </div>
             </div>
         </nav>
@@ -48,7 +48,7 @@
 		<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.js" type="text/javascript"></script>
 		<script src="//cdnjs.cloudflare.com/ajax/libs/react/0.12.0/react-with-addons.js" type="text/javascript"></script>
 		<script src="//cdnjs.cloudflare.com/ajax/libs/react/0.12.0/JSXTransformer.js" type="text/javascript"></script>
-		<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js" type="text/javascript"></script>
+		<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" type="text/javascript"></script>
 
 		<script type="text/jsx">
 			@include('pragmarx/ci::javascript.reactjs-app')

@@ -77,7 +77,7 @@ var BootstrapModal = React.createClass(
         };
 
 		return (
-			<div className="modal fade" tabIndex='-1'>
+			<div className="modal fade" tabIndex="-1">
 				<div className="modal-dialog modal-lg" style={modalDialogStyle}>
 					<div className="modal-content">
 						<div className="modal-header">
@@ -274,7 +274,7 @@ var TestList = React.createClass(
     runAll: function(event)
     {
         jQuery.ajax({
-            url: '/tests/run/all/'+this.state.selected.id,
+            url: '/ci-watcher/tests/run/all/'+this.state.selected.id,
 
             error: function(xhr, status, err)
             {
@@ -286,7 +286,7 @@ var TestList = React.createClass(
     toogleAll: function(event, whatever)
     {
         jQuery.ajax({
-            url: '/tests/enable/'+event.target.checked+'/'+this.state.selected.id,
+            url: '/ci-watcher/tests/enable/'+event.target.checked+'/'+this.state.selected.id,
 
             dataType: 'json',
 
@@ -364,7 +364,7 @@ var TestRow = React.createClass(
     toogleOne: function(event, whatever)
     {
         jQuery.ajax({
-            url: '/tests/enable/'+event.target.checked+'/'+this.props.projectId+'/'+this.props.test.id,
+            url: '/ci-watcher/tests/enable/'+event.target.checked+'/'+this.props.projectId+'/'+this.props.test.id,
 
             dataType: 'json',
 
@@ -537,7 +537,7 @@ var RunButton = React.createClass(
     runTest: function()
     {
         jQuery.ajax({
-            url: '/tests/run/'+this.props.test.id,
+            url: '/ci-watcher/tests/run/'+this.props.test.id,
 
             dataType: 'json',
 
@@ -650,12 +650,12 @@ var ProjectsMenuItems = React.createClass(
 // ---- Rendering
 
 React.render(
-    <TestsTable url={"/tests/"} pollInterval={2000}/>,
+    <TestsTable url={"/ci-watcher/tests/"} pollInterval={2000}/>,
     document.getElementById('table-container')
 );
 
 React.render(
-    <ProjectsMenu url="/projects"/>,
+    <ProjectsMenu url="/ci-watcher/projects"/>,
     document.getElementById('projects')
 );
 

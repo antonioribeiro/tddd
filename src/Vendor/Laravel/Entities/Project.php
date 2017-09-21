@@ -2,9 +2,9 @@
 
 namespace PragmaRX\Ci\Vendor\Laravel\Entities;
 
-use Illuminate\Database\Eloquent\Model;
-
-class Project extends Model {
+class Project extends Model
+{
+    protected $table = 'ci_projects';
 
 	protected $fillable = [
 		'name',
@@ -21,5 +21,4 @@ class Project extends Model {
 				]
 		);
 	}
-
 }

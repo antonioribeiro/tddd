@@ -18,7 +18,8 @@
     "require": {
         "php": ">=5.4.0",
         "pragmarx/support": "~0.5",
-        "sensiolabs/ansi-to-html": "~1"
+        "sensiolabs/ansi-to-html": "~1",
+        "cboden/ratchet": "^0.4"
     },
 
     "autoload": {

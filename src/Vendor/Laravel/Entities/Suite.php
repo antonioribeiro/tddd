@@ -2,11 +2,11 @@
 
 namespace PragmaRX\Ci\Vendor\Laravel\Entities;
 
-use Illuminate\Database\Eloquent\Model;
+class Suite extends Model
+{
+    protected $table = 'ci_suites';
 
-class Suite extends Model {
-
-	protected $fillable = [
+    protected $fillable = [
 		'name',
 		'project_id',
 		'tester_id',
@@ -48,5 +48,4 @@ class Suite extends Model {
 
 		return str_replace('%project_path%', $this->project->path, $command);
 	}
-
 }

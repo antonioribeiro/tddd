@@ -40,7 +40,7 @@ return [
 //		'myproject' => [
 //			'path' => '/var/www/myproject.dev',
 //			'watch_folders' => ['app', 'tests', 'vendor/laravel/framework/tests'],
-//			'exclude_folders' => ['tests/_output'],
+//			'exclude' => ['tests/_output'],
 //			'tests_path' => 'tests',
 //			'suites' => [
 //				'functional' => [
@@ -57,7 +57,7 @@ return [
 //		'laravel/framework' => [
 //			'path' => '/var/www/myproject.dev/vendor/laravel/framework',
 //			'watch_folders' => ['src', 'tests'],
-//			'exclude_folders' => [
+//			'exclude' => [
 //				'tests/View/fixtures',
 //				'tests/Support/stubs',
 //			    'tests/Routing/results',
@@ -80,7 +80,7 @@ return [
 //		'league/flysystem' => [
 //			'path' => '/var/www/myproject.dev/vendor/league/flysystem/',
 //			'watch_folders' => ['src', 'spec'],
-//			'exclude_folders' => [ ],
+//			'exclude' => [ ],
 //			'tests_path' => 'spec',
 //		    'suites' => [
 //				'spec' => [
@@ -97,7 +97,7 @@ return [
 //		'behat/tests' => [
 //			'path' => '/var/www/laravel-ci',
 //			'watch_folders' => ['features'],
-//			'exclude_folders' => [ 'features/bootstrap' ],
+//			'exclude' => [ 'features/bootstrap' ],
 //			'tests_path' => 'features',
 //			'suites' => [
 //				'spec' => [
@@ -114,7 +114,7 @@ return [
 //		'atoum/tests' => [
 //			'path' => '/var/www/laravel-ci',
 //			'watch_folders' => ['atoum'],
-//			'exclude_folders' => [ ],
+//			'exclude' => [ ],
 //			'tests_path' => 'atoum',
 //			'suites' => [
 //				'spec' => [
@@ -131,7 +131,7 @@ return [
 //		'nette/tester' => [
 //			'path' => '/var/www/laravel-ci',
 //			'watch_folders' => ['tester'],
-//			'exclude_folders' => [ ],
+//			'exclude' => [ ],
 //			'tests_path' => 'tester/tests',
 //			'suites' => [
 //				'spec' => [
