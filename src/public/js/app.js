@@ -1270,6 +1270,103 @@ var index_esm = {
 
 /***/ }),
 /* 2 */
+/***/ (function(module, exports) {
+
+/* globals __VUE_SSR_CONTEXT__ */
+
+// this module is a runtime utility for cleaner component module output and will
+// be included in the final webpack user bundle
+
+module.exports = function normalizeComponent (
+  rawScriptExports,
+  compiledTemplate,
+  injectStyles,
+  scopeId,
+  moduleIdentifier /* server only */
+) {
+  var esModule
+  var scriptExports = rawScriptExports = rawScriptExports || {}
+
+  // ES6 modules interop
+  var type = typeof rawScriptExports.default
+  if (type === 'object' || type === 'function') {
+    esModule = rawScriptExports
+    scriptExports = rawScriptExports.default
+  }
+
+  // Vue.extend constructor export interop
+  var options = typeof scriptExports === 'function'
+    ? scriptExports.options
+    : scriptExports
+
+  // render functions
+  if (compiledTemplate) {
+    options.render = compiledTemplate.render
+    options.staticRenderFns = compiledTemplate.staticRenderFns
+  }
+
+  // scopedId
+  if (scopeId) {
+    options._scopeId = scopeId
+  }
+
+  var hook
+  if (moduleIdentifier) { // server build
+    hook = function (context) {
+      // 2.3 injection
+      context =
+        context || // cached call
+        (this.$vnode && this.$vnode.ssrContext) || // stateful
+        (this.parent && this.parent.$vnode && this.parent.$vnode.ssrContext) // functional
+      // 2.2 with runInNewContext: true
+      if (!context && typeof __VUE_SSR_CONTEXT__ !== 'undefined') {
+        context = __VUE_SSR_CONTEXT__
+      }
+      // inject component styles
+      if (injectStyles) {
+        injectStyles.call(this, context)
+      }
+      // register component module identifier for async chunk inferrence
+      if (context && context._registeredComponents) {
+        context._registeredComponents.add(moduleIdentifier)
+      }
+    }
+    // used by ssr in case component is cached and beforeCreate
+    // never gets called
+    options._ssrRegister = hook
+  } else if (injectStyles) {
+    hook = injectStyles
+  }
+
+  if (hook) {
+    var functional = options.functional
+    var existing = functional
+      ? options.render
+      : options.beforeCreate
+    if (!functional) {
+      // inject component registration as beforeCreate hook
+      options.beforeCreate = existing
+        ? [].concat(existing, hook)
+        : [hook]
+    } else {
+      // register for functioal component in vue file
+      options.render = function renderWithStyleInjection (h, context) {
+        hook.call(context)
+        return existing(h, context)
+      }
+    }
+  }
+
+  return {
+    esModule: esModule,
+    exports: scriptExports,
+    options: options
+  }
+}
+
+
+/***/ }),
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1367,103 +1464,6 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 module.exports = defaults;
 
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(21)))
-
-/***/ }),
-/* 3 */
-/***/ (function(module, exports) {
-
-/* globals __VUE_SSR_CONTEXT__ */
-
-// this module is a runtime utility for cleaner component module output and will
-// be included in the final webpack user bundle
-
-module.exports = function normalizeComponent (
-  rawScriptExports,
-  compiledTemplate,
-  injectStyles,
-  scopeId,
-  moduleIdentifier /* server only */
-) {
-  var esModule
-  var scriptExports = rawScriptExports = rawScriptExports || {}
-
-  // ES6 modules interop
-  var type = typeof rawScriptExports.default
-  if (type === 'object' || type === 'function') {
-    esModule = rawScriptExports
-    scriptExports = rawScriptExports.default
-  }
-
-  // Vue.extend constructor export interop
-  var options = typeof scriptExports === 'function'
-    ? scriptExports.options
-    : scriptExports
-
-  // render functions
-  if (compiledTemplate) {
-    options.render = compiledTemplate.render
-    options.staticRenderFns = compiledTemplate.staticRenderFns
-  }
-
-  // scopedId
-  if (scopeId) {
-    options._scopeId = scopeId
-  }
-
-  var hook
-  if (moduleIdentifier) { // server build
-    hook = function (context) {
-      // 2.3 injection
-      context =
-        context || // cached call
-        (this.$vnode && this.$vnode.ssrContext) || // stateful
-        (this.parent && this.parent.$vnode && this.parent.$vnode.ssrContext) // functional
-      // 2.2 with runInNewContext: true
-      if (!context && typeof __VUE_SSR_CONTEXT__ !== 'undefined') {
-        context = __VUE_SSR_CONTEXT__
-      }
-      // inject component styles
-      if (injectStyles) {
-        injectStyles.call(this, context)
-      }
-      // register component module identifier for async chunk inferrence
-      if (context && context._registeredComponents) {
-        context._registeredComponents.add(moduleIdentifier)
-      }
-    }
-    // used by ssr in case component is cached and beforeCreate
-    // never gets called
-    options._ssrRegister = hook
-  } else if (injectStyles) {
-    hook = injectStyles
-  }
-
-  if (hook) {
-    var functional = options.functional
-    var existing = functional
-      ? options.render
-      : options.beforeCreate
-    if (!functional) {
-      // inject component registration as beforeCreate hook
-      options.beforeCreate = existing
-        ? [].concat(existing, hook)
-        : [hook]
-    } else {
-      // register for functioal component in vue file
-      options.render = function renderWithStyleInjection (h, context) {
-        hook.call(context)
-        return existing(h, context)
-      }
-    }
-  }
-
-  return {
-    esModule: esModule,
-    exports: scriptExports,
-    options: options
-  }
-}
-
 
 /***/ }),
 /* 4 */
@@ -1765,7 +1765,7 @@ module.exports = Cancel;
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(11);
-module.exports = __webpack_require__(47);
+module.exports = __webpack_require__(53);
 
 
 /***/ }),
@@ -1806,8 +1806,8 @@ var store = new Vuex.Store({
         setLogVisible: function setLogVisible(state, visible) {
             state.logVisible = visible;
         },
-        setProjects: function setProjects(state, tests) {
-            state.projects = tests;
+        setProjects: function setProjects(state, projects) {
+            state.projects = projects;
         },
         setTests: function setTests(state, tests) {
             state.selectedProject.tests = tests;
@@ -1845,8 +1845,8 @@ Vue.prototype.$http = window.axios;
 Vue.component('example', __webpack_require__(38));
 Vue.component('projects', __webpack_require__(41));
 Vue.component('tests', __webpack_require__(44));
-Vue.component('state', __webpack_require__(57));
-Vue.component('log', __webpack_require__(60));
+Vue.component('state', __webpack_require__(47));
+Vue.component('log', __webpack_require__(50));
 
 var app = new Vue({
     el: '#app',
@@ -31691,7 +31691,7 @@ module.exports = __webpack_require__(18);
 var utils = __webpack_require__(0);
 var bind = __webpack_require__(5);
 var Axios = __webpack_require__(20);
-var defaults = __webpack_require__(2);
+var defaults = __webpack_require__(3);
 
 /**
  * Create an instance of Axios
@@ -31774,7 +31774,7 @@ function isSlowBuffer (obj) {
 "use strict";
 
 
-var defaults = __webpack_require__(2);
+var defaults = __webpack_require__(3);
 var utils = __webpack_require__(0);
 var InterceptorManager = __webpack_require__(30);
 var dispatchRequest = __webpack_require__(31);
@@ -32496,7 +32496,7 @@ module.exports = InterceptorManager;
 var utils = __webpack_require__(0);
 var transformData = __webpack_require__(32);
 var isCancel = __webpack_require__(8);
-var defaults = __webpack_require__(2);
+var defaults = __webpack_require__(3);
 
 /**
  * Throws a `Cancel` if cancellation has been requested.
@@ -42944,7 +42944,7 @@ module.exports = Vue$3;
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
-var normalizeComponent = __webpack_require__(3)
+var normalizeComponent = __webpack_require__(2)
 /* script */
 var __vue_script__ = __webpack_require__(39)
 /* template */
@@ -43062,7 +43062,7 @@ if (false) {
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
-var normalizeComponent = __webpack_require__(3)
+var normalizeComponent = __webpack_require__(2)
 /* script */
 var __vue_script__ = __webpack_require__(42)
 /* template */
@@ -43200,7 +43200,7 @@ if (false) {
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
-var normalizeComponent = __webpack_require__(3)
+var normalizeComponent = __webpack_require__(2)
 /* script */
 var __vue_script__ = __webpack_require__(45)
 /* template */
@@ -43322,6 +43322,15 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -43364,6 +43373,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
         showLog: function showLog(test) {
             this.$store.commit('setSelectedTest', test);
 
+            console.log('clicked');
             jQuery('#logModal').modal('show');
         },
         allEnabled: function allEnabled() {
@@ -43479,40 +43489,62 @@ var render = function() {
         [
           _c("div", [
             _c("div", { staticClass: "row table-header" }, [
-              _c("div", { staticClass: "col-md-9" }, [
-                _c("h2", [_vm._v(_vm._s(_vm.selectedProject.name))])
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "col-md-3 text-right" }, [
-                _c(
-                  "div",
-                  {
-                    staticClass: "btn btn-danger",
-                    on: {
-                      click: function($event) {
-                        _vm.runAll()
-                      }
-                    }
-                  },
-                  [_vm._v("\n                    run all\n                ")]
-                ),
-                _vm._v("\n                 \n                "),
-                _c(
-                  "div",
-                  {
-                    staticClass: "btn btn-warning",
-                    on: {
-                      click: function($event) {
-                        _vm.reset()
-                      }
-                    }
-                  },
-                  [
-                    _vm._v(
-                      "\n                    reset state\n                "
-                    )
-                  ]
+              _c("div", { staticClass: "col-md-12 title" }, [
+                _vm._v(
+                  "\n                " +
+                    _vm._s(_vm.selectedProject.name) +
+                    "\n            "
                 )
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "card bg-inverse tests-toolbox" }, [
+              _c("div", { staticClass: "card-block" }, [
+                _c("div", { staticClass: "row" }, [
+                  _c("div", { staticClass: "col-md-1" }, [
+                    _vm._v(
+                      "\n                        whatever\n                    "
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-md-11 text-right" }, [
+                    _c(
+                      "div",
+                      {
+                        staticClass: "btn btn-danger",
+                        on: {
+                          click: function($event) {
+                            _vm.runAll()
+                          }
+                        }
+                      },
+                      [
+                        _vm._v(
+                          "\n                            run all\n                        "
+                        )
+                      ]
+                    ),
+                    _vm._v(
+                      "\n                         \n                        "
+                    ),
+                    _c(
+                      "div",
+                      {
+                        staticClass: "btn btn-warning",
+                        on: {
+                          click: function($event) {
+                            _vm.reset()
+                          }
+                        }
+                      },
+                      [
+                        _vm._v(
+                          "\n                            reset state\n                        "
+                        )
+                      ]
+                    )
+                  ])
+                ])
               ])
             ])
           ]),
@@ -43534,11 +43566,11 @@ var render = function() {
                 _vm._v(" "),
                 _c("th", [_vm._v("run")]),
                 _vm._v(" "),
+                _c("th", [_vm._v("state")]),
+                _vm._v(" "),
                 _c("th", { attrs: { width: "70%" } }, [_vm._v("test")]),
                 _vm._v(" "),
                 _c("th", [_vm._v("last run")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("state")]),
                 _vm._v(" "),
                 _c("th", [_vm._v("log")])
               ])
@@ -43562,36 +43594,42 @@ var render = function() {
                   ]),
                   _vm._v(" "),
                   _c("td", [
-                    _c(
-                      "div",
-                      {
-                        staticClass: "btn btn-danger btn-sm",
-                        on: {
-                          click: function($event) {
-                            _vm.runTest(test.id)
-                          }
-                        }
-                      },
-                      [
-                        _vm._v(
-                          "\n                        run\n                    "
+                    test.state !== "running"
+                      ? _c(
+                          "div",
+                          {
+                            class:
+                              "btn btn-sm btn-" +
+                              (test.state == "failed" ? "danger" : "default"),
+                            on: {
+                              click: function($event) {
+                                _vm.runTest(test.id)
+                              }
+                            }
+                          },
+                          [
+                            _vm._v(
+                              "\n                        run\n                    "
+                            )
+                          ]
                         )
-                      ]
-                    )
+                      : _vm._e()
                   ]),
+                  _vm._v(" "),
+                  _c("td", [_c("state", { attrs: { state: test.state } })], 1),
                   _vm._v(" "),
                   _c("td", [_vm._v(_vm._s(test.name))]),
                   _vm._v(" "),
                   _c("td", [_vm._v(_vm._s(test.updated_at))]),
                   _vm._v(" "),
-                  _c("td", [_c("state", { attrs: { state: test.state } })], 1),
-                  _vm._v(" "),
                   _c("td", [
-                    test.state == "failed"
+                    test.state !== "running"
                       ? _c(
                           "div",
                           {
-                            staticClass: "btn btn-primary btn-sm",
+                            class:
+                              "btn btn-sm btn-" +
+                              (test.state == "failed" ? "danger" : "default"),
                             on: {
                               click: function($event) {
                                 _vm.showLog(test)
@@ -43629,29 +43667,14 @@ if (false) {
 
 /***/ }),
 /* 47 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 48 */,
-/* 49 */,
-/* 50 */,
-/* 51 */,
-/* 52 */,
-/* 53 */,
-/* 54 */,
-/* 55 */,
-/* 56 */,
-/* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
-var normalizeComponent = __webpack_require__(3)
+var normalizeComponent = __webpack_require__(2)
 /* script */
-var __vue_script__ = __webpack_require__(58)
+var __vue_script__ = __webpack_require__(48)
 /* template */
-var __vue_template__ = __webpack_require__(59)
+var __vue_template__ = __webpack_require__(49)
 /* styles */
 var __vue_styles__ = null
 /* scopeId */
@@ -43689,7 +43712,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 58 */
+/* 48 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -43720,7 +43743,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 59 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -43742,15 +43765,15 @@ if (false) {
 }
 
 /***/ }),
-/* 60 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
-var normalizeComponent = __webpack_require__(3)
+var normalizeComponent = __webpack_require__(2)
 /* script */
-var __vue_script__ = __webpack_require__(61)
+var __vue_script__ = __webpack_require__(51)
 /* template */
-var __vue_template__ = __webpack_require__(62)
+var __vue_template__ = __webpack_require__(52)
 /* styles */
 var __vue_styles__ = null
 /* scopeId */
@@ -43788,16 +43811,12 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 61 */
+/* 51 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuex__ = __webpack_require__(1);
-//
-//
-//
-//
 //
 //
 //
@@ -43879,7 +43898,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 62 */
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -43893,14 +43912,7 @@ var render = function() {
       _c("div", { staticClass: "modal-dialog modal-lg" }, [
         _c("div", { staticClass: "modal-content" }, [
           _c("div", { staticClass: "modal-header" }, [
-            _c(
-              "button",
-              {
-                staticClass: "close",
-                attrs: { type: "button", "data-dismiss": "modal" }
-              },
-              [_vm._v("\n                    ×\n                ")]
-            ),
+            _vm._m(0),
             _vm._v(" "),
             _c("h3", [_vm._v(_vm._s(this.selectedTest.name))])
           ]),
@@ -43933,38 +43945,63 @@ var render = function() {
               [_vm._v("\n                    html\n                ")]
             ),
             _vm._v(" "),
-            _c("div", { staticClass: "tab-content modal-scroll" }, [
-              this.selectedPanel == "log"
-                ? _c("div", {
-                    staticClass: "tab-pane terminal active",
-                    domProps: { innerHTML: _vm._s(this.selectedTest.log) }
-                  })
-                : _vm._e(),
-              _vm._v(" "),
-              this.selectedPanel == "screenshot"
-                ? _c("div", { staticClass: "tab-pane" }, [
-                    _c("img", {
-                      attrs: { src: this.selectedTest.image, alt: "" }
+            _c(
+              "div",
+              {
+                class:
+                  "tab-content modal-scroll " +
+                  (this.selectedPanel == "log" ? "terminal" : "")
+              },
+              [
+                this.selectedPanel == "log"
+                  ? _c("div", {
+                      staticClass: "tab-pane active terminal",
+                      domProps: { innerHTML: _vm._s(this.selectedTest.log) }
                     })
-                  ])
-                : _vm._e(),
-              _vm._v(" "),
-              this.selectedPanel == "html"
-                ? _c("div", {
-                    staticClass: "tab-pane",
-                    domProps: { innerHTML: _vm._s(this.selectedTest.html) }
-                  })
-                : _vm._e()
-            ])
+                  : _vm._e(),
+                _vm._v(" "),
+                this.selectedPanel == "screenshot"
+                  ? _c("div", { staticClass: "tab-pane" }, [
+                      _c("img", {
+                        attrs: { src: this.selectedTest.image, alt: "" }
+                      })
+                    ])
+                  : _vm._e(),
+                _vm._v(" "),
+                this.selectedPanel == "html"
+                  ? _c("div", {
+                      staticClass: "tab-pane",
+                      domProps: { innerHTML: _vm._s(this.selectedTest.html) }
+                    })
+                  : _vm._e()
+              ]
+            )
           ]),
           _vm._v(" "),
-          _vm._m(0)
+          _vm._m(1)
         ])
       ])
     ]
   )
 }
 var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "button",
+      {
+        staticClass: "close",
+        attrs: {
+          type: "button",
+          "data-dismiss": "modal",
+          "aria-label": "Close"
+        }
+      },
+      [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+    )
+  },
   function() {
     var _vm = this
     var _h = _vm.$createElement
@@ -43986,6 +44023,12 @@ if (false) {
      require("vue-hot-reload-api").rerender("data-v-034e4205", module.exports)
   }
 }
+
+/***/ }),
+/* 53 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
 
 /***/ })
 /******/ ]);

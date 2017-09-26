@@ -2,9 +2,10 @@
 
 namespace PragmaRX\Ci\Vendor\Laravel\Http\Controllers;
 
+use Response;
+use PragmaRX\Ci\Support\Notifier;
 use Illuminate\Routing\Controller;
 use PragmaRX\Ci\Data\Repositories\Data;
-use Response;
 
 class DashboardController extends Controller
 {
@@ -93,10 +94,10 @@ class DashboardController extends Controller
 
     public function notify($type = 'failed', $count = 0, $total = 0)
     {
-        shell_exec($this->makeNotificationCommand(
+        Notifier::notify(
             $type == 'failed' ? 'FAILING TESTS' : 'Tests passing',
             $type == 'failed' ? "At least {$count} of {$total} are failing" : 'All your tests are passing, congrats!'
-        ));
+        );
 
         return $this->success();
     }

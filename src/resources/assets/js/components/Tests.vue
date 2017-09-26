@@ -2,17 +2,26 @@
     <div v-if="selectedProject">
         <div>
             <div class="row table-header">
-                <div class="col-md-9">
-                    <h2>{{ selectedProject.name }}</h2>
+                <div class="col-md-12 title">
+                    {{ selectedProject.name }}
                 </div>
+            </div>
 
-                <div class="col-md-3 text-right">
-                    <div class="btn btn-danger" @click="runAll()">
-                        run all
-                    </div>
-                    &nbsp;
-                    <div class="btn btn-warning" @click="reset()">
-                        reset state
+            <div class="card bg-inverse tests-toolbox">
+                <div class="card-block">
+                    <div class="row">
+                        <div class="col-md-1">
+                            whatever
+                        </div>
+                        <div class="col-md-11 text-right">
+                            <div class="btn btn-danger" @click="runAll()">
+                                run all
+                            </div>
+                            &nbsp;
+                            <div class="btn btn-warning" @click="reset()">
+                                reset state
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -25,9 +34,9 @@
                         <input @click="enableAll()" type="checkbox" :checked="allEnabled()">
                     </th>
                     <th>run</th>
+                    <th>state</th>
                     <th width="70%">test</th>
                     <th>last run</th>
-                    <th>state</th>
                     <th>log</th>
                 </tr>
             </thead>
@@ -44,9 +53,13 @@
                     </td>
 
                     <td>
-                        <div @click="runTest(test.id)" class="btn btn-danger btn-sm">
+                        <div @click="runTest(test.id)" v-if="test.state !== 'running'" :class="'btn btn-sm btn-' + (test.state == 'failed' ? 'danger' : 'default')">
                             run
                         </div>
+                    </td>
+
+                    <td>
+                        <state :state="test.state"></state>
                     </td>
 
                     <td>{{ test.name }}</td>
@@ -54,11 +67,7 @@
                     <td>{{ test.updated_at }}</td>
 
                     <td>
-                        <state :state="test.state"></state>
-                    </td>
-
-                    <td>
-                        <div @click="showLog(test)" v-if="test.state == 'failed'" class="btn btn-primary btn-sm">
+                        <div @click="showLog(test)" v-if="test.state !== 'running'" :class="'btn btn-sm btn-' + (test.state == 'failed' ? 'danger' : 'default')">
                             show
                         </div>
                     </td>
@@ -118,6 +127,7 @@
             showLog(test) {
                 this.$store.commit('setSelectedTest', test);
 
+                console.log('clicked');
                 jQuery('#logModal').modal('show');
             },
 

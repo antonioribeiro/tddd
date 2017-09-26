@@ -177,11 +177,11 @@ class Data
 
         $matches = array_filter($matches);
 
-        if (count($matches) == 0) {
-            return $lines;
+        if (count($matches) != 0) {
+            $lines = $this->createLinks($lines, $matches);
         }
 
-        return $this->CRToBr($this->createLinks($lines, $matches));
+        return $this->CRToBr($lines);
     }
 
     /**

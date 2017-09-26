@@ -39,13 +39,25 @@ The Artisan commands **Watcher** and **Tester** are responsible for watching res
 
 Keep track of your files and enqueue your tests every time a project or test file is changed. If a project file changes, it will enqueue all your tests, if a test file changes, it will enqueue only that particular test. This is how you run it:
 
+``` bash
     php artisan ci:watch
+```
 
 ### Tester
 
 Responsible for taking tests from the run queue, execute it and log the results. Tester will only execute enabled tests. This is how you run it:
 
-    php artisan ci:test
+``` bash
+php artisan ci:test
+```
+
+### Notifications
+
+It uses JoliNotif, so if it's not working on macOS, you can try installing terminal-notifier:
+
+``` bash
+brew install terminal-notifier
+```
 
 ## Test Framework Compatibility
 
@@ -62,65 +74,80 @@ This package was tested and is known to be compatible with
 
 Require it with [Composer](http://getcomposer.org/):
 
-    $ composer require pragmarx/ci
+``` bash
+composer require pragmarx/ci
+```
 
 Add the service provider to your app/config/app.php:
 
-    'PragmaRX\Ci\Vendor\Laravel\ServiceProvider',
+``` php
+'PragmaRX\Ci\Vendor\Laravel\ServiceProvider',
+```
 
 Create a database, configure on your Laravel app and migrate it
 
-    php artisan migrate --package=pragmarx/ci
+``` bash
+php artisan migrate --package=pragmarx/ci
+```
 
 Publish Ci configuration:
 
 On Laravel 4.*
 
-    php artisan config:publish pragmarx/ci
+``` bash
+php artisan config:publish pragmarx/ci
+```
 
 On Laravel 5.*
 
-    php artisan vendor:publish --provider="PragmaRX\Ci\Vendor\Laravel\ServiceProvider"
+``` bash
+php artisan vendor:publish --provider="PragmaRX\Ci\Vendor\Laravel\ServiceProvider"
+```
 
 Edit the file `app/config/packages/pragmarx/ci/config.php` add your testers:
 
-	'testers' => [
-		'codeception' => [
-			'command' => 'sh %project_path%/vendor/bin/codecept run',
-		],
+``` php
+'testers' => [
+    'codeception' => [
+        'command' => 'sh %project_path%/vendor/bin/codecept run',
+    ],
 
-		'phpunit' => [
-			'command' => 'phpunit',
-		],
-	],
+    'phpunit' => [
+        'command' => 'phpunit',
+    ],
+],
+```
 
 Also your projects and test suites:
 
-	'projects' => [
-		'myproject' => [
-			'path' => '/var/www/myproject.dev',
-			'watch_folders' => ['app', 'tests'],
-			'exclude' => [
-			    'folder' => 'tests/_output',
-			    'file' => 'tests/database.sqlite',
-			],
-			'tests_path' => 'tests',
-			'suites' => [
-				'functional' => [
-					'tester' => 'codeception',
-					'tests_path' => 'functional',
-					'command_options' => 'functional',
-					'file_mask' => '*Cept.php',
-					'retries' => 3,
-				]
-			],
-		],
-
-	],
+``` php
+'projects' => [
+    'myproject' => [
+        'path' => '/var/www/myproject.dev',
+        'watch_folders' => ['app', 'tests'],
+        'exclude' => [
+            'folder' => 'tests/_output',
+            'file' => 'tests/database.sqlite',
+        ],
+        'tests_path' => 'tests',
+        'suites' => [
+            'functional' => [
+                'tester' => 'codeception',
+                'tests_path' => 'functional',
+                'command_options' => 'functional',
+                'file_mask' => '*Cept.php',
+                'retries' => 3,
+            ]
+        ],
+    ],
+],
+```
 
 For the Dashboard you just need to create a route and add render this view:
 
-    return View::make('pragmarx/ci::dashboard');
+``` php
+return View::make('pragmarx/ci::dashboard');
+```
 
 ## Requirements
 

@@ -35,8 +35,8 @@ let store = new Vuex.Store({
             state.logVisible = visible;
         },
 
-        setProjects(state, tests) {
-            state.projects = tests;
+        setProjects(state, projects) {
+            state.projects = projects;
         },
 
         setTests(state, tests) {

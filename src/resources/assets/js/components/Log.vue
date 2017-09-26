@@ -3,12 +3,8 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button
-                        type="button"
-                        class="close"
-                        data-dismiss="modal"
-                    >
-                        &times;
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
                     </button>
                     <h3>{{ this.selectedTest.name }}</h3>
                 </div>
@@ -26,8 +22,8 @@
                         html
                     </div>
 
-                    <div class="tab-content modal-scroll">
-                        <div v-if="this.selectedPanel == 'log'" v-html="this.selectedTest.log" class="tab-pane terminal active">
+                    <div :class="'tab-content modal-scroll ' + (this.selectedPanel == 'log' ? 'terminal' : '')">
+                        <div v-if="this.selectedPanel == 'log'" v-html="this.selectedTest.log" class="tab-pane active terminal">
                         </div>
                         <div v-if="this.selectedPanel == 'screenshot'" class="tab-pane">
                             <img :src="this.selectedTest.image" alt=""/>

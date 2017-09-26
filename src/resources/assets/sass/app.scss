@@ -118,6 +118,12 @@ a:hover.file {
 .modal-scroll {
   height: 650px;
   overflow-y: auto;
+  margin-top: 15px;
+  padding: 15px;
+}
+
+.terminal {
+  background-color: black;
 }
 
 .list-group-item {
@@ -126,7 +132,13 @@ a:hover.file {
 }
 
 .table-header {
-  margin-bottom: 20px;
+  vertical-align: middle;
+  margin-bottom: 15px;
+}
+
+.table-header .title {
+  font-size: 1.8em;
+  font-weight: 800;
 }
 
 h1, h2, h3 {
@@ -139,7 +151,7 @@ th {
 }
 
 .btn {
-  font-weight: 800;
+  padding: 3px 6px;
 }
 
 .navbar {
@@ -147,9 +159,13 @@ th {
   margin-bottom: 0px !important;
 }
 
-.terminal {
-  background-color: black;
-  padding: 15px;
+.navbar-inverse {
+  background-color: #3097d1;
+  border-color: #3097d1;
+}
+
+.navbar-inverse .navbar-brand {
+  color: #ffffff;
 }
 
 .tab-content {
@@ -157,5 +173,12 @@ th {
 }
 
 .table > tbody > tr > td {
+  vertical-align: middle;
+}
+
+.tests-toolbox {
+  background-color: #c9cbcb;
+  height: 60px;
+  padding: 15px;
   vertical-align: middle;
 }

@@ -33,7 +33,7 @@
 
             changeProject(project) {
                 this.$store.commit('setSelectedProject', {project, force: true});
-            }
+            },
         }
     }
 </script>
