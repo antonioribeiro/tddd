@@ -28,7 +28,51 @@ class Data
 
 	const STATE_RUNNING = 'running';
 
-	/**
+    /**
+     * Carriage return to <br>.
+     *
+     * @param $lines
+     * @return string
+     */
+    private function CRToBr($lines)
+    {
+        return str_replace("\n", '<br>', $lines);
+    }
+
+    /**
+     * <br> to carriage return.
+     *
+     * @param $lines
+     * @return string
+     */
+    private function brToCR($lines)
+    {
+        return str_replace('<br>', "\n", $lines);
+    }
+
+    /**
+     * Create links.
+     *
+     * @param $lines
+     * @param $matches
+     * @return mixed
+     */
+    private function createLinks($lines, $matches)
+    {
+        foreach ($matches as $line) {
+            $fileName = base64_encode($line[1]);
+
+            if (count($line) > 0 && count($line[0]) > 0) {
+                $tag = "<a href=\"javascript:jQuery.get('/ci-watcher/file/open/{$fileName}/{$line[2]}');\" class=\"file\">{$line[0]}</a>";
+
+                $lines = str_replace($line[0], $tag, $lines);
+            }
+        }
+
+        return $lines;
+    }
+
+    /**
 	 * Create or update a tester.
 	 *
 	 * @param $name
@@ -119,9 +163,39 @@ class Data
 		}
 	}
 
+    /**
+     * Create links for files.
+     *
+     * @param $lines
+     * @return string
+     */
     private function linkFiles($lines)
     {
-        var_dump($lines);
+        $lines = $this->brToCR($lines);
+
+        preg_match_all('/(\/.*\/.*):([0-9]+)/', $lines, $matches, PREG_SET_ORDER);
+
+        $matches = array_filter($matches);
+
+        if (count($matches) == 0) {
+            return $lines;
+        }
+
+        return $this->CRToBr($this->createLinks($lines, $matches));
+    }
+
+    /**
+     * Reset a test to idle state.
+     *
+     * @param $test
+     */
+    private function resetTest($test)
+    {
+        $test->state = self::STATE_IDLE;
+
+        $test->timestamps = false;
+
+        $test->save();
     }
 
     /**
@@ -466,7 +540,13 @@ class Data
 	 */
 	public function getProjects()
 	{
-		return Project::all();
+		return Project::all()->map(function($item) {
+		    if (!isset($item['tests'])) {
+                $item['tests'] = [];
+            }
+
+            return $item;
+        });
 	}
 
 	/**
@@ -479,7 +559,7 @@ class Data
 	{
 		if ($log)
 		{
-			$log = $this->ansi2Html($log->log);
+			$log = $this->linkFiles($this->ansi2Html($log->log));
 		}
 
 		return $log;
@@ -697,4 +777,17 @@ class Data
 
 		return $query;
 	}
+
+    /**
+     * Run all tests or projects tests.
+     *
+     * @param null $project_id
+     */
+    public function reset($project_id = null)
+    {
+        foreach($this->queryTests($project_id)->get() as $test)
+        {
+            $this->resetTest($test);
+        }
+    }
 }

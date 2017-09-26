@@ -11,7 +11,7 @@ class DashboardController extends Controller
 	/**
 	 * @var Data
 	 */
-	private $dataRepository;
+	public $dataRepository;
 
 	public function __construct(Data $dataRepository)
 	{
@@ -40,6 +40,31 @@ class DashboardController extends Controller
 		return $this->success(['enabled' => $enabled]);
 	}
 
+    private function makeNotificationCommand($title, $message)
+    {
+        $bin = str_replace('%title%', $title, config('ci.notifier.bin'));
+
+        return str_replace('%message%', $message, $bin);
+    }
+
+    public function makeOpenFileCommand($fileName, $line)
+    {
+        $fileName = base64_decode($fileName);
+
+        return
+            config('ci.editor.bin') .
+            (!is_null($line) ? " --line {$line}" : '') .
+            " {$fileName}"
+        ;
+    }
+
+    public function reset($project_id)
+    {
+        $this->dataRepository->reset($project_id);
+
+        return $this->success();
+    }
+
 	public function runTest($test_id)
 	{
 		$this->dataRepository->runTest($test_id);
@@ -54,8 +79,25 @@ class DashboardController extends Controller
 		return $this->success();
 	}
 
-	private function success($result = [])
+	public function success($result = [])
 	{
 		return Response::json(array_merge(['success' => true], $result));
 	}
+
+    public function openFile($fileName, $line = null)
+    {
+        shell_exec($this->makeOpenFileCommand($fileName, $line));
+
+        return $this->success();
+    }
+
+    public function notify($type = 'failed', $count = 0, $total = 0)
+    {
+        shell_exec($this->makeNotificationCommand(
+            $type == 'failed' ? 'FAILING TESTS' : 'Tests passing',
+            $type == 'failed' ? "At least {$count} of {$total} are failing" : 'All your tests are passing, congrats!'
+        ));
+
+        return $this->success();
+    }
 }

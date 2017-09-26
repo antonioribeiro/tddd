@@ -1,7 +1,8 @@
 <?php
 
 namespace PragmaRX\Ci\Vendor\Laravel;
- 
+
+use Illuminate\Support\Facades\Route;
 use PragmaRX\Ci\Vendor\Laravel\Console\Commands\TestCommand;
 use PragmaRX\Ci\Vendor\Laravel\Console\Commands\WatchCommand;
 use Illuminate\Support\ServiceProvider as IlluminateServiceProvider;
@@ -45,7 +46,7 @@ class ServiceProvider extends IlluminateServiceProvider
      */
     private function loadViews()
     {
-        $this->loadViewsFrom(__DIR__.'/../../views', 'pragmarx/ci');
+        $this->loadViewsFrom(__DIR__.'/../../resources/views', 'pragmarx/ci');
     }
 
     /**
@@ -55,7 +56,7 @@ class ServiceProvider extends IlluminateServiceProvider
     private function publishConfiguration()
     {
         $this->publishes([
-            __DIR__.'/../../config/config.php' => config_path('ci.php'),
+            __DIR__.'/../../config/ci.php' => config_path('ci.php'),
         ]);
     }
 
@@ -66,7 +67,11 @@ class ServiceProvider extends IlluminateServiceProvider
      */
     public function register()
     {
-	    $this->registerResourceWatcher();
+        if (! defined('CI_PATH')) {
+            define('CI_PATH', realpath(__DIR__.'/../../../'));
+        }
+
+        $this->registerResourceWatcher();
 
 	    $this->registerWatcher();
 
@@ -107,7 +112,7 @@ class ServiceProvider extends IlluminateServiceProvider
      */
     private function registerTestCommand()
 	{
-        $this->app->singleton('ci.test.command', function($app)
+        $this->app->singleton('ci.test.command', function()
         {
             return new TestCommand();
         });
@@ -121,9 +126,7 @@ class ServiceProvider extends IlluminateServiceProvider
      */
     private function registerWatcher()
 	{
-		$me = $this;
-
-		$this->app->singleton('ci.watcher', function($app) use ($me)
+		$this->app->singleton('ci.watcher', function($app)
 		{
 			$watcher = $this->app->make('PragmaRX\Ci\Services\Watcher');
 
@@ -139,9 +142,7 @@ class ServiceProvider extends IlluminateServiceProvider
      */
     private function registerTester()
 	{
-		$me = $this;
-
-		$this->app->singleton('ci.tester', function($app) use ($me)
+		$this->app->singleton('ci.tester', function($app)
 		{
 			$tester = $this->app->make('PragmaRX\Ci\Services\Tester');
 
@@ -166,7 +167,13 @@ class ServiceProvider extends IlluminateServiceProvider
      */
     private function loadRoutes()
 	{
-        $this->loadRoutesFrom(__DIR__.'/../../config/routes.php');
+        Route::group([
+            'prefix' => '/ci-watcher',
+            'namespace' => 'PragmaRX\Ci\Vendor\Laravel\Http\Controllers',
+            'middleware' => 'web',
+        ], function () {
+            $this->loadRoutesFrom(__DIR__.'/../../routes/web.php');
+        });
 	}
 
 	/**

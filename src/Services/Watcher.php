@@ -7,8 +7,8 @@ use Illuminate\Console\Command;
 use JasonLewis\ResourceWatcher\Event;
 use PragmaRX\Ci\Data\Repositories\Data as DataRepository;
 
-class Watcher extends Base {
-
+class Watcher extends Base
+{
 	/**
 	 * Is the watcher initialized?
 	 *
@@ -322,5 +322,4 @@ class Watcher extends Base {
 
         return $queued;
     }
-
 }

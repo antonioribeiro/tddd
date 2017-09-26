@@ -1,0 +1,161 @@
+
+// Fonts
+@import url("https://fonts.googleapis.com/css?family=Raleway:300,400,600");
+
+// Variables
+@import "variables";
+
+// Bootstrap
+@import "~bootstrap-sass/assets/stylesheets/bootstrap";
+
+/*
+ * Global add-ons
+ */
+
+.sub-header {
+  padding-bottom: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+.container-fluid {
+  padding-top: 15px;
+}
+
+/*
+ * Sidebar
+ */
+
+/* Hide for mobile, show later */
+.sidebar {
+  display: none;
+}
+@media (min-width: 768px) {
+  .sidebar {
+    position: fixed;
+    top: 51px;
+    bottom: 0;
+    left: 0;
+    z-index: 1000;
+    display: block;
+    padding: 20px;
+    overflow-x: hidden;
+    overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+    background-color: #f5f5f5;
+    border-right: 1px solid #eee;
+  }
+}
+
+/*
+ * Main content
+ */
+
+.main {
+  padding: 20px;
+}
+@media (min-width: 768px) {
+  .main {
+    padding-right: 40px;
+    padding-left: 40px;
+  }
+}
+.main .page-header {
+  margin-top: 0;
+}
+
+
+/*
+ * Placeholder dashboard ideas
+ */
+
+.placeholders {
+  margin-bottom: 30px;
+  text-align: center;
+}
+.placeholders h4 {
+  margin-bottom: 0;
+}
+.placeholder {
+  margin-bottom: 20px;
+}
+.placeholder img {
+  display: inline-block;
+  border-radius: 50%;
+}
+
+tr.dim {
+  filter: alpha(opacity=40); /* internet explorer */
+  -khtml-opacity: 0.4;      /* khtml, old safari */
+  -moz-opacity: 0.4;       /* mozilla, netscape */
+  opacity: 0.4;           /* fx, safari, opera */
+}
+
+a.file {
+  color: red;
+}
+
+a:hover.file {
+  color: #73dbff;
+}
+
+.projects-title {
+  color: white;
+  text-transform: lowercase;
+  font-weight: 800;
+  font-size: 1.8em;
+}
+
+.card-projects {
+  margin-bottom: 15px;
+  background-color: black;
+  padding: 20px;
+}
+
+.modal-lg {
+  max-width: 80% !important;
+  max-height: 80% !important;
+}
+
+.modal-scroll {
+  height: 650px;
+  overflow-y: auto;
+}
+
+.list-group-item {
+  cursor: pointer;
+  font-weight: 800;
+}
+
+.table-header {
+  margin-bottom: 20px;
+}
+
+h1, h2, h3 {
+  font-weight: 800;
+}
+
+th {
+  font-weight: 800;
+  font-size: 1.3em;
+}
+
+.btn {
+  font-weight: 800;
+}
+
+.navbar {
+  border-radius: 0px !important;
+  margin-bottom: 0px !important;
+}
+
+.terminal {
+  background-color: black;
+  padding: 15px;
+}
+
+.tab-content {
+  margin-top: 20px;
+}
+
+.table > tbody > tr > td {
+  vertical-align: middle;
+}
