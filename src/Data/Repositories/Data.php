@@ -583,7 +583,7 @@ class Data
 
 		$log = str_replace(chr(13), '<br>', $log);
 
-		return $log;
+		return html_entity_decode($log);
 	}
 
 	/**

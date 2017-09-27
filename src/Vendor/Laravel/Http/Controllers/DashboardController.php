@@ -41,13 +41,6 @@ class DashboardController extends Controller
 		return $this->success(['enabled' => $enabled]);
 	}
 
-    private function makeNotificationCommand($title, $message)
-    {
-        $bin = str_replace('%title%', $title, config('ci.notifier.bin'));
-
-        return str_replace('%message%', $message, $bin);
-    }
-
     public function makeOpenFileCommand($fileName, $line)
     {
         $fileName = base64_decode($fileName);
