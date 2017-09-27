@@ -21,6 +21,7 @@
     "webpack-livereload-plugin": "^0.11.0"
   },
   "dependencies": {
-    "babel-plugin-transform-object-rest-spread": "^6.26.0"
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "font-awesome-webpack": "^0.0.5-beta.2"
   }
 }

@@ -1,12 +1,12 @@
 <template>
     <span :class="'label label-'+color">
-        {{ state }}
+        {{ text ? text : state }}
     </span>
 </template>
 
 <script>
     export default {
-        props: ['state'],
+        props: ['state', 'text'],
 
         computed: {
             color() {
@@ -21,6 +21,14 @@
                 else if (this.state == 'failed')
                 {
                     return 'danger';
+                }
+                else if (this.state == 'disabled')
+                {
+                    return 'warning';
+                }
+                else if (this.state == 'enabled')
+                {
+                    return 'primary';
                 }
 
                 return 'default';

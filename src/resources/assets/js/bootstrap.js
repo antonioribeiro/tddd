@@ -21,6 +21,8 @@ try {
 
 window.axios = require('axios');
 
+window.fontawesome = require('font-awesome-webpack');
+
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 /**

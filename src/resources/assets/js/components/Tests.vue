@@ -7,19 +7,39 @@
                 </div>
             </div>
 
-            <div class="card bg-inverse tests-toolbox">
+            <div class="card toolbar">
                 <div class="card-block">
-                    <div class="row">
-                        <div class="col-md-1">
-                            whatever
+                    <div class="row align-middle">
+                        <div class="col-md-7 align-middle">
+                            <state state="idle" :text="'tests: '+this.statistics.count"></state>&nbsp;
+                            <state state="ok" :text="'success: '+this.statistics.success"></state>&nbsp;
+                            <state state="failed" :text="'failed: '+this.statistics.failed"></state>&nbsp;
+                            <state state="running" :text="'running: '+this.statistics.running"></state>&nbsp;
+                            <state state="enabled" :text="'enabled: '+this.statistics.enabled"></state>&nbsp;
+                            <state state="disabled" :text="'disabled: '+(this.statistics.count-this.statistics.enabled)"></state>&nbsp;
+                            <state state="idle" :text="'idle: '+this.statistics.idle"></state>&nbsp;
+                            <state state="running" :text="'queued: '+this.statistics.queued"></state>&nbsp;
                         </div>
-                        <div class="col-md-11 text-right">
-                            <div class="btn btn-danger" @click="runAll()">
-                                run all
-                            </div>
-                            &nbsp;
-                            <div class="btn btn-warning" @click="reset()">
-                                reset state
+
+                        <div class="col-md-5 text-right align-middle">
+                            <div class="row">
+                                <div class="col-md-7">
+                                    <div class="input-group mb-2 mb-sm-0 search-group">
+                                        <input v-model="search" class="form-control" placeholder="search">
+                                        <div v-if="search" @click="search = ''" class="input-group-addon search-addon">
+                                            <i class="fa fa-trash"></i>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-5">
+                                    <div class="btn btn-danger" @click="runAll()">
+                                        run all
+                                    </div>
+                                    <div class="btn btn-warning" @click="reset()">
+                                        reset state
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -34,7 +54,7 @@
                         <input @click="enableAll()" type="checkbox" :checked="allEnabled()">
                     </th>
                     <th>run</th>
-                    <th>state</th>
+                    <th width="7%">state</th>
                     <th width="70%">test</th>
                     <th>last run</th>
                     <th>log</th>
@@ -53,13 +73,16 @@
                     </td>
 
                     <td>
-                        <div @click="runTest(test.id)" v-if="test.state !== 'running'" :class="'btn btn-sm btn-' + (test.state == 'failed' ? 'danger' : 'default')">
+                        <div @click="runTest(test.id)" v-if="test.state !== 'running' && test.state !== 'queued'" :class="'btn btn-sm btn-' + (test.state == 'failed' ? 'danger' : 'default')">
                             run
                         </div>
                     </td>
 
-                    <td>
-                        <state :state="test.state"></state>
+                    <td :class="'state state-'+test.state">
+                        <!--<state :state="test.state"></state>-->
+
+                        {{ test.state }}
+                        <i v-if="test.state == 'running'" class="fa fa-spinner fa-pulse  fa-spin fa-fw"></i>
                     </td>
 
                     <td>{{ test.name }}</td>
@@ -89,9 +112,19 @@
             ...mapState(['projects', 'selectedProject', 'selectedTest']),
 
             tests() {
-                this.makeStatistics();
+                var vue = this;
 
-                return this.selectedProject.tests;
+                var tests = vue.selectedProject.tests.filter(function(test) {
+                    var s1 = test.state.search(new RegExp(vue.search, "i")) != -1;
+
+                    var s2 = test.name.search(new RegExp(vue.search, "i")) != -1;
+
+                    return s1 || s2;
+                });
+
+                this.makeStatistics(tests);
+
+                return tests;
             }
         },
 
@@ -106,6 +139,8 @@
                 statistics: {},
 
                 wasRunning: false,
+
+                search: '',
             }
         },
 
@@ -132,9 +167,7 @@
             },
 
             allEnabled() {
-                var key = null;
-
-                return true;
+                return this.statistics.count == this.statistics.enabled;
             },
 
             toggleTest(test) {
@@ -171,36 +204,36 @@
                 }
             },
 
-            makeStatistics() {
+            makeStatistics(tests) {
                 this.clearStatistics();
 
                 var key = null;
 
-                for (key in this.selectedProject.tests) {
-                    if (this.selectedProject.tests.hasOwnProperty(key)) {
+                for (key in tests) {
+                    if (tests.hasOwnProperty(key)) {
                         this.statistics.count++;
 
-                        if (!this.selectedProject.tests[key].enabled) {
+                        if (tests[key].enabled) {
                             this.statistics.enabled++;
                         }
 
-                        if (this.selectedProject.tests[key].state == 'queued') {
+                        if (tests[key].state == 'queued') {
                             this.statistics.queued++;
                         }
 
-                        if (this.selectedProject.tests[key].state == 'running') {
+                        if (tests[key].state == 'running') {
                             this.statistics.running++;
                         }
 
-                        if (this.selectedProject.tests[key].state == 'success') {
+                        if (tests[key].state == 'ok') {
                             this.statistics.success++;
                         }
 
-                        if (this.selectedProject.tests[key].state == 'failed') {
+                        if (tests[key].state == 'failed') {
                             this.statistics.failed++;
                         }
 
-                        if (this.selectedProject.tests[key].state == 'idle') {
+                        if (tests[key].state == 'idle') {
                             this.statistics.idle++;
                         }
                     }

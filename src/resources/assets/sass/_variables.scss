@@ -1,27 +1,36 @@
-
-// Body
-$body-bg: #f5f8fa;
-
-// Borders
-$laravel-border-color: darken($body-bg, 10%);
-$list-group-border: $laravel-border-color;
-$navbar-default-border: $laravel-border-color;
-$panel-default-border: $laravel-border-color;
-$panel-inner-border: $laravel-border-color;
-
 // Brands
-$brand-primary: #3097D1;
-$brand-info: #8eb4cb;
-$brand-success: #2ab27b;
-$brand-warning: #cbb956;
-$brand-danger: #bf5329;
+$brand-primary: #2654b2;
+$brand-info: #4d80b2;
+$brand-success: #6DA34D;
+$brand-warning: #EA844D;
+$brand-danger: #931621;
+$brand-clear: #f5f8fa;
+$brand-gray: #e9ecee;
+$brand-bluish: #73dbff;
+$brand-darker: #444444;
+$brand-darkest: #000000;
+
+$body-bg: $brand-clear;
+$brand-gray-darker: darken($brand-gray, 10%);
+
+// Brand lighter
+$brand-primary-light: lighten($brand-primary, 20%);
+$brand-info-light: lighten($brand-info, 20%);
+$brand-success-light: lighten($brand-success, 20%);
+$brand-warning-light: lighten($brand-warning, 20%);
+$brand-danger-light: lighten($brand-danger, 30%);
+$brand-clear-light: lighten($brand-clear, 20%);
+$brand-gray-light: lighten($brand-gray, 20%);
+$brand-bluish-light: lighten($brand-bluish, 20%);
+$brand-darker-light: lighten($brand-darker, 40%);
+$brand-darkest-light: lighten($brand-darkest, 20%);
 
 // Typography
 $icon-font-path: "~bootstrap-sass/assets/fonts/bootstrap/";
-$font-family-sans-serif: "Raleway", sans-serif;
+$font-family-sans-serif: "Arsenal", sans-serif;
 $font-size-base: 14px;
 $line-height-base: 1.6;
-$text-color: #636b6f;
+$text-color: $brand-darkest;
 
 // Navbar
 $navbar-default-bg: #fff;
@@ -35,4 +44,5 @@ $input-border-focus: lighten($brand-primary, 25%);
 $input-color-placeholder: lighten($text-color, 30%);
 
 // Panels
-$panel-default-heading-bg: #fff;
+$panel-default-heading-bg: $brand-clear;
+
