@@ -1,6 +1,6 @@
 <?php
 
-namespace PragmaRX\Ci\Services;
+namespace PragmaRX\TestsWatcher\Services;
 
 class Base {
 

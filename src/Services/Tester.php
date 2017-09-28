@@ -1,10 +1,10 @@
 <?php
 
-namespace PragmaRX\Ci\Services;
+namespace PragmaRX\TestsWatcher\Services;
 
 use Illuminate\Console\Command;
-use PragmaRX\Ci\Support\ShellExec;
-use PragmaRX\Ci\Data\Repositories\Data as DataRepository;
+use PragmaRX\TestsWatcher\Support\ShellExec;
+use PragmaRX\TestsWatcher\Data\Repositories\Data as DataRepository;
 
 class Tester extends Base {
 
@@ -27,11 +27,12 @@ class Tester extends Base {
 	 */
 	private $shell;
 
-	/**
-	 * Instantiate a Tester.
-	 *
-	 * @param DataRepository $dataRepository
-	 */
+    /**
+     * Instantiate a Tester.
+     *
+     * @param DataRepository $dataRepository
+     * @param ShellExec $shell
+     */
 	public function __construct(DataRepository $dataRepository, ShellExec $shell)
 	{
 		$this->dataRepository = $dataRepository;
@@ -118,7 +119,7 @@ class Tester extends Base {
 	{
 		$me = $this;
 
-		if ( ! $test = $this->dataRepository->getNextTestFromQueue())
+		if (!$test = $this->dataRepository->getNextTestFromQueue())
 		{
 			return false;
 		}
@@ -151,7 +152,7 @@ class Tester extends Base {
 			$this->command->line('retrying...');
 		}
 
-		if ($this->dataRepository->storeTestResult($test, $lines, $ok))
+		if ($this->dataRepository->storeTestResult($test, $lines, $ok, $this->shell->startedAt, $this->shell->endedAt))
 		{
 			$this->command->info('OK');
 		}

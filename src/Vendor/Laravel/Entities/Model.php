@@ -1,6 +1,6 @@
 <?php
 
-namespace PragmaRX\Ci\Vendor\Laravel\Entities;
+namespace PragmaRX\TestsWatcher\Vendor\Laravel\Entities;
 
 use Illuminate\Database\Eloquent\Model as Eloquent;
 

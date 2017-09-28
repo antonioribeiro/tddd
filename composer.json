@@ -1,9 +1,9 @@
 {
     "name": "pragmarx/ci",
 
-    "description": "A Continuous Integration Service & Dashboard Package",
+    "description": "A Tests Wacher Service & Dashboard Package",
 
-    "keywords": ["laravel", "ci", "continuous integration", "test", "testing", "tdd"],
+    "keywords": ["laravel", "ci", "continuous integration", "test", "testing", "tdd", "bdd", "watcher"],
 
     "license": "BSD-3-Clause",
 
@@ -26,7 +26,7 @@
 
     "autoload": {
         "psr-4": {
-            "PragmaRX\\Ci\\": "src/"
+            "PragmaRX\\TestsWatcher\\": "src/"
         },
         "psr-0": {
             "JasonLewis\\ResourceWatcher": "src/Support/jasonlewis/resource-watcher/src"
@@ -37,7 +37,7 @@
         "component": "package",
         "laravel": {
             "providers": [
-                "PragmaRX\\Ci\\Vendor\\Laravel\\ServiceProvider"
+                "PragmaRX\\TestsWatcher\\Vendor\\Laravel\\ServiceProvider"
             ]
         }
     },

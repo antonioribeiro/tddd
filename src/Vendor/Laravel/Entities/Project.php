@@ -1,6 +1,6 @@
 <?php
 
-namespace PragmaRX\Ci\Vendor\Laravel\Entities;
+namespace PragmaRX\TestsWatcher\Vendor\Laravel\Entities;
 
 class Project extends Model
 {

@@ -1,10 +1,17 @@
 <?php
 
-namespace PragmaRX\Ci\Vendor\Laravel\Entities;
+namespace PragmaRX\TestsWatcher\Vendor\Laravel\Entities;
 
 class Run extends Model
 {
     protected $table = 'ci_runs';
+
+    protected $dates = [
+        'created_at',
+        'updated_at',
+        'started_at',
+        'ended_at',
+    ];
 
     protected $fillable = [
 		'test_id',
@@ -12,5 +19,7 @@ class Run extends Model
 	    'log',
 	    'html',
 	    'png',
-	];
+        'started_at',
+        'ended_at',
+    ];
 }

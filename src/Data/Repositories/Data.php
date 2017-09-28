@@ -1,15 +1,17 @@
 <?php
 
-namespace PragmaRX\Ci\Data\Repositories;
+namespace PragmaRX\TestsWatcher\Data\Repositories;
 
+use PragmaRX\TestsWatcher\Support\Notifier;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
-use PragmaRX\Ci\Vendor\Laravel\Entities\Run;
-use PragmaRX\Ci\Vendor\Laravel\Entities\Test;
-use PragmaRX\Ci\Vendor\Laravel\Entities\Suite;
-use PragmaRX\Ci\Vendor\Laravel\Entities\Queue;
-use PragmaRX\Ci\Vendor\Laravel\Entities\Tester;
-use PragmaRX\Ci\Vendor\Laravel\Entities\Project;
+use PragmaRX\TestsWatcher\Vendor\Laravel\Entities\Run;
+use PragmaRX\TestsWatcher\Vendor\Laravel\Entities\Test;
+use PragmaRX\TestsWatcher\Vendor\Laravel\Entities\Suite;
+use Illuminate\Support\Facades\DB as Database;
+use PragmaRX\TestsWatcher\Vendor\Laravel\Entities\Queue;
+use PragmaRX\TestsWatcher\Vendor\Laravel\Entities\Tester;
+use PragmaRX\TestsWatcher\Vendor\Laravel\Entities\Project;
 use SensioLabs\AnsiConverter\AnsiToHtmlConverter;
 
 class Data
@@ -27,6 +29,23 @@ class Data
 	const STATE_FAILED = 'failed';
 
 	const STATE_RUNNING = 'running';
+
+    protected $ansiConverter;
+    /**
+     * @var Notifier
+     */
+    private $notifier;
+
+    /**
+     * Data constructor.
+     *
+     */
+    public function __construct(Notifier $notifier)
+	{
+        $this->ansiConverter = new AnsiToHtmlConverter();
+
+        $this->notifier = $notifier;
+    }
 
     /**
      * Carriage return to <br>.
@@ -63,7 +82,11 @@ class Data
             $fileName = base64_encode($line[1]);
 
             if (count($line) > 0 && count($line[0]) > 0) {
-                $tag = "<a href=\"javascript:jQuery.get('/ci-watcher/file/open/{$fileName}/{$line[2]}');\" class=\"file\">{$line[0]}</a>";
+                $tag = sprintf(
+                    '<a href="javascript:jQuery.get(\'%s\');" class="file">%s</a>',
+                    route('tests-watcher.file.open', ['filename' => $fileName, 'line' => $line[2]]),
+                    $line[0]
+                );
 
                 $lines = str_replace($line[0], $tag, $lines);
             }
@@ -163,6 +186,31 @@ class Data
 		}
 	}
 
+    private function getTestInfo($test)
+    {
+        if ($run = Run::where('test_id', $test->id)->orderBy('created_at', 'desc')->first())
+        {
+            $html = $run->html;
+
+            $image = $run->png;
+
+            $log = $this->formatLog($run);
+        }
+
+        return [
+            'id' => $test->id,
+            'project_name' => $test->suite->project->name,
+            'name' => $test->name,
+            'updated_at' => $test->updated_at->diffForHumans(),
+            'state' => $test->state,
+            'log' => $log,
+            'html' => isset($html) ? $html : null,
+            'image' => isset($image) ? $image : null,
+            'enabled' => $test->enabled,
+            'time' => is_null($run->started_at) ? '' : $this->removeBefore($run->started_at->diffForHumans($run->ended_at)),
+        ];
+    }
+
     /**
      * Create links for files.
      *
@@ -182,6 +230,20 @@ class Data
         }
 
         return $this->CRToBr($lines);
+    }
+
+    public function notify($project_id)
+    {
+        $this->notifier->notifyViaChannels(
+            $this->getTests($project_id)->reject(function($item) {
+                return $item['state'] != 'failed';
+            })
+        );
+    }
+
+    private function removeBefore($diff)
+    {
+        return str_replace('before', '', $diff);
     }
 
     /**
@@ -339,11 +401,13 @@ class Data
 	public function getNextTestFromQueue()
 	{
 		$query = Queue::join('ci_tests', 'ci_tests.id', '=', 'ci_queue.test_id')
-						->where('ci_tests.enabled', true);
+            ->where('ci_tests.enabled', true)
+            ->where('ci_tests.state', '!=', static::STATE_RUNNING)
+        ;
 
-		if ( ! $queue = $query->first() )
+		if (!$queue = $query->first())
 		{
-			return;
+			return false;
 		}
 
 		return $queue->test;
@@ -357,7 +421,7 @@ class Data
 	 * @param $ok
 	 * @return mixed
 	 */
-	public function storeTestResult($test, $lines, $ok)
+	public function storeTestResult($test, $lines, $ok, $startedAt, $endedAt)
 	{
 		$run = Run::create([
 	        'test_id' => $test->id,
@@ -365,6 +429,8 @@ class Data
 	        'log' => $this->linkFiles($lines) ?: '(empty)',
 		    'html' => $this->getOutput($test, $test->suite->tester->output_folder, $test->suite->tester->output_html_fail_extension),
 		    'png' => $this->getOutput($test, $test->suite->tester->output_folder, $test->suite->tester->output_png_fail_extension),
+            'started_at' => $startedAt,
+            'ended_at' => $endedAt,
 		]);
 
 		$test->state = $ok ? self::STATE_OK : self::STATE_FAILED;
@@ -509,28 +575,10 @@ class Data
 
 		foreach ($query->get() as $test)
 		{
-			if ($log = Run::where('test_id', $test->id)->orderBy('created_at', 'desc')->first())
-			{
-				$html = $log->html;
-
-				$image = $log->png;
-
-				$log = $this->formatLog($log);
-			}
-
-			$tests[] = [
-				'id' => $test->id,
-			    'name' => $test->name,
-			    'updated_at' => $test->updated_at->diffForHumans(),
-			    'state' => $test->state,
-			    'log' => $log,
-			    'html' => isset($html) ? $html : null,
-			    'image' => isset($image) ? $image : null,
-			    'enabled' => $test->enabled,
-			];
+			$tests[] = $this->getTestInfo($test);
 		}
 
-		return $tests;
+		return collect($tests);
 	}
 
 	/**
@@ -557,9 +605,9 @@ class Data
 	 */
 	private function formatLog($log)
 	{
-		if ($log)
+		if (!empty($log))
 		{
-			$log = $this->linkFiles($this->ansi2Html($log->log));
+			$log = $this->ansi2Html($log->log);
 		}
 
 		return $log;
@@ -573,17 +621,9 @@ class Data
 	 */
 	private function ansi2Html($log)
 	{
-		$converter = new AnsiToHtmlConverter();
-
-		$log = $converter->convert($log);
-
-		$log = str_replace(chr(13).chr(10), '<br>', $log);
-
-		$log = str_replace(chr(10), '<br>', $log);
-
-		$log = str_replace(chr(13), '<br>', $log);
-
-		return html_entity_decode($log);
+		return html_entity_decode(
+		    $this->ansiConverter->convert($log)
+        );
 	}
 
 	/**
@@ -789,5 +829,14 @@ class Data
         {
             $this->resetTest($test);
         }
+    }
+
+    /**
+     * Delete all from runs table.
+     *
+     */
+    public function clearRuns()
+    {
+        Database::statement('delete from ci_runs');
     }
 }

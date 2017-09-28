@@ -1,9 +1,10 @@
 <?php
 
-namespace PragmaRX\Ci\Support;
+namespace PragmaRX\TestsWatcher\Support;
 
 use Joli\JoliNotif\Notification;
 use Joli\JoliNotif\NotifierFactory;
+use PragmaRX\TestsWatcher\Events\TestsFailed;
 
 class Notifier
 {
@@ -12,9 +13,26 @@ class Notifier
      *
      * @return bool
      */
-    private static function enabled()
+    public function enabled()
     {
         return config('ci.notifications.enabled') == true;
+    }
+
+    /**
+     * Send notifications.
+     *
+     * @param $tests
+     * @return void
+     */
+    public function notifyViaChannels($tests)
+    {
+        if (!$this->enabled()) {
+            return false;
+        }
+
+        collect(config('ci.notifications.channels'))->filter(function ($value, $channel) use ($tests) {
+            event(new TestsFailed($tests, $channel));
+        });
     }
 
     /**
@@ -25,7 +43,7 @@ class Notifier
      * @param null $icon
      * @return bool
      */
-    public static function notify($title, $body, $icon = null)
+    public function notifyViaDesktop($title, $body, $icon = null)
     {
         if (!static::enabled()) {
             return false;

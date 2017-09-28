@@ -2,21 +2,21 @@
 
 namespace PragmaRX\TestsWatcher\Vendor\Laravel\Console\Commands;
 
-class TestCommand extends BaseCommand
-{
+class ClearCommand extends BaseCommand {
+
 	/**
 	 * The console command name.
 	 *
 	 * @var string
 	 */
-	protected $name = 'ci:test';
+	protected $name = 'ci:clear';
 
 	/**
 	 * The console command description.
 	 *
 	 * @var string
 	 */
-	protected $description = 'Continuously run tests';
+	protected $description = 'Delete all records from the runs table';
 
 	/**
 	 * Create a new command instance.
@@ -34,11 +34,13 @@ class TestCommand extends BaseCommand
 	 */
 	public function fire()
 	{
-		$this->getLaravel()->make('ci.tester')->run($this);
+		app('ci')->clear();
+
+		$this->info('Cleared.');
 	}
 
     /**
-     * Handle command.
+     * Execute the console command.
      *
      * @return mixed
      */

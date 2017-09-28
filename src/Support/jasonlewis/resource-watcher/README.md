@@ -101,7 +101,7 @@ Included is a service provider for the Laravel 4 framework. This service provide
 $listener = $app['watcher']->watch('path/to/resource');
 
 // Or if you don't have access to an instance of the application container.
-$listener = App::make('watcher')->watch('path/to/resource');
+$listener = app('ci.watcher')->watch('path/to/resource');
 ```
 
 Register `JasonLewis\ResourceWatcher\Integration\LaravelServiceProvider` in the array of providers in `app/config/app.php`.

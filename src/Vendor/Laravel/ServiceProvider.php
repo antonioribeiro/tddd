@@ -1,10 +1,15 @@
 <?php
 
-namespace PragmaRX\Ci\Vendor\Laravel;
+namespace PragmaRX\TestsWatcher\Vendor\Laravel;
 
+use Event;
 use Illuminate\Support\Facades\Route;
-use PragmaRX\Ci\Vendor\Laravel\Console\Commands\TestCommand;
-use PragmaRX\Ci\Vendor\Laravel\Console\Commands\WatchCommand;
+use PragmaRX\TestsWatcher\Events\TestsFailed;
+use PragmaRX\TestsWatcher\Listeners\Notify;
+use PragmaRX\TestsWatcher\Support\Notifier;
+use PragmaRX\TestsWatcher\Vendor\Laravel\Console\Commands\ClearCommand;
+use PragmaRX\TestsWatcher\Vendor\Laravel\Console\Commands\TestCommand;
+use PragmaRX\TestsWatcher\Vendor\Laravel\Console\Commands\WatchCommand;
 use Illuminate\Support\ServiceProvider as IlluminateServiceProvider;
 
 class ServiceProvider extends IlluminateServiceProvider
@@ -73,6 +78,8 @@ class ServiceProvider extends IlluminateServiceProvider
 
         $this->registerResourceWatcher();
 
+        $this->registerService();
+
 	    $this->registerWatcher();
 
 	    $this->registerTester();
@@ -80,6 +87,12 @@ class ServiceProvider extends IlluminateServiceProvider
 	    $this->registerWatchCommand();
 
 	    $this->registerTestCommand();
+
+        $this->registerClearCommand();
+
+        $this->registerNotifier();
+
+        $this->registerEventListeners();
     }
 
     /**
@@ -90,6 +103,41 @@ class ServiceProvider extends IlluminateServiceProvider
     public function provides()
     {
         return ['ci'];
+    }
+
+    /**
+     * Register the clear command.
+     *
+     */
+    private function registerClearCommand()
+    {
+        $this->app->singleton('ci.clear.command', function($app)
+        {
+            return new ClearCommand();
+        });
+
+        $this->commands('ci.clear.command');
+    }
+
+    /**
+     * Register event listeners.
+     *
+     */
+    private function registerEventListeners()
+    {
+        Event::listen(TestsFailed::class, Notify::class);
+    }
+
+    /**
+     * Register the watch command.
+     *
+     */
+    private function registerNotifier()
+    {
+        $this->app->singleton('ci.notifier', function()
+        {
+            return new Notifier();
+        });
     }
 
     /**
@@ -121,6 +169,22 @@ class ServiceProvider extends IlluminateServiceProvider
 	}
 
     /**
+     * Register service service.
+     *
+     */
+    private function registerService()
+    {
+        $this->app->singleton('ci', function($app)
+        {
+            $service = $this->app->make('PragmaRX\TestsWatcher\Service');
+
+            $service->setConfig(config('ci'));
+
+            return $service;
+        });
+    }
+
+    /**
      * Register service watcher.
      *
      */
@@ -128,7 +192,7 @@ class ServiceProvider extends IlluminateServiceProvider
 	{
 		$this->app->singleton('ci.watcher', function($app)
 		{
-			$watcher = $this->app->make('PragmaRX\Ci\Services\Watcher');
+			$watcher = $this->app->make('PragmaRX\TestsWatcher\Services\Watcher');
 
 			$watcher->setConfig(config('ci'));
 
@@ -144,7 +208,7 @@ class ServiceProvider extends IlluminateServiceProvider
 	{
 		$this->app->singleton('ci.tester', function($app)
 		{
-			$tester = $this->app->make('PragmaRX\Ci\Services\Tester');
+			$tester = $this->app->make('PragmaRX\TestsWatcher\Services\Tester');
 
 			$tester->setConfig(config('ci'));
 
@@ -168,8 +232,8 @@ class ServiceProvider extends IlluminateServiceProvider
     private function loadRoutes()
 	{
         Route::group([
-            'prefix' => '/ci-watcher',
-            'namespace' => 'PragmaRX\Ci\Vendor\Laravel\Http\Controllers',
+            'prefix' => '/tests-watcher',
+            'namespace' => 'PragmaRX\TestsWatcher\Vendor\Laravel\Http\Controllers',
             'middleware' => 'web',
         ], function () {
             $this->loadRoutesFrom(__DIR__.'/../../routes/web.php');

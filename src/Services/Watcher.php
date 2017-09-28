@@ -1,11 +1,12 @@
 <?php
 
-namespace PragmaRX\Ci\Services;
+namespace PragmaRX\TestsWatcher\Services;
 
 use App;
 use Illuminate\Console\Command;
 use JasonLewis\ResourceWatcher\Event;
-use PragmaRX\Ci\Data\Repositories\Data as DataRepository;
+use PragmaRX\TestsWatcher\Data\Repositories\Data as DataRepository;
+use JasonLewis\ResourceWatcher\Watcher as ResourceWatcher;
 
 class Watcher extends Base
 {
@@ -58,17 +59,18 @@ class Watcher extends Base
 	 */
 	private $dataRepository;
 
-	/**
-	 * Instantiate a Watcher.
-	 *
-	 * @param DataRepository $dataRepository
-	 */
-	public function __construct(DataRepository $dataRepository)
-	{
-		$this->dataRepository = $dataRepository;
+    /**
+     * Instantiate a Watcher.
+     *
+     * @param DataRepository $dataRepository
+     * @param ResourceWatcher $watcher
+     */
+    public function __construct(DataRepository $dataRepository, ResourceWatcher $watcher)
+    {
+        $this->dataRepository = $dataRepository;
 
-		$this->watcher = App::make('watcher');
-	}
+        $this->watcher = $watcher;
+    }
 
 	/**
 	 * Watch for file changes.

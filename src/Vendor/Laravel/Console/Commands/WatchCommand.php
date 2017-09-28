@@ -1,9 +1,9 @@
 <?php
 
-namespace PragmaRX\Ci\Vendor\Laravel\Console\Commands;
+namespace PragmaRX\TestsWatcher\Vendor\Laravel\Console\Commands;
 
-class WatchCommand extends BaseCommand {
-
+class WatchCommand extends BaseCommand
+{
 	/**
 	 * The console command name.
 	 *
@@ -21,7 +21,6 @@ class WatchCommand extends BaseCommand {
 	/**
 	 * Create a new command instance.
 	 *
-	 * @return void
 	 */
 	public function __construct()
 	{

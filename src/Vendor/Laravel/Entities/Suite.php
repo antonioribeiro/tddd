@@ -1,6 +1,6 @@
 <?php
 
-namespace PragmaRX\Ci\Vendor\Laravel\Entities;
+namespace PragmaRX\TestsWatcher\Vendor\Laravel\Entities;
 
 class Suite extends Model
 {
@@ -29,17 +29,17 @@ class Suite extends Model
 
 	public function project()
 	{
-		return $this->belongsTo('PragmaRX\Ci\Vendor\Laravel\Entities\Project');
+		return $this->belongsTo('PragmaRX\TestsWatcher\Vendor\Laravel\Entities\Project');
 	}
 
 	public function tester()
 	{
-		return $this->belongsTo('PragmaRX\Ci\Vendor\Laravel\Entities\Tester');
+		return $this->belongsTo('PragmaRX\TestsWatcher\Vendor\Laravel\Entities\Tester');
 	}
 
 	public function tests()
 	{
-		return $this->hasMany('PragmaRX\Ci\Vendor\Laravel\Entities\Test');
+		return $this->hasMany('PragmaRX\TestsWatcher\Vendor\Laravel\Entities\Test');
 	}
 
 	public function getTestCommandAttribute()

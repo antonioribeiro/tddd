@@ -64,7 +64,7 @@ th {
  * Links
  */
 a.file {
-  color: $brand-danger;
+  color: $brand-danger-light;
 }
 
 a:hover.file {
@@ -216,7 +216,6 @@ table > tbody > tr > td.state.state-failed {
 
 .state-running {
   background-color: $brand-info-light;
-  color: $brand-darker;
 }
 
 .state-ok {

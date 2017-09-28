@@ -1,60 +1,36 @@
 <?php
 
-namespace PragmaRX\Ci\Support;
+namespace PragmaRX\TestsWatcher\Support;
 
 use Closure;
-
+use Carbon\Carbon;
 use Symfony\Component\Process\Process;
 
-class ShellExec {
+class ShellExec
+{
+    public $time;
 
-	public function exec($command, $runDir = null, Closure $callback = null, $timeout = null)
-	{
-		// Create a process
-		//
-		$process = new Process($command, $runDir);
+    public $startedAt;
 
-		// Timeout == null === infinite
-		//
-		$process->setTimeout($timeout);
+    public $endedAt;
 
-		// Execute the process
-		//
-		$process->run($callback);
+    public function exec($command, $runDir = null, Closure $callback = null, $timeout = null)
+    {
+        $process = new Process($command, $runDir);
 
-		return $process;
-	}
+        $process->setTimeout($timeout);
 
-	public function execOLD($command, $exec_path = '', Closure $callable = null)
-	{
-		if ($exec_path)
-		{
-			$command = 'cd '.$exec_path.'; ' . $command;
-		}
+        $this->startedAt = Carbon::now();
 
-		$lines = [$command];
+        $process->run($callback);
 
-		flush();
+        $this->endedAt = Carbon::now();
 
-		$fp = popen($command, "r");
+        return $process;
+    }
 
-		while( ! feof($fp))
-		{
-			// send the current file part to the browser
-			$lines[] = $line = fread($fp, 1024);
-
-			if ($callable)
-			{
-				$callable($line);
-			}
-
-			// flush the content to the browser
-			flush();
-		}
-
-		fclose($fp);
-
-		return $lines;
-	}
-
-} 
+    public function elapsedForHumans()
+    {
+        return $this->endedAt->diffForHumans($this->startedAt);
+    }
+}

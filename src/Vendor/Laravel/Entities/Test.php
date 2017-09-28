@@ -1,6 +1,6 @@
 <?php
 
-namespace PragmaRX\Ci\Vendor\Laravel\Entities;
+namespace PragmaRX\TestsWatcher\Vendor\Laravel\Entities;
 
 class Test extends Model
 {
@@ -19,7 +19,7 @@ class Test extends Model
 
 	public function suite()
 	{
-		return $this->belongsTo('PragmaRX\Ci\Vendor\Laravel\Entities\Suite');
+		return $this->belongsTo('PragmaRX\TestsWatcher\Vendor\Laravel\Entities\Suite');
 	}
 
 	public function getTestCommandAttribute($value)
@@ -31,6 +31,6 @@ class Test extends Model
 
 	public function runs()
 	{
-		return $this->hasMany('PragmaRX\Ci\Vendor\Laravel\Entities\Run');
+		return $this->hasMany('PragmaRX\TestsWatcher\Vendor\Laravel\Entities\Run');
 	}
 }

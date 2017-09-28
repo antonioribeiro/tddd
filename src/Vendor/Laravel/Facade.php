@@ -1,4 +1,4 @@
-<?php namespace PragmaRX\Ci\Vendor\Laravel;
+<?php namespace PragmaRX\TestsWatcher\Vendor\Laravel;
 /**
  * Part of the Ci package.
  *

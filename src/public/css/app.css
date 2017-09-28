@@ -1406,7 +1406,7 @@ body {
   font-size: 14px;
   line-height: 1.6;
   color: #000000;
-  background-color: #f5f8fa;
+  background-color: #fdfdfd;
 }
 
 input,
@@ -1455,7 +1455,7 @@ img {
 .img-thumbnail {
   padding: 4px;
   line-height: 1.6;
-  background-color: #f5f8fa;
+  background-color: #fdfdfd;
   border: 1px solid #ddd;
   border-radius: 4px;
   -webkit-transition: all 0.2s ease-in-out;
@@ -3054,7 +3054,7 @@ th {
 }
 
 .table .table {
-  background-color: #f5f8fa;
+  background-color: #fdfdfd;
 }
 
 .table-condensed > thead > tr > th,
@@ -5145,7 +5145,7 @@ tbody.collapse.in {
 .nav-tabs > li.active > a:hover,
 .nav-tabs > li.active > a:focus {
   color: #555555;
-  background-color: #f5f8fa;
+  background-color: #fdfdfd;
   border: 1px solid #ddd;
   border-bottom-color: transparent;
   cursor: default;
@@ -5246,7 +5246,7 @@ tbody.collapse.in {
   .nav-tabs.nav-justified > .active > a:hover,
   .nav-tabs-justified > .active > a:focus,
   .nav-tabs.nav-justified > .active > a:focus {
-    border-bottom-color: #f5f8fa;
+    border-bottom-color: #fdfdfd;
   }
 }
 
@@ -6314,7 +6314,7 @@ a.badge:focus {
   padding: 4px;
   margin-bottom: 22px;
   line-height: 1.6;
-  background-color: #f5f8fa;
+  background-color: #fdfdfd;
   border: 1px solid #ddd;
   border-radius: 4px;
   -webkit-transition: border 0.2s ease-in-out;
@@ -7117,7 +7117,7 @@ button.list-group-item-danger.active:focus {
 
 .panel-default > .panel-heading {
   color: #333333;
-  background-color: #f5f8fa;
+  background-color: #fdfdfd;
   border-color: #ddd;
 }
 
@@ -7126,7 +7126,7 @@ button.list-group-item-danger.active:focus {
 }
 
 .panel-default > .panel-heading .badge {
-  color: #f5f8fa;
+  color: #fdfdfd;
   background-color: #333333;
 }
 
@@ -8413,7 +8413,7 @@ th {
  */
 
 a.file {
-  color: #931621;
+  color: #e75b68;
 }
 
 a:hover.file {
@@ -8425,7 +8425,7 @@ a:hover.file {
  */
 
 .projects-title {
-  color: #f5f8fa;
+  color: #fdfdfd;
   text-transform: lowercase;
   font-weight: 800;
   font-size: 1.8em;
@@ -8498,7 +8498,7 @@ h3 {
 }
 
 .navbar-inverse .navbar-brand {
-  color: #f5f8fa;
+  color: #fdfdfd;
 }
 
 /*
@@ -8539,7 +8539,7 @@ h3 {
 
 .search-addon {
   background-color: #2654b2;
-  color: #f5f8fa;
+  color: #fdfdfd;
 }
 
 /*
@@ -8571,7 +8571,7 @@ h3 {
  */
 
 .state {
-  color: #f5f8fa;
+  color: #fdfdfd;
 }
 
 .state-failed {
@@ -8580,7 +8580,6 @@ h3 {
 
 .state-running {
   background-color: #94b3d1;
-  color: #444444;
 }
 
 .state-ok {

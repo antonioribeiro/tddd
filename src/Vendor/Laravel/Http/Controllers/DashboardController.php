@@ -1,11 +1,10 @@
 <?php
 
-namespace PragmaRX\Ci\Vendor\Laravel\Http\Controllers;
+namespace PragmaRX\TestsWatcher\Vendor\Laravel\Http\Controllers;
 
 use Response;
-use PragmaRX\Ci\Support\Notifier;
 use Illuminate\Routing\Controller;
-use PragmaRX\Ci\Data\Repositories\Data;
+use PragmaRX\TestsWatcher\Data\Repositories\Data;
 
 class DashboardController extends Controller
 {
@@ -85,13 +84,18 @@ class DashboardController extends Controller
         return $this->success();
     }
 
-    public function notify($type = 'failed', $count = 0, $total = 0)
+    public function notify($project_id)
     {
-        Notifier::notify(
-            $type == 'failed' ? 'FAILING TESTS' : 'Tests passing',
-            $type == 'failed' ? "At least {$count} of {$total} are failing" : 'All your tests are passing, congrats!'
-        );
+        $this->dataRepository->notify($project_id);
 
         return $this->success();
+    }
+
+    public function showTest($test_id)
+    {
+        return
+            view('pragmarx/ci::dashboard')
+            ->with('view_test', $test_id)
+        ;
     }
 }

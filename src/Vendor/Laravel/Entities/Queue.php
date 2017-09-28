@@ -1,6 +1,6 @@
 <?php
 
-namespace PragmaRX\Ci\Vendor\Laravel\Entities;
+namespace PragmaRX\TestsWatcher\Vendor\Laravel\Entities;
 
 class Queue extends Model
 {
@@ -12,6 +12,6 @@ class Queue extends Model
 
 	public function test()
 	{
-		return $this->belongsTo('PragmaRX\Ci\Vendor\Laravel\Entities\Test');
+		return $this->belongsTo('PragmaRX\TestsWatcher\Vendor\Laravel\Entities\Test');
 	}
 }

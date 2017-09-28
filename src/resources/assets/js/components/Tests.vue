@@ -56,6 +56,7 @@
                     <th>run</th>
                     <th width="7%">state</th>
                     <th width="70%">test</th>
+                    <th>run time</th>
                     <th>last run</th>
                     <th>log</th>
                 </tr>
@@ -87,10 +88,12 @@
 
                     <td>{{ test.name }}</td>
 
+                    <td>{{ test.time }}</td>
+
                     <td>{{ test.updated_at }}</td>
 
                     <td>
-                        <div @click="showLog(test)" v-if="test.state !== 'running'" :class="'btn btn-sm btn-' + (test.state == 'failed' ? 'danger' : 'default')">
+                        <div @click="showLog(test)" v-if="test.state !== 'running'" :class="'btn btn-sm btn-' + (test.state == 'failed' ? 'primary' : 'default')">
                             show
                         </div>
                     </td>
@@ -109,7 +112,7 @@
 
     export default {
         computed: {
-            ...mapState(['projects', 'selectedProject', 'selectedTest']),
+            ...mapState(['base_uri', 'projects', 'selectedProject', 'selectedTest']),
 
             tests() {
                 var vue = this;
@@ -148,15 +151,15 @@
             ...mapActions(['loadTests']),
 
             runTest(testId) {
-                axios.get('/ci-watcher/tests/run/'+testId);
+                axios.get(this.base_uri+'/tests/run/'+testId);
             },
 
             runAll() {
-                axios.get('/ci-watcher/tests/run/all/'+this.selectedProject.id);
+                axios.get(this.base_uri+'/tests/run/all/'+this.selectedProject.id);
             },
 
             reset() {
-                axios.get('/ci-watcher/tests/reset/'+this.selectedProject.id);
+                axios.get(this.base_uri+'/tests/reset/'+this.selectedProject.id);
             },
 
             showLog(test) {
@@ -171,7 +174,7 @@
             },
 
             toggleTest(test) {
-                axios.get('/ci-watcher/tests/enable/'+!test.enabled+'/'+this.selectedProject.id+'/'+test.id)
+                axios.get(this.base_uri+'/tests/enable/'+!test.enabled+'/'+this.selectedProject.id+'/'+test.id)
                     .then(() => this.loadTests());
             },
 
@@ -182,7 +185,7 @@
             },
 
             enableAll() {
-                axios.get('/ci-watcher/tests/enable/'+!this.allEnabled()+'/'+this.selectedProject.id)
+                axios.get(this.base_uri+'/tests/enable/'+!this.allEnabled()+'/'+this.selectedProject.id)
                     .then(() => this.loadTests());
             },
 
@@ -200,7 +203,7 @@
 
             sendNotifications: function () {
                 if (this.statistics.failed > 0) {
-                    axios.get('/ci-watcher/tests/notify/failed');
+                    axios.get(this.base_uri+'/tests/notify/'+this.selectedProject.id);
                 }
             },
 
