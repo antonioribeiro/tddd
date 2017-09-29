@@ -81,7 +81,7 @@ composer require pragmarx/ci
 Add the service provider to your app/config/app.php:
 
 ``` php
-'PragmaRX\Ci\Vendor\Laravel\ServiceProvider',
+'PragmaRX\TestsWatcher\Vendor\Laravel\ServiceProvider',
 ```
 
 Create a database, configure on your Laravel app and migrate it
@@ -101,7 +101,7 @@ php artisan config:publish pragmarx/ci
 On Laravel 5.*
 
 ``` bash
-php artisan vendor:publish --provider="PragmaRX\Ci\Vendor\Laravel\ServiceProvider"
+php artisan vendor:publish --provider="PragmaRX\TestsWatcher\Vendor\Laravel\ServiceProvider"
 ```
 
 Edit the file `app/config/packages/pragmarx/ci/config.php` add your testers:

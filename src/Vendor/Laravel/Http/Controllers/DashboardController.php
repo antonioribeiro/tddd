@@ -20,7 +20,10 @@ class DashboardController extends Controller
 
     public function index()
     {
-        return view('pragmarx/ci::dashboard');
+        return
+            view('pragmarx/ci::dashboard')
+                ->with('laravel', $this->dataRepository->getJavascriptClientData())
+        ;
     }
 
 	public function allTests($project_id = null)
@@ -89,13 +92,5 @@ class DashboardController extends Controller
         $this->dataRepository->notify($project_id);
 
         return $this->success();
-    }
-
-    public function showTest($test_id)
-    {
-        return
-            view('pragmarx/ci::dashboard')
-            ->with('view_test', $test_id)
-        ;
     }
 }

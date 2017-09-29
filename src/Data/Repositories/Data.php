@@ -151,7 +151,24 @@ class Data
 		);
 	}
 
-	/**
+    /**
+     * Generates data for the javascript client.
+     *
+     */
+    public function getJavascriptClientData()
+    {
+        $data = [
+            'url_prefix' => config('ci.url_prefix'),
+
+            'project_id' => request()->get('project_id'),
+
+            'test_id' => request()->get('test_id'),
+        ];
+
+        return json_encode($data);
+    }
+
+    /**
 	 * Get all suites.
 	 *
 	 * @return \Illuminate\Database\Eloquent\Collection|static[]
@@ -188,26 +205,26 @@ class Data
 
     private function getTestInfo($test)
     {
-        if ($run = Run::where('test_id', $test->id)->orderBy('created_at', 'desc')->first())
-        {
-            $html = $run->html;
+        $run = Run::where('test_id', $test->id)->orderBy('created_at', 'desc')->first();
 
-            $image = $run->png;
+        $html = is_null($run) ? null : $run->html;
 
-            $log = $this->formatLog($run);
-        }
+        $image = is_null($run) ? null : $run->png;
+
+        $log = is_null($run) ? null : $this->formatLog($run);
 
         return [
             'id' => $test->id,
             'project_name' => $test->suite->project->name,
+            'project_id' => $test->suite->project->id,
             'name' => $test->name,
             'updated_at' => $test->updated_at->diffForHumans(),
             'state' => $test->state,
             'log' => $log,
-            'html' => isset($html) ? $html : null,
-            'image' => isset($image) ? $image : null,
+            'html' => $html ?: null,
+            'image' => $image ?: null,
             'enabled' => $test->enabled,
-            'time' => is_null($run->started_at) ? '' : $this->removeBefore($run->started_at->diffForHumans($run->ended_at)),
+            'time' => is_null($run) ? '' : (is_null($run->started_at) ? '' : $this->removeBefore($run->started_at->diffForHumans($run->ended_at))),
         ];
     }
 
@@ -302,7 +319,7 @@ class Data
 
 		foreach($suite->tests as $test)
 		{
-			if ( ! file_exists($path = make_path([$suite->testsFullPath, $test->name])))
+			if (!file_exists($path = make_path([$suite->testsFullPath, $test->name])))
 			{
 				$test->delete();
 			}
@@ -434,7 +451,9 @@ class Data
 		]);
 
 		$test->state = $ok ? self::STATE_OK : self::STATE_FAILED;
+
 		$test->last_run_id = $run->id;
+
 		$test->save();
 
 		$this->removeTestFromQueue($test);

@@ -101,7 +101,7 @@
             </tbody>
         </table>
 
-        <log v-if="selectedTest"></log>
+        <log></log>
     </div>
 </template>
 
@@ -112,7 +112,7 @@
 
     export default {
         computed: {
-            ...mapState(['base_uri', 'projects', 'selectedProject', 'selectedTest']),
+            ...mapState(['laravel', 'projects', 'selectedProject', 'openTest', 'selectedTest']),
 
             tests() {
                 var vue = this;
@@ -151,21 +151,20 @@
             ...mapActions(['loadTests']),
 
             runTest(testId) {
-                axios.get(this.base_uri+'/tests/run/'+testId);
+                axios.get(this.laravel.url_prefix+'/tests/run/'+testId);
             },
 
             runAll() {
-                axios.get(this.base_uri+'/tests/run/all/'+this.selectedProject.id);
+                axios.get(this.laravel.url_prefix+'/tests/run/all/'+this.selectedProject.id);
             },
 
             reset() {
-                axios.get(this.base_uri+'/tests/reset/'+this.selectedProject.id);
+                axios.get(this.laravel.url_prefix+'/tests/reset/'+this.selectedProject.id);
             },
 
             showLog(test) {
                 this.$store.commit('setSelectedTest', test);
 
-                console.log('clicked');
                 jQuery('#logModal').modal('show');
             },
 
@@ -174,7 +173,7 @@
             },
 
             toggleTest(test) {
-                axios.get(this.base_uri+'/tests/enable/'+!test.enabled+'/'+this.selectedProject.id+'/'+test.id)
+                axios.get(this.laravel.url_prefix+'/tests/enable/'+!test.enabled+'/'+this.selectedProject.id+'/'+test.id)
                     .then(() => this.loadTests());
             },
 
@@ -185,7 +184,7 @@
             },
 
             enableAll() {
-                axios.get(this.base_uri+'/tests/enable/'+!this.allEnabled()+'/'+this.selectedProject.id)
+                axios.get(this.laravel.url_prefix+'/tests/enable/'+!this.allEnabled()+'/'+this.selectedProject.id)
                     .then(() => this.loadTests());
             },
 
@@ -203,7 +202,7 @@
 
             sendNotifications: function () {
                 if (this.statistics.failed > 0) {
-                    axios.get(this.base_uri+'/tests/notify/'+this.selectedProject.id);
+                    axios.get(this.laravel.url_prefix+'/tests/notify/'+this.selectedProject.id);
                 }
             },
 
@@ -251,7 +250,25 @@
 
             isRunning() {
                 return this.statistics.running > 0;
-            }
+            },
+
+            doOpenTest(tests) {
+                if (!this.openTest) {
+                    return false;
+                }
+
+                var test = this.selectedProject.tests.filter(test => test.id == this.openTest)[0]
+
+                if (!test) {
+                    return false;
+                }
+
+                console.log('doOpenTest', test, this.openTest);
+
+                this.$store.commit('setOpenTest', null);
+
+                this.showLog(test);
+            },
         },
 
         mounted() {
@@ -260,6 +277,12 @@
             setInterval(function () {
                 vue.loadTests();
             }, 1500);
+
+            setInterval(function () {
+                vue.doOpenTest();
+            }, 300);
+
+            this.$store.commit('setOpenTest', this.laravel.test_id);
         }
     }
 </script>

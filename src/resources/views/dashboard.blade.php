@@ -5,6 +5,10 @@
 		<title>{{ config('ci.name') }}</title>
 	</head>
 
+    <script>
+        window.laravel = JSON.parse('{!! $laravel !!}');
+    </script>
+
     <style>
         {!! file_get_contents(CI_PATH.'/src/public/css/app.css'); !!}
     </style>

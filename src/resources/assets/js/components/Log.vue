@@ -1,10 +1,12 @@
 <template>
     <div class="modal fade" tabIndex="-1" id="logModal">
         <div class="modal-dialog modal-lg">
-            <div class="modal-content">
+            <div class="modal-content" v-if="selectedTest">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
+                        <span aria-hidden="true">
+                            <i class="fa fa-times-circle" aria-hidden="true"></i>
+                        </span>
                     </button>
                     <h3>{{ this.selectedTest.name }}</h3>
                 </div>

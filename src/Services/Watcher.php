@@ -18,13 +18,6 @@ class Watcher extends Base
 	protected $is_initialized;
 
 	/**
-	 * Folders to be watched.
-	 *
-	 * @var
-	 */
-	protected $watchFolders;
-
-	/**
 	 * The file watcher.
 	 *
 	 * @var
@@ -46,13 +39,6 @@ class Watcher extends Base
 	protected $command;
 
 	/**
-	 * Exclude folders.
-	 *
-	 * @var
-	 */
-	protected $exclusions;
-
-	/**
 	 * Watcher Repository.
 	 *
 	 * @var DataRepository
@@ -60,16 +46,24 @@ class Watcher extends Base
 	private $dataRepository;
 
     /**
+     * @var Loader
+     */
+    private $loader;
+
+    /**
      * Instantiate a Watcher.
      *
      * @param DataRepository $dataRepository
      * @param ResourceWatcher $watcher
+     * @param Loader $loader
      */
-    public function __construct(DataRepository $dataRepository, ResourceWatcher $watcher)
+    public function __construct(DataRepository $dataRepository, ResourceWatcher $watcher, Loader $loader)
     {
         $this->dataRepository = $dataRepository;
 
         $this->watcher = $watcher;
+
+        $this->loader = $loader;
     }
 
 	/**
@@ -81,7 +75,7 @@ class Watcher extends Base
 	 */
 	public function run(Command $command)
 	{
-		$this->command = $command;
+		$this->setCommand($command);
 
 		$this->initialize();
 
@@ -100,103 +94,25 @@ class Watcher extends Base
 
 		if ( ! $this->is_initialized)
 		{
-			$this->loadEverything();
+			$this->loader->loadEverything();
 
 			$this->is_initialized = true;
 		}
 	}
 
-	/**
-	 * Read configuration and load testers, projects, suites...
-	 *
-	 */
-	private function loadEverything()
-	{
-		$this->command->line('Loading testers...');
-		$this->loadTesters();
+    /**
+     * Set the command.
+     *
+     * @param $command
+     */
+    private function setCommand($command)
+    {
+        $this->command = $command;
 
-		$this->command->line('Loading projects and suites...');
-		$this->loadProjects();
+        $this->loader->setCommand($this->command);
+    }
 
-		$this->command->line('Loading tests...');
-		$this->loadTests();
-	}
-
-	/**
-	 * Load all testers to database.
-	 *
-	 */
-	private function loadTesters()
-	{
-		foreach($this->getConfig('testers') as $name => $data)
-		{
-			$this->dataRepository->createOrUpdateTester($name, $data);
-		}
-
-		$this->dataRepository->deleteUnavailableTesters(array_keys($this->getConfig('testers')));
-	}
-
-	/**
-	 * Load all projects to database.
-	 *
-	 */
-	private function loadProjects()
-	{
-		foreach($this->getConfig('projects') as $name => $data)
-		{
-			$project = $this->dataRepository->createOrUpdateProject($name, $data['path'], $data['tests_path']);
-
-			foreach($data['suites'] as $suite_name => $suite_data)
-			{
-				$this->dataRepository->createOrUpdateSuite($name, $project->id, $suite_data);
-			}
-
-			$this->addToWatchFolders($data['path'], $data['watch_folders']);
-
-			$this->addToExclusions($data['path'], $data['exclude']);
-		}
-
-		$this->dataRepository->deleteUnavailableProjects(array_keys($this->getConfig('projects')));
-	}
-
-	/**
-	 * Load all test files to database.
-	 *
-	 */
-	private function loadTests()
-	{
-		$this->dataRepository->syncTests($this->exclusions);
-	}
-
-	/**
-	 * Add folders to the watch list.
-	 *
-	 * @param $path
-	 * @param $watch_folders
-	 */
-	private function addToWatchFolders($path, $watch_folders)
-	{
-		foreach($watch_folders as $folder)
-		{
-			$this->watchFolders[] = make_path([$path, $folder]);
-		}
-	}
-
-	/**
-	 * Add path to exclusions list.
-	 *
-	 * @param $path
-	 * @param $exclude
-	 */
-	private function addToExclusions($path, $exclude)
-	{
-		foreach($exclude as $folder)
-		{
-			$this->exclusions[] = make_path([$path, $folder]);
-		}
-	}
-
-	/**
+    /**
 	 * Watch folders for changes
 	 */
 	private function watch()
@@ -205,7 +121,7 @@ class Watcher extends Base
 
 		$me = $this;
 
-		foreach($this->watchFolders as $folder)
+        foreach($this->loader->watchFolders as $folder)
 		{
 			if ( ! file_exists($folder))
 			{
@@ -239,10 +155,7 @@ class Watcher extends Base
 	 */
 	public function fireEvent($event, $resource, $path)
 	{
-		if ($event->getCode() == Event::RESOURCE_CREATED)
-		{
-			$this->loadTests();
-		}
+        $this->loader->loadEverything();
 
 		$message = "File {$path} was ".$this->getEventName($event->getCode());
 
@@ -289,7 +202,6 @@ class Watcher extends Base
 		return $event;
 	}
 
-
 	/**
 	 * Check if folder is excluded.
 	 *
@@ -298,7 +210,7 @@ class Watcher extends Base
 	 */
 	public function isExcluded($folder)
 	{
-		return $this->dataRepository->isExcluded($this->exclusions, $folder);
+		return $this->dataRepository->isExcluded($this->loader->exclusions, $folder);
 	}
 
     /**

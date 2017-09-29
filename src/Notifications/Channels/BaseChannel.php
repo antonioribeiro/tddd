@@ -49,6 +49,12 @@ abstract class BaseChannel implements Contract
 
     protected function makeActionLink($test)
     {
-        return route('tests-watcher.tests.show', ['test_id' => $test['id']]);
+        return route(
+            'tests-watcher.dashboard',
+            [
+                'test_id' => $test['id'],
+                'project_id' => $test['project_id'],
+            ]
+        );
     }
 }

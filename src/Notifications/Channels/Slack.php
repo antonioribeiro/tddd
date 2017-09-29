@@ -17,9 +17,13 @@ class Slack extends BaseChannel
             ->error()
             ->from(
                 config('ci.notifications.from.name'),
-                config('ci.notifications.from.icon_emoji')
+                $icon = (config('ci.notifications.from.icon_emoji') ?: null)
             )
             ->content($this->getMessage($tests));
+
+        if (is_null($icon)) {
+            $notification->image(config('ci.notifications.from.icon_url') ?: null);
+        }
 
         $tests->each(function($test) use ($notification) {
             $notification->attachment(function ($attachment) use ($test) {

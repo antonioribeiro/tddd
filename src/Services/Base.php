@@ -2,15 +2,8 @@
 
 namespace PragmaRX\TestsWatcher\Services;
 
-class Base {
-
-	/**
-	 * Configuration keys.
-	 *
-	 * @var
-	 */
-	private $config;
-
+class Base
+{
 	/**
 	 * Get a configuration key.
 	 *
@@ -20,23 +13,11 @@ class Base {
 	 */
 	protected function getConfig($key)
 	{
-		if ( ! isset($this->config[$key]))
+		if (is_null($value = config("ci.{$key}")))
 		{
 			throw new \Exception("The configuration key '{$key}' was not defined.");
 		}
 
-		return $this->config[$key];
+		return $value;
 	}
-
-	/**
-	 * Set the configuration array.
-	 *
-	 * @param $config
-	 * @return mixed
-	 */
-	public function setConfig($config)
-	{
-		return $this->config = $config;
-	}
-
 }

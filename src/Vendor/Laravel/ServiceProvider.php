@@ -176,11 +176,7 @@ class ServiceProvider extends IlluminateServiceProvider
     {
         $this->app->singleton('ci', function($app)
         {
-            $service = $this->app->make('PragmaRX\TestsWatcher\Service');
-
-            $service->setConfig(config('ci'));
-
-            return $service;
+            return app('PragmaRX\TestsWatcher\Service');
         });
     }
 
@@ -192,11 +188,7 @@ class ServiceProvider extends IlluminateServiceProvider
 	{
 		$this->app->singleton('ci.watcher', function($app)
 		{
-			$watcher = $this->app->make('PragmaRX\TestsWatcher\Services\Watcher');
-
-			$watcher->setConfig(config('ci'));
-
-			return $watcher;
+			return app('PragmaRX\TestsWatcher\Services\Watcher');
 		});
 	}
 
@@ -208,11 +200,7 @@ class ServiceProvider extends IlluminateServiceProvider
 	{
 		$this->app->singleton('ci.tester', function($app)
 		{
-			$tester = $this->app->make('PragmaRX\TestsWatcher\Services\Tester');
-
-			$tester->setConfig(config('ci'));
-
-			return $tester;
+			return app('PragmaRX\TestsWatcher\Services\Tester');
 		});
 	}
 
@@ -232,7 +220,7 @@ class ServiceProvider extends IlluminateServiceProvider
     private function loadRoutes()
 	{
         Route::group([
-            'prefix' => '/tests-watcher',
+            'prefix' => config('ci.url_prefix'),
             'namespace' => 'PragmaRX\TestsWatcher\Vendor\Laravel\Http\Controllers',
             'middleware' => 'web',
         ], function () {

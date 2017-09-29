@@ -1,10 +1,12 @@
 export default {
     state: {
-        base_uri: '/tests-watcher',
+        laravel: window.laravel,
 
         projects: [],
 
         selectedProject: null,
+
+        openTest: null,
 
         selectedTest: null,
 
@@ -22,6 +24,10 @@ export default {
             state.selectedTest = test;
         },
 
+        setOpenTest(state, value) {
+            state.openTest = value;
+        },
+
         setLogVisible(state, visible) {
             state.logVisible = visible;
         },
@@ -37,16 +43,24 @@ export default {
 
     actions: {
         loadProjects(context) {
-            axios.get(context.state.base_uri+'/projects')
+            axios.get(context.state.laravel.url_prefix+'/projects')
                 .then(function (result) {
                     context.commit('setProjects', result.data.projects);
 
-                    context.commit('setSelectedProject', {project: result.data.projects[0], force: false});
+                    context.commit('setSelectedProject', {
+                        project: context.state.laravel.project_id
+                                ? result.data.projects.filter(project => project.id == context.state.laravel.project_id)[0]
+                                : result.data.projects[0],
+
+                        force: context.state.laravel.project_id
+                                ? true
+                                : false,
+                    });
                 });
         },
 
         loadTests(context) {
-            axios.get(context.state.base_uri+'/tests/'+context.state.selectedProject.id)
+            axios.get(context.state.laravel.url_prefix+'/tests/'+context.state.selectedProject.id)
                 .then(function (result) {
                     context.commit('setTests', result.data.tests);
                 });

@@ -43300,11 +43300,13 @@ module.exports = Vue$3;
 "use strict";
 /* harmony default export */ __webpack_exports__["a"] = ({
     state: {
-        base_uri: '/tests-watcher',
+        laravel: window.laravel,
 
         projects: [],
 
         selectedProject: null,
+
+        openTest: null,
 
         selectedTest: null,
 
@@ -43320,6 +43322,9 @@ module.exports = Vue$3;
         setSelectedTest: function setSelectedTest(state, test) {
             state.selectedTest = test;
         },
+        setOpenTest: function setOpenTest(state, value) {
+            state.openTest = value;
+        },
         setLogVisible: function setLogVisible(state, visible) {
             state.logVisible = visible;
         },
@@ -43333,14 +43338,20 @@ module.exports = Vue$3;
 
     actions: {
         loadProjects: function loadProjects(context) {
-            axios.get(context.state.base_uri + '/projects').then(function (result) {
+            axios.get(context.state.laravel.url_prefix + '/projects').then(function (result) {
                 context.commit('setProjects', result.data.projects);
 
-                context.commit('setSelectedProject', { project: result.data.projects[0], force: false });
+                context.commit('setSelectedProject', {
+                    project: context.state.laravel.project_id ? result.data.projects.filter(function (project) {
+                        return project.id == context.state.laravel.project_id;
+                    })[0] : result.data.projects[0],
+
+                    force: context.state.laravel.project_id ? true : false
+                });
             });
         },
         loadTests: function loadTests(context) {
-            axios.get(context.state.base_uri + '/tests/' + context.state.selectedProject.id).then(function (result) {
+            axios.get(context.state.laravel.url_prefix + '/tests/' + context.state.selectedProject.id).then(function (result) {
                 context.commit('setTests', result.data.tests);
             });
         }
@@ -43771,7 +43782,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["mapState"])(['base_uri', 'projects', 'selectedProject', 'selectedTest']), {
+    computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["mapState"])(['laravel', 'projects', 'selectedProject', 'openTest', 'selectedTest']), {
         tests: function tests() {
             var vue = this;
 
@@ -43808,18 +43819,17 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
     methods: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["mapActions"])(['loadTests']), {
         runTest: function runTest(testId) {
-            axios.get(this.base_uri + '/tests/run/' + testId);
+            axios.get(this.laravel.url_prefix + '/tests/run/' + testId);
         },
         runAll: function runAll() {
-            axios.get(this.base_uri + '/tests/run/all/' + this.selectedProject.id);
+            axios.get(this.laravel.url_prefix + '/tests/run/all/' + this.selectedProject.id);
         },
         reset: function reset() {
-            axios.get(this.base_uri + '/tests/reset/' + this.selectedProject.id);
+            axios.get(this.laravel.url_prefix + '/tests/reset/' + this.selectedProject.id);
         },
         showLog: function showLog(test) {
             this.$store.commit('setSelectedTest', test);
 
-            console.log('clicked');
             jQuery('#logModal').modal('show');
         },
         allEnabled: function allEnabled() {
@@ -43828,7 +43838,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
         toggleTest: function toggleTest(test) {
             var _this = this;
 
-            axios.get(this.base_uri + '/tests/enable/' + !test.enabled + '/' + this.selectedProject.id + '/' + test.id).then(function () {
+            axios.get(this.laravel.url_prefix + '/tests/enable/' + !test.enabled + '/' + this.selectedProject.id + '/' + test.id).then(function () {
                 return _this.loadTests();
             });
         },
@@ -43840,7 +43850,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
         enableAll: function enableAll() {
             var _this2 = this;
 
-            axios.get(this.base_uri + '/tests/enable/' + !this.allEnabled() + '/' + this.selectedProject.id).then(function () {
+            axios.get(this.laravel.url_prefix + '/tests/enable/' + !this.allEnabled() + '/' + this.selectedProject.id).then(function () {
                 return _this2.loadTests();
             });
         },
@@ -43860,7 +43870,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
         sendNotifications: function sendNotifications() {
             if (this.statistics.failed > 0) {
-                axios.get(this.base_uri + '/tests/notify/' + this.selectedProject.id);
+                axios.get(this.laravel.url_prefix + '/tests/notify/' + this.selectedProject.id);
             }
         },
 
@@ -43907,6 +43917,27 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
         },
         isRunning: function isRunning() {
             return this.statistics.running > 0;
+        },
+        doOpenTest: function doOpenTest(tests) {
+            var _this3 = this;
+
+            if (!this.openTest) {
+                return false;
+            }
+
+            var test = this.selectedProject.tests.filter(function (test) {
+                return test.id == _this3.openTest;
+            })[0];
+
+            if (!test) {
+                return false;
+            }
+
+            console.log('doOpenTest', test, this.openTest);
+
+            this.$store.commit('setOpenTest', null);
+
+            this.showLog(test);
         }
     }),
 
@@ -43916,6 +43947,12 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
         setInterval(function () {
             vue.loadTests();
         }, 1500);
+
+        setInterval(function () {
+            vue.doOpenTest();
+        }, 300);
+
+        this.$store.commit('setOpenTest', this.laravel.test_id);
     }
 });
 
@@ -44223,7 +44260,7 @@ var render = function() {
             )
           ]),
           _vm._v(" "),
-          _vm.selectedTest ? _c("log") : _vm._e()
+          _c("log")
         ],
         1
       )
@@ -44440,6 +44477,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 
 
@@ -44488,76 +44527,84 @@ var render = function() {
     { staticClass: "modal fade", attrs: { tabIndex: "-1", id: "logModal" } },
     [
       _c("div", { staticClass: "modal-dialog modal-lg" }, [
-        _c("div", { staticClass: "modal-content" }, [
-          _c("div", { staticClass: "modal-header" }, [
-            _vm._m(0),
-            _vm._v(" "),
-            _c("h3", [_vm._v(_vm._s(this.selectedTest.name))])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "modal-body" }, [
-            _c(
-              "div",
-              {
-                class: "btn btn-pill " + this.getPillColor("log"),
-                on: { click: this.setPanelLog }
-              },
-              [_vm._v("\n                    command output\n                ")]
-            ),
-            _vm._v("\n                 \n                "),
-            _c(
-              "div",
-              {
-                class: "btn btn-pill " + this.getPillColor("screenshot"),
-                on: { click: this.setPanelScreenshot }
-              },
-              [_vm._v("\n                    screenshot\n                ")]
-            ),
-            _vm._v("\n                 \n                "),
-            _c(
-              "div",
-              {
-                class: "btn btn-pill " + this.getPillColor("html"),
-                on: { click: this.setPanelHtml }
-              },
-              [_vm._v("\n                    html\n                ")]
-            ),
-            _vm._v(" "),
-            _c(
-              "div",
-              {
-                class:
-                  "tab-content modal-scroll " +
-                  (this.selectedPanel == "log" ? "terminal" : "")
-              },
-              [
-                this.selectedPanel == "log"
-                  ? _c("div", {
-                      staticClass: "tab-pane active terminal",
-                      domProps: { innerHTML: _vm._s(this.selectedTest.log) }
-                    })
-                  : _vm._e(),
+        _vm.selectedTest
+          ? _c("div", { staticClass: "modal-content" }, [
+              _c("div", { staticClass: "modal-header" }, [
+                _vm._m(0),
                 _vm._v(" "),
-                this.selectedPanel == "screenshot"
-                  ? _c("div", { staticClass: "tab-pane" }, [
-                      _c("img", {
-                        attrs: { src: this.selectedTest.image, alt: "" }
-                      })
-                    ])
-                  : _vm._e(),
+                _c("h3", [_vm._v(_vm._s(this.selectedTest.name))])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "modal-body" }, [
+                _c(
+                  "div",
+                  {
+                    class: "btn btn-pill " + this.getPillColor("log"),
+                    on: { click: this.setPanelLog }
+                  },
+                  [
+                    _vm._v(
+                      "\n                    command output\n                "
+                    )
+                  ]
+                ),
+                _vm._v("\n                 \n                "),
+                _c(
+                  "div",
+                  {
+                    class: "btn btn-pill " + this.getPillColor("screenshot"),
+                    on: { click: this.setPanelScreenshot }
+                  },
+                  [_vm._v("\n                    screenshot\n                ")]
+                ),
+                _vm._v("\n                 \n                "),
+                _c(
+                  "div",
+                  {
+                    class: "btn btn-pill " + this.getPillColor("html"),
+                    on: { click: this.setPanelHtml }
+                  },
+                  [_vm._v("\n                    html\n                ")]
+                ),
                 _vm._v(" "),
-                this.selectedPanel == "html"
-                  ? _c("div", {
-                      staticClass: "tab-pane",
-                      domProps: { innerHTML: _vm._s(this.selectedTest.html) }
-                    })
-                  : _vm._e()
-              ]
-            )
-          ]),
-          _vm._v(" "),
-          _vm._m(1)
-        ])
+                _c(
+                  "div",
+                  {
+                    class:
+                      "tab-content modal-scroll " +
+                      (this.selectedPanel == "log" ? "terminal" : "")
+                  },
+                  [
+                    this.selectedPanel == "log"
+                      ? _c("div", {
+                          staticClass: "tab-pane active terminal",
+                          domProps: { innerHTML: _vm._s(this.selectedTest.log) }
+                        })
+                      : _vm._e(),
+                    _vm._v(" "),
+                    this.selectedPanel == "screenshot"
+                      ? _c("div", { staticClass: "tab-pane" }, [
+                          _c("img", {
+                            attrs: { src: this.selectedTest.image, alt: "" }
+                          })
+                        ])
+                      : _vm._e(),
+                    _vm._v(" "),
+                    this.selectedPanel == "html"
+                      ? _c("div", {
+                          staticClass: "tab-pane",
+                          domProps: {
+                            innerHTML: _vm._s(this.selectedTest.html)
+                          }
+                        })
+                      : _vm._e()
+                  ]
+                )
+              ]),
+              _vm._v(" "),
+              _vm._m(1)
+            ])
+          : _vm._e()
       ])
     ]
   )
@@ -44577,7 +44624,14 @@ var staticRenderFns = [
           "aria-label": "Close"
         }
       },
-      [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+      [
+        _c("span", { attrs: { "aria-hidden": "true" } }, [
+          _c("i", {
+            staticClass: "fa fa-times-circle",
+            attrs: { "aria-hidden": "true" }
+          })
+        ])
+      ]
     )
   },
   function() {
