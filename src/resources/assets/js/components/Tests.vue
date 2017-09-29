@@ -252,22 +252,18 @@
                 return this.statistics.running > 0;
             },
 
-            doOpenTest(tests) {
+            doOpenTest() {
                 if (!this.openTest) {
                     return false;
                 }
 
                 var test = this.selectedProject.tests.filter(test => test.id == this.openTest)[0]
 
-                if (!test) {
-                    return false;
+                if (test) {
+                    this.$store.commit('setOpenTest', null);
+
+                    this.showLog(test);
                 }
-
-                console.log('doOpenTest', test, this.openTest);
-
-                this.$store.commit('setOpenTest', null);
-
-                this.showLog(test);
             },
         },
 

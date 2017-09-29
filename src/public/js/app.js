@@ -43918,7 +43918,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
         isRunning: function isRunning() {
             return this.statistics.running > 0;
         },
-        doOpenTest: function doOpenTest(tests) {
+        doOpenTest: function doOpenTest() {
             var _this3 = this;
 
             if (!this.openTest) {
@@ -43929,15 +43929,11 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
                 return test.id == _this3.openTest;
             })[0];
 
-            if (!test) {
-                return false;
+            if (test) {
+                this.$store.commit('setOpenTest', null);
+
+                this.showLog(test);
             }
-
-            console.log('doOpenTest', test, this.openTest);
-
-            this.$store.commit('setOpenTest', null);
-
-            this.showLog(test);
         }
     }),
 
