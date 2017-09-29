@@ -5,6 +5,8 @@ namespace PragmaRX\TestsWatcher\Vendor\Laravel;
 use Event;
 use Illuminate\Support\Facades\Route;
 use PragmaRX\TestsWatcher\Events\TestsFailed;
+use PragmaRX\TestsWatcher\Events\UserNotifiedOfFailure;
+use PragmaRX\TestsWatcher\Listeners\MarkAsNotified;
 use PragmaRX\TestsWatcher\Listeners\Notify;
 use PragmaRX\TestsWatcher\Support\Notifier;
 use PragmaRX\TestsWatcher\Vendor\Laravel\Console\Commands\ClearCommand;
@@ -126,6 +128,8 @@ class ServiceProvider extends IlluminateServiceProvider
     private function registerEventListeners()
     {
         Event::listen(TestsFailed::class, Notify::class);
+
+        Event::listen(UserNotifiedOfFailure::class, MarkAsNotified::class);
     }
 
     /**

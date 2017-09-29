@@ -2,6 +2,7 @@
 
 namespace PragmaRX\TestsWatcher\Data\Repositories;
 
+use Carbon\Carbon;
 use PragmaRX\TestsWatcher\Support\Notifier;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
@@ -207,12 +208,6 @@ class Data
     {
         $run = Run::where('test_id', $test->id)->orderBy('created_at', 'desc')->first();
 
-        $html = is_null($run) ? null : $run->html;
-
-        $image = is_null($run) ? null : $run->png;
-
-        $log = is_null($run) ? null : $this->formatLog($run);
-
         return [
             'id' => $test->id,
             'project_name' => $test->suite->project->name,
@@ -220,10 +215,13 @@ class Data
             'name' => $test->name,
             'updated_at' => $test->updated_at->diffForHumans(),
             'state' => $test->state,
-            'log' => $log,
-            'html' => $html ?: null,
-            'image' => $image ?: null,
             'enabled' => $test->enabled,
+
+            'run' => $run,
+            'notified_at' => is_null($run) ? null : $run->notified_at,
+            'log' => is_null($run) ? null : $this->formatLog($run),
+            'html' => is_null($run) ? null : $run->html,
+            'image' => is_null($run) ? null : $run->png,
             'time' => is_null($run) ? '' : (is_null($run->started_at) ? '' : $this->removeBefore($run->started_at->diffForHumans($run->ended_at))),
         ];
     }
@@ -253,7 +251,7 @@ class Data
     {
         $this->notifier->notifyViaChannels(
             $this->getTests($project_id)->reject(function($item) {
-                return $item['state'] != 'failed';
+                return $item['state'] != 'failed' && is_null($item['notified_at']);
             })
         );
     }
@@ -857,5 +855,19 @@ class Data
     public function clearRuns()
     {
         Database::statement('delete from ci_runs');
+    }
+
+    /**
+     * Mark tests as notified.
+     *
+     * @param $tests
+     */
+    public function markTestsAsNotified($tests)
+    {
+        $tests->each(function($test) {
+            $test['run']->notified_at = Carbon::now();
+
+            $test['run']->save();
+        });
     }
 }

@@ -5,6 +5,7 @@ namespace PragmaRX\TestsWatcher\Support;
 use Joli\JoliNotif\Notification;
 use Joli\JoliNotif\NotifierFactory;
 use PragmaRX\TestsWatcher\Events\TestsFailed;
+use PragmaRX\TestsWatcher\Events\UserNotifiedOfFailure;
 
 class Notifier
 {
@@ -30,8 +31,10 @@ class Notifier
             return false;
         }
 
-        collect(config('ci.notifications.channels'))->filter(function ($value, $channel) use ($tests) {
+        collect(config('ci.notifications.channels'))->each(function ($value, $channel) use ($tests) {
             event(new TestsFailed($tests, $channel));
+
+            event(new UserNotifiedOfFailure($tests));
         });
     }
 

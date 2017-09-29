@@ -20,6 +20,8 @@ class CreateRunsStartEnd extends Migration
 			$table->timestamp('started_at');
 
             $table->timestamp('ended_at');
+
+            $table->timestamp('notified_at')->nullable();
 		});
 	}
 
@@ -35,6 +37,8 @@ class CreateRunsStartEnd extends Migration
             $table->dropColumn('started_at');
 
             $table->dropColumn('ended_at');
+
+            $table->dropColumn('notified_at');
         });
 	}
 }

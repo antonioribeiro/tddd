@@ -11,6 +11,7 @@ class Run extends Model
         'updated_at',
         'started_at',
         'ended_at',
+        'notified_at'
     ];
 
     protected $fillable = [
@@ -21,5 +22,6 @@ class Run extends Model
 	    'png',
         'started_at',
         'ended_at',
+        'notified_at',
     ];
 }
