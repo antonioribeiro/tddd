@@ -786,9 +786,22 @@ class Data
 			return substr_count($path, $project->path) > 0;
 		});
 
-		// at this point we have (hopefully only 1) project. Now we need
+		// Get filtered projects dependencies
+        $depends = $projects->filter(function($project) use ($filtered_projects) {
+            if (!is_null($depends = config("ci.projects.{$project->name}.depends"))) {
+                return collect($depends)->filter(function($item) use ($filtered_projects) {
+                    if (!is_null($filtered_projects->where('name', $item)->first())) {
+                        return true;
+                    }
+                });
+            }
+
+            return false;
+        });
+
+		// At this point we have (hopefully only 1) project. Now we need
 		// the suite(s) associated with the project.
-		return Suite::whereIn('project_id', $filtered_projects->pluck('id'))
+		return Suite::whereIn('project_id', $filtered_projects->merge($depends)->pluck('id'))
 				->get();
 	}
 

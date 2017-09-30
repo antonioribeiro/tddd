@@ -117,7 +117,10 @@ class Loader extends Base
     {
         foreach($watch_folders as $folder)
         {
-            $this->watchFolders[] = make_path([$path, $folder]);
+            $this->watchFolders[] = !file_exists($path = make_path([$path, $folder])) && file_exists($folder)
+                ? $folder
+                : $path
+            ;
         }
     }
 

@@ -92,7 +92,7 @@ class Watcher extends Base
 	{
 		$this->command->comment('Laravel-CI - Watcher');
 
-		if ( ! $this->is_initialized)
+		if (!$this->is_initialized)
 		{
 			$this->loader->loadEverything();
 
@@ -123,7 +123,7 @@ class Watcher extends Base
 
         foreach($this->loader->watchFolders as $folder)
 		{
-			if ( ! file_exists($folder))
+			if (!file_exists($folder))
 			{
 				$this->command->line("Folder {$folder} does not exists");
 
@@ -136,7 +136,7 @@ class Watcher extends Base
 
 			$this->listeners[$folder]->anything(function($event, $resource, $path) use ($me)
 			{
-				if ( ! $me->isExcluded($path))
+				if (!$me->isExcluded($path))
 				{
 					$me->fireEvent($event, $resource, $path);
 				}
