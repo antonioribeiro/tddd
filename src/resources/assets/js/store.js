@@ -10,6 +10,8 @@ export default {
 
         selectedTest: null,
 
+        selectedPanel: 'log',
+
         logVisible: false,
     },
 
@@ -22,6 +24,10 @@ export default {
 
         setSelectedTest(state, test) {
             state.selectedTest = test;
+        },
+
+        setSelectedPanel(state, panel) {
+            state.selectedPanel = panel;
         },
 
         setOpenTest(state, value) {

@@ -43310,6 +43310,8 @@ module.exports = Vue$3;
 
         selectedTest: null,
 
+        selectedPanel: 'log',
+
         logVisible: false
     },
 
@@ -43321,6 +43323,9 @@ module.exports = Vue$3;
         },
         setSelectedTest: function setSelectedTest(state, test) {
             state.selectedTest = test;
+        },
+        setSelectedPanel: function setSelectedPanel(state, panel) {
+            state.selectedPanel = panel;
         },
         setOpenTest: function setOpenTest(state, value) {
             state.openTest = value;
@@ -43553,7 +43558,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    computed: Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["mapState"])(['projects', 'selectedProject']),
+    computed: Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["mapState"])(['projects', 'selectedProject', 'selectedPanel']),
 
     mounted: function mounted() {
         this.$store.dispatch('loadProjects');
@@ -43562,7 +43567,11 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
     methods: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["mapMutations"])(['setSelectedProject']), Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["mapActions"])(['loadProjects']), {
         changeProject: function changeProject(project) {
-            this.$store.commit('setSelectedProject', { project: project, force: true });
+            if (this.selectedProject != project) {
+                this.$store.commit('setSelectedProject', { project: project, force: true });
+
+                this.$store.commit('setSelectedPanel', 'log');
+            }
         }
     })
 });
@@ -44468,30 +44477,25 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    data: function data() {
-        return {
-            selectedPanel: 'log'
-        };
-    },
-
-
-    computed: Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["mapState"])(['laravel', 'logVisible', 'selectedTest']),
+    computed: Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["mapState"])(['laravel', 'logVisible', 'selectedTest', 'selectedPanel']),
 
     methods: {
         setPanelLog: function setPanelLog() {
-            this.selectedPanel = 'log';
+            this.$store.commit('setSelectedPanel', 'log');
         },
         setPanelScreenshot: function setPanelScreenshot() {
-            this.selectedPanel = 'screenshot';
+            this.$store.commit('setSelectedPanel', 'screenshot');
         },
         setPanelHtml: function setPanelHtml() {
-            this.selectedPanel = 'html';
+            this.$store.commit('setSelectedPanel', 'html');
         },
         getPillColor: function getPillColor(button) {
             if (button == this.selectedPanel) {
@@ -44537,36 +44541,47 @@ var render = function() {
               ]),
               _vm._v(" "),
               _c("div", { staticClass: "modal-body" }, [
-                _c(
-                  "div",
-                  {
-                    class: "btn btn-pill " + this.getPillColor("log"),
-                    on: { click: this.setPanelLog }
-                  },
-                  [
-                    _vm._v(
-                      "\n                    command output\n                "
+                _vm.selectedTest.log
+                  ? _c(
+                      "div",
+                      {
+                        class: "btn btn-pill " + this.getPillColor("log"),
+                        on: { click: this.setPanelLog }
+                      },
+                      [
+                        _vm._v(
+                          "\n                    command output\n                "
+                        )
+                      ]
                     )
-                  ]
-                ),
+                  : _vm._e(),
                 _vm._v("\n                 \n                "),
-                _c(
-                  "div",
-                  {
-                    class: "btn btn-pill " + this.getPillColor("screenshot"),
-                    on: { click: this.setPanelScreenshot }
-                  },
-                  [_vm._v("\n                    screenshot\n                ")]
-                ),
+                _vm.selectedTest.run.screenshots
+                  ? _c(
+                      "div",
+                      {
+                        class:
+                          "btn btn-pill " + this.getPillColor("screenshot"),
+                        on: { click: this.setPanelScreenshot }
+                      },
+                      [
+                        _vm._v(
+                          "\n                    screenshots\n                "
+                        )
+                      ]
+                    )
+                  : _vm._e(),
                 _vm._v("\n                 \n                "),
-                _c(
-                  "div",
-                  {
-                    class: "btn btn-pill " + this.getPillColor("html"),
-                    on: { click: this.setPanelHtml }
-                  },
-                  [_vm._v("\n                    html\n                ")]
-                ),
+                _vm.selectedTest.html
+                  ? _c(
+                      "div",
+                      {
+                        class: "btn btn-pill " + this.getPillColor("html"),
+                        on: { click: this.setPanelHtml }
+                      },
+                      [_vm._v("\n                    html\n                ")]
+                    )
+                  : _vm._e(),
                 _vm._v(" "),
                 _c(
                   "div",

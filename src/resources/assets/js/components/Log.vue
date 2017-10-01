@@ -12,27 +12,29 @@
                 </div>
 
                 <div class="modal-body">
-                    <div :class="'btn btn-pill ' + this.getPillColor('log')" @click="this.setPanelLog">
+                    <div v-if="selectedTest.log" :class="'btn btn-pill ' + this.getPillColor('log')" @click="this.setPanelLog">
                         command output
                     </div>
                     &nbsp;
-                    <div :class="'btn btn-pill ' + this.getPillColor('screenshot')" @click="this.setPanelScreenshot">
-                        screenshot
+                    <div v-if="selectedTest.run.screenshots"  :class="'btn btn-pill ' + this.getPillColor('screenshot')" @click="this.setPanelScreenshot">
+                        screenshots
                     </div>
                     &nbsp;
-                    <div :class="'btn btn-pill ' + this.getPillColor('html')" @click="this.setPanelHtml">
+                    <div v-if="selectedTest.html" :class="'btn btn-pill ' + this.getPillColor('html')" @click="this.setPanelHtml">
                         html
                     </div>
 
                     <div :class="'tab-content modal-scroll ' + (this.selectedPanel == 'log' ? 'terminal' : '')">
                         <div v-if="selectedPanel == 'log'" v-html="selectedTest.log" :class="'tab-pane terminal ' + (selectedPanel == 'log' ? 'active' : '')">
                         </div>
+
                         <div v-if="selectedPanel == 'screenshot'" :class="'tab-pane ' + (selectedPanel == 'screenshot' ? 'active' : '')">
                             <div v-for="screenshot in JSON.parse(selectedTest.run.screenshots)" class="text-center">
                                 <h3>{{ String(screenshot).substring(screenshot.lastIndexOf('/') + 1) }}</h3>
                                 <img :src="makeScreenshot(screenshot)" :alt="screenshot" class="screenshot"/>
                             </div>
                         </div>
+
                         <div v-if="selectedPanel == 'html'"  v-html="selectedTest.html" :class="'tab-pane ' + (selectedPanel == 'html' ? 'active' : '')">
                         </div>
                     </div>
@@ -54,25 +56,19 @@
     import {mapActions} from 'vuex';
 
     export default {
-        data() {
-            return {
-                selectedPanel: 'log',
-            };
-        },
-
-        computed: mapState(['laravel', 'logVisible', 'selectedTest']),
+        computed: mapState(['laravel', 'logVisible', 'selectedTest', 'selectedPanel']),
 
         methods: {
             setPanelLog() {
-                this.selectedPanel = 'log';
+                this.$store.commit('setSelectedPanel', 'log');
             },
 
             setPanelScreenshot() {
-                this.selectedPanel = 'screenshot';
+                this.$store.commit('setSelectedPanel', 'screenshot');
             },
 
             setPanelHtml() {
-                this.selectedPanel = 'html';
+                this.$store.commit('setSelectedPanel', 'html');
             },
 
             getPillColor(button) {

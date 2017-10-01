@@ -20,7 +20,7 @@
     import {mapActions} from 'vuex'
 
     export default {
-        computed: mapState(['projects', 'selectedProject']),
+        computed: mapState(['projects', 'selectedProject', 'selectedPanel']),
 
         mounted() {
             this.$store.dispatch('loadProjects');
@@ -32,7 +32,11 @@
             ...mapActions(['loadProjects']),
 
             changeProject(project) {
-                this.$store.commit('setSelectedProject', {project, force: true});
+                if (this.selectedProject != project) {
+                    this.$store.commit('setSelectedProject', {project, force: true});
+
+                    this.$store.commit('setSelectedPanel', 'log');
+                }
             },
         }
     }

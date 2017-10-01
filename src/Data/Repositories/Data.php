@@ -481,6 +481,8 @@ class Data
 	 */
 	public function storeTestResult($test, $lines, $ok, $startedAt, $endedAt)
 	{
+	    info('storeTestResult');
+	    
 		$run = Run::create([
 	        'test_id' => $test->id,
 	        'was_ok' => $ok,
@@ -760,15 +762,20 @@ class Data
 	 */
 	private function getOutput($test, $outputFolder, $extension)
 	{
-		if (!$outputFolder)
+		if (empty($outputFolder))
 		{
 			return null;
 		}
 
-		return make_path([
+		$file = make_path([
             make_path([$test->suite->project->path, $outputFolder]),
             str_replace(['.php', '::', '\\', '/'],['', '.', '', ''], $test->name) . $extension,
         ]);
+
+		info($file);
+		info(file_exists($file));
+
+		return file_exists($file) ? $file : null;
 	}
 
 	/**
