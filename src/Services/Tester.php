@@ -174,8 +174,6 @@ class Tester extends Base {
 			return false;
 		}
 
-        $this->command->info($test);
-
         $this->dataRepository->markTestAsRunning($test);
 
 		$command = $this->addTee($test);

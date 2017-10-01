@@ -171,6 +171,22 @@ class Data
     }
 
     /**
+     * Get a list of png files to store in database.
+     *
+     * @param $test
+     * @param $log
+     * @return bool|mixed|null|string
+     */
+    private function getScreenshots($test, $log)
+    {
+        return json_encode(
+            $test->suite->tester->name !== 'dusk'
+                ? [$this->getOutput($test, $test->suite->tester->output_folder, $test->suite->tester->output_png_fail_extension)]
+                : $this->parseDuskScreenshots($log, $test->suite->tester->output_folder)
+        );
+    }
+
+    /**
 	 * Get all suites.
 	 *
 	 * @return \Illuminate\Database\Eloquent\Collection|static[]
@@ -257,6 +273,32 @@ class Data
         );
     }
 
+    /**
+     * Generate a lista of screenshots.
+     *
+     * @param $log
+     * @param $folder
+     * @return array
+     */
+    private function parseDuskScreenshots($log, $folder)
+    {
+        preg_match_all('/([0-9]\)+\s.+::)(.*)/', $log, $matches, PREG_SET_ORDER);
+
+        $result = [];
+
+        foreach ($matches as $line) {
+            $result[] = $folder.DIRECTORY_SEPARATOR."failure-{$line[2]}-0.png";
+        }
+
+        return $result;
+    }
+
+    /**
+     * Remove before word.
+     *
+     * @param $diff
+     * @return mixed
+     */
     private function removeBefore($diff)
     {
         return str_replace('before', '', $diff);
@@ -444,7 +486,7 @@ class Data
 	        'was_ok' => $ok,
 	        'log' => $this->linkFiles($lines) ?: '(empty)',
 		    'html' => $this->getOutput($test, $test->suite->tester->output_folder, $test->suite->tester->output_html_fail_extension),
-		    'png' => $this->getOutput($test, $test->suite->tester->output_folder, $test->suite->tester->output_png_fail_extension),
+		    'screenshots' => $this->getScreenshots($test, $lines),
             'started_at' => $startedAt,
             'ended_at' => $endedAt,
 		]);
@@ -718,21 +760,15 @@ class Data
 	 */
 	private function getOutput($test, $outputFolder, $extension)
 	{
-		if ( ! $outputFolder)
+		if (!$outputFolder)
 		{
 			return null;
 		}
 
-		$name = str_replace(['.php', '::', '\\', '/'],['', '.', '', ''], $test->name);
-
-		$path = make_path([$test->suite->project->path, $outputFolder]);
-
-		if (file_exists($file = make_path([$path, $name . $extension])))
-		{
-			return $this->encodeFile($file);
-		}
-
-		return null;
+		return make_path([
+            make_path([$test->suite->project->path, $outputFolder]),
+            str_replace(['.php', '::', '\\', '/'],['', '.', '', ''], $test->name) . $extension,
+        ]);
 	}
 
 	/**

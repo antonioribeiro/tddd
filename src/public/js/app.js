@@ -44465,6 +44465,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
 
 
 
@@ -44478,7 +44481,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
 
 
-    computed: Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["mapState"])(['logVisible', 'selectedTest']),
+    computed: Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["mapState"])(['laravel', 'logVisible', 'selectedTest']),
 
     methods: {
         setPanelLog: function setPanelLog() {
@@ -44496,6 +44499,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }
 
             return 'btn-outline-primary';
+        },
+        makeScreenshot: function makeScreenshot(screenshot) {
+            return this.laravel.url_prefix + '/image/download/' + btoa(screenshot);
+        },
+        baseName: function baseName(str) {
+            var base = new String(str).substring(str.lastIndexOf('/') + 1);
+
+            if (base.lastIndexOf(".") != -1) {
+                base = base.substring(0, base.lastIndexOf("."));
+            }
+
+            return base;
         }
     }
 });
@@ -44561,27 +44576,58 @@ var render = function() {
                       (this.selectedPanel == "log" ? "terminal" : "")
                   },
                   [
-                    this.selectedPanel == "log"
+                    _vm.selectedPanel == "log"
                       ? _c("div", {
-                          staticClass: "tab-pane active terminal",
-                          domProps: { innerHTML: _vm._s(this.selectedTest.log) }
+                          class:
+                            "tab-pane terminal " +
+                            (_vm.selectedPanel == "log" ? "active" : ""),
+                          domProps: { innerHTML: _vm._s(_vm.selectedTest.log) }
                         })
                       : _vm._e(),
                     _vm._v(" "),
-                    this.selectedPanel == "screenshot"
-                      ? _c("div", { staticClass: "tab-pane" }, [
-                          _c("img", {
-                            attrs: { src: this.selectedTest.image, alt: "" }
-                          })
-                        ])
+                    _vm.selectedPanel == "screenshot"
+                      ? _c(
+                          "div",
+                          {
+                            class:
+                              "tab-pane " +
+                              (_vm.selectedPanel == "screenshot"
+                                ? "active"
+                                : "")
+                          },
+                          _vm._l(
+                            JSON.parse(_vm.selectedTest.run.screenshots),
+                            function(screenshot) {
+                              return _c("div", { staticClass: "text-center" }, [
+                                _c("h3", [
+                                  _vm._v(
+                                    _vm._s(
+                                      String(screenshot).substring(
+                                        screenshot.lastIndexOf("/") + 1
+                                      )
+                                    )
+                                  )
+                                ]),
+                                _vm._v(" "),
+                                _c("img", {
+                                  staticClass: "screenshot",
+                                  attrs: {
+                                    src: _vm.makeScreenshot(screenshot),
+                                    alt: screenshot
+                                  }
+                                })
+                              ])
+                            }
+                          )
+                        )
                       : _vm._e(),
                     _vm._v(" "),
-                    this.selectedPanel == "html"
+                    _vm.selectedPanel == "html"
                       ? _c("div", {
-                          staticClass: "tab-pane",
-                          domProps: {
-                            innerHTML: _vm._s(this.selectedTest.html)
-                          }
+                          class:
+                            "tab-pane " +
+                            (_vm.selectedPanel == "html" ? "active" : ""),
+                          domProps: { innerHTML: _vm._s(_vm.selectedTest.html) }
                         })
                       : _vm._e()
                   ]

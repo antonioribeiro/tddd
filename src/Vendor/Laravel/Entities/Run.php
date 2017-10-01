@@ -19,7 +19,7 @@ class Run extends Model
 		'was_ok',
 	    'log',
 	    'html',
-	    'png',
+	    'screenshots',
         'started_at',
         'ended_at',
         'notified_at',

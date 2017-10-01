@@ -93,4 +93,11 @@ class DashboardController extends Controller
 
         return $this->success();
     }
+
+    public function imageDownload($filename)
+    {
+        return response()->download(
+            base64_decode($filename)
+        );
+    }
 }

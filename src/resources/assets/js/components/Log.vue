@@ -25,12 +25,15 @@
                     </div>
 
                     <div :class="'tab-content modal-scroll ' + (this.selectedPanel == 'log' ? 'terminal' : '')">
-                        <div v-if="this.selectedPanel == 'log'" v-html="this.selectedTest.log" class="tab-pane active terminal">
+                        <div v-if="selectedPanel == 'log'" v-html="selectedTest.log" :class="'tab-pane terminal ' + (selectedPanel == 'log' ? 'active' : '')">
                         </div>
-                        <div v-if="this.selectedPanel == 'screenshot'" class="tab-pane">
-                            <img :src="this.selectedTest.image" alt=""/>
+                        <div v-if="selectedPanel == 'screenshot'" :class="'tab-pane ' + (selectedPanel == 'screenshot' ? 'active' : '')">
+                            <div v-for="screenshot in JSON.parse(selectedTest.run.screenshots)" class="text-center">
+                                <h3>{{ String(screenshot).substring(screenshot.lastIndexOf('/') + 1) }}</h3>
+                                <img :src="makeScreenshot(screenshot)" :alt="screenshot" class="screenshot"/>
+                            </div>
                         </div>
-                        <div v-if="this.selectedPanel == 'html'"  v-html="this.selectedTest.html" class="tab-pane">
+                        <div v-if="selectedPanel == 'html'"  v-html="selectedTest.html" :class="'tab-pane ' + (selectedPanel == 'html' ? 'active' : '')">
                         </div>
                     </div>
                 </div>
@@ -47,8 +50,8 @@
 
 <script>
     import {mapState} from 'vuex';
-    import {mapMutations} from 'vuex'
-    import {mapActions} from 'vuex'
+    import {mapMutations} from 'vuex';
+    import {mapActions} from 'vuex';
 
     export default {
         data() {
@@ -57,7 +60,7 @@
             };
         },
 
-        computed: mapState(['logVisible', 'selectedTest']),
+        computed: mapState(['laravel', 'logVisible', 'selectedTest']),
 
         methods: {
             setPanelLog() {
@@ -78,6 +81,20 @@
                 }
 
                 return 'btn-outline-primary';
+            },
+
+            makeScreenshot(screenshot) {
+                return this.laravel.url_prefix+'/image/download/'+btoa(screenshot);
+            },
+
+            baseName(str) {
+                var base = new String(str).substring(str.lastIndexOf('/') + 1);
+
+                if (base.lastIndexOf(".") != -1) {
+                    base = base.substring(0, base.lastIndexOf("."));
+                }
+
+                return base;
             }
         }
     }
