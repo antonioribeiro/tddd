@@ -482,7 +482,7 @@ class Data
 	public function storeTestResult($test, $lines, $ok, $startedAt, $endedAt)
 	{
 	    info('storeTestResult');
-	    
+
 		$run = Run::create([
 	        'test_id' => $test->id,
 	        'was_ok' => $ok,

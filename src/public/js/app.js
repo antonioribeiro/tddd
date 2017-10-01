@@ -43863,7 +43863,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
         },
 
 
-        clearStatistics: function clearStatistics() {
+        clear: function clear() {
             this.statistics = {
                 count: 0,
                 enabled: 0,
@@ -43873,6 +43873,8 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
                 failed: 0,
                 idle: 0
             };
+
+            this.wasRunning = false;
         },
 
         sendNotifications: function sendNotifications() {
@@ -43882,7 +43884,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
         },
 
         makeStatistics: function makeStatistics(tests) {
-            this.clearStatistics();
+            this.clear();
 
             var key = null;
 

@@ -186,7 +186,7 @@
                     .then(() => this.loadTests());
             },
 
-            clearStatistics: function () {
+            clear: function () {
                 this.statistics = {
                     count: 0,
                     enabled: 0,
@@ -196,6 +196,8 @@
                     failed: 0,
                     idle: 0,
                 };
+
+                this.wasRunning = false;
             },
 
             sendNotifications: function () {
@@ -205,7 +207,7 @@
             },
 
             makeStatistics(tests) {
-                this.clearStatistics();
+                this.clear();
 
                 var key = null;
 
