@@ -111,6 +111,7 @@ class Data
 				'output_folder' => isset($data['output_folder']) ? $data['output_folder'] : null,
 				'output_html_fail_extension' => isset($data['output_html_fail_extension']) ? $data['output_html_fail_extension'] : null,
 				'output_png_fail_extension' => isset($data['output_png_fail_extension']) ? $data['output_png_fail_extension'] : null,
+                'require_tee' => isset($data['require_tee']) ? $data['require_tee'] : false,
 			]
 		);
 	}

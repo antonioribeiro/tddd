@@ -26,6 +26,7 @@ class Tester extends Base {
 	 * @var ShellExec
 	 */
 	private $shell;
+    private $teeFile;
 
     /**
      * Instantiate a Tester.
@@ -40,7 +41,58 @@ class Tester extends Base {
 		$this->shell = $shell;
 	}
 
-	/**
+    /**
+     * Add tee to test command.
+     *
+     * @param $test
+     * @return string
+     */
+    private function addTee($test)
+    {
+        $testCommand = $test->testCommand;
+
+        $this->teeFile = null;
+
+        if ($test->suite->tester->require_tee && ($tee = $this->getConfig('tee'))) {
+            $this->teeFile = tempnam($this->getConfig('tmp'), 'tw-');
+
+            $testCommand .= " | {$tee} > {$this->teeFile}";
+        }
+
+        return $testCommand;
+    }
+
+    /**
+     * Delete temporary tee file.
+     *
+     */
+    private function deleteTeeTempFile()
+    {
+        if (!is_null($this->teeFile) && file_exists($this->teeFile)) {
+            unlink($this->teeFile);
+        }
+    }
+
+    private function getOutput($process, $test)
+    {
+        if ($test->suite->tester->require_tee) {
+            return $this->getTeeFileContents();
+        }
+
+        return $process->getOutput();
+    }
+
+    /**
+     * @return bool|string
+     */
+    private function getTeeFileContents()
+    {
+        $content = file_get_contents($this->teeFile);
+
+        return $content;
+    }
+
+    /**
 	 * Run the tester.
 	 *
 	 * @param Command $command
@@ -117,49 +169,46 @@ class Tester extends Base {
 	 */
 	private function test()
 	{
-		$me = $this;
-
 		if (!$test = $this->dataRepository->getNextTestFromQueue())
 		{
 			return false;
 		}
 
-		$executeCommand = 'Executing '.$test->testCommand;
+        $this->command->info($test);
 
-		$this->dataRepository->markTestAsRunning($test);
+        $this->dataRepository->markTestAsRunning($test);
 
-		$this->command->drawLine($executeCommand);
+		$command = $this->addTee($test);
 
-		$this->command->line($executeCommand);
+		$this->command->drawLine($line = 'Executing '.$command);
 
-		foreach(range(0, $test->suite->retries-1) as $item)
+		$this->command->line($line);
+
+        foreach(range(0, $test->suite->retries-1) as $item)
 		{
-			$process = $this->shell->exec($test->testCommand, $test->suite->project->path, function($type, $buffer) use ($me)
+			$process = $this->shell->exec($command, $test->suite->project->path, function($type, $buffer)
 			{
 				if ($this->getConfig('show_progress'))
 				{
-					$me->showProgress($buffer);
+					$this->showProgress($buffer);
 				}
 			});
 
-			$lines = $process->getOutput();
+            $lines = $this->getOutput($process, $test);
 
-			if ($ok = ($process->getExitCode() === 0))
+			if ($ok = $this->testPassed($process->getExitCode(), $test))
 			{
 				break;
 			}
 
-			$this->command->line('retrying...');
+            $this->command->line('retrying...');
 		}
 
-		if ($this->dataRepository->storeTestResult($test, $lines, $ok, $this->shell->startedAt, $this->shell->endedAt))
-		{
-			$this->command->info('OK');
-		}
-		else
-		{
-			$this->command->error('FAILED');
-		}
+        $this->command->info($ok ? 'OK' : 'FAILED');
+
+        $this->dataRepository->storeTestResult($test, $lines, $ok, $this->shell->startedAt, $this->shell->endedAt);
+
+		$this->deleteTeeTempFile($test);
 
 		return true;
 	}
@@ -169,4 +218,18 @@ class Tester extends Base {
 		$this->command->line($line);
 	}
 
+    private function testPassed($exitCode, $test)
+    {
+        if ($exitCode !== 0) {
+            return false;
+        }
+
+        if ($test->suite->tester->require_tee) {
+            if (strpos('ERROR', $this->getTeeFileContents()) !== false) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

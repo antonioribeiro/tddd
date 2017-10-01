@@ -12,5 +12,6 @@ class Tester extends Model
 		'output_folder',
 		'output_html_fail_extension',
 		'output_png_fail_extension',
+        'require_tee'
 	];
 }

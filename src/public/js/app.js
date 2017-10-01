@@ -43774,8 +43774,6 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 //
 //
 //
-//
-//
 
 
 
@@ -43921,7 +43919,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
         doOpenTest: function doOpenTest() {
             var _this3 = this;
 
-            if (!this.openTest) {
+            if (!this.openTest || !this.selectedProject) {
                 return false;
             }
 
@@ -43964,178 +43962,170 @@ var render = function() {
     ? _c(
         "div",
         [
-          _c("div", [
-            _c("div", { staticClass: "row table-header" }, [
-              _c("div", { staticClass: "col-md-12 title" }, [
-                _vm._v(
-                  "\n                " +
-                    _vm._s(_vm.selectedProject.name) +
-                    "\n            "
-                )
-              ])
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "card toolbar" }, [
-              _c("div", { staticClass: "card-block" }, [
-                _c("div", { staticClass: "row align-middle" }, [
-                  _c(
-                    "div",
-                    { staticClass: "col-md-7 align-middle" },
-                    [
-                      _c("state", {
-                        attrs: {
-                          state: "idle",
-                          text: "tests: " + this.statistics.count
-                        }
-                      }),
-                      _vm._v(" \n                        "),
-                      _c("state", {
-                        attrs: {
-                          state: "ok",
-                          text: "success: " + this.statistics.success
-                        }
-                      }),
-                      _vm._v(" \n                        "),
-                      _c("state", {
-                        attrs: {
-                          state: "failed",
-                          text: "failed: " + this.statistics.failed
-                        }
-                      }),
-                      _vm._v(" \n                        "),
-                      _c("state", {
-                        attrs: {
-                          state: "running",
-                          text: "running: " + this.statistics.running
-                        }
-                      }),
-                      _vm._v(" \n                        "),
-                      _c("state", {
-                        attrs: {
-                          state: "enabled",
-                          text: "enabled: " + this.statistics.enabled
-                        }
-                      }),
-                      _vm._v(" \n                        "),
-                      _c("state", {
-                        attrs: {
-                          state: "disabled",
-                          text:
-                            "disabled: " +
-                            (this.statistics.count - this.statistics.enabled)
-                        }
-                      }),
-                      _vm._v(" \n                        "),
-                      _c("state", {
-                        attrs: {
-                          state: "idle",
-                          text: "idle: " + this.statistics.idle
-                        }
-                      }),
-                      _vm._v(" \n                        "),
-                      _c("state", {
-                        attrs: {
-                          state: "running",
-                          text: "queued: " + this.statistics.queued
-                        }
-                      }),
-                      _vm._v(" \n                    ")
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "div",
-                    { staticClass: "col-md-5 text-right align-middle" },
-                    [
-                      _c("div", { staticClass: "row" }, [
-                        _c("div", { staticClass: "col-md-7" }, [
-                          _c(
-                            "div",
-                            {
-                              staticClass:
-                                "input-group mb-2 mb-sm-0 search-group"
-                            },
-                            [
-                              _c("input", {
-                                directives: [
-                                  {
-                                    name: "model",
-                                    rawName: "v-model",
-                                    value: _vm.search,
-                                    expression: "search"
-                                  }
-                                ],
-                                staticClass: "form-control",
-                                attrs: { placeholder: "search" },
-                                domProps: { value: _vm.search },
-                                on: {
-                                  input: function($event) {
-                                    if ($event.target.composing) {
-                                      return
-                                    }
-                                    _vm.search = $event.target.value
-                                  }
-                                }
-                              }),
-                              _vm._v(" "),
-                              _vm.search
-                                ? _c(
-                                    "div",
-                                    {
-                                      staticClass:
-                                        "input-group-addon search-addon",
-                                      on: {
-                                        click: function($event) {
-                                          _vm.search = ""
-                                        }
-                                      }
-                                    },
-                                    [_c("i", { staticClass: "fa fa-trash" })]
-                                  )
-                                : _vm._e()
-                            ]
-                          )
-                        ]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "col-md-5" }, [
-                          _c(
-                            "div",
-                            {
-                              staticClass: "btn btn-danger",
-                              on: {
-                                click: function($event) {
-                                  _vm.runAll()
-                                }
+          _c("div", { staticClass: "row table-header" }, [
+            _c("div", { staticClass: "col-md-12 title" }, [
+              _vm._v(
+                "\n            " +
+                  _vm._s(_vm.selectedProject.name) +
+                  "\n        "
+              )
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "card toolbar" }, [
+            _c("div", { staticClass: "card-block" }, [
+              _c("div", { staticClass: "row align-middle" }, [
+                _c(
+                  "div",
+                  { staticClass: "col-md-7 align-middle" },
+                  [
+                    _c("state", {
+                      attrs: {
+                        state: "idle",
+                        text: "tests: " + this.statistics.count
+                      }
+                    }),
+                    _vm._v(" \n                    "),
+                    _c("state", {
+                      attrs: {
+                        state: "ok",
+                        text: "success: " + this.statistics.success
+                      }
+                    }),
+                    _vm._v(" \n                    "),
+                    _c("state", {
+                      attrs: {
+                        state: "failed",
+                        text: "failed: " + this.statistics.failed
+                      }
+                    }),
+                    _vm._v(" \n                    "),
+                    _c("state", {
+                      attrs: {
+                        state: "running",
+                        text: "running: " + this.statistics.running
+                      }
+                    }),
+                    _vm._v(" \n                    "),
+                    _c("state", {
+                      attrs: {
+                        state: "enabled",
+                        text: "enabled: " + this.statistics.enabled
+                      }
+                    }),
+                    _vm._v(" \n                    "),
+                    _c("state", {
+                      attrs: {
+                        state: "disabled",
+                        text:
+                          "disabled: " +
+                          (this.statistics.count - this.statistics.enabled)
+                      }
+                    }),
+                    _vm._v(" \n                    "),
+                    _c("state", {
+                      attrs: {
+                        state: "idle",
+                        text: "idle: " + this.statistics.idle
+                      }
+                    }),
+                    _vm._v(" \n                    "),
+                    _c("state", {
+                      attrs: {
+                        state: "running",
+                        text: "queued: " + this.statistics.queued
+                      }
+                    }),
+                    _vm._v(" \n                ")
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c("div", { staticClass: "col-md-5 text-right align-middle" }, [
+                  _c("div", { staticClass: "row" }, [
+                    _c("div", { staticClass: "col-md-7" }, [
+                      _c(
+                        "div",
+                        {
+                          staticClass: "input-group mb-2 mb-sm-0 search-group"
+                        },
+                        [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.search,
+                                expression: "search"
                               }
-                            },
-                            [
-                              _vm._v(
-                                "\n                                    run all\n                                "
-                              )
-                            ]
-                          ),
+                            ],
+                            staticClass: "form-control",
+                            attrs: { placeholder: "search" },
+                            domProps: { value: _vm.search },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.search = $event.target.value
+                              }
+                            }
+                          }),
                           _vm._v(" "),
-                          _c(
-                            "div",
-                            {
-                              staticClass: "btn btn-warning",
-                              on: {
-                                click: function($event) {
-                                  _vm.reset()
-                                }
-                              }
-                            },
-                            [
-                              _vm._v(
-                                "\n                                    reset state\n                                "
+                          _vm.search
+                            ? _c(
+                                "div",
+                                {
+                                  staticClass: "input-group-addon search-addon",
+                                  on: {
+                                    click: function($event) {
+                                      _vm.search = ""
+                                    }
+                                  }
+                                },
+                                [_c("i", { staticClass: "fa fa-trash" })]
                               )
-                            ]
+                            : _vm._e()
+                        ]
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-md-5" }, [
+                      _c(
+                        "div",
+                        {
+                          staticClass: "btn btn-danger",
+                          on: {
+                            click: function($event) {
+                              _vm.runAll()
+                            }
+                          }
+                        },
+                        [
+                          _vm._v(
+                            "\n                                run all\n                            "
                           )
-                        ])
-                      ])
-                    ]
-                  )
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        {
+                          staticClass: "btn btn-warning",
+                          on: {
+                            click: function($event) {
+                              _vm.reset()
+                            }
+                          }
+                        },
+                        [
+                          _vm._v(
+                            "\n                                reset state\n                            "
+                          )
+                        ]
+                      )
+                    ])
+                  ])
                 ])
               ])
             ])

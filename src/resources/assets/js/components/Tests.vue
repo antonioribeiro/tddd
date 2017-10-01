@@ -1,44 +1,42 @@
 <template>
     <div v-if="selectedProject">
-        <div>
-            <div class="row table-header">
-                <div class="col-md-12 title">
-                    {{ selectedProject.name }}
-                </div>
+        <div class="row table-header">
+            <div class="col-md-12 title">
+                {{ selectedProject.name }}
             </div>
+        </div>
 
-            <div class="card toolbar">
-                <div class="card-block">
-                    <div class="row align-middle">
-                        <div class="col-md-7 align-middle">
-                            <state state="idle" :text="'tests: '+this.statistics.count"></state>&nbsp;
-                            <state state="ok" :text="'success: '+this.statistics.success"></state>&nbsp;
-                            <state state="failed" :text="'failed: '+this.statistics.failed"></state>&nbsp;
-                            <state state="running" :text="'running: '+this.statistics.running"></state>&nbsp;
-                            <state state="enabled" :text="'enabled: '+this.statistics.enabled"></state>&nbsp;
-                            <state state="disabled" :text="'disabled: '+(this.statistics.count-this.statistics.enabled)"></state>&nbsp;
-                            <state state="idle" :text="'idle: '+this.statistics.idle"></state>&nbsp;
-                            <state state="running" :text="'queued: '+this.statistics.queued"></state>&nbsp;
-                        </div>
+        <div class="card toolbar">
+            <div class="card-block">
+                <div class="row align-middle">
+                    <div class="col-md-7 align-middle">
+                        <state state="idle" :text="'tests: '+this.statistics.count"></state>&nbsp;
+                        <state state="ok" :text="'success: '+this.statistics.success"></state>&nbsp;
+                        <state state="failed" :text="'failed: '+this.statistics.failed"></state>&nbsp;
+                        <state state="running" :text="'running: '+this.statistics.running"></state>&nbsp;
+                        <state state="enabled" :text="'enabled: '+this.statistics.enabled"></state>&nbsp;
+                        <state state="disabled" :text="'disabled: '+(this.statistics.count-this.statistics.enabled)"></state>&nbsp;
+                        <state state="idle" :text="'idle: '+this.statistics.idle"></state>&nbsp;
+                        <state state="running" :text="'queued: '+this.statistics.queued"></state>&nbsp;
+                    </div>
 
-                        <div class="col-md-5 text-right align-middle">
-                            <div class="row">
-                                <div class="col-md-7">
-                                    <div class="input-group mb-2 mb-sm-0 search-group">
-                                        <input v-model="search" class="form-control" placeholder="search">
-                                        <div v-if="search" @click="search = ''" class="input-group-addon search-addon">
-                                            <i class="fa fa-trash"></i>
-                                        </div>
+                    <div class="col-md-5 text-right align-middle">
+                        <div class="row">
+                            <div class="col-md-7">
+                                <div class="input-group mb-2 mb-sm-0 search-group">
+                                    <input v-model="search" class="form-control" placeholder="search">
+                                    <div v-if="search" @click="search = ''" class="input-group-addon search-addon">
+                                        <i class="fa fa-trash"></i>
                                     </div>
                                 </div>
+                            </div>
 
-                                <div class="col-md-5">
-                                    <div class="btn btn-danger" @click="runAll()">
-                                        run all
-                                    </div>
-                                    <div class="btn btn-warning" @click="reset()">
-                                        reset state
-                                    </div>
+                            <div class="col-md-5">
+                                <div class="btn btn-danger" @click="runAll()">
+                                    run all
+                                </div>
+                                <div class="btn btn-warning" @click="reset()">
+                                    reset state
                                 </div>
                             </div>
                         </div>
@@ -253,7 +251,7 @@
             },
 
             doOpenTest() {
-                if (!this.openTest) {
+                if (!this.openTest || !this.selectedProject) {
                     return false;
                 }
 
