@@ -8608,3 +8608,17 @@ h3 {
   width: 98%;
 }
 
+.table-test-name {
+  font-weight: 700 !important;
+  color: #000000;
+}
+
+.table-test-path {
+  font-weight: 100 !important;
+  color: #ccd3d8;
+}
+
+.table-link {
+  cursor: pointer;
+}
+

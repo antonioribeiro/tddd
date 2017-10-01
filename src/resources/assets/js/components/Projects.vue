@@ -36,6 +36,8 @@
                     this.$store.commit('setSelectedProject', {project, force: true});
 
                     this.$store.commit('setSelectedPanel', 'log');
+
+                    this.$store.commit('setWasRunning', false);
                 }
             },
         }

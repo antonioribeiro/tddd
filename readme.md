@@ -143,11 +143,11 @@ Also your projects and test suites:
 ],
 ```
 
-For the Dashboard you just need to create a route and add render this view:
+## Troubleshooting
 
-``` php
-return View::make('pragmarx/ci::dashboard');
-```
+#### Tests are running fine in terminal but failing in the dashboard? 
+
+You have first to remember they are being executed in isolation, and, also, the environment is not exactly the same, so things like a cache and session may affect yoru results. 
 
 ## Requirements
 

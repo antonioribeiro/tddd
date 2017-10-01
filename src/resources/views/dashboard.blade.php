@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="UTF-8">
-		<title>{{ config('ci.name') }}</title>
+		<title>{{ config('ci.names.dashboard') }}</title>
 	</head>
 
     <script>
@@ -15,7 +15,7 @@
 
 	<body>
         <nav class="navbar navbar-toggleable-md navbar-inverse bg-inverse fixed-top">
-            <a class="navbar-brand" href="#">{{ config('ci.name') }}</a>
+            <a class="navbar-brand" href="#">{{ config('ci.names.dashboard') }}</a>
         </nav>
 
         <div id="app">

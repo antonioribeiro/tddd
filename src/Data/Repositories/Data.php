@@ -112,6 +112,7 @@ class Data
 				'output_html_fail_extension' => isset($data['output_html_fail_extension']) ? $data['output_html_fail_extension'] : null,
 				'output_png_fail_extension' => isset($data['output_png_fail_extension']) ? $data['output_png_fail_extension'] : null,
                 'require_tee' => isset($data['require_tee']) ? $data['require_tee'] : false,
+                'error_pattern' => isset($data['error_pattern']) ? $data['error_pattern'] : false,
 			]
 		);
 	}
@@ -210,6 +211,7 @@ class Data
 
 		$test = Test::updateOrCreate(
 			[
+                'path' => dirname($file->getRealPath()),
 	            'name' => $file->getRelativePathname(),
 	            'suite_id' => $suite->id,
 			]
@@ -229,7 +231,9 @@ class Data
             'id' => $test->id,
             'project_name' => $test->suite->project->name,
             'project_id' => $test->suite->project->id,
+            'path' => $test->path.DIRECTORY_SEPARATOR,
             'name' => $test->name,
+            'open_file_url' => route('tests-watcher.file.open', ['filename' => base64_encode($test->path.DIRECTORY_SEPARATOR.$test->name)]),
             'updated_at' => $test->updated_at->diffForHumans(),
             'state' => $test->state,
             'enabled' => $test->enabled,
@@ -481,8 +485,6 @@ class Data
 	 */
 	public function storeTestResult($test, $lines, $ok, $startedAt, $endedAt)
 	{
-	    info('storeTestResult');
-
 		$run = Run::create([
 	        'test_id' => $test->id,
 	        'was_ok' => $ok,
@@ -771,9 +773,6 @@ class Data
             make_path([$test->suite->project->path, $outputFolder]),
             str_replace(['.php', '::', '\\', '/'],['', '.', '', ''], $test->name) . $extension,
         ]);
-
-		info($file);
-		info(file_exists($file));
 
 		return file_exists($file) ? $file : null;
 	}

@@ -13,6 +13,8 @@ export default {
         selectedPanel: 'log',
 
         logVisible: false,
+
+        wasRunning: false,
     },
 
     mutations: {
@@ -44,6 +46,10 @@ export default {
 
         setTests(state, tests) {
             state.selectedProject.tests = tests;
+        },
+
+        setWasRunning(state, wasIt) {
+            state.wasRunning = wasIt;
         },
     },
 

@@ -26,7 +26,6 @@ Vue.prototype.$http = window.axios;
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-Vue.component('example', require('./components/Example.vue'));
 Vue.component('projects', require('./components/Projects.vue'));
 Vue.component('tests', require('./components/Tests.vue'));
 Vue.component('state', require('./components/State.vue'));

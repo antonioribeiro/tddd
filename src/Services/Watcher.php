@@ -90,7 +90,7 @@ class Watcher extends Base
 	 */
 	private function initialize()
 	{
-		$this->command->comment('Laravel-CI - Watcher');
+        $this->command->comment($this->getConfig('names.watcher'));
 
 		if (!$this->is_initialized)
 		{

@@ -8,6 +8,7 @@ class Test extends Model
 
     protected $fillable = [
 		'suite_id',
+        'path',
 		'name',
 		'state',
 	];

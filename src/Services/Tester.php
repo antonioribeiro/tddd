@@ -101,7 +101,7 @@ class Tester extends Base {
 	{
 		$this->command = $command;
 
-		$this->command->comment('Laravel-CI - Tester');
+		$this->command->comment($this->getConfig('names.worker'));
 
 		$this->startTester();
 	}
@@ -222,12 +222,12 @@ class Tester extends Base {
             return false;
         }
 
-        if ($test->suite->tester->require_tee) {
-            if (strpos('ERROR', $this->getTeeFileContents()) !== false) {
-                return true;
-            }
+        if (!$test->suite->tester->require_tee) {
+            return true;
         }
 
-        return false;
+        preg_match_all("/{$test->suite->tester->error_pattern}/", $this->getTeeFileContents(), $matches, PREG_SET_ORDER);
+
+        return count($matches) == 0;
     }
 }

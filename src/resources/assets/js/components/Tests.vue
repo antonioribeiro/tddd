@@ -51,12 +51,12 @@
                     <th>
                         <input @click="enableAll()" type="checkbox" :checked="allEnabled()">
                     </th>
-                    <th>run</th>
-                    <th width="7%">state</th>
-                    <th width="70%">test</th>
+                    <th>run it</th>
+                    <th>state</th>
+                    <th width="55%">test</th>
                     <th>run time</th>
                     <th>last run</th>
-                    <th>log</th>
+                    <th width="5%">log</th>
                 </tr>
             </thead>
 
@@ -78,13 +78,16 @@
                     </td>
 
                     <td :class="'state state-'+test.state">
-                        <!--<state :state="test.state"></state>-->
-
                         {{ test.state }}
+
                         <i v-if="test.state == 'running'" class="fa fa-spinner fa-pulse  fa-spin fa-fw"></i>
                     </td>
 
-                    <td>{{ test.name }}</td>
+                    <td>
+                        <div @click="openFile(test.open_file_url)" class="table-link">
+                            <span class="table-test-path">{{ test.path }}</span><span class="table-test-name">{{ test.name }}</span>
+                        </div>
+                    </td>
 
                     <td>{{ test.time }}</td>
 
@@ -110,7 +113,14 @@
 
     export default {
         computed: {
-            ...mapState(['laravel', 'projects', 'selectedProject', 'openTest', 'selectedTest']),
+            ...mapState([
+                'laravel',
+                'projects',
+                'selectedProject',
+                'openTest',
+                'selectedTest',
+                'wasRunning',
+            ]),
 
             tests() {
                 var vue = this;
@@ -138,8 +148,6 @@
         data() {
             return {
                 statistics: {},
-
-                wasRunning: false,
 
                 search: '',
             }
@@ -186,6 +194,10 @@
                     .then(() => this.loadTests());
             },
 
+            openFile(file) {
+                axios.get(file);
+            },
+
             clear: function () {
                 this.statistics = {
                     count: 0,
@@ -196,8 +208,6 @@
                     failed: 0,
                     idle: 0,
                 };
-
-                this.wasRunning = false;
             },
 
             sendNotifications: function () {
@@ -245,7 +255,7 @@
                     this.sendNotifications();
                 }
 
-                this.wasRunning = this.isRunning();
+                this.$store.commit('setWasRunning', this.isRunning());
             },
 
             isRunning() {

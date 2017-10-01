@@ -243,3 +243,17 @@ table > tbody > tr > td.state.state-failed {
 .screenshot {
   width: 98%;
 }
+
+.table-test-name {
+  font-weight: 700 !important;
+  color: $brand-darkest;
+}
+
+.table-test-path {
+  font-weight: 100 !important;
+  color: $brand-gray-darker;
+}
+
+.table-link {
+  cursor: pointer;
+}
