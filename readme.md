@@ -15,14 +15,14 @@
 
 #### Dashboard
 
-![visits](https://raw.githubusercontent.com/antonioribeiro/ci/master/docs/screenshots/dashboard.png)
+![visits](https://raw.githubusercontent.com/antonioribeiro/ci/master/docs/dashboard.png)
 
 #### Error Log
-![visits](https://raw.githubusercontent.com/antonioribeiro/ci/master/docs/screenshots/errorlog1.png)
+![visits](https://raw.githubusercontent.com/antonioribeiro/ci/master/docs/errorlog1.png)
 
-![visits](https://raw.githubusercontent.com/antonioribeiro/ci/master/docs/screenshots/errorlog2.png)
+![visits](https://raw.githubusercontent.com/antonioribeiro/ci/master/docs/errorlog2.png)
 
-![visits](https://raw.githubusercontent.com/antonioribeiro/ci/master/docs/screenshots/errorlog3.png)
+![visits](https://raw.githubusercontent.com/antonioribeiro/ci/master/docs/errorlog3.png)
 
 ## Command Line Interface
 
