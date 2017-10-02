@@ -20,10 +20,10 @@ class Suite extends Model
 	public function getTestsFullPathAttribute($value)
 	{
 		return make_path(
-				[
-					$this->project->tests_full_path,
-					$this->tests_path
-				]
+            [
+                $this->project->tests_full_path,
+                $this->tests_path
+            ]
 		);
 	}
 

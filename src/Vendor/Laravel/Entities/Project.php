@@ -15,10 +15,10 @@ class Project extends Model
 	public function getTestsFullPathAttribute($value)
 	{
 		return make_path(
-				[
-					$this->path,
-					$this->tests_path,
-				]
+            [
+                $this->path,
+                $this->tests_path,
+            ]
 		);
 	}
 }

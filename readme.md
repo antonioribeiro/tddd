@@ -1,15 +1,8 @@
-# Continuous Integration Package
+# Tests Watcher
 
-[![Latest Stable Version](https://img.shields.io/packagist/v/pragmarx/ci.svg?style=flat-square)](https://packagist.org/packages/pragmarx/ci) 
-[![License](https://img.shields.io/badge/license-BSD_3_Clause-brightgreen.svg?style=flat-square)](LICENSE)
-
-### A Self-Hosted Continuous Integration Service and a Dashboard.
-
-#### Compatible with Laravel 4 & 5 (currently in alpha)
+### A Self-Hosted Continuous Testing Service and a Dashboard.
 
 ## Dashboard View
-
-The Dashboard, built using [Facebook's React Javascript Library](http://facebook.github.io/react/), displays and gives you control of your projects and project tests. This is what you'll see and will be able to do with it:
 
 * Project List: click a project link to see all its tests.
 * Checkboxes to enable/disable a test. Once disabled if the watcher catches a change in resources, that test will not fire.
@@ -22,14 +15,14 @@ The Dashboard, built using [Facebook's React Javascript Library](http://facebook
 
 #### Dashboard
 
-![visits](https://raw.githubusercontent.com/antonioribeiro/ci/master/src/views/screenshots/dashboard.png)
+![visits](https://raw.githubusercontent.com/antonioribeiro/ci/master/docs/screenshots/dashboard.png)
 
 #### Error Log
-![visits](https://raw.githubusercontent.com/antonioribeiro/ci/master/src/views/screenshots/errorlog1.png)
+![visits](https://raw.githubusercontent.com/antonioribeiro/ci/master/docs/screenshots/errorlog1.png)
 
-![visits](https://raw.githubusercontent.com/antonioribeiro/ci/master/src/views/screenshots/errorlog2.png)
+![visits](https://raw.githubusercontent.com/antonioribeiro/ci/master/docs/screenshots/errorlog2.png)
 
-![visits](https://raw.githubusercontent.com/antonioribeiro/ci/master/src/views/screenshots/errorlog3.png)
+![visits](https://raw.githubusercontent.com/antonioribeiro/ci/master/docs/screenshots/errorlog3.png)
 
 ## Command Line Interface
 

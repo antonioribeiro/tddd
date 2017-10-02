@@ -1,9 +1,12 @@
 {
     "name": "pragmarx/ci",
 
-    "description": "A Tests Wacher Service & Dashboard Package",
+    "description": "A Tests Watcher Service & Dashboard Package",
 
-    "keywords": ["laravel", "ci", "continuous integration", "test", "testing", "tdd", "bdd", "watcher"],
+    "keywords": [
+        "laravel", "ci", "continuous integration", "test", "testing", "tdd", "bdd", "watcher",
+        "phpunit", "dusk", "behat", "phpspec", "codeception", "atoum", "tester"
+    ],
 
     "license": "BSD-3-Clause",
 
@@ -16,17 +19,24 @@
     ],
 
     "require": {
-        "php": ">=5.4.0",
+        "php": ">=5.4",
         "pragmarx/support": "~0.5",
         "sensiolabs/ansi-to-html": "~1",
         "symfony/process": "^3",
         "cboden/ratchet": "^0.4",
-        "jolicode/jolinotif": "^1.2"
+        "jolicode/jolinotif": "^1.2",
+        "symfony/yaml": "~3.2"
+    },
+
+    "require-dev": {
+        "phpunit/phpunit": "~5.7",
+        "orchestra/testbench": "~3.4"
     },
 
     "autoload": {
         "psr-4": {
-            "PragmaRX\\TestsWatcher\\": "src/"
+            "PragmaRX\\TestsWatcher\\": "src/",
+            "PragmaRX\\TestsWatcher\\Tests\\": "tests/"
         },
         "psr-0": {
             "JasonLewis\\ResourceWatcher": "src/Support/jasonlewis/resource-watcher/src"
