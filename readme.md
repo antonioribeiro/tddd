@@ -10,6 +10,8 @@
 * Enable/disable a test. Once disabled if the watcher catches a change in resources, that test will not fire.
 * Realtime test state: "idle", "running", "queued", "ok" and "failed".
 * "Show" button, to display the error log of failed tests.
+* Ready for PHPUnit, Laravel Dusk, Codeception, phpspec, atoum and more.
+* Highly configurable, watch anything & test everything!
 
 ### Screenshots
 
