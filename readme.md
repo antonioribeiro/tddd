@@ -5,10 +5,10 @@
 ## Dashboard View
 
 * Project List: click a project link to see all its tests.
-* Checkboxes to enable/disable a test. Once disabled if the watcher catches a change in resources, that test will not fire.
-* "Run" button, to manually fire a test.
-* Test 'last run' time.
-* Current Test "State": tests states are "running", "queued", "ok" and "failed".
+* Open files directly in your source code editor (PHPStorm, Sublime Text...).
+* Error log with source code linked, go strait to the error line in your source code.
+* Enable/disable a test. Once disabled if the watcher catches a change in resources, that test will not fire.
+* Realtime test state: "idle", "running", "queued", "ok" and "failed".
 * "Show" button, to display the error log of failed tests.
 
 ### Screenshots
