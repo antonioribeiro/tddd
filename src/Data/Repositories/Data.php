@@ -315,6 +315,8 @@ class Data
      */
     private function resetTest($test)
     {
+        Queue::where('test_id', $test->id)->delete();
+
         $test->state = self::STATE_IDLE;
 
         $test->timestamps = false;
