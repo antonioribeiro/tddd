@@ -71,6 +71,15 @@ This package was tested and is known to be compatible with
 
 ## Installing
 
+### TLDR;
+
+- Install via Composer
+- Publish the configuration
+- Migrate the database
+- Open http://site.dev/tests-watcher/dashboard
+
+### The long version
+
 Require it with [Composer](http://getcomposer.org/):
 
 ``` bash
