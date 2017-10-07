@@ -81,6 +81,8 @@ class Loader extends Base
      */
     public function loadProjects()
     {
+        $this->dataRepository->clearSuites();
+
         foreach($this->getConfig('projects') as $name => $data)
         {
             $this->command->line("Project '{$name}'");
@@ -91,7 +93,7 @@ class Loader extends Base
             {
                 $this->command->line("  -- suite '{$suite_name}'");
 
-                $this->dataRepository->createOrUpdateSuite($name, $project->id, $suite_data);
+                $this->dataRepository->createOrUpdateSuite($suite_name, $project->id, $suite_data);
             }
 
             $this->addToWatchFolders($data['path'], $data['watch_folders']);

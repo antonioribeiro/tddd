@@ -916,6 +916,15 @@ class Data
     }
 
     /**
+     * Delete all from projects table.
+     *
+     */
+    public function clearSuites()
+    {
+        Database::statement('delete from ci_suites');
+    }
+
+    /**
      * Mark tests as notified.
      *
      * @param $tests
