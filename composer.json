@@ -22,10 +22,7 @@
         "php": ">=5.4",
         "pragmarx/support": "~0.5",
         "sensiolabs/ansi-to-html": "~1",
-        "symfony/process": "^3",
-        "cboden/ratchet": "^0.4",
-        "jolicode/jolinotif": "^1.2",
-        "symfony/yaml": "~3.2"
+        "symfony/process": "^3"
     },
 
     "require-dev": {
