@@ -51,13 +51,13 @@ class Loader extends Base
      */
     public function loadEverything()
     {
-        $this->command->line('Loading testers...');
+        $this->command->info('Loading testers...');
         $this->loadTesters();
 
-        $this->command->line('Loading projects and suites...');
+        $this->command->info('Loading projects and suites...');
         $this->loadProjects();
 
-        $this->command->line('Loading tests...');
+        $this->command->info('Loading tests...');
         $this->loadTests();
     }
 
@@ -83,10 +83,14 @@ class Loader extends Base
     {
         foreach($this->getConfig('projects') as $name => $data)
         {
+            $this->command->line("Project '{$name}'");
+
             $project = $this->dataRepository->createOrUpdateProject($name, $data['path'], $data['tests_path']);
 
             foreach($data['suites'] as $suite_name => $suite_data)
             {
+                $this->command->line("  -- suite '{$suite_name}'");
+
                 $this->dataRepository->createOrUpdateSuite($name, $project->id, $suite_data);
             }
 
