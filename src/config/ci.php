@@ -27,121 +27,25 @@ return [
      *
      */
     'projects' => [
-        'laravel-project (dusk)' => [
+        'laravel-project' => [
             'path' => $basePath,
             'watch_folders' => [
                 'app',
                 'tests'
             ],
-            'exclude' => [
-                'tests/Browser/console/',
-                'tests/Browser/screenshots/',
-            ],
+            'exclude' => [],
             'depends' => [],
             'tests_path' => 'tests',
             'suites' => [
                 'unit' => [
                     'tester' => 'dusk',
-                    'tests_path' => 'Browser',
+                    'tests_path' => '',
                     'command_options' => '',
                     'file_mask' => '*Test.php',
                     'retries' => 0,
                 ]
             ],
         ],
-
-        //        'pragmarx/firewall' => [
-        //            'path' => "/a/completely/different/root/path/vendor/pragmarx/firewall",
-        //            'watch_folders' => [
-        //                'src',
-        //                'tests',
-        //                '/whatever/path/you/need/here'
-        //            ],
-        //            'depends' => [
-        //                'pragmarx/random',
-        //            ],
-        //            'exclude' => [
-        //                'tests/_output/',
-        //                'tests/databases/',
-        //                'tests/geoipdb/',
-        //                'tests/files/iplist.txt',
-        //            ],
-        //            'tests_path' => 'tests',
-        //            'suites' => [
-        //                'unit' => [
-        //                    'tester' => 'phpunit',
-        //                    'tests_path' => '',
-        //                    'command_options' => '',
-        //                    'file_mask' => '*Test.php',
-        //                    'retries' => 0,
-        //                ]
-        //            ],
-        //        ],
-        //
-        //        'pragmarx/google2fa' => [
-        //            'path' => "{$basePath}/vendor/pragmarx/google2fa",
-        //            'watch_folders' => [
-        //                'src',
-        //                'tests'
-        //            ],
-        //            'exclude' => [
-        //                'tests/_output/',
-        //            ],
-        //            'depends' => [],
-        //            'tests_path' => 'tests',
-        //            'suites' => [
-        //                'unit' => [
-        //                    'tester' => 'phpunit',
-        //                    'tests_path' => '',
-        //                    'command_options' => '',
-        //                    'file_mask' => '*Test.php',
-        //                    'retries' => 0,
-        //                ]
-        //            ],
-        //        ],
-        //
-        //        'pragmarx/random' => [
-        //            'path' => "{$basePath}/vendor/pragmarx/random",
-        //            'watch_folders' => [
-        //                'src',
-        //                'tests'
-        //            ],
-        //            'tests_path' => 'tests',
-        //            'exclude' => [],
-        //            'suites' => [
-        //                'unit' => [
-        //                    'tester' => 'phpunit',
-        //                    'tests_path' => '',
-        //                    'command_options' => '',
-        //                    'file_mask' => '*Test.php',
-        //                    'retries' => 0,
-        //                ]
-        //            ],
-        //        ],
-        //
-        //        'pragmarx.com (dusk)' => [
-        //            'path' => $basePath,
-        //            'watch_folders' => [
-        //                'app',
-        //                'tests'
-        //            ],
-        //            'exclude' => [
-        //                'tests/Browser/console/',
-        //                'tests/Browser/screenshots/',
-        //            ],
-        //            'depends' => [],
-        //            'tests_path' => 'tests',
-        //            'suites' => [
-        //                'unit' => [
-        //                    'tester' => 'dusk',
-        //                    'tests_path' => 'Browser',
-        //                    'command_options' => '',
-        //                    'file_mask' => '*Test.php',
-        //                    'retries' => 0,
-        //                ]
-        //            ],
-        //        ],
-
     ],
 
     /**
