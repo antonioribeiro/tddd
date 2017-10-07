@@ -76,7 +76,8 @@ This package was tested and is known to be compatible with
 - Install via Composer
 - Publish the configuration
 - Migrate the database
-- Open http://site.dev/tests-watcher/dashboard
+- Run `php artisan ci:watch & php artisan ci:work`
+- Open `http://<domain.dev>/tests-watcher/dashboard`
 
 ### The long version
 
