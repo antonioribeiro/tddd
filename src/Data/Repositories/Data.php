@@ -32,6 +32,7 @@ class Data
 	const STATE_RUNNING = 'running';
 
     protected $ansiConverter;
+
     /**
      * @var Notifier
      */
@@ -228,6 +229,12 @@ class Data
 		}
 	}
 
+    /**
+     * Get test info.
+     *
+     * @param $test
+     * @return array
+     */
     private function getTestInfo($test)
     {
         $run = Run::where('test_id', $test->id)->orderBy('created_at', 'desc')->first();
@@ -273,6 +280,11 @@ class Data
         return $this->CRToBr($lines);
     }
 
+    /**
+     * Notify users.
+     *
+     * @param $project_id
+     */
     public function notify($project_id)
     {
         $this->notifier->notifyViaChannels(
@@ -959,6 +971,8 @@ class Data
     }
 
     /**
+     * Check if the test exists.
+     * 
      * @param $test
      * @return bool
      */
