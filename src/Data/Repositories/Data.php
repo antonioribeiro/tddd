@@ -39,7 +39,7 @@ class Data
 
     /**
      * Data constructor.
-     *
+     * @param Notifier $notifier
      */
     public function __construct(Notifier $notifier)
 	{
@@ -388,7 +388,11 @@ class Data
 	 */
 	private function getAllFilesFromSuite($suite)
 	{
-		$files = Finder::create()->files()->in($suite->testsFullPath);
+	    if (! file_exists($suite->testsFullPath)) {
+	        die('Directory not found: '.$suite->testsFullPath.'. Aborted.');
+        }
+
+        $files = Finder::create()->files()->in($suite->testsFullPath);
 
 		if ($suite->file_mask)
 		{
