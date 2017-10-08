@@ -1,11 +1,10 @@
 <?php
 
-use DB as Database;
 use PragmaRX\Support\Migration;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 
-class AddUsesTee extends Migration
+class AddRequireScript extends Migration
 {
 	/**
 	 * Run the migrations.
@@ -16,7 +15,7 @@ class AddUsesTee extends Migration
 	{
 		Schema::table('ci_testers', function(Blueprint $table)
 		{
-			$table->boolean('require_tee')->default(false);
+			$table->boolean('require_script')->default(false);
 		});
 	}
 
@@ -29,7 +28,7 @@ class AddUsesTee extends Migration
 	{
         Schema::table('ci_testers', function(Blueprint $table)
         {
-            $table->dropColumn('require_tee');
+            $table->dropColumn('require_script');
         });
 	}
 }

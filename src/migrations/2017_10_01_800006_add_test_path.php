@@ -1,8 +1,9 @@
 <?php
 
 use DB as Database;
-use Illuminate\Database\Schema\Blueprint;
 use PragmaRX\Support\Migration;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
 
 class AddTestPath extends Migration
 {
