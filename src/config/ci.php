@@ -27,7 +27,7 @@ return [
      *
      */
     'projects' => [
-        'app' => [
+        'project foo (PHPUnit)' => [
             'path' => $basePath,
             'watch_folders' => [
                 'app',
@@ -48,6 +48,29 @@ return [
                 'unit' => [
                     'tester' => 'phpunit',
                     'tests_path' => 'Unit',
+                    'command_options' => '',
+                    'file_mask' => '*Test.php',
+                    'retries' => 0,
+                ],
+            ],
+        ],
+
+        'project bar (dusk)' => [
+            'path' => $basePath,
+            'watch_folders' => [
+                'app',
+                'tests/Browser'
+            ],
+            'exclude' => [
+                'tests/Browser/console/',
+                'tests/Browser/screenshots/',
+            ],
+            'depends' => [],
+            'tests_path' => 'tests',
+            'suites' => [
+                'browser' => [
+                    'tester' => 'dusk',
+                    'tests_path' => 'Browser',
                     'command_options' => '',
                     'file_mask' => '*Test.php',
                     'retries' => 0,
@@ -128,6 +151,12 @@ return [
     'tee' => '/usr/bin/tee',
 
     /**
+     * script
+     *
+     */
+    'script' => '/usr/bin/script -q %s %s', // sprintf()
+
+    /**
      * Temp path
      *
      */
@@ -148,7 +177,8 @@ return [
             'output_folder' => "{$basePath}/tests/Browser/screenshots",
             'output_html_fail_extension' => '.fail.html',
             'output_png_fail_extension' => '.fail.png',
-            'require_tee' => true,
+            'require_tee' => false,
+            'require_script' => true,
             'error_pattern' => '(Failures|Errors): [0-9]+', // regex, only for tee results
         ],
 

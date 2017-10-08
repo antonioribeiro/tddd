@@ -15,7 +15,7 @@ class AddScreenshots extends Migration
 	{
 		Schema::table('ci_runs', function(Blueprint $table)
 		{
-			$table->json('screenshots')->nullable();
+			$table->text('screenshots')->nullable();
             $table->dropColumn('png');
 		});
 	}
