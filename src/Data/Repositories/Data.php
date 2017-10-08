@@ -972,7 +972,7 @@ class Data
 
     /**
      * Check if the test exists.
-     * 
+     *
      * @param $test
      * @return bool
      */

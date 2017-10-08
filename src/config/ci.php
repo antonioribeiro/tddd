@@ -54,29 +54,6 @@ return [
                 ],
             ],
         ],
-
-        'project bar (dusk)' => [
-            'path' => $basePath,
-            'watch_folders' => [
-                'app',
-                'tests/Browser'
-            ],
-            'exclude' => [
-                'tests/Browser/console/',
-                'tests/Browser/screenshots/',
-            ],
-            'depends' => [],
-            'tests_path' => 'tests',
-            'suites' => [
-                'browser' => [
-                    'tester' => 'dusk',
-                    'tests_path' => 'Browser',
-                    'command_options' => '',
-                    'file_mask' => '*Test.php',
-                    'retries' => 0,
-                ],
-            ],
-        ],
     ],
 
     /**
