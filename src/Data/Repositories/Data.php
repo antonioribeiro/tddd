@@ -481,16 +481,22 @@ class Data
 		return $queue->test;
 	}
 
-	/**
-	 * Store the test result.
-	 *
-	 * @param $test
-	 * @param $lines
-	 * @param $ok
-	 * @return mixed
-	 */
+    /**
+     * Store the test result.
+     *
+     * @param $test
+     * @param $lines
+     * @param $ok
+     * @param $startedAt
+     * @param $endedAt
+     * @return mixed
+     */
 	public function storeTestResult($test, $lines, $ok, $startedAt, $endedAt)
 	{
+	    if (!$this->testExists($test)) {
+	        return false;
+        }
+
 		$run = Run::create([
 	        'test_id' => $test->id,
 	        'was_ok' => $ok,
@@ -940,5 +946,14 @@ class Data
 
             $test['run']->save();
         });
+    }
+
+    /**
+     * @param $test
+     * @return bool
+     */
+    private function testExists($test)
+    {
+        return ! is_null(Test::find($test->id));
     }
 }
