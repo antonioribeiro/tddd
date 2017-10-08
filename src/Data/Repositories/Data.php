@@ -180,11 +180,15 @@ class Data
      */
     private function getScreenshots($test, $log)
     {
-        return json_encode(
-            $test->suite->tester->name !== 'dusk'
-                ? [$this->getOutput($test, $test->suite->tester->output_folder, $test->suite->tester->output_png_fail_extension)]
-                : $this->parseDuskScreenshots($log, $test->suite->tester->output_folder)
-        );
+        $screenshots = $test->suite->tester->name !== 'dusk'
+            ? $this->getOutput($test, $test->suite->tester->output_folder, $test->suite->tester->output_png_fail_extension)
+            : $this->parseDuskScreenshots($log, $test->suite->tester->output_folder);
+
+        if (is_null($screenshots)) {
+            return null;
+        }
+
+        return json_encode((array) $screenshots);
     }
 
     /**
@@ -282,7 +286,7 @@ class Data
      *
      * @param $log
      * @param $folder
-     * @return array
+     * @return array|null
      */
     private function parseDuskScreenshots($log, $folder)
     {
@@ -294,7 +298,7 @@ class Data
             $result[] = $folder.DIRECTORY_SEPARATOR."failure-{$line[2]}-0.png";
         }
 
-        return $result;
+        return count($result) == 0 ? null : $result;
     }
 
     /**
