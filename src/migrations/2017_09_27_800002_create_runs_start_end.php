@@ -17,9 +17,9 @@ class CreateRunsStartEnd extends Migration
 
 		Schema::table('ci_runs', function(Blueprint $table)
 		{
-			$table->timestamp('started_at');
+			$table->timestamp('started_at')->nullable();
 
-            $table->timestamp('ended_at');
+            $table->timestamp('ended_at')->nullable();
 
             $table->timestamp('notified_at')->nullable();
 		});
