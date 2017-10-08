@@ -245,7 +245,7 @@ class Data
 
             'run' => $run,
             'notified_at' => is_null($run) ? null : $run->notified_at,
-            'log' => is_null($run) ? null : $this->formatLog($run),
+            'log' => is_null($run) ? null : $run->log,
             'html' => is_null($run) ? null : $run->html,
             'image' => is_null($run) ? null : $run->png,
             'time' => is_null($run) ? '' : (is_null($run->started_at) ? '' : $this->removeBefore($run->started_at->diffForHumans($run->ended_at))),
@@ -503,7 +503,7 @@ class Data
 		$run = Run::create([
 	        'test_id' => $test->id,
 	        'was_ok' => $ok,
-	        'log' => $this->linkFiles($lines) ?: '(empty)',
+	        'log' => $this->formatLog($lines) ?: '(empty)',
 		    'html' => $this->getOutput($test, $test->suite->tester->output_folder, $test->suite->tester->output_html_fail_extension),
 		    'screenshots' => $this->getScreenshots($test, $lines),
             'started_at' => $startedAt,
@@ -684,12 +684,9 @@ class Data
 	 */
 	private function formatLog($log)
 	{
-		if (!empty($log))
-		{
-			$log = $this->ansi2Html($log->log);
-		}
-
-		return $log;
+	    return !empty($log)
+            ? $this->linkFiles($this->ansi2Html($log))
+            : $log;
 	}
 
 	/**
@@ -700,9 +697,15 @@ class Data
 	 */
 	private function ansi2Html($log)
 	{
-		return html_entity_decode(
+		$string = html_entity_decode(
 		    $this->ansiConverter->convert($log)
         );
+
+		$string = str_replace("\r\n", "<br>", $string);
+
+        $string = str_replace("\n", "<br>", $string);
+
+		return $string;
 	}
 
 	/**
