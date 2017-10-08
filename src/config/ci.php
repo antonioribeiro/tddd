@@ -27,7 +27,7 @@ return [
      *
      */
     'projects' => [
-        'laravel-project' => [
+        'app' => [
             'path' => $basePath,
             'watch_folders' => [
                 'app',
@@ -37,13 +37,21 @@ return [
             'depends' => [],
             'tests_path' => 'tests',
             'suites' => [
-                'unit' => [
-                    'tester' => 'dusk',
-                    'tests_path' => '',
+                'feature' => [
+                    'tester' => 'phpunit',
+                    'tests_path' => 'Feature',
                     'command_options' => '',
                     'file_mask' => '*Test.php',
                     'retries' => 0,
-                ]
+                ],
+
+                'unit' => [
+                    'tester' => 'phpunit',
+                    'tests_path' => 'Unit',
+                    'command_options' => '',
+                    'file_mask' => '*Test.php',
+                    'retries' => 0,
+                ],
             ],
         ],
     ],
