@@ -71,6 +71,8 @@ This package was tested and is known to be compatible with
 
 ## Installing
 
+#### PostgreSQL is needed, MySQL support is on the way
+
 ### TLDR;
 
 - Install via Composer
