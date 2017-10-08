@@ -115,6 +115,35 @@ On Laravel 5.*
 php artisan vendor:publish --provider="PragmaRX\TestsWatcher\Vendor\Laravel\ServiceProvider"
 ```
 
+## Example of projects
+
+### Laravel Dusk
+
+``` php
+'project bar (dusk)' => [
+    'path' => $basePath,
+    'watch_folders' => [
+        'app',
+        'tests/Browser'
+    ],
+    'exclude' => [
+        'tests/Browser/console/',
+        'tests/Browser/screenshots/',
+    ],
+    'depends' => [],
+    'tests_path' => 'tests',
+    'suites' => [
+        'browser' => [
+            'tester' => 'dusk',
+            'tests_path' => 'Browser',
+            'command_options' => '',
+            'file_mask' => '*Test.php',
+            'retries' => 0,
+        ],
+    ],
+],
+```
+
 ## Troubleshooting
 
 #### Tests are running fine in terminal but failing in the dashboard? 
