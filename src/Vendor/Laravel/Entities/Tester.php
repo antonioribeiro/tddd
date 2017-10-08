@@ -13,6 +13,7 @@ class Tester extends Model
 		'output_html_fail_extension',
 		'output_png_fail_extension',
         'require_tee',
+        'require_script',
         'error_pattern',
 	];
 }

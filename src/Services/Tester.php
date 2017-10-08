@@ -26,7 +26,8 @@ class Tester extends Base {
 	 * @var ShellExec
 	 */
 	private $shell;
-    private $teeFile;
+
+    private $pipedFile;
 
     /**
      * Instantiate a Tester.
@@ -41,22 +42,55 @@ class Tester extends Base {
 		$this->shell = $shell;
 	}
 
+    private function addPiperCommand($test)
+    {
+        if ($test->suite->tester->require_tee) {
+            return $this->addTee($test->testCommand);
+        }
+
+        if ($test->suite->tester->require_script) {
+            return $this->addScript($test->testCommand);
+        }
+
+        return $test->testCommand;
+    }
+
     /**
      * Add tee to test command.
      *
-     * @param $test
+     * @param $testCommand
+     * @return string
+     * @internal param $test
+     */
+    private function addTee($testCommand)
+    {
+        $this->pipedFile = null;
+
+        if ($tee = $this->getConfig('tee')) {
+            $this->pipedFile = tempnam($this->getConfig('tmp'), 'tw-');
+
+            $testCommand .= " | {$tee} > {$this->pipedFile}";
+        }
+
+        return $testCommand;
+    }
+
+    /**
+     * Add tee to test command.
+     *
+     * @param $testCommand
      * @return string
      */
-    private function addTee($test)
+    private function addScript($testCommand)
     {
-        $testCommand = $test->testCommand;
+        $this->pipedFile = null;
 
-        $this->teeFile = null;
-
-        if ($test->suite->tester->require_tee && ($tee = $this->getConfig('tee'))) {
-            $this->teeFile = tempnam($this->getConfig('tmp'), 'tw-');
-
-            $testCommand .= " | {$tee} > {$this->teeFile}";
+        if ($script = $this->getConfig('script')) {
+            $testCommand = sprintf(
+                $script,
+                $this->pipedFile = tempnam($this->getConfig('tmp'), 'tw-'),
+                $testCommand
+            );
         }
 
         return $testCommand;
@@ -68,15 +102,15 @@ class Tester extends Base {
      */
     private function deleteTeeTempFile()
     {
-        if (!is_null($this->teeFile) && file_exists($this->teeFile)) {
-            unlink($this->teeFile);
+        if (!is_null($this->pipedFile) && file_exists($this->pipedFile)) {
+            unlink($this->pipedFile);
         }
     }
 
     private function getOutput($process, $test)
     {
-        if ($test->suite->tester->require_tee) {
-            return $this->getTeeFileContents();
+        if ($this->wasPiped($test)) {
+            return $this->getPipedFileContents();
         }
 
         return $process->getOutput();
@@ -85,11 +119,9 @@ class Tester extends Base {
     /**
      * @return bool|string
      */
-    private function getTeeFileContents()
+    private function getPipedFileContents()
     {
-        $content = file_get_contents($this->teeFile);
-
-        return $content;
+        return file_get_contents($this->pipedFile);
     }
 
     /**
@@ -106,7 +138,17 @@ class Tester extends Base {
 		$this->startTester();
 	}
 
-	/**
+    /**
+     * @param $test
+     * @return bool
+     */
+    private function shouldPipe($test)
+    {
+        return ($test->suite->tester->require_tee ||
+            $test->suite->tester->require_script);
+    }
+
+    /**
 	 * Start the timed tester.
 	 *
 	 * @param int $interval - Defaults to 100ms between tests.
@@ -176,7 +218,7 @@ class Tester extends Base {
 
         $this->dataRepository->markTestAsRunning($test);
 
-		$command = $this->addTee($test);
+		$command = $this->addPiperCommand($test);
 
 		$this->command->drawLine($line = 'Executing '.$command);
 
@@ -226,8 +268,13 @@ class Tester extends Base {
             return true;
         }
 
-        preg_match_all("/{$test->suite->tester->error_pattern}/", $this->getTeeFileContents(), $matches, PREG_SET_ORDER);
+        preg_match_all("/{$test->suite->tester->error_pattern}/", $this->getPipedFileContents(), $matches, PREG_SET_ORDER);
 
         return count($matches) == 0;
+    }
+
+    private function wasPiped($test)
+    {
+        return $this->shouldPipe($test) && file_exists($this->pipedFile);
     }
 }

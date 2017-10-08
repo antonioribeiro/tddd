@@ -112,6 +112,7 @@ class Data
 				'output_html_fail_extension' => isset($data['output_html_fail_extension']) ? $data['output_html_fail_extension'] : null,
 				'output_png_fail_extension' => isset($data['output_png_fail_extension']) ? $data['output_png_fail_extension'] : null,
                 'require_tee' => isset($data['require_tee']) ? $data['require_tee'] : false,
+                'require_script' => isset($data['require_script']) ? $data['require_script'] : false,
                 'error_pattern' => isset($data['error_pattern']) ? $data['error_pattern'] : false,
 			]
 		);
@@ -295,7 +296,9 @@ class Data
         $result = [];
 
         foreach ($matches as $line) {
-            $result[] = $folder.DIRECTORY_SEPARATOR."failure-{$line[2]}-0.png";
+            $name = str_replace("\r", '', $line[2]);
+
+            $result[] = $folder.DIRECTORY_SEPARATOR."failure-{$name}-0.png";
         }
 
         return count($result) == 0 ? null : $result;
