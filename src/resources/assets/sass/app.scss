@@ -4,6 +4,9 @@
 // Variables
 @import "variables";
 
+// Bootstrap
+@import "~bootstrap/scss/bootstrap";
+
 body {
   color: $brand-darker;
   font-family: 'Arsenal';
@@ -15,7 +18,7 @@ body {
  */
 
 .container-fluid {
-  padding-top: 15px;
+  padding-top: 40px;
 }
 
 /*
@@ -86,6 +89,7 @@ a:hover.file {
 
 .list-group-item {
   cursor: pointer;
+
   font-weight: 800;
 }
 
@@ -123,7 +127,15 @@ h1, h2, h3 {
  */
 .btn {
   padding: 3px 6px;
+  cursor: pointer;
 }
+
+.btn-secondary {
+  color: $brand-darkest !important;
+  background-color: $brand-secondary !important;
+  border-color: $brand-secondary-darker !important;
+}
+
 
 /*
  * Navbar
@@ -233,8 +245,12 @@ table > tbody > tr > td.state.state-failed {
   color: $brand-darker;
 }
 
-.label {
+.badge {
     padding: 0.6em .8em .7em;
+}
+
+.badge-dark {
+  background-color: $brand-darkest;
 }
 
 .screenshot {

@@ -5,6 +5,7 @@ $brand-success: #6DA34D;
 $brand-warning: #EA844D;
 $brand-danger: #931621;
 $brand-clear: #fdfdfd;
+$brand-secondary: #e9ecee;
 $brand-gray: #e9ecee;
 $brand-bluish: #73dbff;
 $brand-darker: #444444;
@@ -12,6 +13,7 @@ $brand-darkest: #000000;
 
 $body-bg: $brand-clear;
 $brand-gray-darker: darken($brand-gray, 10%);
+$brand-secondary-darker: darken($brand-secondary, 10%);
 
 // Brand lighter
 $brand-primary-light: lighten($brand-primary, 20%);
@@ -28,7 +30,7 @@ $brand-darkest-light: lighten($brand-darkest, 20%);
 // Typography
 $icon-font-path: "~bootstrap-sass/assets/fonts/bootstrap/";
 $font-family-sans-serif: "Arsenal", sans-serif;
-$font-size-base: 14px;
+$font-size-base: 0.9rem;
 $line-height-base: 1.6;
 $text-color: $brand-darkest;
 
@@ -45,4 +47,6 @@ $input-color-placeholder: lighten($text-color, 30%);
 
 // Panels
 $panel-default-heading-bg: $brand-clear;
+
+$fa-font-path: "~font-awesome/fonts";
 

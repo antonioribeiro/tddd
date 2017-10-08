@@ -72,7 +72,7 @@
                     </td>
 
                     <td>
-                        <div @click="runTest(test.id)" v-if="test.state !== 'running' && test.state !== 'queued'" :class="'btn btn-sm btn-' + (test.state == 'failed' ? 'danger' : 'default')">
+                        <div @click="runTest(test.id)" v-if="test.state !== 'running' && test.state !== 'queued'" :class="'btn btn-sm btn-' + (test.state == 'failed' ? 'danger' : 'secondary')">
                             run
                         </div>
                     </td>
@@ -94,7 +94,7 @@
                     <td>{{ test.updated_at }}</td>
 
                     <td>
-                        <div @click="showLog(test)" v-if="test.state !== 'running'" :class="'btn btn-sm btn-' + (test.state == 'failed' ? 'primary' : 'default')">
+                        <div @click="showLog(test)" v-if="test.state !== 'running'" :class="'btn btn-sm btn-' + (test.state == 'failed' ? 'primary' : 'secondary')">
                             show
                         </div>
                     </td>
@@ -130,7 +130,9 @@
 
                     var s2 = test.name.search(new RegExp(vue.search, "i")) != -1;
 
-                    return s1 || s2;
+                    var s3 = test.path.search(new RegExp(vue.search, "i")) != -1;
+
+                    return s1 || s2 || s3;
                 });
 
                 this.makeStatistics(tests);

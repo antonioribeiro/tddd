@@ -1,5 +1,5 @@
 <template>
-    <span :class="'label label-'+color">
+    <span :class="'badge badge-'+color">
         {{ text ? text : state }}
     </span>
 </template>
@@ -31,7 +31,7 @@
                     return 'primary';
                 }
 
-                return 'default';
+                return 'dark';
             }
         },
     }

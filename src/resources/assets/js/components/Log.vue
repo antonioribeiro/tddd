@@ -3,12 +3,12 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content" v-if="selectedTest">
                 <div class="modal-header">
+                    <h3 class="modal-title">{{ this.selectedTest.name }}</h3>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">
                             <i class="fa fa-times-circle" aria-hidden="true"></i>
                         </span>
                     </button>
-                    <h3>{{ this.selectedTest.name }}</h3>
                 </div>
 
                 <div class="modal-body">
