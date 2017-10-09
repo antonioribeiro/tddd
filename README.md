@@ -13,9 +13,10 @@
 * Ready for PHPUnit, Laravel Dusk, Codeception, phpspec, atoum and more.
 * Highly configurable, watch anything & test everything!
 
-### Preview Video
+### Videos
 
-[![Watch the video](https://raw.githubusercontent.com/antonioribeiro/ci/master/docs/video.png)](https://www.youtube.com/watch?v=sO_aDf3xCgE)
+[Preview](https://www.youtube.com/watch?v=sO_aDf3xCgE)
+[Installing](https://youtu.be/AgkKCLNiV8w)
 
 ### Screenshots
 
