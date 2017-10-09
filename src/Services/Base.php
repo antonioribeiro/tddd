@@ -39,7 +39,7 @@ class Base
     public function showProgress($line, $addSeparator = false)
     {
         if ($addSeparator) {
-            $this->command->drawLine($line = 'Executing '.$command);
+            $this->command->drawLine($line = 'Executing '.$line);
         }
 
         $this->command->line($line);

@@ -3,7 +3,7 @@
 namespace PragmaRX\TestsWatcher\Services;
 
 use Closure;
-use PragmaRX\TestsWatcher\Support\ShellExec;
+use PragmaRX\TestsWatcher\Support\Executor;
 use PragmaRX\TestsWatcher\Data\Repositories\Data as DataRepository;
 use PragmaRX\TestsWatcher\Vendor\Laravel\Console\Commands\BaseCommand as Command;
 
@@ -24,23 +24,30 @@ class Tester extends Base
     protected $dataRepository;
 
     /**
-     * @var ShellExec
+     * The piped file.
+     *
+     * @var string
      */
-    private $shell;
-
     private $pipedFile;
+
+    /**
+     * The shell executor.
+     *
+     * @var \PragmaRX\TestsWatcher\Support\Executor
+     */
+    private $executor;
 
     /**
      * Instantiate a Tester.
      *
      * @param DataRepository $dataRepository
-     * @param ShellExec      $shell
+     * @param Executor $executor
      */
-    public function __construct(DataRepository $dataRepository, ShellExec $shell)
+    public function __construct(DataRepository $dataRepository, Executor $executor)
     {
         $this->dataRepository = $dataRepository;
 
-        $this->shell = $shell;
+        $this->executor = $executor;
     }
 
     /**
@@ -244,7 +251,7 @@ class Tester extends Base
                 $this->showProgress('retrying...');
             }
 
-            $process = $this->shell->exec($command, $test->suite->project->path, function ($type, $buffer) {
+            $process = $this->executor->exec($command, $test->suite->project->path, function ($type, $buffer) {
                 if ($this->getConfig('show_progress')) {
                     $this->showProgress($buffer);
                 }
@@ -259,7 +266,7 @@ class Tester extends Base
 
         $this->command->{$ok ? 'info' : 'error'}($ok ? 'OK' : 'FAILED');
 
-        $this->dataRepository->storeTestResult($test, $lines, $ok, $this->shell->startedAt, $this->shell->endedAt);
+        $this->dataRepository->storeTestResult($test, $lines, $ok, $this->executor->startedAt, $this->executor->endedAt);
 
         $this->deleteTeeTempFile();
 

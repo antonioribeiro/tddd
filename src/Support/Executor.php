@@ -6,7 +6,7 @@ use Carbon\Carbon;
 use Closure;
 use Symfony\Component\Process\Process;
 
-class ShellExec
+class Executor
 {
     public $time;
 

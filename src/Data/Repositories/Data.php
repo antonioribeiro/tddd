@@ -77,16 +77,22 @@ class Data
      * @param $test
      * @param $fileName
      * @param $line
-     * @param $occurence
+     * @param $occurrence
      * @return string
      */
-    private function createLinkToEditFile($test, $fileName, $line, $occurence)
+    private function createLinkToEditFile($test, $fileName, $line, $occurrence)
     {
+        if (!$this->fileExistsOnTest($fileName, $test)) {
+            return $line[$occurrence];
+        }
+
+        $fileName = base64_encode($fileName);
+
         $tag = sprintf(
             '<a href="javascript:jQuery.get(\'%s\');" class="file">%s</a>',
             route('tests-watcher.file.open',
                 ['filename' => $fileName, 'line' => $line[2], 'project_id' => $test->suite->project]),
-            $line[$occurence]
+            $line[$occurrence]
         );
 
         return $tag;
@@ -103,14 +109,12 @@ class Data
     private function createLinks($lines, $matches, $test)
     {
         foreach ($matches as $line) {
-            $fileName = base64_encode($line[1]);
-
             if (count($line) > 0 && count($line[0]) > 0) {
                 $occurence = strpos($lines, $line[0]) === false ? 1 : 0;
 
                 $lines = str_replace(
                     $line[$occurence],
-                    $this->createLinkToEditFile($test, $fileName, $line, $occurence),
+                    $this->createLinkToEditFile($test, $line[1], $line, $occurence),
                     $lines
                 );
             }
@@ -1031,5 +1035,56 @@ class Data
     private function testExists($test)
     {
         return !is_null(Test::find($test->id));
+    }
+
+    /**
+     * Make open file command.
+     *
+     * @param $fileName
+     * @param $line
+     * @param $project_id
+     * @return string
+     */
+    public function makeOpenFileCommand($fileName, $line, $project_id)
+    {
+        $fileName = $this->addProjectRootPath(
+            base64_decode($fileName),
+            $this->findProjectById($project_id)
+        );
+
+        return
+            config('ci.editor.bin').
+            (!is_null($line) ? " --line {$line}" : '').
+            " {$fileName}";
+    }
+
+    /**
+     * Check if a file exists for a particular test.
+     *
+     * @param $filename
+     * @param $test
+     * @return bool
+     */
+    public function fileExistsOnTest($filename, $test)
+    {
+        return file_exists(
+            $this->addProjectRootPath($filename, $test->suite->project)
+        );
+    }
+
+    /**
+     * Add project root to path.
+     *
+     * @param $fileName
+     * @param $project
+     * @return string
+     */
+    public function addProjectRootPath($fileName, $project)
+    {
+        if (starts_with($fileName, DIRECTORY_SEPARATOR) || empty($project)) {
+            return $fileName;
+        }
+
+        return $project->path.DIRECTORY_SEPARATOR.$fileName;
     }
 }
