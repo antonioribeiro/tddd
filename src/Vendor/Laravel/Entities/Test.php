@@ -65,7 +65,7 @@ class Test extends Model
      */
     public function updateSha1()
     {
-        $this->sha1 = sha1_file($this->fullPath);
+        $this->sha1 = @sha1_file($this->fullPath);
 
         $this->save();
     }
@@ -77,6 +77,6 @@ class Test extends Model
      */
     public function sha1Changed()
     {
-        return $this->sha1 !== sha1_file($this->fullPath);
+        return $this->sha1 !== @sha1_file($this->fullPath);
     }
 }

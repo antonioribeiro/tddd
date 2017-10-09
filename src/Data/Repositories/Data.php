@@ -497,9 +497,11 @@ class Data
      */
     public function isTestFile($path)
     {
-        foreach (Test::all() as $test) {
-            if ($test->fullPath == $path) {
-                return $test;
+        if (file_exists($path)) {
+            foreach (Test::all() as $test) {
+                if ($test->fullPath == $path) {
+                    return $test;
+                }
             }
         }
 

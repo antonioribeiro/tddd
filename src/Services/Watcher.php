@@ -185,6 +185,8 @@ class Watcher extends Base
             return;
         }
 
+        $this->loader->loadEverything();
+
         $this->showMessage($event, $path);
 
         if ($this->queueTestSuites($path)) {
