@@ -343,6 +343,33 @@ class Data
     }
 
     /**
+     * Check if the class is abstract.
+     *
+     * @param $file
+     * @return bool
+     */
+    private function isAbstractClass($file)
+    {
+        return !!preg_match(
+            '/^abstract\s+class[A-Za-z0-9_\s]{1,100}{/im',
+            file_get_contents($file)
+        );
+    }
+
+    /**
+     * Check if the file is testable.
+     *
+     * @param $file
+     * @return bool
+     */
+    private function isTestable($file)
+    {
+        return ends_with($file, '.php')
+            ? !$this->isAbstractClass($file)
+            : true;
+    }
+
+    /**
      * Create links for files.
      *
      * @param $lines
@@ -448,7 +475,7 @@ class Data
         $files = $this->getAllFilesFromSuite($suite);
 
         foreach ($files as $file) {
-            if (!$this->isExcluded($exclusions, null, $file)) {
+            if (!$this->isExcluded($exclusions, null, $file) && $this->isTestable($file->getRealPath())) {
                 $this->createOrUpdateTest($file, $suite);
             } else {
                 // If the test already exists, delete it.
