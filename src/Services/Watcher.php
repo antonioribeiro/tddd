@@ -146,7 +146,6 @@ class Watcher extends Base
 
     /**
      * Watch folders for changes.
-     *
      */
     private function watch()
     {
