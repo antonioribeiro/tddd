@@ -59,6 +59,7 @@ class Base
      * Get the event name.
      *
      * @param $eventCode
+     *
      * @return string
      */
     protected function getEventName($eventCode)

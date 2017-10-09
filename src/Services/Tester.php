@@ -3,8 +3,8 @@
 namespace PragmaRX\TestsWatcher\Services;
 
 use Closure;
-use PragmaRX\TestsWatcher\Support\Executor;
 use PragmaRX\TestsWatcher\Data\Repositories\Data as DataRepository;
+use PragmaRX\TestsWatcher\Support\Executor;
 use PragmaRX\TestsWatcher\Vendor\Laravel\Console\Commands\BaseCommand as Command;
 
 class Tester extends Base
@@ -54,6 +54,7 @@ class Tester extends Base
      * Add the command responsible for piping the output.
      *
      * @param $test
+     *
      * @return string
      */
     private function addPiperCommand($test)
@@ -115,7 +116,6 @@ class Tester extends Base
 
     /**
      * Delete temporary tee file.
-     *
      */
     private function deleteTeeTempFile()
     {
@@ -129,6 +129,7 @@ class Tester extends Base
      *
      * @param $process \Symfony\Component\Process\Process
      * @param $test
+     *
      * @return bool|string
      */
     private function getOutput($process, $test)
@@ -278,6 +279,7 @@ class Tester extends Base
      *
      * @param $exitCode
      * @param \PragmaRX\TestsWatcher\Vendor\Laravel\Entities\Test $test
+     *
      * @return bool
      */
     private function testPassed($exitCode, $test)
@@ -299,6 +301,7 @@ class Tester extends Base
      * Check if the test was piped.
      *
      * @param \PragmaRX\TestsWatcher\Vendor\Laravel\Entities\Test $test
+     *
      * @return bool
      */
     private function wasPiped($test)

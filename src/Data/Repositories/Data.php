@@ -74,6 +74,8 @@ class Data
     }
 
     /**
+     * Create link to call the editor for a file.
+     *
      * @param $test
      * @param $fileName
      * @param $line
@@ -217,14 +219,14 @@ class Data
     /**
      * @param $file
      * @param $suite
+     *
      * @return mixed
      */
     private function findTestByFileAndSuite($file, $suite)
     {
         $exists = Test::where('name', $file->getRelativePathname())
                       ->where('suite_id', $suite->id)
-                      ->first()
-        ;
+                      ->first();
 
         return $exists;
     }
@@ -260,7 +262,7 @@ class Data
             : $this->parseDuskScreenshots($log, $test->suite->tester->output_folder);
 
         if (is_null($screenshots)) {
-            return null;
+            return;
         }
 
         return json_encode((array) $screenshots);
@@ -560,7 +562,7 @@ class Data
             ->where('ci_tests.state', '!=', static::STATE_RUNNING);
 
         if (!$queue = $query->first()) {
-            return null;
+            return;
         }
 
         return $queue->test;
