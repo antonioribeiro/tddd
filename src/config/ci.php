@@ -23,6 +23,12 @@ return [
     'url_prefix' => '/tests-watcher',
 
     /**
+     * Regex to match file names and line numbers
+     *
+     */
+    'regex_file_matcher' => '/([A-Za-z0-9\/._-]+):([1-9][0-9]*)/',
+
+    /**
      * Projects
      *
      */

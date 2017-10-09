@@ -78,19 +78,21 @@ class Data
      * @param $matches
      * @return mixed
      */
-    private function createLinks($lines, $matches)
+    private function createLinks($lines, $matches, $test)
     {
         foreach ($matches as $line) {
             $fileName = base64_encode($line[1]);
 
             if (count($line) > 0 && count($line[0]) > 0) {
+                $occurence = strpos($lines, $line[0]) === false ? 1 : 0;
+
                 $tag = sprintf(
                     '<a href="javascript:jQuery.get(\'%s\');" class="file">%s</a>',
-                    route('tests-watcher.file.open', ['filename' => $fileName, 'line' => $line[2]]),
-                    $line[0]
+                    route('tests-watcher.file.open', ['filename' => $fileName, 'line' => $line[2], 'project_id' => $test->suite->project]),
+                    $line[$occurence]
                 );
 
-                $lines = str_replace($line[0], $tag, $lines);
+                $lines = str_replace($line[$occurence], $tag, $lines);
             }
         }
 
@@ -145,7 +147,9 @@ class Data
 		$tester = Tester::where('name', $suite_data['tester'])->first();
 
 		return Suite::updateOrCreate(
-			['name' => $name, 'project_id' => $project_id],
+			[
+			    'name' => $name, 'project_id' => $project_id
+            ],
 			[
 				'tester_id' => $tester->id,
 			    'tests_path' => $suite_data['tests_path'],
@@ -155,6 +159,33 @@ class Data
 			]
 		);
 	}
+
+    /**
+     * Find source code references.
+     *
+     * Must find
+     *
+     *   at Object..test (resources/assets/js/tests/example.spec.js:4:23
+     *
+     *   (resources/assets/js/tests/example.spec.js:4
+     *
+     *   /resources/assets/js/tests/example.php:449
+     *
+     * @param $lines
+     * @param $test
+     * @return mixed
+     */
+    private function findSourceCodeReferences($lines, $test)
+    {
+        preg_match_all(
+            config('ci.regex_file_matcher'),
+            strip_tags($this->brToCR($lines)),
+            $matches,
+            PREG_SET_ORDER
+        );
+
+        return array_filter($matches);
+    }
 
     /**
      * Generates data for the javascript client.
@@ -202,6 +233,16 @@ class Data
 	{
 		return Suite::all();
 	}
+
+    /**
+     * Find project by id.
+     *
+     * @return \PragmaRX\TestsWatcher\Vendor\Laravel\Entities\Project|null
+     */
+    public function findProjectById($id)
+    {
+        return Project::find($id);
+    }
 
 	/**
 	 * Create or update a test.
@@ -265,16 +306,12 @@ class Data
      * @param $lines
      * @return string
      */
-    private function linkFiles($lines)
+    private function linkFiles($lines, $test)
     {
-        $lines = $this->brToCR($lines);
-
-        preg_match_all('/(\/.*\/.*):([0-9]+)/', $lines, $matches, PREG_SET_ORDER);
-
-        $matches = array_filter($matches);
+        $matches = $this->findSourceCodeReferences($lines, $test);
 
         if (count($matches) != 0) {
-            $lines = $this->createLinks($lines, $matches);
+            $lines = $this->createLinks($lines, $matches, $test);
         }
 
         return $this->CRToBr($lines);
@@ -519,7 +556,7 @@ class Data
 		$run = Run::create([
 	        'test_id' => $test->id,
 	        'was_ok' => $ok,
-	        'log' => $this->formatLog($lines) ?: '(empty)',
+	        'log' => $this->formatLog($lines, $test) ?: '(empty)',
 		    'html' => $this->getOutput($test, $test->suite->tester->output_folder, $test->suite->tester->output_html_fail_extension),
 		    'screenshots' => $this->getScreenshots($test, $lines),
             'started_at' => $startedAt,
@@ -698,10 +735,10 @@ class Data
 	 * @param $log
 	 * @return mixed|string
 	 */
-	private function formatLog($log)
+	private function formatLog($log, $test)
 	{
 	    return !empty($log)
-            ? $this->linkFiles($this->ansi2Html($log))
+            ? $this->linkFiles($this->ansi2Html($log), $test)
             : $log;
 	}
 

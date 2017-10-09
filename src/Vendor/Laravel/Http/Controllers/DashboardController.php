@@ -18,6 +18,15 @@ class DashboardController extends Controller
 		$this->dataRepository = $dataRepository;
 	}
 
+    private function addProjectRootPath($fileName, $project)
+    {
+        if (starts_with($fileName, DIRECTORY_SEPARATOR) || empty($project)) {
+            return $fileName;
+        }
+
+        return $project->path . DIRECTORY_SEPARATOR . $fileName;
+    }
+
     public function index()
     {
         return
@@ -43,9 +52,12 @@ class DashboardController extends Controller
 		return $this->success(['enabled' => $enabled]);
 	}
 
-    public function makeOpenFileCommand($fileName, $line)
+    public function makeOpenFileCommand($fileName, $line, $project_id)
     {
-        $fileName = base64_decode($fileName);
+        $fileName = $this->addProjectRootPath(
+            base64_decode($fileName),
+            $this->dataRepository->findProjectById($project_id)
+        );
 
         return
             config('ci.editor.bin') .
@@ -80,9 +92,9 @@ class DashboardController extends Controller
 		return Response::json(array_merge(['success' => true], $result));
 	}
 
-    public function openFile($fileName, $line = null)
+    public function openFile($fileName, $line = null, $project_id = null)
     {
-        shell_exec($this->makeOpenFileCommand($fileName, $line));
+        shell_exec($this->makeOpenFileCommand($fileName, $line, $project_id));
 
         return $this->success();
     }
