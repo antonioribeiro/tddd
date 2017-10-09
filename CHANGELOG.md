@@ -3,6 +3,8 @@
 ## [0.9.3] - 2017-10-10
 ### Added
 - Support for Javascript testing (Jest)
+### Changed
+- Ignore abstract PHP classes
 
 ## [0.9.2] - 2017-09-10
 ### Changed
