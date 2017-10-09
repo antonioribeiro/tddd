@@ -2,7 +2,7 @@
 
 namespace PragmaRX\TestsWatcher\Tests;
 
-class CacheTest extends TestCase
+class DashboardTest extends TestCase
 {
     public function setUp()
     {
