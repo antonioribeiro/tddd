@@ -189,6 +189,12 @@ return [
             'command' => 'sh vendor/bin/tester',
         ],
 
+        'jest' => [
+            'command' => 'npm test',
+            'require_script' => true,
+            'error_pattern' => 'Tests:\s+[0-9]+\s+failed', // regex, only for tee results
+        ],
+
     ],
 
     /*
