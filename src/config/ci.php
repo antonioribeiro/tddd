@@ -147,6 +147,7 @@ return [
 
         'phpunit' => [
             'command' => 'vendor/bin/phpunit',
+            'require_script' => true,
         ],
 
         'dusk' => [
