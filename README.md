@@ -15,8 +15,8 @@
 
 ### Videos
 
-[Preview](https://www.youtube.com/watch?v=sO_aDf3xCgE)
-[Installing](https://youtu.be/AgkKCLNiV8w)
+-[Preview](https://www.youtube.com/watch?v=sO_aDf3xCgE)
+- [Installing](https://youtu.be/AgkKCLNiV8w)
 
 ### Screenshots
 
