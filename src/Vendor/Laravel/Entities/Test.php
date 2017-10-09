@@ -11,6 +11,7 @@ class Test extends Model
         'path',
 		'name',
 		'state',
+        'sha1',
 	];
 
 	public function getFullPathAttribute($value)

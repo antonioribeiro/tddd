@@ -3,6 +3,7 @@
 namespace PragmaRX\TestsWatcher\Data\Repositories;
 
 use Carbon\Carbon;
+use Illuminate\Support\Collection;
 use PragmaRX\TestsWatcher\Support\Notifier;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
@@ -261,10 +262,11 @@ class Data
                 'path' => dirname($file->getRealPath()),
 	            'name' => $file->getRelativePathname(),
 	            'suite_id' => $suite->id,
+                'sha1' => sha1_file($file->getRealPath()),
 			]
 		);
 
-		if ( ! $exists)
+		if (!$exists)
 		{
 			$this->addTestToQueue($test);
 		}
@@ -509,7 +511,7 @@ class Data
 		{
 			Queue::updateOrCreate(['test_id' => $test->id]);
 
-			if ( $force || ! in_array($test->state, [self::STATE_RUNNING, self::STATE_QUEUED]))
+			if ($force || ! in_array($test->state, [self::STATE_RUNNING, self::STATE_QUEUED]))
 			{
 				$test->state = self::STATE_QUEUED;
 				$test->timestamps = false;
@@ -874,7 +876,7 @@ class Data
 	 * @param $test
 	 * @return bool
 	 */
-	private function isEnqueued($test)
+	public function isEnqueued($test)
 	{
 		return
 			$test->state == self::STATE_QUEUED
@@ -1016,5 +1018,16 @@ class Data
     private function testExists($test)
     {
         return ! is_null(Test::find($test->id));
+    }
+
+    /**
+     * Check if the test has changed.
+     *
+     * @param \PragmaRX\TestsWatcher\Vendor\Laravel\Entities\Test $test
+     * @return bool
+     */
+    public function testChanged($test)
+    {
+        return $test->sha1 !== sha1_file($test->fullPath);
     }
 }

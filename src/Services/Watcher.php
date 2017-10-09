@@ -66,7 +66,32 @@ class Watcher extends Base
         $this->loader = $loader;
     }
 
-	/**
+    /**
+     * Check if has changed and add test to queue.
+     *
+     * @param $event
+     * @param $path
+     * @return bool
+     */
+    private function firedOnlyOne($event, $path)
+    {
+        if ($test = $this->dataRepository->isTestFile($path))
+        {
+            $this->command->line('Test added to queue');
+
+            if ($this->dataRepository->testChanged($test) && !$this->dataRepository->isEnqueued($test)) {
+                $this->dataRepository->addTestToQueue($test);
+
+                $this->showMessage($event, $path);
+            }
+
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
 	 * Watch for file changes.
 	 *
 	 * @param Command $command
@@ -113,6 +138,19 @@ class Watcher extends Base
     }
 
     /**
+     * @param $event
+     * @param $path
+     */
+    private function showMessage($event, $path)
+    {
+        $message = "File {$path} was " . $this->getEventName($event->getCode());
+
+        $this->command->drawLine($message);
+
+        $this->command->line($message);
+    }
+
+    /**
 	 * Watch folders for changes
 	 */
 	private function watch()
@@ -155,24 +193,14 @@ class Watcher extends Base
 	 */
 	public function fireEvent($event, $resource, $path)
 	{
-        $this->loader->loadEverything();
+        if ($this->firedOnlyOne($event, $path))
+        {
+            return;
+        }
 
-		$message = "File {$path} was ".$this->getEventName($event->getCode());
+        $this->showMessage($event, $path);
 
-		$this->command->drawLine($message);
-
-		$this->command->line($message);
-
-		if ($test = $this->dataRepository->isTestFile($path))
-		{
-			$this->command->line('Test added to queue');
-
-			$this->dataRepository->addTestToQueue($test);
-
-			return;
-		}
-
-		if ($this->queueTestSuites($path))
+        if ($this->queueTestSuites($path))
 		{
 			return;
 		}
