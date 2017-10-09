@@ -81,6 +81,10 @@ This package was tested and is known to be compatible with
 - Run `php artisan ci:watch & php artisan ci:work &`
 - Open `http://<domain.dev>/tests-watcher/dashboard`
 
+### Starte App
+
+You can just use [this starter app](https://github.com/antonioribeiro/tests-watcher-starter) to create an independent dashboard for your tests.
+
 ### The long version
 
 Require it with [Composer](http://getcomposer.org/):
