@@ -51,9 +51,9 @@ class Config extends Base
     /**
      * Instantiate a Watcher.
      *
-     * @param \PragmaRX\TestsWatcher\Data\Repositories\Data  $dataRepository
-     * @param \PragmaRX\TestsWatcher\Services\Watcher $watcher
-     * @param Loader          $loader
+     * @param \PragmaRX\TestsWatcher\Data\Repositories\Data $dataRepository
+     * @param \PragmaRX\TestsWatcher\Services\Watcher       $watcher
+     * @param Loader                                        $loader
      */
     public function __construct(Data $dataRepository, ResourceWatcher $watcher, Loader $loader)
     {
@@ -84,7 +84,6 @@ class Config extends Base
 
     /**
      * Initialize the Watcher.
-     *
      */
     private function initialize()
     {
@@ -111,7 +110,6 @@ class Config extends Base
 
     /**
      * Watch folders for changes.
-     *
      */
     private function watch()
     {
