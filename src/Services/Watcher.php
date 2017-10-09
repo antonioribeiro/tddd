@@ -2,48 +2,47 @@
 
 namespace PragmaRX\TestsWatcher\Services;
 
-use App;
 use Illuminate\Console\Command;
 use JasonLewis\ResourceWatcher\Event;
-use PragmaRX\TestsWatcher\Data\Repositories\Data as DataRepository;
 use JasonLewis\ResourceWatcher\Watcher as ResourceWatcher;
+use PragmaRX\TestsWatcher\Data\Repositories\Data as DataRepository;
 
 class Watcher extends Base
 {
-	/**
-	 * Is the watcher initialized?
-	 *
-	 * @var
-	 */
-	protected $is_initialized;
+    /**
+     * Is the watcher initialized?
+     *
+     * @var
+     */
+    protected $is_initialized;
 
-	/**
-	 * The file watcher.
-	 *
-	 * @var
-	 */
-	protected $watcher;
+    /**
+     * The file watcher.
+     *
+     * @var
+     */
+    protected $watcher;
 
-	/**
-	 * Folder listeners.
-	 *
-	 * @var
-	 */
-	protected $listeners;
+    /**
+     * Folder listeners.
+     *
+     * @var
+     */
+    protected $listeners;
 
-	/**
-	 * Console command object.
-	 *
-	 * @var
-	 */
-	protected $command;
+    /**
+     * Console command object.
+     *
+     * @var
+     */
+    protected $command;
 
-	/**
-	 * Watcher Repository.
-	 *
-	 * @var DataRepository
-	 */
-	private $dataRepository;
+    /**
+     * Watcher Repository.
+     *
+     * @var DataRepository
+     */
+    private $dataRepository;
 
     /**
      * @var Loader
@@ -53,9 +52,9 @@ class Watcher extends Base
     /**
      * Instantiate a Watcher.
      *
-     * @param DataRepository $dataRepository
+     * @param DataRepository  $dataRepository
      * @param ResourceWatcher $watcher
-     * @param Loader $loader
+     * @param Loader          $loader
      */
     public function __construct(DataRepository $dataRepository, ResourceWatcher $watcher, Loader $loader)
     {
@@ -71,13 +70,12 @@ class Watcher extends Base
      *
      * @param $event
      * @param $path
+     *
      * @return bool
      */
     private function firedOnlyOne($event, $path)
     {
-        if ($test = $this->dataRepository->isTestFile($path))
-        {
-
+        if ($test = $this->dataRepository->isTestFile($path)) {
             if ($test->sha1Changed() && !$this->dataRepository->isEnqueued($test)) {
                 $this->dataRepository->addTestToQueue($test);
 
@@ -93,38 +91,36 @@ class Watcher extends Base
     }
 
     /**
-	 * Watch for file changes.
-	 *
-	 * @param Command $command
+     * Watch for file changes.
      *
-	 * @return bool
-	 */
-	public function run(Command $command)
-	{
-		$this->setCommand($command);
+     * @param Command $command
+     *
+     * @return bool
+     */
+    public function run(Command $command)
+    {
+        $this->setCommand($command);
 
-		$this->initialize();
+        $this->initialize();
 
-		$this->watch();
+        $this->watch();
 
-	    return true;
-	}
+        return true;
+    }
 
-	/**
-	 * Initialize the Watcher.
-	 *
-	 */
-	private function initialize()
-	{
+    /**
+     * Initialize the Watcher.
+     */
+    private function initialize()
+    {
         $this->command->comment($this->getConfig('names.watcher'));
 
-		if (!$this->is_initialized)
-		{
-			$this->loader->loadEverything();
+        if (!$this->is_initialized) {
+            $this->loader->loadEverything();
 
-			$this->is_initialized = true;
-		}
-	}
+            $this->is_initialized = true;
+        }
+    }
 
     /**
      * Set the command.
@@ -144,7 +140,7 @@ class Watcher extends Base
      */
     private function showMessage($event, $path)
     {
-        $message = "File {$path} was " . $this->getEventName($event->getCode());
+        $message = "File {$path} was ".$this->getEventName($event->getCode());
 
         $this->command->drawLine($message);
 
@@ -152,100 +148,95 @@ class Watcher extends Base
     }
 
     /**
-	 * Watch folders for changes
-	 */
-	private function watch()
-	{
-		$this->command->line('Booting watchers...');
+     * Watch folders for changes.
+     */
+    private function watch()
+    {
+        $this->command->line('Booting watchers...');
 
-		$me = $this;
+        $me = $this;
 
-        foreach($this->loader->watchFolders as $folder)
-		{
-			if (!file_exists($folder))
-			{
-				$this->command->line("Folder {$folder} does not exists");
+        foreach ($this->loader->watchFolders as $folder) {
+            if (!file_exists($folder)) {
+                $this->command->line("Folder {$folder} does not exists");
 
-				continue;
-			}
+                continue;
+            }
 
-			$this->command->line('Watching '.$folder);
+            $this->command->line('Watching '.$folder);
 
-			$this->listeners[$folder] = $this->watcher->watch($folder);
+            $this->listeners[$folder] = $this->watcher->watch($folder);
 
-			$this->listeners[$folder]->anything(function($event, $resource, $path) use ($me)
-			{
-				if (!$me->isExcluded($path))
-				{
-					$me->fireEvent($event, $resource, $path);
-				}
-			});
-		}
+            $this->listeners[$folder]->anything(function ($event, $resource, $path) use ($me) {
+                if (!$me->isExcluded($path)) {
+                    $me->fireEvent($event, $resource, $path);
+                }
+            });
+        }
 
-		$this->watcher->start();
-	}
+        $this->watcher->start();
+    }
 
-	/**
-	 * Fire file modified event.
-	 *
-	 * @param $event
-	 * @param $resource
-	 * @param $path
-	 */
-	public function fireEvent($event, $resource, $path)
-	{
-        if ($this->firedOnlyOne($event, $path))
-        {
+    /**
+     * Fire file modified event.
+     *
+     * @param $event
+     * @param $resource
+     * @param $path
+     */
+    public function fireEvent($event, $resource, $path)
+    {
+        if ($this->firedOnlyOne($event, $path)) {
             return;
         }
 
         $this->showMessage($event, $path);
 
-        if ($this->queueTestSuites($path))
-		{
-			return;
-		}
+        if ($this->queueTestSuites($path)) {
+            return;
+        }
 
-		$this->command->line('All tests added to queue');
+        $this->command->line('All tests added to queue');
 
-		$this->dataRepository->queueAllTests();
-	}
+        $this->dataRepository->queueAllTests();
+    }
 
-	private function getEventName($eventCode)
-	{
-		$event = '(unknown event)';
+    private function getEventName($eventCode)
+    {
+        $event = '(unknown event)';
 
-		switch($eventCode)
-        {
-		    case Event::RESOURCE_DELETED:
-		        $event = "deleted";
-		        break;
-		    case Event::RESOURCE_CREATED:
-			    $event = "created";
-		        break;
-		    case Event::RESOURCE_MODIFIED:
-			    $event = "modified";
-		        break;
-		}
+        switch ($eventCode) {
+            case Event::RESOURCE_DELETED:
+                $event = 'deleted';
+                break;
+            case Event::RESOURCE_CREATED:
+                $event = 'created';
+                break;
+            case Event::RESOURCE_MODIFIED:
+                $event = 'modified';
+                break;
+        }
 
-		return $event;
-	}
+        return $event;
+    }
 
-	/**
-	 * Check if folder is excluded.
-	 *
-	 * @param $folder
-	 * @return bool
-	 */
-	public function isExcluded($folder)
-	{
-		return $this->dataRepository->isExcluded($this->loader->exclusions, $folder);
-	}
+    /**
+     * Check if folder is excluded.
+     *
+     * @param $folder
+     *
+     * @return bool
+     */
+    public function isExcluded($folder)
+    {
+        return $this->dataRepository->isExcluded($this->loader->exclusions, $folder);
+    }
 
     /**
      * Queue tests for suites.
      *
      * @param $path
+     *
      * @return bool tests were queued
      */
     private function queueTestSuites($path)
@@ -254,11 +245,10 @@ class Watcher extends Base
 
         $suites = $this->dataRepository->getSuitesForPath($path);
 
-        foreach ($suites as $suite)
-        {
+        foreach ($suites as $suite) {
             $queued = true;
 
-            $this->command->line('Adding all tests for the ' . $suite->name . ' suite');
+            $this->command->line('Adding all tests for the '.$suite->name.' suite');
 
             $this->dataRepository->queueTestsForSuite($suite->id);
         }

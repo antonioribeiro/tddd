@@ -2,8 +2,8 @@
 
 namespace PragmaRX\Ci;
 
-use PragmaRX\TestsWatcher\Services\Base;
 use PragmaRX\TestsWatcher\Data\Repositories\Data as DataRepository;
+use PragmaRX\TestsWatcher\Services\Base;
 
 class Service extends Base
 {
@@ -21,7 +21,6 @@ class Service extends Base
 
     /**
      * Clear the runs table.
-     *
      */
     public function clear()
     {

@@ -2,7 +2,6 @@
 
 namespace PragmaRX\TestsWatcher\Services;
 
-use App;
 use PragmaRX\TestsWatcher\Data\Repositories\Data as DataRepository;
 
 class Loader extends Base
@@ -47,7 +46,6 @@ class Loader extends Base
 
     /**
      * Read configuration and load testers, projects, suites...
-     *
      */
     public function loadEverything()
     {
@@ -63,12 +61,10 @@ class Loader extends Base
 
     /**
      * Load all testers to database.
-     *
      */
     public function loadTesters()
     {
-        foreach($this->getConfig('testers') as $name => $data)
-        {
+        foreach ($this->getConfig('testers') as $name => $data) {
             $this->dataRepository->createOrUpdateTester($name, $data);
         }
 
@@ -77,20 +73,17 @@ class Loader extends Base
 
     /**
      * Load all projects to database.
-     *
      */
     public function loadProjects()
     {
         $this->dataRepository->clearSuites();
 
-        foreach($this->getConfig('projects') as $name => $data)
-        {
+        foreach ($this->getConfig('projects') as $name => $data) {
             $this->command->line("Project '{$name}'");
 
             $project = $this->dataRepository->createOrUpdateProject($name, $data['path'], $data['tests_path']);
 
-            foreach($data['suites'] as $suite_name => $suite_data)
-            {
+            foreach ($data['suites'] as $suite_name => $suite_data) {
                 $this->command->line("  -- suite '{$suite_name}'");
 
                 $this->dataRepository->createOrUpdateSuite($suite_name, $project->id, $suite_data);
@@ -106,7 +99,6 @@ class Loader extends Base
 
     /**
      * Load all test files to database.
-     *
      */
     public function loadTests()
     {
@@ -121,12 +113,10 @@ class Loader extends Base
      */
     public function addToWatchFolders($path, $watch_folders)
     {
-        foreach($watch_folders as $folder)
-        {
+        foreach ($watch_folders as $folder) {
             $this->watchFolders[] = !file_exists($new = make_path([$path, $folder])) && file_exists($folder)
                 ? $folder
-                : $new
-            ;
+                : $new;
         }
     }
 
@@ -138,8 +128,7 @@ class Loader extends Base
      */
     public function addToExclusions($path, $exclude)
     {
-        foreach($exclude as $folder)
-        {
+        foreach ($exclude as $folder) {
             $this->exclusions[] = make_path([$path, $folder]);
         }
     }

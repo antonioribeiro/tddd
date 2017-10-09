@@ -4,6 +4,7 @@ namespace PragmaRX\TestsWatcher\Vendor\Laravel;
 
 use Event;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\ServiceProvider as IlluminateServiceProvider;
 use PragmaRX\TestsWatcher\Events\TestsFailed;
 use PragmaRX\TestsWatcher\Events\UserNotifiedOfFailure;
 use PragmaRX\TestsWatcher\Listeners\MarkAsNotified;
@@ -12,7 +13,6 @@ use PragmaRX\TestsWatcher\Support\Notifier;
 use PragmaRX\TestsWatcher\Vendor\Laravel\Console\Commands\ClearCommand;
 use PragmaRX\TestsWatcher\Vendor\Laravel\Console\Commands\TestCommand;
 use PragmaRX\TestsWatcher\Vendor\Laravel\Console\Commands\WatchCommand;
-use Illuminate\Support\ServiceProvider as IlluminateServiceProvider;
 
 class ServiceProvider extends IlluminateServiceProvider
 {
@@ -25,7 +25,6 @@ class ServiceProvider extends IlluminateServiceProvider
 
     /**
      * Boot Service Provider.
-     *
      */
     public function boot()
     {
@@ -40,7 +39,6 @@ class ServiceProvider extends IlluminateServiceProvider
 
     /**
      * Configure migrations path.
-     *
      */
     private function loadMigrations()
     {
@@ -49,7 +47,6 @@ class ServiceProvider extends IlluminateServiceProvider
 
     /**
      * Configure views path.
-     *
      */
     private function loadViews()
     {
@@ -58,7 +55,6 @@ class ServiceProvider extends IlluminateServiceProvider
 
     /**
      * Configure config path.
-     *
      */
     private function publishConfiguration()
     {
@@ -74,7 +70,7 @@ class ServiceProvider extends IlluminateServiceProvider
      */
     public function register()
     {
-        if (! defined('CI_PATH')) {
+        if (!defined('CI_PATH')) {
             define('CI_PATH', realpath(__DIR__.'/../../../'));
         }
 
@@ -82,13 +78,13 @@ class ServiceProvider extends IlluminateServiceProvider
 
         $this->registerService();
 
-	    $this->registerWatcher();
+        $this->registerWatcher();
 
-	    $this->registerTester();
+        $this->registerTester();
 
-	    $this->registerWatchCommand();
+        $this->registerWatchCommand();
 
-	    $this->registerTestCommand();
+        $this->registerTestCommand();
 
         $this->registerClearCommand();
 
@@ -109,12 +105,10 @@ class ServiceProvider extends IlluminateServiceProvider
 
     /**
      * Register the clear command.
-     *
      */
     private function registerClearCommand()
     {
-        $this->app->singleton('ci.clear.command', function($app)
-        {
+        $this->app->singleton('ci.clear.command', function ($app) {
             return new ClearCommand();
         });
 
@@ -123,7 +117,6 @@ class ServiceProvider extends IlluminateServiceProvider
 
     /**
      * Register event listeners.
-     *
      */
     private function registerEventListeners()
     {
@@ -134,111 +127,97 @@ class ServiceProvider extends IlluminateServiceProvider
 
     /**
      * Register the watch command.
-     *
      */
     private function registerNotifier()
     {
-        $this->app->singleton('ci.notifier', function()
-        {
+        $this->app->singleton('ci.notifier', function () {
             return new Notifier();
         });
     }
 
     /**
      * Register the watch command.
-     *
      */
     private function registerWatchCommand()
-	{
-        $this->app->singleton('ci.watch.command', function($app)
-        {
+    {
+        $this->app->singleton('ci.watch.command', function ($app) {
             return new WatchCommand();
         });
 
-		$this->commands('ci.watch.command');
-	}
+        $this->commands('ci.watch.command');
+    }
 
     /**
      * Register the test command.
-     *
      */
     private function registerTestCommand()
-	{
-        $this->app->singleton('ci.test.command', function()
-        {
+    {
+        $this->app->singleton('ci.test.command', function () {
             return new TestCommand();
         });
 
-		$this->commands('ci.test.command');
-	}
+        $this->commands('ci.test.command');
+    }
 
     /**
      * Register service service.
-     *
      */
     private function registerService()
     {
-        $this->app->singleton('ci', function($app)
-        {
+        $this->app->singleton('ci', function ($app) {
             return app('PragmaRX\TestsWatcher\Service');
         });
     }
 
     /**
      * Register service watcher.
-     *
      */
     private function registerWatcher()
-	{
-		$this->app->singleton('ci.watcher', function($app)
-		{
-			return app('PragmaRX\TestsWatcher\Services\Watcher');
-		});
-	}
+    {
+        $this->app->singleton('ci.watcher', function ($app) {
+            return app('PragmaRX\TestsWatcher\Services\Watcher');
+        });
+    }
 
     /**
      * Register service tester.
-     *
      */
     private function registerTester()
-	{
-		$this->app->singleton('ci.tester', function($app)
-		{
-			return app('PragmaRX\TestsWatcher\Services\Tester');
-		});
-	}
+    {
+        $this->app->singleton('ci.tester', function ($app) {
+            return app('PragmaRX\TestsWatcher\Services\Tester');
+        });
+    }
 
     /**
      * Register the resource watcher.
-     *
      */
     private function registerResourceWatcher()
-	{
-		$this->app->register('JasonLewis\ResourceWatcher\Integration\LaravelServiceProvider');
-	}
+    {
+        $this->app->register('JasonLewis\ResourceWatcher\Integration\LaravelServiceProvider');
+    }
 
     /**
      * Register all routes.
-     *
      */
     private function loadRoutes()
-	{
+    {
         Route::group([
-            'prefix' => config('ci.url_prefix'),
-            'namespace' => 'PragmaRX\TestsWatcher\Vendor\Laravel\Http\Controllers',
+            'prefix'     => config('ci.url_prefix'),
+            'namespace'  => 'PragmaRX\TestsWatcher\Vendor\Laravel\Http\Controllers',
             'middleware' => 'web',
         ], function () {
             $this->loadRoutesFrom(__DIR__.'/../../routes/web.php');
         });
-	}
+    }
 
-	/**
-	 * Get the root directory for this ServiceProvider
-	 *
-	 * @return string
-	 */
-	public function getRootDirectory()
-	{
-		return __DIR__.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'..';
-	}
+    /**
+     * Get the root directory for this ServiceProvider.
+     *
+     * @return string
+     */
+    public function getRootDirectory()
+    {
+        return __DIR__.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'..';
+    }
 }

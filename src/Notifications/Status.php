@@ -33,6 +33,7 @@ class Status extends Notification
 
     /**
      * @param $name
+     *
      * @return \Illuminate\Foundation\Application|mixed
      */
     private function getSenderInstance($name)
@@ -55,6 +56,7 @@ class Status extends Notification
     /**
      * @param $name
      * @param $parameters
+     *
      * @return mixed
      */
     public function __call($name, $parameters)

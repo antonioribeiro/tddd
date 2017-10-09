@@ -23,6 +23,7 @@ class Notifier
      * Send notifications.
      *
      * @param $tests
+     *
      * @return void
      */
     public function notifyViaChannels($tests)
@@ -44,6 +45,7 @@ class Notifier
      * @param $title
      * @param $body
      * @param null $icon
+     *
      * @return bool
      */
     public function notifyViaDesktop($title, $body, $icon = null)
@@ -57,8 +59,7 @@ class Notifier
         $notification =
             (new Notification())
                 ->setTitle($title)
-                ->setBody($body)
-        ;
+                ->setBody($body);
 
         if (!is_null($icon)) {
             $notification->setIcon('http://vjeantet.fr/images/logo.png');
