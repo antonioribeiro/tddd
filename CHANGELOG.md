@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.9.3] - 2017-10-10
+### Added
+- Support for Javascript testing (Jest)
+
+## [0.9.2] - 2017-09-10
+### Changed
+- Bug fixes
+
+## [0.9.1] - 2017-08-10
+### Changed
+- Bug fixes
+
+## [0.9.0] - 2017-07-10
+### Changed
+- Complete redesign of dashboard
+- Moved from ReactJS to VueJS
+
 ## [0.5.0] - 2015-03-10
 ### Added
 - Support Laravel 5
