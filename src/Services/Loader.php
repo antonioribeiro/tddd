@@ -23,7 +23,7 @@ class Loader extends Base
     /**
      * Command.
      *
-     * @var
+     * @var \PragmaRX\TestsWatcher\Vendor\Laravel\Console\Commands\BaseCommand
      */
     protected $command;
 
@@ -37,7 +37,7 @@ class Loader extends Base
     /**
      * Instantiate a Watcher.
      *
-     * @param DataRepository $dataRepository
+     * @param \PragmaRX\TestsWatcher\Data\Repositories\Data $dataRepository
      */
     public function __construct(DataRepository $dataRepository)
     {
@@ -49,21 +49,21 @@ class Loader extends Base
      */
     public function loadEverything()
     {
-        $this->command->info('Loading testers...');
         $this->loadTesters();
 
-        $this->command->info('Loading projects and suites...');
         $this->loadProjects();
 
-        $this->command->info('Loading tests...');
         $this->loadTests();
     }
 
     /**
      * Load all testers to database.
+     *
      */
     public function loadTesters()
     {
+        $this->command->info('Loading testers...');
+
         foreach ($this->getConfig('testers') as $name => $data) {
             $this->dataRepository->createOrUpdateTester($name, $data);
         }
@@ -73,9 +73,12 @@ class Loader extends Base
 
     /**
      * Load all projects to database.
+     *
      */
     public function loadProjects()
     {
+        $this->command->info('Loading projects and suites...');
+
         $this->dataRepository->clearSuites();
 
         foreach ($this->getConfig('projects') as $name => $data) {
@@ -99,9 +102,12 @@ class Loader extends Base
 
     /**
      * Load all test files to database.
+     *
      */
     public function loadTests()
     {
+        $this->command->info('Loading tests...');
+
         $this->dataRepository->syncTests($this->exclusions);
     }
 

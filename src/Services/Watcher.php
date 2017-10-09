@@ -3,7 +3,6 @@
 namespace PragmaRX\TestsWatcher\Services;
 
 use Illuminate\Console\Command;
-use JasonLewis\ResourceWatcher\Event;
 use JasonLewis\ResourceWatcher\Watcher as ResourceWatcher;
 use PragmaRX\TestsWatcher\Data\Repositories\Data as DataRepository;
 
@@ -19,14 +18,14 @@ class Watcher extends Base
     /**
      * The file watcher.
      *
-     * @var
+     * @var \JasonLewis\ResourceWatcher\Watcher
      */
     protected $watcher;
 
     /**
      * Folder listeners.
      *
-     * @var
+     * @var array
      */
     protected $listeners;
 
@@ -40,12 +39,12 @@ class Watcher extends Base
     /**
      * Watcher Repository.
      *
-     * @var DataRepository
+     * @var \PragmaRX\TestsWatcher\Data\Repositories\Data
      */
     private $dataRepository;
 
     /**
-     * @var Loader
+     * @var \PragmaRX\TestsWatcher\Services\Loader
      */
     private $loader;
 
@@ -81,7 +80,7 @@ class Watcher extends Base
 
                 $this->showMessage($event, $path);
 
-                $this->command->line('Test added to queue');
+                $this->showProgress('Test added to queue');
             }
 
             return true;
@@ -113,7 +112,7 @@ class Watcher extends Base
      */
     private function initialize()
     {
-        $this->command->comment($this->getConfig('names.watcher'));
+        $this->showComment($this->getConfig('names.watcher'));
 
         if (!$this->is_initialized) {
             $this->loader->loadEverything();
@@ -135,41 +134,38 @@ class Watcher extends Base
     }
 
     /**
+     * Display a message on terminal.
+     *
      * @param $event
      * @param $path
      */
     private function showMessage($event, $path)
     {
-        $message = "File {$path} was ".$this->getEventName($event->getCode());
-
-        $this->command->drawLine($message);
-
-        $this->command->line($message);
+        $this->showProgress("File {$path} was ".$this->getEventName($event->getCode()), true);
     }
 
     /**
      * Watch folders for changes.
+     *
      */
     private function watch()
     {
-        $this->command->line('Booting watchers...');
-
-        $me = $this;
+        $this->showProgress('Booting watchers...');
 
         foreach ($this->loader->watchFolders as $folder) {
             if (!file_exists($folder)) {
-                $this->command->line("Folder {$folder} does not exists");
+                $this->showProgress("Folder {$folder} does not exists");
 
                 continue;
             }
 
-            $this->command->line('Watching '.$folder);
+            $this->showProgress('Watching '.$folder);
 
             $this->listeners[$folder] = $this->watcher->watch($folder);
 
-            $this->listeners[$folder]->anything(function ($event, $resource, $path) use ($me) {
-                if (!$me->isExcluded($path)) {
-                    $me->fireEvent($event, $resource, $path);
+            $this->listeners[$folder]->anything(function ($event, $resource, $path) {
+                if (!$this->isExcluded($path)) {
+                    $this->fireEvent($event, $resource, $path);
                 }
             });
         }
@@ -196,28 +192,9 @@ class Watcher extends Base
             return;
         }
 
-        $this->command->line('All tests added to queue');
+        $this->showProgress('All tests added to queue');
 
         $this->dataRepository->queueAllTests();
-    }
-
-    private function getEventName($eventCode)
-    {
-        $event = '(unknown event)';
-
-        switch ($eventCode) {
-            case Event::RESOURCE_DELETED:
-                $event = 'deleted';
-                break;
-            case Event::RESOURCE_CREATED:
-                $event = 'created';
-                break;
-            case Event::RESOURCE_MODIFIED:
-                $event = 'modified';
-                break;
-        }
-
-        return $event;
     }
 
     /**
@@ -248,7 +225,7 @@ class Watcher extends Base
         foreach ($suites as $suite) {
             $queued = true;
 
-            $this->command->line('Adding all tests for the '.$suite->name.' suite');
+            $this->showProgress('Adding all tests for the '.$suite->name.' suite');
 
             $this->dataRepository->queueTestsForSuite($suite->id);
         }

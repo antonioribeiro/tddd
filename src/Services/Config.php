@@ -2,6 +2,10 @@
 
 namespace PragmaRX\TestsWatcher\Services;
 
+use PragmaRX\TestsWatcher\Data\Repositories\Data;
+use PragmaRX\TestsWatcher\Services\Watcher as ResourceWatcher;
+use PragmaRX\TestsWatcher\Vendor\Laravel\Console\Commands\BaseCommand as Command;
+
 class Config extends Base
 {
     /**
@@ -28,14 +32,14 @@ class Config extends Base
     /**
      * Console command object.
      *
-     * @var
+     * @var \PragmaRX\TestsWatcher\Vendor\Laravel\Console\Commands\BaseCommand
      */
     protected $command;
 
     /**
      * Watcher Repository.
      *
-     * @var DataRepository
+     * @var \PragmaRX\TestsWatcher\Data\Repositories\Data
      */
     private $dataRepository;
 
@@ -47,11 +51,11 @@ class Config extends Base
     /**
      * Instantiate a Watcher.
      *
-     * @param DataRepository  $dataRepository
-     * @param ResourceWatcher $watcher
+     * @param \PragmaRX\TestsWatcher\Data\Repositories\Data  $dataRepository
+     * @param \PragmaRX\TestsWatcher\Services\Watcher $watcher
      * @param Loader          $loader
      */
-    public function __construct(DataRepository $dataRepository, ResourceWatcher $watcher, Loader $loader)
+    public function __construct(Data $dataRepository, ResourceWatcher $watcher, Loader $loader)
     {
         $this->dataRepository = $dataRepository;
 
@@ -63,7 +67,7 @@ class Config extends Base
     /**
      * Watch for file changes.
      *
-     * @param Command $command
+     * @param \PragmaRX\TestsWatcher\Vendor\Laravel\Console\Commands\BaseCommand $command
      *
      * @return bool
      */
@@ -80,6 +84,7 @@ class Config extends Base
 
     /**
      * Initialize the Watcher.
+     *
      */
     private function initialize()
     {
@@ -106,6 +111,7 @@ class Config extends Base
 
     /**
      * Watch folders for changes.
+     *
      */
     private function watch()
     {
@@ -164,25 +170,6 @@ class Config extends Base
         $this->command->line('All tests added to queue');
 
         $this->dataRepository->queueAllTests();
-    }
-
-    private function getEventName($eventCode)
-    {
-        $event = '(unknown event)';
-
-        switch ($eventCode) {
-            case Event::RESOURCE_DELETED:
-                $event = 'deleted';
-                break;
-            case Event::RESOURCE_CREATED:
-                $event = 'created';
-                break;
-            case Event::RESOURCE_MODIFIED:
-                $event = 'modified';
-                break;
-        }
-
-        return $event;
     }
 
     /**

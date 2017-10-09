@@ -3,7 +3,6 @@
 namespace PragmaRX\TestsWatcher\Data\Repositories;
 
 use Carbon\Carbon;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB as Database;
 use PragmaRX\TestsWatcher\Support\Notifier;
 use PragmaRX\TestsWatcher\Vendor\Laravel\Entities\Project;
@@ -75,6 +74,25 @@ class Data
     }
 
     /**
+     * @param $test
+     * @param $fileName
+     * @param $line
+     * @param $occurence
+     * @return string
+     */
+    private function createLinkToEditFile($test, $fileName, $line, $occurence)
+    {
+        $tag = sprintf(
+            '<a href="javascript:jQuery.get(\'%s\');" class="file">%s</a>',
+            route('tests-watcher.file.open',
+                ['filename' => $fileName, 'line' => $line[2], 'project_id' => $test->suite->project]),
+            $line[$occurence]
+        );
+
+        return $tag;
+    }
+
+    /**
      * Create links.
      *
      * @param $lines
@@ -90,13 +108,11 @@ class Data
             if (count($line) > 0 && count($line[0]) > 0) {
                 $occurence = strpos($lines, $line[0]) === false ? 1 : 0;
 
-                $tag = sprintf(
-                    '<a href="javascript:jQuery.get(\'%s\');" class="file">%s</a>',
-                    route('tests-watcher.file.open', ['filename' => $fileName, 'line' => $line[2], 'project_id' => $test->suite->project]),
-                    $line[$occurence]
+                $lines = str_replace(
+                    $line[$occurence],
+                    $this->createLinkToEditFile($test, $fileName, $line, $occurence),
+                    $lines
                 );
-
-                $lines = str_replace($line[$occurence], $tag, $lines);
             }
         }
 
@@ -195,6 +211,21 @@ class Data
     }
 
     /**
+     * @param $file
+     * @param $suite
+     * @return mixed
+     */
+    private function findTestByFileAndSuite($file, $suite)
+    {
+        $exists = Test::where('name', $file->getRelativePathname())
+                      ->where('suite_id', $suite->id)
+                      ->first()
+        ;
+
+        return $exists;
+    }
+
+    /**
      * Generates data for the javascript client.
      */
     public function getJavascriptClientData()
@@ -216,7 +247,7 @@ class Data
      * @param $test
      * @param $log
      *
-     * @return bool|mixed|null|string
+     * @return null|string
      */
     private function getScreenshots($test, $log)
     {
@@ -225,7 +256,7 @@ class Data
             : $this->parseDuskScreenshots($log, $test->suite->tester->output_folder);
 
         if (is_null($screenshots)) {
-            return;
+            return null;
         }
 
         return json_encode((array) $screenshots);
@@ -259,10 +290,6 @@ class Data
      */
     public function createOrUpdateTest($file, $suite)
     {
-        $exists = Test::where('name', $file->getRelativePathname())
-                    ->where('suite_id', $suite->id)
-                    ->first();
-
         $test = Test::updateOrCreate(
             [
                 'path'     => dirname($file->getRealPath()),
@@ -272,7 +299,7 @@ class Data
             ]
         );
 
-        if (!$exists) {
+        if ($this->findTestByFileAndSuite($file, $suite)) {
             $this->addTestToQueue($test);
         }
     }
@@ -519,6 +546,8 @@ class Data
 
     /**
      * Get a test from the queue.
+     *
+     * @return \PragmaRX\TestsWatcher\Vendor\Laravel\Entities\Test|null
      */
     public function getNextTestFromQueue()
     {
@@ -527,7 +556,7 @@ class Data
             ->where('ci_tests.state', '!=', static::STATE_RUNNING);
 
         if (!$queue = $query->first()) {
-            return false;
+            return null;
         }
 
         return $queue->test;

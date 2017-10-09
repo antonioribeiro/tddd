@@ -2,9 +2,10 @@
 
 namespace PragmaRX\TestsWatcher\Services;
 
-use Illuminate\Console\Command;
-use PragmaRX\TestsWatcher\Data\Repositories\Data as DataRepository;
+use Closure;
 use PragmaRX\TestsWatcher\Support\ShellExec;
+use PragmaRX\TestsWatcher\Data\Repositories\Data as DataRepository;
+use PragmaRX\TestsWatcher\Vendor\Laravel\Console\Commands\BaseCommand as Command;
 
 class Tester extends Base
 {
@@ -16,11 +17,11 @@ class Tester extends Base
     protected $testing;
 
     /**
-     * The command object.
+     * The data repository.
      *
-     * @object Illuminate\Console\Command
+     * @object \PragmaRX\TestsWatcher\Data\Repositories\Data
      */
-    protected $command;
+    protected $dataRepository;
 
     /**
      * @var ShellExec
@@ -42,6 +43,12 @@ class Tester extends Base
         $this->shell = $shell;
     }
 
+    /**
+     * Add the command responsible for piping the output.
+     *
+     * @param $test
+     * @return string
+     */
     private function addPiperCommand($test)
     {
         if ($test->suite->tester->require_tee) {
@@ -101,6 +108,7 @@ class Tester extends Base
 
     /**
      * Delete temporary tee file.
+     *
      */
     private function deleteTeeTempFile()
     {
@@ -109,6 +117,13 @@ class Tester extends Base
         }
     }
 
+    /**
+     * Get the output from pipe or Process.
+     *
+     * @param $process \Symfony\Component\Process\Process
+     * @param $test
+     * @return bool|string
+     */
     private function getOutput($process, $test)
     {
         if ($this->wasPiped($test)) {
@@ -119,6 +134,8 @@ class Tester extends Base
     }
 
     /**
+     * Get the output from the pipe file.
+     *
      * @return bool|string
      */
     private function getPipedFileContents()
@@ -129,7 +146,7 @@ class Tester extends Base
     /**
      * Run the tester.
      *
-     * @param Command $command
+     * @param \PragmaRX\TestsWatcher\Vendor\Laravel\Console\Commands\BaseCommand $command
      */
     public function run(Command $command)
     {
@@ -141,6 +158,8 @@ class Tester extends Base
     }
 
     /**
+     * Check if the output must be piped.
+     *
      * @param $test
      *
      * @return bool
@@ -210,17 +229,19 @@ class Tester extends Base
             return false;
         }
 
+        $ok = false;
+
+        $lines = '';
+
         $this->dataRepository->markTestAsRunning($test);
 
         $command = $this->addPiperCommand($test);
 
-        $this->command->drawLine($line = 'Executing '.$command);
-
-        $this->command->line($line);
+        $this->showProgress('Executing '.$command, true);
 
         for ($times = 0; $times <= $test->suite->retries; $times++) {
             if ($times > 0) {
-                $this->command->line('retrying...');
+                $this->showProgress('retrying...');
             }
 
             $process = $this->shell->exec($command, $test->suite->project->path, function ($type, $buffer) {
@@ -240,16 +261,18 @@ class Tester extends Base
 
         $this->dataRepository->storeTestResult($test, $lines, $ok, $this->shell->startedAt, $this->shell->endedAt);
 
-        $this->deleteTeeTempFile($test);
+        $this->deleteTeeTempFile();
 
         return true;
     }
 
-    public function showProgress($line)
-    {
-        $this->command->line($line);
-    }
-
+    /**
+     * Check if the test has passed.
+     *
+     * @param $exitCode
+     * @param \PragmaRX\TestsWatcher\Vendor\Laravel\Entities\Test $test
+     * @return bool
+     */
     private function testPassed($exitCode, $test)
     {
         if ($exitCode !== 0) {
@@ -265,6 +288,12 @@ class Tester extends Base
         return count($matches) == 0;
     }
 
+    /**
+     * Check if the test was piped.
+     *
+     * @param \PragmaRX\TestsWatcher\Vendor\Laravel\Entities\Test $test
+     * @return bool
+     */
     private function wasPiped($test)
     {
         return $this->shouldPipe($test) && file_exists($this->pipedFile);
