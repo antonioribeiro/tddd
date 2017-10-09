@@ -26,6 +26,7 @@ class Notify
      * Handle the event.
      *
      * @param TestsFailed $event
+     *
      * @return void
      */
     public function handle(TestsFailed $event)

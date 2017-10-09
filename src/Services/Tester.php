@@ -3,29 +3,29 @@
 namespace PragmaRX\TestsWatcher\Services;
 
 use Illuminate\Console\Command;
-use PragmaRX\TestsWatcher\Support\ShellExec;
 use PragmaRX\TestsWatcher\Data\Repositories\Data as DataRepository;
+use PragmaRX\TestsWatcher\Support\ShellExec;
 
-class Tester extends Base {
+class Tester extends Base
+{
+    /**
+     * Is it testing?
+     *
+     * @var
+     */
+    protected $testing;
 
-	/**
-	 * Is it testing?
-	 *
-	 * @var
-	 */
-	protected $testing;
+    /**
+     * The command object.
+     *
+     * @object Illuminate\Console\Command
+     */
+    protected $command;
 
-	/**
-	 * The command object.
-	 *
-	 * @object Illuminate\Console\Command
-	 */
-	protected $command;
-
-	/**
-	 * @var ShellExec
-	 */
-	private $shell;
+    /**
+     * @var ShellExec
+     */
+    private $shell;
 
     private $pipedFile;
 
@@ -33,14 +33,14 @@ class Tester extends Base {
      * Instantiate a Tester.
      *
      * @param DataRepository $dataRepository
-     * @param ShellExec $shell
+     * @param ShellExec      $shell
      */
-	public function __construct(DataRepository $dataRepository, ShellExec $shell)
-	{
-		$this->dataRepository = $dataRepository;
+    public function __construct(DataRepository $dataRepository, ShellExec $shell)
+    {
+        $this->dataRepository = $dataRepository;
 
-		$this->shell = $shell;
-	}
+        $this->shell = $shell;
+    }
 
     private function addPiperCommand($test)
     {
@@ -59,7 +59,9 @@ class Tester extends Base {
      * Add tee to test command.
      *
      * @param $testCommand
+     *
      * @return string
+     *
      * @internal param $test
      */
     private function addTee($testCommand)
@@ -79,6 +81,7 @@ class Tester extends Base {
      * Add tee to test command.
      *
      * @param $testCommand
+     *
      * @return string
      */
     private function addScript($testCommand)
@@ -98,7 +101,6 @@ class Tester extends Base {
 
     /**
      * Delete temporary tee file.
-     *
      */
     private function deleteTeeTempFile()
     {
@@ -125,140 +127,128 @@ class Tester extends Base {
     }
 
     /**
-	 * Run the tester.
-	 *
-	 * @param Command $command
-	 */
-	public function run(Command $command)
-	{
-		$this->command = $command;
+     * Run the tester.
+     *
+     * @param Command $command
+     */
+    public function run(Command $command)
+    {
+        $this->command = $command;
 
-		$this->command->comment($this->getConfig('names.worker'));
+        $this->command->comment($this->getConfig('names.worker'));
 
-		$this->startTester();
-	}
+        $this->startTester();
+    }
 
     /**
      * @param $test
+     *
      * @return bool
      */
     private function shouldPipe($test)
     {
-        return ($test->suite->tester->require_tee ||
-            $test->suite->tester->require_script);
+        return $test->suite->tester->require_tee ||
+            $test->suite->tester->require_script;
     }
 
     /**
-	 * Start the timed tester.
-	 *
-	 * @param int $interval - Defaults to 100ms between tests.
-	 * @param null $timeout
-	 * @param Closure $callback
-	 */
-	public function startTester($interval = 100000, $timeout = null, Closure $callback = null)
-	{
-		$this->testing = true;
+     * Start the timed tester.
+     *
+     * @param int     $interval - Defaults to 100ms between tests.
+     * @param null    $timeout
+     * @param Closure $callback
+     */
+    public function startTester($interval = 100000, $timeout = null, Closure $callback = null)
+    {
+        $this->testing = true;
 
-		$is_idle = false;
+        $is_idle = false;
 
-		$timeTesting = 0;
+        $timeTesting = 0;
 
-		while ($this->testing)
-		{
-			if (is_callable($callback))
-			{
-				call_user_func($callback, $this);
-			}
+        while ($this->testing) {
+            if (is_callable($callback)) {
+                call_user_func($callback, $this);
+            }
 
-			usleep($interval);
+            usleep($interval);
 
-			if ( ! $this->test())
-			{
-				if ( ! $is_idle)
-				{
-					$is_idle = true;
+            if (!$this->test()) {
+                if (!$is_idle) {
+                    $is_idle = true;
 
-					$this->command->info('idle...');
-				}
-			}
-			else
-			{
-				$is_idle = false;
-			}
+                    $this->command->info('idle...');
+                }
+            } else {
+                $is_idle = false;
+            }
 
-			$timeTesting += $interval;
+            $timeTesting += $interval;
 
-			if ( ! is_null($timeout) and $timeTesting >= $timeout)
-			{
-				$this->stopTester();
-			}
-		}
-	}
+            if (!is_null($timeout) and $timeTesting >= $timeout) {
+                $this->stopTester();
+            }
+        }
+    }
 
-	/**
-	 * Stop testing.
-	 *
-	 * @return void
-	 */
-	public function stopTester()
-	{
-		$this->testing = false;
-	}
+    /**
+     * Stop testing.
+     *
+     * @return void
+     */
+    public function stopTester()
+    {
+        $this->testing = false;
+    }
 
-	/**
-	 * Find and execute a test.
-	 *
-	 */
-	private function test()
-	{
-		if (!$test = $this->dataRepository->getNextTestFromQueue())
-		{
-			return false;
-		}
+    /**
+     * Find and execute a test.
+     */
+    private function test()
+    {
+        if (!$test = $this->dataRepository->getNextTestFromQueue()) {
+            return false;
+        }
 
         $this->dataRepository->markTestAsRunning($test);
 
-		$command = $this->addPiperCommand($test);
+        $command = $this->addPiperCommand($test);
 
-		$this->command->drawLine($line = 'Executing '.$command);
+        $this->command->drawLine($line = 'Executing '.$command);
 
-		$this->command->line($line);
+        $this->command->line($line);
 
-        for ($times = 0; $times <= $test->suite->retries; $times++)
-		{
+        for ($times = 0; $times <= $test->suite->retries; $times++) {
             if ($times > 0) {
                 $this->command->line('retrying...');
             }
 
-			$process = $this->shell->exec($command, $test->suite->project->path, function($type, $buffer)
-			{
-				if ($this->getConfig('show_progress'))
-				{
-					$this->showProgress($buffer);
-				}
-			});
+            $process = $this->shell->exec($command, $test->suite->project->path, function ($type, $buffer) {
+                if ($this->getConfig('show_progress')) {
+                    $this->showProgress($buffer);
+                }
+            });
 
             $lines = $this->getOutput($process, $test);
 
-			if ($ok = $this->testPassed($process->getExitCode(), $test))
-			{
-				break;
-			}
-		}
+            if ($ok = $this->testPassed($process->getExitCode(), $test)) {
+                break;
+            }
+        }
 
         $this->command->{$ok ? 'info' : 'error'}($ok ? 'OK' : 'FAILED');
 
         $this->dataRepository->storeTestResult($test, $lines, $ok, $this->shell->startedAt, $this->shell->endedAt);
 
-		$this->deleteTeeTempFile($test);
+        $this->deleteTeeTempFile($test);
 
-		return true;
-	}
+        return true;
+    }
 
-	public function showProgress($line)
-	{
-		$this->command->line($line);
-	}
+    public function showProgress($line)
+    {
+        $this->command->line($line);
+    }
 
     private function testPassed($exitCode, $test)
     {

@@ -1,12 +1,13 @@
-<?php namespace JasonLewis\ResourceWatcher\Resource;
+<?php
 
-interface ResourceInterface {
+namespace JasonLewis\ResourceWatcher\Resource;
 
-	/**
-	 * Detect any changes to the resource.
-	 *
-	 * @return array
-	 */
-	public function detectChanges();
-
+interface ResourceInterface
+{
+    /**
+     * Detect any changes to the resource.
+     *
+     * @return array
+     */
+    public function detectChanges();
 }

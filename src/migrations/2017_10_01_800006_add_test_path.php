@@ -1,37 +1,35 @@
 <?php
 
 use DB as Database;
-use PragmaRX\Support\Migration;
-use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+use PragmaRX\Support\Migration;
 
 class AddTestPath extends Migration
 {
-	/**
-	 * Run the migrations.
-	 *
-	 * @return void
-	 */
-	public function migrateUp()
-	{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function migrateUp()
+    {
         Database::statement('delete from ci_tests;');
 
-        Schema::table('ci_tests', function(Blueprint $table)
-		{
-			$table->string('path')->nullable();
-		});
-	}
+        Schema::table('ci_tests', function (Blueprint $table) {
+            $table->string('path')->nullable();
+        });
+    }
 
-	/**
-	 * Reverse the migrations.
-	 *
-	 * @return void
-	 */
-	public function migrateDown()
-	{
-        Schema::table('ci_tests', function(Blueprint $table)
-        {
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function migrateDown()
+    {
+        Schema::table('ci_tests', function (Blueprint $table) {
             $table->dropColumn('path');
         });
-	}
+    }
 }

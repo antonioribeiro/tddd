@@ -1,5 +1,8 @@
-<?php namespace PragmaRX\TestsWatcher\Vendor\Laravel;
-/**
+<?php
+
+namespace PragmaRX\TestsWatcher\Vendor\Laravel;
+
+/*
  * Part of the Ci package.
  *
  * NOTICE OF LICENSE
@@ -20,8 +23,8 @@
 
 use Illuminate\Support\Facades\Facade as IlluminateFacade;
 
-class Facade extends IlluminateFacade {
-
+class Facade extends IlluminateFacade
+{
     /**
      * Get the registered name of the component.
      *
@@ -31,5 +34,4 @@ class Facade extends IlluminateFacade {
     {
         return 'ci';
     }
-
 }

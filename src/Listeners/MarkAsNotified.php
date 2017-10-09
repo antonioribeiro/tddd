@@ -2,7 +2,6 @@
 
 namespace PragmaRX\TestsWatcher\Listeners;
 
-use Notification;
 use PragmaRX\TestsWatcher\Data\Repositories\Data;
 use PragmaRX\TestsWatcher\Events\UserNotifiedOfFailure;
 
@@ -17,6 +16,7 @@ class MarkAsNotified
      * Handle the event.
      *
      * @param UserNotifiedOfFailure $event
+     *
      * @return void
      */
     public function handle(UserNotifiedOfFailure $event)

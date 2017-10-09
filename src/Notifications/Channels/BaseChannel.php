@@ -2,8 +2,6 @@
 
 namespace PragmaRX\TestsWatcher\Notifications\Channels;
 
-use Request;
-
 abstract class BaseChannel implements Contract
 {
     private function getActionMessage($item)
@@ -27,6 +25,7 @@ abstract class BaseChannel implements Contract
 
     /**
      * @param $item
+     *
      * @return string
      */
     protected function getMessage($item)
@@ -52,7 +51,7 @@ abstract class BaseChannel implements Contract
         return route(
             'tests-watcher.dashboard',
             [
-                'test_id' => $test['id'],
+                'test_id'    => $test['id'],
                 'project_id' => $test['project_id'],
             ]
         );

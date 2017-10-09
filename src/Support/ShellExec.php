@@ -2,8 +2,8 @@
 
 namespace PragmaRX\TestsWatcher\Support;
 
-use Closure;
 use Carbon\Carbon;
+use Closure;
 use Symfony\Component\Process\Process;
 
 class ShellExec

@@ -2,21 +2,21 @@
 
 namespace PragmaRX\TestsWatcher\Vendor\Laravel\Http\Controllers;
 
-use Response;
 use Illuminate\Routing\Controller;
 use PragmaRX\TestsWatcher\Data\Repositories\Data;
+use Response;
 
 class DashboardController extends Controller
 {
-	/**
-	 * @var Data
-	 */
-	public $dataRepository;
+    /**
+     * @var Data
+     */
+    public $dataRepository;
 
-	public function __construct(Data $dataRepository)
-	{
-		$this->dataRepository = $dataRepository;
-	}
+    public function __construct(Data $dataRepository)
+    {
+        $this->dataRepository = $dataRepository;
+    }
 
     private function addProjectRootPath($fileName, $project)
     {
@@ -24,33 +24,32 @@ class DashboardController extends Controller
             return $fileName;
         }
 
-        return $project->path . DIRECTORY_SEPARATOR . $fileName;
+        return $project->path.DIRECTORY_SEPARATOR.$fileName;
     }
 
     public function index()
     {
         return
             view('pragmarx/ci::dashboard')
-                ->with('laravel', $this->dataRepository->getJavascriptClientData())
-        ;
+                ->with('laravel', $this->dataRepository->getJavascriptClientData());
     }
 
-	public function allTests($project_id = null)
-	{
-		return $this->success(['tests' => $this->dataRepository->getTests($project_id)]);
-	}
+    public function allTests($project_id = null)
+    {
+        return $this->success(['tests' => $this->dataRepository->getTests($project_id)]);
+    }
 
-	public function allProjects()
-	{
-		return $this->success(['projects' => $this->dataRepository->getProjects()]);
-	}
+    public function allProjects()
+    {
+        return $this->success(['projects' => $this->dataRepository->getProjects()]);
+    }
 
-	public function enableTests($enable, $project_id, $test_id = null)
-	{
-		$enabled = $this->dataRepository->enableTests($enable, $project_id, $test_id);
+    public function enableTests($enable, $project_id, $test_id = null)
+    {
+        $enabled = $this->dataRepository->enableTests($enable, $project_id, $test_id);
 
-		return $this->success(['enabled' => $enabled]);
-	}
+        return $this->success(['enabled' => $enabled]);
+    }
 
     public function makeOpenFileCommand($fileName, $line, $project_id)
     {
@@ -60,10 +59,9 @@ class DashboardController extends Controller
         );
 
         return
-            config('ci.editor.bin') .
-            (!is_null($line) ? " --line {$line}" : '') .
-            " {$fileName}"
-        ;
+            config('ci.editor.bin').
+            (!is_null($line) ? " --line {$line}" : '').
+            " {$fileName}";
     }
 
     public function reset($project_id)
@@ -73,24 +71,24 @@ class DashboardController extends Controller
         return $this->success();
     }
 
-	public function runTest($test_id)
-	{
-		$this->dataRepository->runTest($test_id);
+    public function runTest($test_id)
+    {
+        $this->dataRepository->runTest($test_id);
 
-		return $this->success();
-	}
+        return $this->success();
+    }
 
-	public function runAll($project_id)
-	{
-		$this->dataRepository->runAll($project_id);
+    public function runAll($project_id)
+    {
+        $this->dataRepository->runAll($project_id);
 
-		return $this->success();
-	}
+        return $this->success();
+    }
 
-	public function success($result = [])
-	{
-		return Response::json(array_merge(['success' => true], $result));
-	}
+    public function success($result = [])
+    {
+        return Response::json(array_merge(['success' => true], $result));
+    }
 
     public function openFile($fileName, $line = null, $project_id = null)
     {

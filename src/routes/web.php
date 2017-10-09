@@ -1,6 +1,6 @@
 <?php
 
-Route::group(['prefix' => '/tests'], function() {
+Route::group(['prefix' => '/tests'], function () {
     Route::get('/run/all/{project_id}', ['as' => 'tests-watcher.tests.run.all', 'uses' => 'DashboardController@runAll']);
 
     Route::get('/reset/{project_id}', ['as' => 'tests-watcher.tests.reset', 'uses' => 'DashboardController@reset']);
