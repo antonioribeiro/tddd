@@ -346,11 +346,12 @@ class Data
      * Check if the class is abstract.
      *
      * @param $file
+     *
      * @return bool
      */
     private function isAbstractClass($file)
     {
-        return !!preg_match(
+        return (bool) preg_match(
             '/^abstract\s+class[A-Za-z0-9_\s]{1,100}{/im',
             file_get_contents($file)
         );
@@ -360,6 +361,7 @@ class Data
      * Check if the file is testable.
      *
      * @param $file
+     *
      * @return bool
      */
     private function isTestable($file)
