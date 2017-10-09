@@ -25,6 +25,7 @@ class ServiceProvider extends IlluminateServiceProvider
 
     /**
      * Boot Service Provider.
+     *
      */
     public function boot()
     {
@@ -39,6 +40,7 @@ class ServiceProvider extends IlluminateServiceProvider
 
     /**
      * Configure migrations path.
+     *
      */
     private function loadMigrations()
     {
@@ -47,6 +49,7 @@ class ServiceProvider extends IlluminateServiceProvider
 
     /**
      * Configure views path.
+     *
      */
     private function loadViews()
     {
@@ -55,6 +58,7 @@ class ServiceProvider extends IlluminateServiceProvider
 
     /**
      * Configure config path.
+     *
      */
     private function publishConfiguration()
     {
@@ -105,6 +109,7 @@ class ServiceProvider extends IlluminateServiceProvider
 
     /**
      * Register the clear command.
+     *
      */
     private function registerClearCommand()
     {
@@ -117,6 +122,7 @@ class ServiceProvider extends IlluminateServiceProvider
 
     /**
      * Register event listeners.
+     *
      */
     private function registerEventListeners()
     {
@@ -127,6 +133,7 @@ class ServiceProvider extends IlluminateServiceProvider
 
     /**
      * Register the watch command.
+     *
      */
     private function registerNotifier()
     {
@@ -137,6 +144,7 @@ class ServiceProvider extends IlluminateServiceProvider
 
     /**
      * Register the watch command.
+     *
      */
     private function registerWatchCommand()
     {
@@ -149,6 +157,7 @@ class ServiceProvider extends IlluminateServiceProvider
 
     /**
      * Register the test command.
+     *
      */
     private function registerTestCommand()
     {
@@ -161,6 +170,7 @@ class ServiceProvider extends IlluminateServiceProvider
 
     /**
      * Register service service.
+     *
      */
     private function registerService()
     {
@@ -171,6 +181,7 @@ class ServiceProvider extends IlluminateServiceProvider
 
     /**
      * Register service watcher.
+     *
      */
     private function registerWatcher()
     {
@@ -181,6 +192,7 @@ class ServiceProvider extends IlluminateServiceProvider
 
     /**
      * Register service tester.
+     *
      */
     private function registerTester()
     {
@@ -191,6 +203,7 @@ class ServiceProvider extends IlluminateServiceProvider
 
     /**
      * Register the resource watcher.
+     *
      */
     private function registerResourceWatcher()
     {
@@ -199,6 +212,7 @@ class ServiceProvider extends IlluminateServiceProvider
 
     /**
      * Register all routes.
+     *
      */
     private function loadRoutes()
     {

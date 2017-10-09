@@ -18,11 +18,21 @@ class User extends Model
         return $this->routeNotificationForEmail();
     }
 
+    /**
+     * Route notifications for e-mail.
+     *
+     * @return string
+     */
     private function routeNotificationForEmail()
     {
         return config('ci.notifications.user.email');
     }
 
+    /**
+     * Route notifications for slack.
+     *
+     * @return \Illuminate\Config\Repository|mixed
+     */
     private function routeNotificationForSlack()
     {
         return config('services.slack.webhook_url');

@@ -10,6 +10,11 @@ class Queue extends Model
         'test_id',
     ];
 
+    /**
+     * Test relation.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function test()
     {
         return $this->belongsTo('PragmaRX\TestsWatcher\Vendor\Laravel\Entities\Test');

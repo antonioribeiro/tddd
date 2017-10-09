@@ -14,16 +14,33 @@ class Test extends Model
         'sha1',
     ];
 
+    /**
+     * Get the full path.
+     *
+     * @param $value
+     * @return mixed|string
+     */
     public function getFullPathAttribute($value)
     {
         return make_path([$this->suite->testsFullPath, $this->name]);
     }
 
+    /**
+     * Suite relation.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function suite()
     {
         return $this->belongsTo('PragmaRX\TestsWatcher\Vendor\Laravel\Entities\Suite');
     }
 
+    /**
+     * Get the test command.
+     *
+     * @param $value
+     * @return string
+     */
     public function getTestCommandAttribute($value)
     {
         $command = $this->suite->testCommand;
@@ -31,11 +48,20 @@ class Test extends Model
         return $command.' '.$this->fullPath;
     }
 
+    /**
+     * Runs relation.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function runs()
     {
         return $this->hasMany('PragmaRX\TestsWatcher\Vendor\Laravel\Entities\Run');
     }
 
+    /**
+     * Update test sha1.
+     *
+     */
     public function updateSha1()
     {
         $this->sha1 = sha1_file($this->fullPath);
@@ -43,6 +69,11 @@ class Test extends Model
         $this->save();
     }
 
+    /**
+     * Check if the sha1 changed.
+     *
+     * @return bool
+     */
     public function sha1Changed()
     {
         return $this->sha1 !== sha1_file($this->fullPath);

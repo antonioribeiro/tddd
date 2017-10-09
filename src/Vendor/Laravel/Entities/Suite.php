@@ -17,6 +17,12 @@ class Suite extends Model
         'max_retries',
     ];
 
+    /**
+     * Get the full path.
+     *
+     * @param $value
+     * @return mixed|string
+     */
     public function getTestsFullPathAttribute($value)
     {
         return make_path(
@@ -27,21 +33,41 @@ class Suite extends Model
         );
     }
 
+    /**
+     * Project relation.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function project()
     {
         return $this->belongsTo('PragmaRX\TestsWatcher\Vendor\Laravel\Entities\Project');
     }
 
+    /**
+     * Tester relation.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function tester()
     {
         return $this->belongsTo('PragmaRX\TestsWatcher\Vendor\Laravel\Entities\Tester');
     }
 
+    /**
+     * Tests relation.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function tests()
     {
         return $this->hasMany('PragmaRX\TestsWatcher\Vendor\Laravel\Entities\Test');
     }
 
+    /**
+     * Get the test command.
+     *
+     * @return mixed
+     */
     public function getTestCommandAttribute()
     {
         $command = $this->tester->command.' '.$this->command_options;

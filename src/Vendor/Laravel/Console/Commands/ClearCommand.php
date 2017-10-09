@@ -29,7 +29,6 @@ class ClearCommand extends BaseCommand
     /**
      * Execute the console command.
      *
-     * @return mixed
      */
     public function fire()
     {
@@ -41,7 +40,6 @@ class ClearCommand extends BaseCommand
     /**
      * Execute the console command.
      *
-     * @return mixed
      */
     public function handle()
     {

@@ -12,7 +12,12 @@ class Project extends Model
         'tests_path',
     ];
 
-    public function getTestsFullPathAttribute($value)
+    /**
+     * Get the full path attribute.
+     *
+     * @return mixed|string
+     */
+    public function getTestsFullPathAttribute()
     {
         return make_path(
             [

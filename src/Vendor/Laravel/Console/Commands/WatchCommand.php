@@ -20,6 +20,7 @@ class WatchCommand extends BaseCommand
 
     /**
      * Create a new command instance.
+     *
      */
     public function __construct()
     {
@@ -29,7 +30,6 @@ class WatchCommand extends BaseCommand
     /**
      * Execute the console command.
      *
-     * @return mixed
      */
     public function fire()
     {
@@ -39,7 +39,6 @@ class WatchCommand extends BaseCommand
     /**
      * Execute the console command.
      *
-     * @return mixed
      */
     public function handle()
     {
