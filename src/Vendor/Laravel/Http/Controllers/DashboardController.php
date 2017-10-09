@@ -22,7 +22,7 @@ class DashboardController extends Controller
     /**
      * DashboardController constructor.
      *
-     * @param Data $dataRepository
+     * @param Data                                    $dataRepository
      * @param \PragmaRX\TestsWatcher\Support\Executor $executor
      */
     public function __construct(Data $dataRepository, Executor $executor)
@@ -48,6 +48,7 @@ class DashboardController extends Controller
      * Get all tests.
      *
      * @param null $project_id
+     *
      * @return mixed
      */
     public function allTests($project_id = null)
@@ -71,6 +72,7 @@ class DashboardController extends Controller
      * @param $enable
      * @param $project_id
      * @param null $test_id
+     *
      * @return mixed
      */
     public function enableTests($enable, $project_id, $test_id = null)
@@ -84,6 +86,7 @@ class DashboardController extends Controller
      * Reset all tests.
      *
      * @param $project_id
+     *
      * @return mixed
      */
     public function reset($project_id)
@@ -97,6 +100,7 @@ class DashboardController extends Controller
      * Run a test.
      *
      * @param $test_id
+     *
      * @return mixed
      */
     public function runTest($test_id)
@@ -110,6 +114,7 @@ class DashboardController extends Controller
      * Run all tests.
      *
      * @param $project_id
+     *
      * @return mixed
      */
     public function runAll($project_id)
@@ -123,6 +128,7 @@ class DashboardController extends Controller
      * Return a success response.
      *
      * @param array $result
+     *
      * @return mixed
      */
     public function success($result = [])
@@ -136,6 +142,7 @@ class DashboardController extends Controller
      * @param $fileName
      * @param null $line
      * @param null $project_id
+     *
      * @return mixed
      */
     public function openFile($fileName, $line = null, $project_id = null)
@@ -151,6 +158,7 @@ class DashboardController extends Controller
      * Notify users.
      *
      * @param $project_id
+     *
      * @return mixed
      */
     public function notify($project_id)
@@ -164,6 +172,7 @@ class DashboardController extends Controller
      * Download an image.
      *
      * @param $filename
+     *
      * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
      */
     public function imageDownload($filename)

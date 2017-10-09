@@ -80,6 +80,7 @@ class Data
      * @param $fileName
      * @param $line
      * @param $occurrence
+     *
      * @return string
      */
     private function createLinkToEditFile($test, $fileName, $line, $occurrence)
@@ -1045,6 +1046,7 @@ class Data
      * @param $fileName
      * @param $line
      * @param $project_id
+     *
      * @return string
      */
     public function makeOpenFileCommand($fileName, $line, $project_id)
@@ -1065,6 +1067,7 @@ class Data
      *
      * @param $filename
      * @param $test
+     *
      * @return bool
      */
     public function fileExistsOnTest($filename, $test)
@@ -1079,6 +1082,7 @@ class Data
      *
      * @param $fileName
      * @param $project
+     *
      * @return string
      */
     public function addProjectRootPath($fileName, $project)

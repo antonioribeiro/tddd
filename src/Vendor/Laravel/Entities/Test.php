@@ -18,6 +18,7 @@ class Test extends Model
      * Get the full path.
      *
      * @param $value
+     *
      * @return mixed|string
      */
     public function getFullPathAttribute($value)
@@ -39,6 +40,7 @@ class Test extends Model
      * Get the test command.
      *
      * @param $value
+     *
      * @return string
      */
     public function getTestCommandAttribute($value)
@@ -60,7 +62,6 @@ class Test extends Model
 
     /**
      * Update test sha1.
-     *
      */
     public function updateSha1()
     {
