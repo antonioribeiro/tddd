@@ -160,8 +160,6 @@ class Config extends Base
 
 		if ($test = $this->dataRepository->isTestFile($path))
 		{
-			$this->command->line('Test added to queue');
-
 			$this->dataRepository->addTestToQueue($test);
 
 			return;

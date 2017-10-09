@@ -246,7 +246,7 @@ class Tester extends Base {
 			}
 		}
 
-        $this->command->info($ok ? 'OK' : 'FAILED');
+        $this->command->{$ok ? 'info' : 'error'}($ok ? 'OK' : 'FAILED');
 
         $this->dataRepository->storeTestResult($test, $lines, $ok, $this->shell->startedAt, $this->shell->endedAt);
 

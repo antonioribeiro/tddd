@@ -35,4 +35,16 @@ class Test extends Model
 	{
 		return $this->hasMany('PragmaRX\TestsWatcher\Vendor\Laravel\Entities\Run');
 	}
+
+    public function updateSha1()
+    {
+        $this->sha1 = sha1_file($this->fullPath);
+
+        $this->save();
+	}
+
+    public function sha1Changed()
+    {
+        return $this->sha1 !== sha1_file($this->fullPath);
+    }
 }

@@ -77,12 +77,13 @@ class Watcher extends Base
     {
         if ($test = $this->dataRepository->isTestFile($path))
         {
-            $this->command->line('Test added to queue');
 
-            if ($this->dataRepository->testChanged($test) && !$this->dataRepository->isEnqueued($test)) {
+            if ($test->sha1Changed() && !$this->dataRepository->isEnqueued($test)) {
                 $this->dataRepository->addTestToQueue($test);
 
                 $this->showMessage($event, $path);
+
+                $this->command->line('Test added to queue');
             }
 
             return true;

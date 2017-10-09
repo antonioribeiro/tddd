@@ -509,6 +509,8 @@ class Data
 	{
 		if ($test->enabled && ! $this->isEnqueued($test))
 		{
+		    $test->updateSha1();
+
 			Queue::updateOrCreate(['test_id' => $test->id]);
 
 			if ($force || ! in_array($test->state, [self::STATE_RUNNING, self::STATE_QUEUED]))
@@ -1018,16 +1020,5 @@ class Data
     private function testExists($test)
     {
         return ! is_null(Test::find($test->id));
-    }
-
-    /**
-     * Check if the test has changed.
-     *
-     * @param \PragmaRX\TestsWatcher\Vendor\Laravel\Entities\Test $test
-     * @return bool
-     */
-    public function testChanged($test)
-    {
-        return $test->sha1 !== sha1_file($test->fullPath);
     }
 }
