@@ -224,8 +224,12 @@ class Tester extends Base {
 
 		$this->command->line($line);
 
-        foreach(range(0, $test->suite->retries-1) as $item)
+        for ($times = 0; $times <= $test->suite->retries; $times++)
 		{
+            if ($times > 0) {
+                $this->command->line('retrying...');
+            }
+
 			$process = $this->shell->exec($command, $test->suite->project->path, function($type, $buffer)
 			{
 				if ($this->getConfig('show_progress'))
@@ -240,8 +244,6 @@ class Tester extends Base {
 			{
 				break;
 			}
-
-            $this->command->line('retrying...');
 		}
 
         $this->command->info($ok ? 'OK' : 'FAILED');
