@@ -21,6 +21,7 @@ class Suite extends Model
      * Get the full path.
      *
      * @param $value
+     *
      * @return mixed|string
      */
     public function getTestsFullPathAttribute($value)

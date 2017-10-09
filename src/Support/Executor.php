@@ -18,9 +18,10 @@ class Executor
      * Execute one command.
      *
      * @param $command
-     * @param null $runDir
+     * @param null         $runDir
      * @param Closure|null $callback
-     * @param null $timeout
+     * @param null         $timeout
+     *
      * @return Process
      */
     public function exec($command, $runDir = null, Closure $callback = null, $timeout = null)
@@ -52,6 +53,7 @@ class Executor
      * Execute a shell command.
      *
      * @param $command
+     *
      * @return mixed
      */
     public function shellExec($command)

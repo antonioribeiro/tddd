@@ -41,7 +41,7 @@ class Tester extends Base
      * Instantiate a Tester.
      *
      * @param DataRepository $dataRepository
-     * @param Executor $executor
+     * @param Executor       $executor
      */
     public function __construct(DataRepository $dataRepository, Executor $executor)
     {

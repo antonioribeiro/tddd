@@ -20,7 +20,6 @@ class TestCommand extends BaseCommand
 
     /**
      * Create a new command instance.
-     *
      */
     public function __construct()
     {
@@ -29,7 +28,6 @@ class TestCommand extends BaseCommand
 
     /**
      * Execute the console command.
-     *
      */
     public function fire()
     {
@@ -38,7 +36,6 @@ class TestCommand extends BaseCommand
 
     /**
      * Handle command.
-     *
      */
     public function handle()
     {
