@@ -96,7 +96,7 @@ composer require pragmarx/ci
 Create a database, configure on your Laravel app and migrate it
 
 ``` bash
-php artisan migrates
+php artisan migrate
 ```
 
 Publish Ci configuration:
