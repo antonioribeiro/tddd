@@ -442,6 +442,7 @@ class Data
      * Properly render HTML source code.
      *
      * @param string
+     *
      * @return string
      */
     private function renderHtml($contents)
