@@ -190,9 +190,9 @@ return [
         ],
 
         'jest' => [
-            'command' => 'npm test',
+            'command'        => 'npm test',
             'require_script' => true,
-            'error_pattern' => 'Tests:\s+[0-9]+\s+failed', // regex, only for tee results
+            'error_pattern'  => 'Tests:\s+[0-9]+\s+failed', // regex, only for tee results
         ],
 
     ],
