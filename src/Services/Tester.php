@@ -306,6 +306,7 @@ class Tester extends Base
      * Check if the tester is using a piper script.
      *
      * @param $test
+     *
      * @return bool
      */
     private function usesPiper($test)
