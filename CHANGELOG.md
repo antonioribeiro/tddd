@@ -2,7 +2,8 @@
 
 ## [0.9.4] - 2017-10-11
 ### Added
-- Show Jest snapshots in log
+- Show Jest snapshots in dashboard log modal
+- Show exclustions in terminal log
 
 ## [0.9.3] - 2017-10-10
 ### Added
