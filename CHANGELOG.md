@@ -1,6 +1,8 @@
 # Changelog
 
 ## [0.9.5] - 2017-10-11 --- MASTER
+### Added
+- Option to add environment variables to tester script
 ### Fixed
 - Abending when tester used in suite does not exists
 
