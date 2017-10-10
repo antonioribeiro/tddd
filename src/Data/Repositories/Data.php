@@ -164,7 +164,8 @@ class Data
                 'output_png_fail_extension'  => isset($data['output_png_fail_extension']) ? $data['output_png_fail_extension'] : null,
                 'require_tee'                => isset($data['require_tee']) ? $data['require_tee'] : false,
                 'require_script'             => isset($data['require_script']) ? $data['require_script'] : false,
-                'error_pattern'              => isset($data['error_pattern']) ? $data['error_pattern'] : false,
+                'error_pattern'              => isset($data['error_pattern']) ? $data['error_pattern'] : null,
+                'env'                        => isset($data['env']) ? $data['env'] : null,
             ]
         );
     }

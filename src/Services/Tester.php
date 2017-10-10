@@ -67,7 +67,7 @@ class Tester extends Base
             return $this->addScript($test->testCommand);
         }
 
-        return $test->testCommand;
+        return "{$test->env} {$test->testCommand}";
     }
 
     /**

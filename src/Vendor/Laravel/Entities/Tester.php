@@ -15,5 +15,6 @@ class Tester extends Model
         'require_tee',
         'require_script',
         'error_pattern',
+        'env',
     ];
 }
