@@ -270,3 +270,10 @@ table > tbody > tr > td.state.state-failed {
 .table-link {
   cursor: pointer;
 }
+
+.html {
+  color: $brand-clear-light;
+  background-color: $brand-html;
+  font-size: 1.2rem;
+  font-weight: 500 !important;
+}

@@ -47955,13 +47955,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             return this.laravel.url_prefix + '/image/download/' + btoa(screenshot);
         },
         baseName: function baseName(str) {
-            var base = new String(str).substring(str.lastIndexOf('/') + 1);
+            var base = String(str).substring(str.lastIndexOf('/') + 1);
 
             if (base.lastIndexOf(".") != -1) {
                 base = base.substring(0, base.lastIndexOf("."));
             }
 
             return base;
+        },
+        getHtmlPaneName: function getHtmlPaneName() {
+            return this.selectedTest.html.match(/snapshot/i) ? 'snapshot' : 'html';
         }
     }
 });
@@ -47983,7 +47986,7 @@ var render = function() {
           ? _c("div", { staticClass: "modal-content" }, [
               _c("div", { staticClass: "modal-header" }, [
                 _c("h3", { staticClass: "modal-title" }, [
-                  _vm._v(_vm._s(this.selectedTest.name))
+                  _vm._v(_vm._s(_vm.selectedTest.name))
                 ]),
                 _vm._v(" "),
                 _vm._m(0)
@@ -47994,8 +47997,12 @@ var render = function() {
                   ? _c(
                       "div",
                       {
-                        class: "btn btn-pill " + this.getPillColor("log"),
-                        on: { click: this.setPanelLog }
+                        class: "btn btn-pill " + _vm.getPillColor("log"),
+                        on: {
+                          click: function($event) {
+                            _vm.setPanelLog()
+                          }
+                        }
                       },
                       [
                         _vm._v(
@@ -48009,9 +48016,12 @@ var render = function() {
                   ? _c(
                       "div",
                       {
-                        class:
-                          "btn btn-pill " + this.getPillColor("screenshot"),
-                        on: { click: this.setPanelScreenshot }
+                        class: "btn btn-pill " + _vm.getPillColor("screenshot"),
+                        on: {
+                          click: function($event) {
+                            _vm.setPanelScreenshot()
+                          }
+                        }
                       },
                       [
                         _vm._v(
@@ -48025,10 +48035,20 @@ var render = function() {
                   ? _c(
                       "div",
                       {
-                        class: "btn btn-pill " + this.getPillColor("html"),
-                        on: { click: this.setPanelHtml }
+                        class: "btn btn-pill " + _vm.getPillColor("html"),
+                        on: {
+                          click: function($event) {
+                            _vm.setPanelHtml()
+                          }
+                        }
                       },
-                      [_vm._v("\n                    html\n                ")]
+                      [
+                        _vm._v(
+                          "\n                    " +
+                            _vm._s(_vm.getHtmlPaneName()) +
+                            "\n                "
+                        )
+                      ]
                     )
                   : _vm._e(),
                 _vm._v(" "),
@@ -48036,8 +48056,9 @@ var render = function() {
                   "div",
                   {
                     class:
-                      "tab-content modal-scroll " +
-                      (this.selectedPanel == "log" ? "terminal" : "")
+                      "tab-content modal-scroll" +
+                      (_vm.selectedPanel == "log" ? " terminal" : "") +
+                      (_vm.selectedPanel == "html" ? " html" : "")
                   },
                   [
                     _vm.selectedPanel == "log"

@@ -3,7 +3,7 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content" v-if="selectedTest">
                 <div class="modal-header">
-                    <h3 class="modal-title">{{ this.selectedTest.name }}</h3>
+                    <h3 class="modal-title">{{ selectedTest.name }}</h3>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">
                             <i class="fa fa-times-circle" aria-hidden="true"></i>
@@ -12,19 +12,19 @@
                 </div>
 
                 <div class="modal-body">
-                    <div v-if="selectedTest.log" :class="'btn btn-pill ' + this.getPillColor('log')" @click="this.setPanelLog">
+                    <div v-if="selectedTest.log" :class="'btn btn-pill ' + getPillColor('log')" @click="setPanelLog()">
                         command output
                     </div>
                     &nbsp;
-                    <div v-if="selectedTest.run.screenshots"  :class="'btn btn-pill ' + this.getPillColor('screenshot')" @click="this.setPanelScreenshot">
+                    <div v-if="selectedTest.run.screenshots"  :class="'btn btn-pill ' + getPillColor('screenshot')" @click="setPanelScreenshot()">
                         screenshots
                     </div>
                     &nbsp;
-                    <div v-if="selectedTest.html" :class="'btn btn-pill ' + this.getPillColor('html')" @click="this.setPanelHtml">
-                        html
+                    <div v-if="selectedTest.html" :class="'btn btn-pill ' + getPillColor('html')" @click="setPanelHtml()">
+                        {{ getHtmlPaneName() }}
                     </div>
 
-                    <div :class="'tab-content modal-scroll ' + (this.selectedPanel == 'log' ? 'terminal' : '')">
+                    <div :class="'tab-content modal-scroll' + (selectedPanel == 'log' ? ' terminal' : '')  + (selectedPanel == 'html' ? ' html' : '')">
                         <div v-if="selectedPanel == 'log'" v-html="selectedTest.log" :class="'tab-pane terminal ' + (selectedPanel == 'log' ? 'active' : '')">
                         </div>
 
@@ -84,13 +84,19 @@
             },
 
             baseName(str) {
-                var base = new String(str).substring(str.lastIndexOf('/') + 1);
+                let base = String(str).substring(str.lastIndexOf('/') + 1);
 
                 if (base.lastIndexOf(".") != -1) {
                     base = base.substring(0, base.lastIndexOf("."));
                 }
 
                 return base;
+            },
+
+            getHtmlPaneName() {
+                return this.selectedTest.html.match(/snapshot/i)
+                    ? 'snapshot'
+                    : 'html';
             }
         }
     }
