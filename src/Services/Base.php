@@ -83,7 +83,7 @@ class Base
 
     protected function displayMessages($messages)
     {
-        $fatal = $messages->reduce(function($carry = true, $message) {
+        $fatal = $messages->reduce(function ($carry, $message) {
             $prefix = $message['type'] == 'error' ? 'FATAL ERROR: ' : '';
 
             $this->command->{$message['type']}($prefix.$message['body']);
