@@ -439,6 +439,19 @@ class Data
     }
 
     /**
+     * Properly render HTML source code.
+     *
+     * @param string
+     * @return string
+     */
+    private function renderHtml($contents)
+    {
+        return nl2br(
+            htmlentities($contents)
+        );
+    }
+
+    /**
      * Reset a test to idle state.
      *
      * @param $test
@@ -901,7 +914,7 @@ class Data
             str_replace(['.php', '::', '\\', '/'], ['', '.', '', ''], $test->name).$extension,
         ]);
 
-        return file_exists($file) ? $file : null;
+        return file_exists($file) ? $this->renderHtml(file_get_contents($file)) : null;
     }
 
     /**
