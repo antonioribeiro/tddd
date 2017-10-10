@@ -132,7 +132,9 @@ class Loader extends Base
     public function addToExclusions($path, $exclude)
     {
         foreach ($exclude as $folder) {
-            $this->exclusions[] = make_path([$path, $folder]);
+            $this->exclusions[] = $path = make_path([$path, $folder]);
+
+            $this->showProgress("Excluding: {$path}");
         }
     }
 
