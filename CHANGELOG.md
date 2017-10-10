@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.9.5] - 2017-10-11 --- MASTER
+### Fixed
+- Abending when tester used in suite does not exists
+
 ## [0.9.4] - 2017-10-11
 ### Added
 - Show Jest snapshots in dashboard log modal
