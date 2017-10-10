@@ -3,6 +3,7 @@
 namespace PragmaRX\TestsWatcher\Data\Repositories;
 
 use Carbon\Carbon;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB as Database;
 use PragmaRX\TestsWatcher\Support\Notifier;
 use PragmaRX\TestsWatcher\Vendor\Laravel\Entities\Project;
@@ -38,6 +39,11 @@ class Data
     private $notifier;
 
     /**
+     * @var \Illuminate\Support\Collection
+     */
+    private $messages;
+
+    /**
      * Data constructor.
      *
      * @param Notifier $notifier
@@ -47,6 +53,8 @@ class Data
         $this->ansiConverter = new AnsiToHtmlConverter();
 
         $this->notifier = $notifier;
+
+        $this->messages = collect();
     }
 
     /**
@@ -59,6 +67,19 @@ class Data
     private function CRToBr($lines)
     {
         return str_replace("\n", '<br>', $lines);
+    }
+
+    /**
+     * Add a message to the list.
+     *
+     * @param $type
+     * @param $body
+     * @internal param $string
+     * @internal param $string1
+     */
+    private function addMessage($type, $body)
+    {
+        $this->messages->push(['type' => $type, 'body' => $body]);
     }
 
     /**
@@ -173,7 +194,11 @@ class Data
      */
     public function createOrUpdateSuite($name, $project_id, $suite_data)
     {
-        $tester = Tester::where('name', $suite_data['tester'])->first();
+        if (is_null($tester = Tester::where('name', $suite_data['tester'])->first())) {
+            $this->addMessage('error', "Tester {$suite_data['tester']} not found.");
+
+            return false;
+        }
 
         return Suite::updateOrCreate(
             [
@@ -246,6 +271,16 @@ class Data
         ];
 
         return json_encode($data);
+    }
+
+    /**
+     * Get all messages.
+     *
+     * @return Collection
+     */
+    public function getMessages()
+    {
+        return $this->messages;
     }
 
     /**

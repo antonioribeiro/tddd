@@ -80,4 +80,23 @@ class Base
 
         return $event;
     }
+
+    protected function displayMessages($messages)
+    {
+        $fatal = $messages->reduce(function($carry = true, $message) {
+            $prefix = $message['type'] == 'error' ? 'FATAL ERROR: ' : '';
+
+            $this->command->{$message['type']}($prefix.$message['body']);
+
+            if ($message['type'] == 'error') {
+                return true;
+            }
+
+            return $carry;
+        });
+
+        if ($fatal == true) {
+            die;
+        }
+    }
 }

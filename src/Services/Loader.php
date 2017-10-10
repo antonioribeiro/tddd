@@ -45,6 +45,22 @@ class Loader extends Base
     }
 
     /**
+     * Create or update the suite.
+     *
+     * @param $suite_name
+     * @param $project
+     * @param $suite_data
+     */
+    private function createSuite($suite_name, $project, $suite_data)
+    {
+        $this->command->line("  -- suite '{$suite_name}'");
+
+        if (!$this->dataRepository->createOrUpdateSuite($suite_name, $project->id, $suite_data)) {
+            $this->displayMessages($this->dataRepository->getMessages());
+        }
+    }
+
+    /**
      * Read configuration and load testers, projects, suites...
      */
     public function loadEverything()
@@ -85,9 +101,7 @@ class Loader extends Base
             $project = $this->dataRepository->createOrUpdateProject($name, $data['path'], $data['tests_path']);
 
             foreach ($data['suites'] as $suite_name => $suite_data) {
-                $this->command->line("  -- suite '{$suite_name}'");
-
-                $this->dataRepository->createOrUpdateSuite($suite_name, $project->id, $suite_data);
+                $this->createSuite($suite_name, $project, $suite_data);
             }
 
             $this->addToWatchFolders($data['path'], $data['watch_folders']);
