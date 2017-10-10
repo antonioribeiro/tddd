@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.9.4] - 2017-10-11
+### Added
+- Show Jest snapshots in log
+
 ## [0.9.3] - 2017-10-10
 ### Added
 - Support for Javascript testing (Jest)
