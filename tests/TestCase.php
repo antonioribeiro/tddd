@@ -5,17 +5,17 @@ namespace PragmaRX\TestsWatcher\Tests;
 use Orchestra\Testbench\TestCase as OrchestraTestCase;
 use PragmaRX\TestsWatcher\Vendor\Laravel\ServiceProvider as TestsWatcherServiceProvider;
 
-class TestCase extends OrchestraTestCase
+abstract class TestCase extends OrchestraTestCase
 {
     protected $database;
 
-    protected function config($key, $value = null)
+    protected function config($key, $value = '---not-set---')
     {
-        if (!is_null($value)) {
-            app()->config->set("ci.{$key}", $value);
+        if ($value !== '---not-set---') {
+            $this->app['config']->set("ci.{$key}", $value);
         }
 
-        app()->config->get("ci.{$key}");
+        return $this->app['config']->get("ci.{$key}");
     }
 
     private function configureDatabase()
@@ -45,15 +45,9 @@ class TestCase extends OrchestraTestCase
     {
         parent::setUp();
 
-        if (config('ci.enabled')) {
-            $this->ci = app('ci');
-
-            app('ci.cache')->flush();
-        }
-
         $this->configureDatabase();
 
-        $this->artisan('migrate:refresh', ['--database' => 'testbench']);
+        $this->artisan('migrate:fresh', ['--database' => 'testbench']);
     }
 
     protected function tearDown()
@@ -65,13 +59,7 @@ class TestCase extends OrchestraTestCase
 
     protected function getPackageProviders($app)
     {
-        $app['config']->set('ci.enabled', true);
-
-        $app['config']->set('ci.geoip_database_path', __DIR__.'/geoipdb');
-
-        $app['config']->set('ci.enable_country_search', true);
-
-        $app['config']->set('ci.cache_expire_time', 10);
+        $this->app = $app;
 
         return [
             TestsWatcherServiceProvider::class,
