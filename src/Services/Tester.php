@@ -288,13 +288,29 @@ class Tester extends Base
             return false;
         }
 
-        if (!$test->suite->tester->require_tee) {
+        if (!$this->usesPiper($test) || empty($test->suite->tester->error_pattern)) {
             return true;
         }
 
-        preg_match_all("/{$test->suite->tester->error_pattern}/", $this->getPipedFileContents(), $matches, PREG_SET_ORDER);
+        preg_match_all(
+            "/{$test->suite->tester->error_pattern}/",
+            $this->dataRepository->removeAnsiCodes($this->getPipedFileContents()),
+            $matches,
+            PREG_SET_ORDER
+        );
 
         return count($matches) == 0;
+    }
+
+    /**
+     * Check if the tester is using a piper script.
+     *
+     * @param $test
+     * @return bool
+     */
+    private function usesPiper($test)
+    {
+        return $test->suite->tester->require_tee || $test->suite->tester->require_script;
     }
 
     /**

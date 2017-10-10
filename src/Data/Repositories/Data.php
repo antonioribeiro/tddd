@@ -871,6 +871,20 @@ class Data
     }
 
     /**
+     * Remove ansi codes from string.
+     *
+     * @param $string
+     *
+     * @return string
+     */
+    public function removeAnsiCodes($string)
+    {
+        return strip_tags(
+            $this->ansi2Html($string)
+        );
+    }
+
+    /**
      * Enable tests.
      *
      * @param $enable
