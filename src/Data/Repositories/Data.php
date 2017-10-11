@@ -1202,25 +1202,31 @@ class Data
     /**
      * Make open file command.
      *
-     * @param $fileName
+     * @param $file
      * @param $line
      * @param int $suite_id
      *
      * @return string
      */
-    public function makeEditFileCommand($fileName, $line, $suite_id)
+    public function makeEditFileCommand($file, $line, $suite_id)
     {
         $suite = $this->findSuiteById($suite_id);
 
-        $fileName = $this->addProjectRootPath(
-            base64_decode($fileName),
+        $file = $this->addProjectRootPath(
+            base64_decode($file),
             $suite
         );
 
-        return
-            $this->getEditorBinary($suite).
-            (!is_null($line) ? " --line {$line}" : '').
-            " {$fileName}";
+        return str_replace(
+            ['{$file}', '{$line}'],
+            [$file, $line],
+            $this->getEditorBinary($suite)
+        );
+
+//        return
+//            .
+//            (!is_null($line) ? " --line {$line}" : '').
+//            " {$fileName}";
     }
 
     /**
