@@ -49,6 +49,7 @@ return [
                     'command_options' => '',
                     'file_mask'       => '*Test.php',
                     'retries'         => 0,
+                    'editor'          => 'phpstorm',
                 ],
 
                 'unit' => [
@@ -117,14 +118,24 @@ return [
         'notifier' => 'PragmaRX\TestsWatcher\Notifications',
     ],
 
-    /*
-     * Editor
+    /**
+     * Editors
      *
      */
-    'editor' => [
-        'type' => 'PHPStorm',
+    'editors' => [
+        'phpstorm' => [
+            'type' => 'PHPStorm',
 
-        'bin' => '/usr/local/bin/pstorm',
+            'bin' => '/usr/local/bin/pstorm',
+
+            'default' => true,
+        ],
+
+        'sublime' => [
+            'type' => 'SublimeText 3',
+
+            'bin' => '/usr/local/bin/subl',
+        ],
     ],
 
     /*
