@@ -120,7 +120,7 @@ class Data
                 [
                     'filename' => $fileName,
                     'suite_id' => $test->suite->id,
-                    'line' => $line[2],
+                    'line'     => $line[2],
                 ]
             ),
             $line[$occurrence]
@@ -268,7 +268,6 @@ class Data
 
     /**
      * Get the default editor binary.
-     *
      */
     private function getDefaultEditorBinary()
     {
@@ -283,6 +282,7 @@ class Data
      * Get the editor command.
      *
      * @param $suite
+     *
      * @return string
      */
     private function getEditorBinary($suite)
@@ -374,7 +374,7 @@ class Data
     /**
      * Create or update a test.
      *
-     * @param \Symfony\Component\Finder\SplFileInfo $file
+     * @param \Symfony\Component\Finder\SplFileInfo                $file
      * @param \PragmaRX\TestsWatcher\Vendor\Laravel\Entities\Suite $suite
      */
     public function createOrUpdateTest($file, $suite)
@@ -384,8 +384,8 @@ class Data
                 'sha1' => sha1_file($file->getRealPath()),
             ],
             [
-                'path' => $file->getPath(),
-                'name' => $file->getFilename(),
+                'path'     => $file->getPath(),
+                'name'     => $file->getFilename(),
                 'suite_id' => $suite->id,
             ]
         );
@@ -475,6 +475,7 @@ class Data
 
     /**
      * @param $test
+     *
      * @return string
      */
     private function makeEditFileUrl($test)
@@ -482,7 +483,7 @@ class Data
         return route(
             'tests-watcher.file.edit',
             [
-                'filename' => base64_encode($test->path . DIRECTORY_SEPARATOR . $test->name),
+                'filename' => base64_encode($test->path.DIRECTORY_SEPARATOR.$test->name),
                 'suite_id' => $test->suite->id,
             ]
         );
@@ -1203,7 +1204,7 @@ class Data
      *
      * @param $fileName
      * @param $line
-     * @param integer $suite_id
+     * @param int $suite_id
      *
      * @return string
      */
@@ -1217,7 +1218,7 @@ class Data
         );
 
         return
-            $this->getEditorBinary($suite) .
+            $this->getEditorBinary($suite).
             (!is_null($line) ? " --line {$line}" : '').
             " {$fileName}";
     }
@@ -1242,6 +1243,7 @@ class Data
      *
      * @param $fileName
      * @param $suite
+     *
      * @return string
      */
     public function addProjectRootPath($fileName, $suite)
