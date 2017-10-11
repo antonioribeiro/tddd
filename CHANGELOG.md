@@ -3,8 +3,12 @@
 ## [0.9.5] - 2017-10-11 --- MASTER
 ### Added
 - Option to add environment variables to tester script
+- Config for different editors and a default editor
+- User can now set one different editor for each suite
 ### Fixed
 - Abending when tester used in suite does not exists
+- Piper script not being 
+- Test subfolders not stored correctly 
 
 ## [0.9.4] - 2017-10-11
 ### Added
