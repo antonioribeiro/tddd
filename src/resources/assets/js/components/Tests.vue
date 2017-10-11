@@ -84,7 +84,7 @@
                     </td>
 
                     <td>
-                        <div @click="openFile(test.open_file_url)" class="table-link">
+                        <div @click="editFile(test.edit_file_url)" class="table-link">
                             <span class="table-test-path">{{ test.path }}</span><span class="table-test-name">{{ test.name }}</span>
                         </div>
                     </td>
@@ -196,7 +196,7 @@
                     .then(() => this.loadTests());
             },
 
-            openFile(file) {
+            editFile(file) {
                 axios.get(file);
             },
 

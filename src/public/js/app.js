@@ -47283,7 +47283,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
                 return _this2.loadTests();
             });
         },
-        openFile: function openFile(file) {
+        editFile: function editFile(file) {
             axios.get(file);
         },
 
@@ -47654,7 +47654,7 @@ var render = function() {
                         staticClass: "table-link",
                         on: {
                           click: function($event) {
-                            _vm.openFile(test.open_file_url)
+                            _vm.editFile(test.edit_file_url)
                           }
                         }
                       },

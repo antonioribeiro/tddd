@@ -20,6 +20,6 @@ Route::get('/projects', ['as' => 'tests-watcher.projects', 'uses' => 'DashboardC
 
 Route::get('/dashboard', ['as' => 'tests-watcher.dashboard', 'uses' => 'DashboardController@index']);
 
-Route::get('/file/open/{filename}/{line?}/{project_id?}', ['as' => 'tests-watcher.file.open', 'uses' => 'DashboardController@openFile']);
+Route::get('/file/edit/{filename}/{suite_id}/{line?}', ['as' => 'tests-watcher.file.edit', 'uses' => 'DashboardController@editFile']);
 
 Route::get('/image/download/{filename}', ['as' => 'tests-watcher.image.download', 'uses' => 'DashboardController@imageDownload']);

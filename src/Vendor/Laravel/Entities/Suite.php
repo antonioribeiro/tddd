@@ -15,6 +15,7 @@ class Suite extends Model
         'file_mask',
         'command_options',
         'max_retries',
+        'editor',
     ];
 
     /**

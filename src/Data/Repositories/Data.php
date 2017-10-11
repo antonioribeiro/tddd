@@ -115,8 +115,14 @@ class Data
 
         $tag = sprintf(
             '<a href="javascript:jQuery.get(\'%s\');" class="file">%s</a>',
-            route('tests-watcher.file.open',
-                ['filename' => $fileName, 'line' => $line[2], 'project_id' => $test->suite->project]),
+            route(
+                'tests-watcher.file.edit',
+                [
+                    'filename' => $fileName,
+                    'suite_id' => $test->suite->id,
+                    'line' => $line[2],
+                ]
+            ),
             $line[$occurrence]
         );
 
@@ -160,13 +166,13 @@ class Data
             ['name' => $name],
             [
                 'command'                    => $data['command'],
-                'output_folder'              => isset($data['output_folder']) ? $data['output_folder'] : null,
-                'output_html_fail_extension' => isset($data['output_html_fail_extension']) ? $data['output_html_fail_extension'] : null,
-                'output_png_fail_extension'  => isset($data['output_png_fail_extension']) ? $data['output_png_fail_extension'] : null,
-                'require_tee'                => isset($data['require_tee']) ? $data['require_tee'] : false,
-                'require_script'             => isset($data['require_script']) ? $data['require_script'] : false,
-                'error_pattern'              => isset($data['error_pattern']) ? $data['error_pattern'] : null,
-                'env'                        => isset($data['env']) ? $data['env'] : null,
+                'output_folder'              => array_get($data, 'output_folder'),
+                'output_html_fail_extension' => array_get($data, 'output_html_fail_extension'),
+                'output_png_fail_extension'  => array_get($data, 'output_png_fail_extension'),
+                'require_tee'                => array_get($data, 'require_tee', false),
+                'require_script'             => array_get($data, 'require_script', false),
+                'error_pattern'              => array_get($data, 'error_pattern'),
+                'env'                        => array_get($data, 'env'),
             ]
         );
     }
@@ -208,10 +214,11 @@ class Data
             ],
             [
                 'tester_id'       => $tester->id,
-                'tests_path'      => $suite_data['tests_path'],
-                'command_options' => $suite_data['command_options'],
-                'file_mask'       => $suite_data['file_mask'],
-                'retries'         => $suite_data['retries'],
+                'tests_path'      => array_get($suite_data, 'tests_path'),
+                'command_options' => array_get($suite_data, 'command_options'),
+                'file_mask'       => array_get($suite_data, 'file_mask'),
+                'retries'         => array_get($suite_data, 'retries'),
+                'editor'          => array_get($suite_data, 'editor'),
             ]
         );
     }
@@ -257,6 +264,34 @@ class Data
                       ->first();
 
         return $exists;
+    }
+
+    /**
+     * Get the default editor binary.
+     *
+     */
+    private function getDefaultEditorBinary()
+    {
+        if (is_null($default = collect(config('ci.editors'))->where('default', true)->first())) {
+            die('FATAL ERROR: default editor not configured');
+        }
+
+        return $default['bin'];
+    }
+
+    /**
+     * Get the editor command.
+     *
+     * @param $suite
+     * @return string
+     */
+    private function getEditorBinary($suite)
+    {
+        if (empty($suite) || is_null($bin = config("ci.editors.{$suite->editor}.bin"))) {
+            return $this->getDefaultEditorBinary();
+        }
+
+        return $bin;
     }
 
     /**
@@ -327,19 +362,31 @@ class Data
     }
 
     /**
+     * Find suite by id.
+     *
+     * @return \PragmaRX\TestsWatcher\Vendor\Laravel\Entities\Suite|null
+     */
+    public function findSuiteById($id)
+    {
+        return Suite::find($id);
+    }
+
+    /**
      * Create or update a test.
      *
-     * @param $file
-     * @param $suite
+     * @param \Symfony\Component\Finder\SplFileInfo $file
+     * @param \PragmaRX\TestsWatcher\Vendor\Laravel\Entities\Suite $suite
      */
     public function createOrUpdateTest($file, $suite)
     {
         $test = Test::updateOrCreate(
             [
-                'path'     => dirname($file->getRealPath()),
-                'name'     => $file->getRelativePathname(),
+                'sha1' => sha1_file($file->getRealPath()),
+            ],
+            [
+                'path' => $file->getPath(),
+                'name' => $file->getFilename(),
                 'suite_id' => $suite->id,
-                'sha1'     => sha1_file($file->getRealPath()),
             ]
         );
 
@@ -365,7 +412,7 @@ class Data
             'project_id'    => $test->suite->project->id,
             'path'          => $test->path.DIRECTORY_SEPARATOR,
             'name'          => $test->name,
-            'open_file_url' => route('tests-watcher.file.open', ['filename' => base64_encode($test->path.DIRECTORY_SEPARATOR.$test->name)]),
+            'edit_file_url' => $this->makeEditFileUrl($test),
             'updated_at'    => $test->updated_at->diffForHumans(),
             'state'         => $test->state,
             'enabled'       => $test->enabled,
@@ -424,6 +471,21 @@ class Data
         }
 
         return $this->CRToBr($lines);
+    }
+
+    /**
+     * @param $test
+     * @return string
+     */
+    private function makeEditFileUrl($test)
+    {
+        return route(
+            'tests-watcher.file.edit',
+            [
+                'filename' => base64_encode($test->path . DIRECTORY_SEPARATOR . $test->name),
+                'suite_id' => $test->suite->id,
+            ]
+        );
     }
 
     /**
@@ -540,7 +602,7 @@ class Data
         }
 
         foreach ($suite->tests as $test) {
-            if (!file_exists($path = make_path([$suite->testsFullPath, $test->name]))) {
+            if (!file_exists($path = $test->fullPath)) {
                 $test->delete();
             }
         }
@@ -556,7 +618,7 @@ class Data
     private function getAllFilesFromSuite($suite)
     {
         if (!file_exists($suite->testsFullPath)) {
-            die('Directory not found: '.$suite->testsFullPath.'. Aborted.');
+            die('FATAL ERROR: directory not found: '.$suite->testsFullPath.'.');
         }
 
         $files = Finder::create()->files()->in($suite->testsFullPath);
@@ -1141,19 +1203,21 @@ class Data
      *
      * @param $fileName
      * @param $line
-     * @param $project_id
+     * @param integer $suite_id
      *
      * @return string
      */
-    public function makeOpenFileCommand($fileName, $line, $project_id)
+    public function makeEditFileCommand($fileName, $line, $suite_id)
     {
+        $suite = $this->findSuiteById($suite_id);
+
         $fileName = $this->addProjectRootPath(
             base64_decode($fileName),
-            $this->findProjectById($project_id)
+            $suite
         );
 
         return
-            config('ci.editor.bin').
+            $this->getEditorBinary($suite) .
             (!is_null($line) ? " --line {$line}" : '').
             " {$fileName}";
     }
@@ -1169,7 +1233,7 @@ class Data
     public function fileExistsOnTest($filename, $test)
     {
         return file_exists(
-            $this->addProjectRootPath($filename, $test->suite->project)
+            $this->addProjectRootPath($filename, $test->suite)
         );
     }
 
@@ -1177,16 +1241,15 @@ class Data
      * Add project root to path.
      *
      * @param $fileName
-     * @param $project
-     *
+     * @param $suite
      * @return string
      */
-    public function addProjectRootPath($fileName, $project)
+    public function addProjectRootPath($fileName, $suite)
     {
-        if (starts_with($fileName, DIRECTORY_SEPARATOR) || empty($project)) {
+        if (starts_with($fileName, DIRECTORY_SEPARATOR) || empty($suite)) {
             return $fileName;
         }
 
-        return $project->path.DIRECTORY_SEPARATOR.$fileName;
+        return $suite->project->path.DIRECTORY_SEPARATOR.$fileName;
     }
 }

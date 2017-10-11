@@ -140,15 +140,15 @@ class DashboardController extends Controller
      * Open a file in the editor.
      *
      * @param $fileName
+     * @param null $suite_id
      * @param null $line
-     * @param null $project_id
      *
      * @return mixed
      */
-    public function openFile($fileName, $line = null, $project_id = null)
+    public function editFile($fileName, $suite_id, $line = null)
     {
-        $this->executor->shellExec(
-            $this->dataRepository->makeOpenFileCommand($fileName, $line, $project_id)
+        $this->executor->exec(
+            $command = $this->dataRepository->makeEditFileCommand($fileName, $line, $suite_id)
         );
 
         return $this->success();
