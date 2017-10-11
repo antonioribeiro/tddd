@@ -136,6 +136,12 @@ return [
 
             'bin' => '/usr/local/bin/subl',
         ],
+
+        'vscode' => [
+            'type' => 'VSCode',
+
+            'bin' => '/Applications/Visual\ Studio\ Code.app/Contents/Resources/app/bin/code',
+        ],
     ],
 
     /*
