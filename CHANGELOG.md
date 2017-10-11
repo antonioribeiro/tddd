@@ -5,6 +5,9 @@
 - Option to add environment variables to tester script
 - Config for different editors and a default editor
 - User can now set one different editor for each suite
+- Config for PHPStorm editor
+- Config for Sublime Text 3 editor
+- Config for Visual Studio Code editor
 ### Fixed
 - Abending when tester used in suite does not exists
 - Piper script not being 
