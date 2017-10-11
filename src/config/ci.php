@@ -118,7 +118,7 @@ return [
         'notifier' => 'PragmaRX\TestsWatcher\Notifications',
     ],
 
-    /**
+    /*
      * Editors
      *
      */
