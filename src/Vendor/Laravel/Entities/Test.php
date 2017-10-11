@@ -23,7 +23,7 @@ class Test extends Model
      */
     public function getFullPathAttribute($value)
     {
-        return make_path([$this->suite->testsFullPath, $this->name]);
+        return make_path([$this->path, $this->name]);
     }
 
     /**
