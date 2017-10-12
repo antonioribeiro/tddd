@@ -54,26 +54,29 @@ export default {
     },
 
     actions: {
-        loadProjects(context) {
-            axios.get(context.state.laravel.url_prefix+'/projects')
+        loadData(context) {
+            axios.get(context.state.laravel.url_prefix+'/dashboard/data' + (context.state.selectedProject ? '/'+context.state.selectedProject.id : ''))
                 .then(function (result) {
                     context.commit('setProjects', result.data.projects);
 
+                    var selected = context.state.selectedProject && result.data.projects.filter(project => project.id == context.state.selectedProject.id)[0]
+                        ? result.data.projects.filter(project => project.id == context.state.selectedProject.id)[0]
+                        : null;
+
+                    if (!selected) {
+                        selected = context.state.laravel.project_id
+                            ? result.data.projects.filter(project => project.id == context.state.laravel.project_id)[0]
+                            : result.data.projects[0]
+                    }
+
                     context.commit('setSelectedProject', {
-                        project: context.state.laravel.project_id
-                                ? result.data.projects.filter(project => project.id == context.state.laravel.project_id)[0]
-                                : result.data.projects[0],
+                        project: selected,
 
                         force: context.state.laravel.project_id
                                 ? true
                                 : false,
                     });
-                });
-        },
 
-        loadTests(context) {
-            axios.get(context.state.laravel.url_prefix+'/projects/'+context.state.selectedProject.id+'/tests')
-                .then(function (result) {
                     context.commit('setTests', result.data.tests);
                 });
         },

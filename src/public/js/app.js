@@ -46877,21 +46877,28 @@ module.exports = Vue$3;
     },
 
     actions: {
-        loadProjects: function loadProjects(context) {
-            axios.get(context.state.laravel.url_prefix + '/projects').then(function (result) {
+        loadData: function loadData(context) {
+            axios.get(context.state.laravel.url_prefix + '/dashboard/data' + (context.state.selectedProject ? '/' + context.state.selectedProject.id : '')).then(function (result) {
                 context.commit('setProjects', result.data.projects);
 
-                context.commit('setSelectedProject', {
-                    project: context.state.laravel.project_id ? result.data.projects.filter(function (project) {
+                var selected = context.state.selectedProject && result.data.projects.filter(function (project) {
+                    return project.id == context.state.selectedProject.id;
+                })[0] ? result.data.projects.filter(function (project) {
+                    return project.id == context.state.selectedProject.id;
+                })[0] : null;
+
+                if (!selected) {
+                    selected = context.state.laravel.project_id ? result.data.projects.filter(function (project) {
                         return project.id == context.state.laravel.project_id;
-                    })[0] : result.data.projects[0],
+                    })[0] : result.data.projects[0];
+                }
+
+                context.commit('setSelectedProject', {
+                    project: selected,
 
                     force: context.state.laravel.project_id ? true : false
                 });
-            });
-        },
-        loadTests: function loadTests(context) {
-            axios.get(context.state.laravel.url_prefix + '/projects/' + context.state.selectedProject.id + '/tests').then(function (result) {
+
                 context.commit('setTests', result.data.tests);
             });
         }
@@ -46982,14 +46989,9 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    computed: Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["mapState"])(['projects', 'selectedProject', 'selectedPanel']),
+    computed: Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["mapState"])(['laravel', 'projects', 'selectedProject', 'selectedPanel']),
 
-    mounted: function mounted() {
-        this.$store.dispatch('loadProjects');
-    },
-
-
-    methods: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["mapMutations"])(['setSelectedProject']), Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["mapActions"])(['loadProjects']), {
+    methods: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["mapMutations"])(['setSelectedProject']), Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["mapActions"])(['loadData']), {
         changeProject: function changeProject(project) {
             if (this.selectedProject != project) {
                 this.$store.commit('setSelectedProject', { project: project, force: true });
@@ -46999,11 +47001,11 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
                 this.$store.commit('setWasRunning', false);
             }
         },
-        toggleTest: function toggleTest(test) {
+        toggleProject: function toggleProject(project) {
             var _this = this;
 
-            axios.get(this.laravel.url_prefix + '/projects/' + this.selectedProject.id + '/enable/' + !test.enabled).then(function () {
-                return _this.loadTests();
+            axios.get(this.laravel.url_prefix + '/projects/' + project.id + '/enable/' + !project.enabled).then(function () {
+                return _this.loadData();
             });
         }
     })
@@ -47028,7 +47030,8 @@ var render = function() {
             {
               class:
                 "list-group-item " +
-                (_vm.selectedProject == project ? "active" : ""),
+                (!project.enabled ? "dim " : "") +
+                (_vm.selectedProject.id == project.id ? "active " : ""),
               on: {
                 click: function($event) {
                   _vm.changeProject(project)
@@ -47257,7 +47260,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
     watch: {
         selectedProject: function selectedProject() {
-            this.loadTests();
+            this.loadData();
         }
     },
 
@@ -47270,7 +47273,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
     },
 
 
-    methods: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["mapActions"])(['loadTests']), {
+    methods: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["mapActions"])(['loadData']), {
         runTest: function runTest(testId) {
             axios.get(this.laravel.url_prefix + '/tests/run/' + testId);
         },
@@ -47292,19 +47295,17 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
             var _this = this;
 
             axios.get(this.laravel.url_prefix + '/tests/' + this.selectedProject.id + '/' + test.id + '/enable/' + !test.enabled).then(function () {
-                return _this.loadTests();
+                return _this.loadData();
             });
         },
-        loadTests: function loadTests() {
-            if (this.selectedProject) {
-                this.$store.dispatch('loadTests');
-            }
+        loadData: function loadData() {
+            this.$store.dispatch('loadData');
         },
         enableAll: function enableAll() {
             var _this2 = this;
 
             axios.get(this.laravel.url_prefix + '/tests/' + this.selectedProject.id + '/all/enable/' + !this.allEnabled()).then(function () {
-                return _this2.loadTests();
+                return _this2.loadData();
             });
         },
         editFile: function editFile(file) {
@@ -47397,7 +47398,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
         var vue = this;
 
         setInterval(function () {
-            vue.loadTests();
+            vue.loadData();
         }, 1500);
 
         setInterval(function () {
@@ -47548,41 +47549,43 @@ var render = function() {
                       )
                     ]),
                     _vm._v(" "),
-                    _c("div", { staticClass: "col-md-5" }, [
-                      _c(
-                        "div",
-                        {
-                          staticClass: "btn btn-danger",
-                          on: {
-                            click: function($event) {
-                              _vm.runAll()
-                            }
-                          }
-                        },
-                        [
-                          _vm._v(
-                            "\n                                run all\n                            "
+                    _vm.selectedProject.enabled
+                      ? _c("div", { staticClass: "col-md-5" }, [
+                          _c(
+                            "div",
+                            {
+                              staticClass: "btn btn-danger",
+                              on: {
+                                click: function($event) {
+                                  _vm.runAll()
+                                }
+                              }
+                            },
+                            [
+                              _vm._v(
+                                "\n                                run all\n                            "
+                              )
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            {
+                              staticClass: "btn btn-warning",
+                              on: {
+                                click: function($event) {
+                                  _vm.reset()
+                                }
+                              }
+                            },
+                            [
+                              _vm._v(
+                                "\n                                reset state\n                            "
+                              )
+                            ]
                           )
-                        ]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "div",
-                        {
-                          staticClass: "btn btn-warning",
-                          on: {
-                            click: function($event) {
-                              _vm.reset()
-                            }
-                          }
-                        },
-                        [
-                          _vm._v(
-                            "\n                                reset state\n                            "
-                          )
-                        ]
-                      )
-                    ])
+                        ])
+                      : _vm._e()
                   ])
                 ])
               ])
@@ -47636,7 +47639,9 @@ var render = function() {
                   ]),
                   _vm._v(" "),
                   _c("td", [
-                    test.state !== "running" && test.state !== "queued"
+                    test.state !== "running" &&
+                    test.state !== "queued" &&
+                    _vm.selectedProject.enabled
                       ? _c(
                           "div",
                           {

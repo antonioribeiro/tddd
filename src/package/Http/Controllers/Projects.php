@@ -5,16 +5,6 @@ namespace PragmaRX\TestsWatcher\Package\Http\Controllers;
 class Projects extends Controller
 {
     /**
-     * Get all projects.
-     *
-     * @return mixed
-     */
-    public function all()
-    {
-        return $this->success(['projects' => $this->dataRepository->getProjects()]);
-    }
-
-    /**
      * Enable tests.
      *
      * @param $enable
@@ -27,18 +17,6 @@ class Projects extends Controller
         $enabled = $this->dataRepository->enableProjects($enable, $project_id);
 
         return $this->success(['enabled' => $enabled]);
-    }
-
-    /**
-     * Get all tests.
-     *
-     * @param null $project_id
-     *
-     * @return mixed
-     */
-    public function tests($project_id = null)
-    {
-        return $this->success(['tests' => $this->dataRepository->getTests($project_id)]);
     }
 
     /**

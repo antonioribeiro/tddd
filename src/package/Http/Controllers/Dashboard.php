@@ -15,4 +15,19 @@ class Dashboard extends Controller
             view('pragmarx/ci::dashboard')
                 ->with('laravel', $this->dataRepository->getJavascriptClientData());
     }
+
+    /**
+     * Dashboard index.
+     *
+     * @param null $project_id
+     * @return \Illuminate\Http\Response
+     */
+    public function data($project_id = null)
+    {
+        return $this->success([
+            'projects' => $this->dataRepository->getProjects(),
+
+            'tests' => $project_id ? $this->dataRepository->getTests($project_id) : []
+        ]);
+    }
 }

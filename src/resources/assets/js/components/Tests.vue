@@ -31,7 +31,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-md-5">
+                            <div class="col-md-5" v-if="selectedProject.enabled">
                                 <div class="btn btn-danger" @click="runAll()">
                                     run all
                                 </div>
@@ -72,7 +72,7 @@
                     </td>
 
                     <td>
-                        <div @click="runTest(test.id)" v-if="test.state !== 'running' && test.state !== 'queued'" :class="'btn btn-sm btn-' + (test.state == 'failed' ? 'danger' : 'secondary')">
+                        <div @click="runTest(test.id)" v-if="test.state !== 'running' && test.state !== 'queued' && selectedProject.enabled" :class="'btn btn-sm btn-' + (test.state == 'failed' ? 'danger' : 'secondary')">
                             run
                         </div>
                     </td>
@@ -143,7 +143,7 @@
 
         watch: {
             selectedProject() {
-                this.loadTests();
+                this.loadData();
             }
         },
 
@@ -156,7 +156,7 @@
         },
 
         methods: {
-            ...mapActions(['loadTests']),
+            ...mapActions(['loadData']),
 
             runTest(testId) {
                 axios.get(this.laravel.url_prefix+'/tests/run/'+testId);
@@ -182,18 +182,16 @@
 
             toggleTest(test) {
                 axios.get(this.laravel.url_prefix+'/tests/'+this.selectedProject.id+'/'+test.id+'/enable/'+!test.enabled)
-                    .then(() => this.loadTests());
+                    .then(() => this.loadData());
             },
 
-            loadTests() {
-                if (this.selectedProject) {
-                    this.$store.dispatch('loadTests');
-                }
+            loadData() {
+                this.$store.dispatch('loadData');
             },
 
             enableAll() {
                 axios.get(this.laravel.url_prefix+'/tests/'+this.selectedProject.id+'/all/enable/'+!this.allEnabled())
-                    .then(() => this.loadTests());
+                    .then(() => this.loadData());
             },
 
             editFile(file) {
@@ -283,7 +281,7 @@
             var vue = this;
 
             setInterval(function () {
-                vue.loadTests();
+                vue.loadData();
             }, 1500);
 
             setInterval(function () {

@@ -158,9 +158,9 @@ class Tester extends Base
      */
     public function run(Command $command)
     {
-        $this->command = $command;
+        $this->setCommand($command);
 
-        $this->command->comment($this->getConfig('names.worker'));
+        $this->showProgress($this->getConfig('names.worker'), 'info');
 
         $this->startTester();
     }
@@ -245,7 +245,7 @@ class Tester extends Base
 
         $command = $this->addPiperCommand($test);
 
-        $this->showProgress('Executing '.$command, true);
+        $this->showProgress('RUNNING: '.$command, 'comment');
 
         for ($times = 0; $times <= $test->suite->retries; $times++) {
             if ($times > 0) {

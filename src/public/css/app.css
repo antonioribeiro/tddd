@@ -9229,7 +9229,7 @@ body {
   font-weight: 800;
 }
 
-tr.dim {
+.dim {
   filter: alpha(opacity=40);
   /* internet explorer */
   -khtml-opacity: 0.4;
@@ -9292,8 +9292,15 @@ a:hover.file {
 list-group-item.active,
 .list-group-item.active:hover,
 .list-group-item.active:focus {
-  background-color: #ccc800;
-  border-color: #ccc800;
+  background-color: #f5f000;
+  border-color: #f5f000;
+}
+
+list-group-item,
+.list-group-item:hover,
+.list-group-item:focus {
+  background-color: #e9ecee;
+  border-color: #e9ecee;
 }
 
 /*

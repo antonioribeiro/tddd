@@ -44,7 +44,7 @@ body {
   font-weight: 800;
 }
 
-tr.dim {
+.dim {
   filter: alpha(opacity=40); /* internet explorer */
   -khtml-opacity: 0.4;      /* khtml, old safari */
   -moz-opacity: 0.4;       /* mozilla, netscape */
@@ -103,6 +103,12 @@ list-group-item.active, .list-group-item.active:hover, .list-group-item.active:f
   background-color: $brand-pill-darker;
   border-color: $brand-pill-darker;
 }
+
+list-group-item, .list-group-item:hover, .list-group-item:focus {
+  background-color: $brand-gray;
+  border-color: $brand-gray;
+}
+
 
 /*
  * Modals

@@ -12,11 +12,14 @@ $brand-darker: #444444;
 $brand-darkest: #000000;
 $brand-html: #220e03;
 $brand-pill: #fffa00;
+$brand-white: #fff;
 
 $body-bg: $brand-clear;
 $brand-gray-darker: darken($brand-gray, 10%);
 $brand-secondary-darker: darken($brand-secondary, 10%);
-$brand-pill-darker: darken($brand-pill, 10%);
+$brand-pill-darker: darken($brand-pill, 2%);
+$brand-clear-darker: darken($brand-clear, 2%);
+$brand-white-darker: darken($brand-white, 2%);
 
 // Brand lighter
 $brand-primary-light: lighten($brand-primary, 20%);

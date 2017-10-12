@@ -30,23 +30,11 @@ class Watcher extends Base
     protected $listeners;
 
     /**
-     * Console command object.
-     *
-     * @var
-     */
-    protected $command;
-
-    /**
      * Watcher Repository.
      *
      * @var \PragmaRX\TestsWatcher\Package\Data\Repositories\Data
      */
     private $dataRepository;
-
-    /**
-     * @var \PragmaRX\TestsWatcher\Package\Services\Loader
-     */
-    private $loader;
 
     /**
      * Instantiate a Watcher.
@@ -78,9 +66,9 @@ class Watcher extends Base
             if ($test->sha1Changed() && !$this->dataRepository->isEnqueued($test)) {
                 $this->dataRepository->addTestToQueue($test);
 
-                $this->showMessage($event, $path);
+                $this->showEventMessage($event, $path);
 
-                $this->showProgress('Test added to queue');
+                $this->showProgress('QUEUE: test added to queue');
             }
 
             return true;
@@ -112,7 +100,7 @@ class Watcher extends Base
      */
     private function initialize()
     {
-        $this->showComment($this->getConfig('names.watcher'));
+        $this->showComment($this->getConfig('names.watcher'), 'info');
 
         if (!$this->is_initialized) {
             $this->loader->loadEverything();
@@ -122,26 +110,14 @@ class Watcher extends Base
     }
 
     /**
-     * Set the command.
-     *
-     * @param $command
-     */
-    private function setCommand($command)
-    {
-        $this->command = $command;
-
-        $this->loader->setCommand($this->command);
-    }
-
-    /**
-     * Display a message on terminal.
+     * Display a message about the event on terminal.
      *
      * @param $event
      * @param $path
      */
-    private function showMessage($event, $path)
+    private function showEventMessage($event, $path)
     {
-        $this->showProgress("File {$path} was ".$this->getEventName($event->getCode()), true);
+        $this->showProgress("FILE CHANGED: {$path} was ".$this->getEventName($event->getCode()), 'error');
     }
 
     /**
@@ -149,16 +125,16 @@ class Watcher extends Base
      */
     private function watch()
     {
-        $this->showProgress('Booting watchers...');
+        $this->showProgress('BOOT: booting watchers...');
 
         foreach ($this->loader->watchFolders as $folder) {
             if (!file_exists($folder)) {
-                $this->showProgress("Folder {$folder} does not exists");
+                $this->showProgress("ERROR: folder {$folder} does not exists", 'error');
 
                 continue;
             }
 
-            $this->showProgress('Watching '.$folder);
+            $this->showProgress('WATCHING '.$folder);
 
             $this->listeners[$folder] = $this->watcher->watch($folder);
 
@@ -187,13 +163,11 @@ class Watcher extends Base
 
         $this->loader->loadEverything();
 
-        $this->showMessage($event, $path);
+        $this->showEventMessage($event, $path);
 
         if ($this->queueTestSuites($path)) {
             return;
         }
-
-        $this->showProgress('All tests added to queue');
 
         $this->dataRepository->queueAllTests();
     }
@@ -226,7 +200,7 @@ class Watcher extends Base
         foreach ($suites as $suite) {
             $queued = true;
 
-            $this->showProgress('Adding all tests for the '.$suite->name.' suite');
+            $this->showProgress('QUEUE: adding all tests for the '.$suite->name.' suite');
 
             $this->dataRepository->queueTestsForSuite($suite->id);
         }

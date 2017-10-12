@@ -37,7 +37,7 @@ class Controller extends IlluminateController
      *
      * @param array $result
      *
-     * @return mixed
+     * @return \Illuminate\Http\Response
      */
     public function success($result = [])
     {

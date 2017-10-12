@@ -14,6 +14,11 @@ class Base
     protected $command;
 
     /**
+     * @var \PragmaRX\TestsWatcher\Package\Services\Loader
+     */
+    protected $loader;
+
+    /**
      * Get a configuration key.
      *
      * @param $key
@@ -36,13 +41,9 @@ class Base
      *
      * @param $line
      */
-    public function showProgress($line, $addSeparator = false)
+    public function showProgress($line, $type = 'line')
     {
-        if ($addSeparator) {
-            $this->command->drawLine($line = 'Executing '.$line);
-        }
-
-        $this->command->line($line);
+        $this->command->{$type}($line);
     }
 
     /**
@@ -97,6 +98,20 @@ class Base
 
         if ($fatal == true) {
             die;
+        }
+    }
+
+    /**
+     * Set the command.
+     *
+     * @param $command
+     */
+    protected function setCommand($command)
+    {
+        $this->command = $command;
+
+        if (!is_null($this->loader)) {
+            $this->loader->setCommand($this->command);
         }
     }
 }

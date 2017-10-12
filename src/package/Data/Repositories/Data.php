@@ -656,6 +656,8 @@ class Data
      */
     public function queueAllTests()
     {
+        $this->showProgress('QUEUE: adding tests to queue...');
+
         foreach (Test::all() as $test) {
             $this->addTestToQueue($test);
         }
@@ -683,7 +685,7 @@ class Data
      */
     public function addTestToQueue($test, $force = false)
     {
-        if ($test->enabled && !$this->isEnqueued($test)) {
+        if ($test->enabled && $test->suite->project->enabled && !$this->isEnqueued($test)) {
             $test->updateSha1();
 
             Queue::updateOrCreate(['test_id' => $test->id]);
@@ -958,12 +960,35 @@ class Data
      */
     public function enableTests($enable, $project_id, $test_id)
     {
-        $enable = $enable === 'true';
+        $enable = is_bool($enable) ? $enable : ($enable === 'true');
 
         $tests = $this->queryTests($project_id, $test_id == 'all' ? null : $test_id)->get();
 
         foreach ($tests as $test) {
             $this->enableTest($enable, $test);
+        }
+
+        return $enable;
+    }
+
+    /**
+     * Enable tests.
+     *
+     * @param $enable
+     * @param $project_id
+     *
+     * @return bool
+     */
+    public function enableProjects($enable, $project_id)
+    {
+        $enable = $enable === 'true';
+
+        $projects = $project_id == 'all'
+            ? Project::all()
+            : Project::where('id', $project_id)->get();
+
+        foreach ($projects as $test) {
+            $this->enableProject($enable, $test);
         }
 
         return $enable;
@@ -988,9 +1013,7 @@ class Data
      * Enable a test.
      *
      * @param $enable
-     * @param $test
-     *
-     * @return mixed
+     * @param \PragmaRX\TestsWatcher\Package\Entities\Test $test
      */
     private function enableTest($enable, $test)
     {
@@ -1001,12 +1024,29 @@ class Data
         $test->save();
 
         if (!$enable) {
-            return $this->removeTestFromQueue($test);
+            $this->removeTestFromQueue($test);
+
+            return;
         }
 
         if ($test->state !== self::STATE_OK) {
             $this->addTestToQueue($test);
         }
+    }
+
+    /**
+     * Enable a test.
+     *
+     * @param $enable
+     * @param \PragmaRX\TestsWatcher\Package\Entities\Project $project
+     */
+    private function enableProject($enable, $project)
+    {
+        $project->timestamps = false;
+
+        $project->enabled = $enable;
+
+        $project->save();
     }
 
     /**
@@ -1016,12 +1056,12 @@ class Data
      * @param $outputFolder
      * @param $extension
      *
-     * @return bool|mixed|null|string
+     * @return null|string
      */
     private function getOutput($test, $outputFolder, $extension)
     {
         if (empty($outputFolder)) {
-            return;
+            return null;
         }
 
         $file = make_path([
@@ -1089,9 +1129,7 @@ class Data
         $depends = $projects->filter(function ($project) use ($filtered_projects) {
             if (!is_null($depends = config("ci.projects.{$project->name}.depends"))) {
                 return collect($depends)->filter(function ($item) use ($filtered_projects) {
-                    if (!is_null($filtered_projects->where('name', $item)->first())) {
-                        return true;
-                    }
+                    return !is_null($filtered_projects->where('name', $item)->first());
                 });
             }
 
@@ -1166,14 +1204,6 @@ class Data
     }
 
     /**
-     * Delete all from projects table.
-     */
-    public function clearSuites()
-    {
-        Database::statement('delete from ci_suites');
-    }
-
-    /**
      * Mark tests as notified.
      *
      * @param $tests
@@ -1222,11 +1252,6 @@ class Data
             [$file, $line],
             $this->getEditorBinary($suite)
         );
-
-//        return
-//            .
-//            (!is_null($line) ? " --line {$line}" : '').
-//            " {$fileName}";
     }
 
     /**

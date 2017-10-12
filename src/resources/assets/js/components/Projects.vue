@@ -4,7 +4,7 @@
             <ul class="list-group">
                 <li
                     v-for="project in projects"
-                    :class="'list-group-item ' + (selectedProject == project ? 'active' : '')"
+                    :class="'list-group-item ' + (! project.enabled ? 'dim ' : '') + (selectedProject.id == project.id ? 'active ' : '')"
                     @click="changeProject(project)"
                 >
                     <input
@@ -27,16 +27,12 @@
     import {mapActions} from 'vuex'
 
     export default {
-        computed: mapState(['projects', 'selectedProject', 'selectedPanel']),
-
-        mounted() {
-            this.$store.dispatch('loadProjects');
-        },
+        computed: mapState(['laravel','projects', 'selectedProject', 'selectedPanel']),
 
         methods: {
             ...mapMutations(['setSelectedProject']),
 
-            ...mapActions(['loadProjects']),
+            ...mapActions(['loadData']),
 
             changeProject(project) {
                 if (this.selectedProject != project) {
@@ -48,9 +44,9 @@
                 }
             },
 
-            toggleTest(test) {
-                axios.get(this.laravel.url_prefix+'/projects/'+this.selectedProject.id+'/enable/'+!test.enabled)
-                    .then(() => this.loadTests());
+            toggleProject(project) {
+                axios.get(this.laravel.url_prefix+'/projects/'+project.id+'/enable/'+!project.enabled)
+                    .then(() => this.loadData());
             },
         }
     }

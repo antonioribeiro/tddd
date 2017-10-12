@@ -21,13 +21,6 @@ class Loader extends Base
     public $dataRepository;
 
     /**
-     * Command.
-     *
-     * @var \PragmaRX\TestsWatcher\Package\Console\Commands\BaseCommand
-     */
-    protected $command;
-
-    /**
      * Folders to be watched.
      *
      * @var
@@ -53,7 +46,7 @@ class Loader extends Base
      */
     private function createSuite($suite_name, $project, $suite_data)
     {
-        $this->command->line("  -- suite '{$suite_name}'");
+        $this->showProgress("  -- suite '{$suite_name}'");
 
         if (!$this->dataRepository->createOrUpdateSuite($suite_name, $project->id, $suite_data)) {
             $this->displayMessages($this->dataRepository->getMessages());
@@ -77,7 +70,7 @@ class Loader extends Base
      */
     public function loadTesters()
     {
-        $this->command->info('Loading testers...');
+        $this->showProgress('Loading testers...', 'info');
 
         foreach ($this->getConfig('testers') as $name => $data) {
             $this->dataRepository->createOrUpdateTester($name, $data);
@@ -91,12 +84,12 @@ class Loader extends Base
      */
     public function loadProjects()
     {
-        $this->command->info('Loading projects and suites...');
+        $this->showProgress('Loading projects and suites...');
 
         $this->dataRepository->clearSuites();
 
         foreach ($this->getConfig('projects') as $name => $data) {
-            $this->command->line("Project '{$name}'");
+            $this->showProgress("Project '{$name}'", 'comment');
 
             $project = $this->dataRepository->createOrUpdateProject($name, $data['path'], $data['tests_path']);
 
@@ -117,7 +110,7 @@ class Loader extends Base
      */
     public function loadTests()
     {
-        $this->command->info('Loading tests...');
+        $this->showProgress('Loading tests...', 'info');
 
         $this->dataRepository->syncTests($this->exclusions);
     }
@@ -148,17 +141,7 @@ class Loader extends Base
         foreach ($exclude as $folder) {
             $this->exclusions[] = $excluded = make_path([$path, $folder]);
 
-            $this->showProgress("Excluding: {$excluded}");
+            $this->showProgress("EXCLUDED: {$excluded}");
         }
-    }
-
-    /**
-     * Set the command.
-     *
-     * @param mixed $command
-     */
-    public function setCommand($command)
-    {
-        $this->command = $command;
     }
 }

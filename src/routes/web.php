@@ -13,17 +13,15 @@ Route::group(['prefix' => '/tests'], function () {
 });
 
 Route::group(['prefix' => '/projects'], function () {
-    Route::get('/', ['as' => 'tests-watcher.projects', 'uses' => 'Projects@all']);
-
     Route::get('/{project_id}/enable/{enable}', ['as' => 'tests-watcher.projects.enable', 'uses' => 'Projects@enable']);
-
-    Route::get('/{project_id?}/tests', ['as' => 'tests-watcher.project.tests', 'uses' => 'Projects@tests']);
 
     Route::get('/{project_id}/notify', ['as' => 'tests-watcher.tests.notify', 'uses' => 'Projects@notify']);
 });
 
 Route::group(['prefix' => '/dashboard'], function () {
     Route::get('/', ['as' => 'tests-watcher.dashboard', 'uses' => 'Dashboard@index']);
+
+    Route::get('/data/{project_id?}', ['as' => 'tests-watcher.dashboard.data', 'uses' => 'Dashboard@data']);
 });
 
 Route::group(['prefix' => '/files'], function () {
