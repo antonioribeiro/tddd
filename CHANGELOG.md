@@ -10,6 +10,7 @@
 - Config for Visual Studio Code editor
 ### Changed
 - Allow better configuration of editor's binary
+- Moved Laravel related classes out from Vendor\Laravel
 ### Fixed
 - Abending when tester used in suite does not exists
 - Piper script not being 
