@@ -2,8 +2,8 @@
 
 namespace PragmaRX\TestsWatcher\Package\Data\Repositories\Support;
 
-use PragmaRX\TestsWatcher\Package\Entities\Test;
 use PragmaRX\TestsWatcher\Package\Entities\Project;
+use PragmaRX\TestsWatcher\Package\Entities\Test;
 
 trait Projects
 {
@@ -97,7 +97,6 @@ trait Projects
         });
     }
 
-
     /**
      * Enable tests.
      *
@@ -135,7 +134,6 @@ trait Projects
 
         $project->save();
     }
-
 
     /**
      * Run all tests or projects tests.

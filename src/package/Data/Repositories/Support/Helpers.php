@@ -129,7 +129,6 @@ trait Helpers
 
     /**
      * Get the default editor binary.
-     *
      */
     protected function getDefaultEditorBinary()
     {
@@ -192,7 +191,6 @@ trait Helpers
 
         return json_encode((array) $screenshots);
     }
-
 
     /**
      * Check if the class is abstract.
