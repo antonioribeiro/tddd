@@ -374,7 +374,7 @@ class Data
     /**
      * Create or update a test.
      *
-     * @param \Symfony\Component\Finder\SplFileInfo $file
+     * @param \Symfony\Component\Finder\SplFileInfo         $file
      * @param \PragmaRX\TestsWatcher\Package\Entities\Suite $suite
      */
     public function createOrUpdateTest($file, $suite)
