@@ -1,8 +1,8 @@
 <?php
 
-use PragmaRX\Support\Migration;
-use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+use PragmaRX\Support\Migration;
 
 class AddProjectEnabled extends Migration
 {
