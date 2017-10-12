@@ -7,6 +7,13 @@
                     :class="'list-group-item ' + (selectedProject == project ? 'active' : '')"
                     @click="changeProject(project)"
                 >
+                    <input
+                        type="checkbox"
+                        class="project-checkbox testCheckbox"
+                        @click="toggleProject(project)"
+                        :checked="project.enabled"
+                    />
+
                     {{ project.name }}
                 </li>
             </ul>

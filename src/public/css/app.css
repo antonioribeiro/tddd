@@ -9283,11 +9283,17 @@ a:hover.file {
   font-weight: 800;
 }
 
+.list-group-item.active {
+  background-color: #fffa00;
+  border-color: #fffa00;
+  color: #000000;
+}
+
 list-group-item.active,
 .list-group-item.active:hover,
 .list-group-item.active:focus {
-  background-color: #2654b2;
-  border-color: #2654b2;
+  background-color: #ccc800;
+  border-color: #ccc800;
 }
 
 /*
@@ -9479,5 +9485,9 @@ h3 {
   background-color: #220e03;
   font-size: 1.2rem;
   font-weight: 500 !important;
+}
+
+.project-checkbox {
+  margin-right: 5px;
 }
 

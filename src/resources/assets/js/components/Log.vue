@@ -80,7 +80,7 @@
             },
 
             makeScreenshot(screenshot) {
-                return this.laravel.url_prefix+'/image/download/'+btoa(screenshot);
+                return this.laravel.url_prefix+'/files/'+btoa(screenshot)+'/download';
             },
 
             baseName(str) {

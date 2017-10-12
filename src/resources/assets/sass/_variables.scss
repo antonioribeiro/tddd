@@ -11,10 +11,12 @@ $brand-bluish: #73dbff;
 $brand-darker: #444444;
 $brand-darkest: #000000;
 $brand-html: #220e03;
+$brand-pill: #fffa00;
 
 $body-bg: $brand-clear;
 $brand-gray-darker: darken($brand-gray, 10%);
 $brand-secondary-darker: darken($brand-secondary, 10%);
+$brand-pill-darker: darken($brand-pill, 10%);
 
 // Brand lighter
 $brand-primary-light: lighten($brand-primary, 20%);
@@ -27,6 +29,7 @@ $brand-gray-light: lighten($brand-gray, 20%);
 $brand-bluish-light: lighten($brand-bluish, 20%);
 $brand-darker-light: lighten($brand-darker, 40%);
 $brand-darkest-light: lighten($brand-darkest, 20%);
+$brand-pill-light: lighten($brand-pill, 20%);
 
 // Typography
 $icon-font-path: "~bootstrap-sass/assets/fonts/bootstrap/";

@@ -72,7 +72,7 @@ export default {
         },
 
         loadTests(context) {
-            axios.get(context.state.laravel.url_prefix+'/tests/'+context.state.selectedProject.id)
+            axios.get(context.state.laravel.url_prefix+'/projects/'+context.state.selectedProject.id+'/tests')
                 .then(function (result) {
                     context.commit('setTests', result.data.tests);
                 });

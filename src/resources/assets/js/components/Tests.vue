@@ -214,7 +214,7 @@
 
             sendNotifications: function () {
                 if (this.statistics.failed > 0) {
-                    axios.get(this.laravel.url_prefix+'/tests/notify/'+this.selectedProject.id);
+                    axios.get(this.laravel.url_prefix+'/projects/'+this.selectedProject.id+'/notify');
                 }
             },
 

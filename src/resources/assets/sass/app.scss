@@ -93,9 +93,15 @@ a:hover.file {
   font-weight: 800;
 }
 
+.list-group-item.active {
+  background-color: $brand-pill;
+  border-color: $brand-pill;
+  color: $brand-darkest;
+}
+
 list-group-item.active, .list-group-item.active:hover, .list-group-item.active:focus {
-  background-color: $brand-primary;
-  border-color: $brand-primary;
+  background-color: $brand-pill-darker;
+  border-color: $brand-pill-darker;
 }
 
 /*
@@ -276,4 +282,8 @@ table > tbody > tr > td.state.state-failed {
   background-color: $brand-html;
   font-size: 1.2rem;
   font-weight: 500 !important;
+}
+
+.project-checkbox {
+  margin-right: 5px;
 }

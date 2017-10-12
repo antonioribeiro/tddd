@@ -46891,7 +46891,7 @@ module.exports = Vue$3;
             });
         },
         loadTests: function loadTests(context) {
-            axios.get(context.state.laravel.url_prefix + '/tests/' + context.state.selectedProject.id).then(function (result) {
+            axios.get(context.state.laravel.url_prefix + '/projects/' + context.state.selectedProject.id + '/tests').then(function (result) {
                 context.commit('setTests', result.data.tests);
             });
         }
@@ -46969,6 +46969,13 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -47022,8 +47029,18 @@ var render = function() {
               }
             },
             [
+              _c("input", {
+                staticClass: "project-checkbox testCheckbox",
+                attrs: { type: "checkbox" },
+                domProps: { checked: project.enabled },
+                on: {
+                  click: function($event) {
+                    _vm.toggleProject(project)
+                  }
+                }
+              }),
               _vm._v(
-                "\n                " + _vm._s(project.name) + "\n            "
+                "\n\n                " + _vm._s(project.name) + "\n            "
               )
             ]
           )
@@ -47302,7 +47319,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
         sendNotifications: function sendNotifications() {
             if (this.statistics.failed > 0) {
-                axios.get(this.laravel.url_prefix + '/tests/notify/' + this.selectedProject.id);
+                axios.get(this.laravel.url_prefix + '/projects/' + this.selectedProject.id + '/notify');
             }
         },
 
@@ -47952,7 +47969,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             return 'btn-outline-primary';
         },
         makeScreenshot: function makeScreenshot(screenshot) {
-            return this.laravel.url_prefix + '/image/download/' + btoa(screenshot);
+            return this.laravel.url_prefix + '/files/' + btoa(screenshot) + '/download';
         },
         baseName: function baseName(str) {
             var base = String(str).substring(str.lastIndexOf('/') + 1);
