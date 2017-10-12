@@ -2,7 +2,6 @@
 
 namespace PragmaRX\TestsWatcher\Package\Support;
 
-
 class Constants
 {
     const STATE_IDLE = 'idle';

@@ -35,7 +35,6 @@ trait Notifications
 
     /**
      * @param Notifier $notifier
-     *
      */
     public function setNotifier($notifier)
     {
