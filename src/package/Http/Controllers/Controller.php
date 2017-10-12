@@ -2,10 +2,10 @@
 
 namespace PragmaRX\TestsWatcher\Package\Http\Controllers;
 
-use Response;
-use PragmaRX\TestsWatcher\Package\Support\Executor;
-use PragmaRX\TestsWatcher\Package\Data\Repositories\Data;
 use Illuminate\Routing\Controller as IlluminateController;
+use PragmaRX\TestsWatcher\Package\Data\Repositories\Data;
+use PragmaRX\TestsWatcher\Package\Support\Executor;
+use Response;
 
 class Controller extends IlluminateController
 {
