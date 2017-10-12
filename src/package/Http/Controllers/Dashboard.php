@@ -28,7 +28,7 @@ class Dashboard extends Controller
         return $this->success([
             'projects' => $this->dataRepository->getProjects(),
 
-            'tests' => $project_id ? $this->dataRepository->getTests($project_id) : [],
+            'tests' => $project_id ? $this->dataRepository->getProjectTests($project_id) : [],
         ]);
     }
 }

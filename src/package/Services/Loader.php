@@ -76,7 +76,7 @@ class Loader extends Base
             $this->dataRepository->createOrUpdateTester($name, $data);
         }
 
-        $this->dataRepository->deleteUnavailableTesters(array_keys($this->getConfig('testers')));
+        $this->dataRepository->deleteMissingTesters(array_keys($this->getConfig('testers')));
     }
 
     /**
@@ -99,7 +99,7 @@ class Loader extends Base
             $this->addToExclusions($data['path'], $data['exclude']);
         }
 
-        $this->dataRepository->deleteUnavailableProjects(array_keys($this->getConfig('projects')));
+        $this->dataRepository->deleteMissingProjects(array_keys($this->getConfig('projects')));
     }
 
     /**

@@ -41,7 +41,7 @@ class Tests extends Controller
      */
     public function runAll($project_id)
     {
-        $this->dataRepository->runAll($project_id);
+        $this->dataRepository->runProjectTests($project_id);
 
         return $this->success();
     }

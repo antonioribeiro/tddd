@@ -1,0 +1,120 @@
+<?php
+
+namespace PragmaRX\TestsWatcher\Package\Data\Repositories\Support;
+
+use PragmaRX\TestsWatcher\Package\Entities\Test;
+use PragmaRX\TestsWatcher\Package\Support\Constants;
+use PragmaRX\TestsWatcher\Package\Entities\Queue as QueueModel;
+
+trait Queue
+{
+    /**
+     * Is the test in the queue?
+     *
+     * @param $test
+     *
+     * @return bool
+     */
+    public function isEnqueued($test)
+    {
+        return
+            $test->state == Constants::STATE_QUEUED
+            &&
+            QueueModel::where('test_id', $test->id)->first();
+    }
+
+    /**
+     * Queue all tests.
+     */
+    public function queueAllTests()
+    {
+        $this->showProgress('QUEUE: adding tests to queue...');
+
+        foreach (Test::all() as $test) {
+            $this->addTestToQueue($test);
+        }
+    }
+
+    /**
+     * Queue all tests from a particular suite.
+     *
+     * @param $suite_id
+     */
+    public function queueTestsForSuite($suite_id)
+    {
+        $tests = Test::where('suite_id', $suite_id)->get();
+
+        foreach ($tests as $test) {
+            $this->addTestToQueue($test);
+        }
+    }
+
+    /**
+     * Add a test to the queue.
+     *
+     * @param $test
+     * @param bool $force
+     */
+    public function addTestToQueue($test, $force = false)
+    {
+        if ($test->enabled && $test->suite->project->enabled && !$this->isEnqueued($test)) {
+            $test->updateSha1();
+
+            QueueModel::updateOrCreate(['test_id' => $test->id]);
+
+            if ($force || !in_array($test->state, [Constants::STATE_RUNNING, Constants::STATE_QUEUED])) {
+                $test->state = Constants::STATE_QUEUED;
+                $test->timestamps = false;
+                $test->save();
+            }
+        }
+    }
+
+    /**
+     * Get a test from the queue.
+     *
+     * @return \PragmaRX\TestsWatcher\Package\Entities\Test|null
+     */
+    public function getNextTestFromQueue()
+    {
+        $query = QueueModel::join('ci_tests', 'ci_tests.id', '=', 'ci_queue.test_id')
+                      ->where('ci_tests.enabled', true)
+                      ->where('ci_tests.state', '!=', Constants::STATE_RUNNING);
+
+        if (!$queue = $query->first()) {
+            return;
+        }
+
+        return $queue->test;
+    }
+
+    /**
+     * Remove test from que run queue.
+     *
+     * @param $test
+     *
+     * @return mixed
+     */
+    protected function removeTestFromQueue($test)
+    {
+        QueueModel::where('test_id', $test->id)->delete();
+
+        return $test;
+    }
+
+    /**
+     * Reset a test to idle state.
+     *
+     * @param $test
+     */
+    protected function resetTest($test)
+    {
+        QueueModel::where('test_id', $test->id)->delete();
+
+        $test->state = Constants::STATE_IDLE;
+
+        $test->timestamps = false;
+
+        $test->save();
+    }
+}
