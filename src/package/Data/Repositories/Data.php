@@ -1094,7 +1094,7 @@ class Data
     protected function getOutput($test, $outputFolder, $extension)
     {
         if (empty($outputFolder)) {
-            return null;
+            return;
         }
 
         $file = make_path([
