@@ -177,6 +177,7 @@ trait Tests
     {
         return Test::where('name', $file->getRelativePathname())->where('suite_id', $suite->id)->first();
     }
+
     /**
      * Enable tests.
      *
@@ -276,7 +277,6 @@ trait Tests
             $test['run']->save();
         });
     }
-
 
     /**
      * Check if the test exists.

@@ -2,10 +2,10 @@
 
 namespace PragmaRX\TestsWatcher\Package\Data\Repositories\Support;
 
-use Symfony\Component\Finder\Finder;
+use PragmaRX\TestsWatcher\Package\Entities\Project;
 use PragmaRX\TestsWatcher\Package\Entities\Suite;
 use PragmaRX\TestsWatcher\Package\Entities\Tester;
-use PragmaRX\TestsWatcher\Package\Entities\Project;
+use Symfony\Component\Finder\Finder;
 
 trait Suites
 {
@@ -16,7 +16,7 @@ trait Suites
      * @param $project_id
      * @param $suite_data
      *
-     * @return Suite|null|boolean
+     * @return Suite|null|bool
      */
     public function createOrUpdateSuite($name, $project_id, $suite_data)
     {
@@ -30,7 +30,7 @@ trait Suites
 
         return Suite::updateOrCreate(
             [
-                'name' => $name,
+                'name'       => $name,
                 'project_id' => $project_id,
             ],
             [
@@ -45,7 +45,7 @@ trait Suites
     }
 
     /**
-     * Find suite by project and name
+     * Find suite by project and name.
      *
      * @param $name
      * @param $project_id
@@ -87,7 +87,7 @@ trait Suites
      */
     public function removeMissingSuites($suites, $project)
     {
-        Suite::where('project_id', $project->id)->whereNotIn('name', collect($suites)->keys())->each(function($suite) {
+        Suite::where('project_id', $project->id)->whereNotIn('name', collect($suites)->keys())->each(function ($suite) {
             $suite->delete();
         });
     }
@@ -120,6 +120,7 @@ trait Suites
             }
         }
     }
+
     /**
      * Get all files from a suite.
      *

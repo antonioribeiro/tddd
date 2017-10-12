@@ -2,9 +2,9 @@
 
 namespace PragmaRX\TestsWatcher\Package\Data\Repositories\Support;
 
+use PragmaRX\TestsWatcher\Package\Entities\Queue as QueueModel;
 use PragmaRX\TestsWatcher\Package\Entities\Test;
 use PragmaRX\TestsWatcher\Package\Support\Constants;
-use PragmaRX\TestsWatcher\Package\Entities\Queue as QueueModel;
 
 trait Queue
 {
