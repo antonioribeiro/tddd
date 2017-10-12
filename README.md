@@ -4,7 +4,6 @@
 [![License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md) 
 [![Downloads](https://img.shields.io/packagist/dt/pragmarx/ci.svg?style=flat-square)](https://packagist.org/packages/pragmarx/ci) 
 [![Code Quality](https://img.shields.io/scrutinizer/g/antonioribeiro/ci.svg?style=flat-square)](https://scrutinizer-ci.com/g/antonioribeiro/ci/?branch=master) 
-[![Coverage](https://img.shields.io/scrutinizer/coverage/g/antonioribeiro/ci.svg?style=flat-square)](https://scrutinizer-ci.com/g/antonioribeiro/ci/?branch=master) 
 [![StyleCI](https://styleci.io/repos/27037779/shield)](https://styleci.io/repos/27037779)
 
 ### A Self-Hosted Continuous Testing Service and a Dashboard.
