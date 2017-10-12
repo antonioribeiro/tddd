@@ -5,14 +5,14 @@ namespace PragmaRX\TestsWatcher;
 use Event;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider as IlluminateServiceProvider;
+use PragmaRX\TestsWatcher\Console\Commands\ClearCommand;
+use PragmaRX\TestsWatcher\Console\Commands\TestCommand;
+use PragmaRX\TestsWatcher\Console\Commands\WatchCommand;
 use PragmaRX\TestsWatcher\Events\TestsFailed;
 use PragmaRX\TestsWatcher\Events\UserNotifiedOfFailure;
 use PragmaRX\TestsWatcher\Listeners\MarkAsNotified;
 use PragmaRX\TestsWatcher\Listeners\Notify;
 use PragmaRX\TestsWatcher\Support\Notifier;
-use PragmaRX\TestsWatcher\Console\Commands\ClearCommand;
-use PragmaRX\TestsWatcher\Console\Commands\TestCommand;
-use PragmaRX\TestsWatcher\Console\Commands\WatchCommand;
 
 class ServiceProvider extends IlluminateServiceProvider
 {
