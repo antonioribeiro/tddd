@@ -36,12 +36,12 @@ class Data
     /**
      * @var Notifier
      */
-    private $notifier;
+    protected $notifier;
 
     /**
      * @var \Illuminate\Support\Collection
      */
-    private $messages;
+    protected $messages;
 
     /**
      * Data constructor.
@@ -64,7 +64,7 @@ class Data
      *
      * @return string
      */
-    private function CRToBr($lines)
+    protected function CRToBr($lines)
     {
         return str_replace("\n", '<br>', $lines);
     }
@@ -78,7 +78,7 @@ class Data
      * @internal param $string
      * @internal param $string1
      */
-    private function addMessage($type, $body)
+    protected function addMessage($type, $body)
     {
         $this->messages->push(['type' => $type, 'body' => $body]);
     }
@@ -90,7 +90,7 @@ class Data
      *
      * @return string
      */
-    private function brToCR($lines)
+    protected function brToCR($lines)
     {
         return str_replace('<br>', "\n", $lines);
     }
@@ -105,7 +105,7 @@ class Data
      *
      * @return string
      */
-    private function createLinkToEditFile($test, $fileName, $line, $occurrence)
+    protected function createLinkToEditFile($test, $fileName, $line, $occurrence)
     {
         if (!$this->fileExistsOnTest($fileName, $test)) {
             return $line[$occurrence];
@@ -137,7 +137,7 @@ class Data
      *
      * @return mixed
      */
-    private function createLinks($lines, $matches, $test)
+    protected function createLinks($lines, $matches, $test)
     {
         foreach ($matches as $line) {
             if (count($line) > 0 && count($line[0]) > 0) {
@@ -198,10 +198,12 @@ class Data
      * @param $project_id
      * @param $suite_data
      *
-     * @return static
+     * @return Suite|null|boolean
      */
     public function createOrUpdateSuite($name, $project_id, $suite_data)
     {
+        $project_id = $project_id instanceof Project ? $project_id->id : $project_id;
+
         if (is_null($tester = Tester::where('name', $suite_data['tester'])->first())) {
             $this->addMessage('error', "Tester {$suite_data['tester']} not found.");
 
@@ -210,7 +212,8 @@ class Data
 
         return Suite::updateOrCreate(
             [
-                'name' => $name, 'project_id' => $project_id,
+                'name' => $name,
+                'project_id' => $project_id,
             ],
             [
                 'tester_id'       => $tester->id,
@@ -239,7 +242,7 @@ class Data
      *
      * @return mixed
      */
-    private function findSourceCodeReferences($lines, $test)
+    protected function findSourceCodeReferences($lines, $test)
     {
         preg_match_all(
             config('ci.regex_file_matcher'),
@@ -252,12 +255,14 @@ class Data
     }
 
     /**
+     * Find test by filename and suite.
+     *
      * @param $file
      * @param $suite
      *
      * @return mixed
      */
-    private function findTestByFileAndSuite($file, $suite)
+    protected function findTestByFileAndSuite($file, $suite)
     {
         $exists = Test::where('name', $file->getRelativePathname())
                       ->where('suite_id', $suite->id)
@@ -267,9 +272,24 @@ class Data
     }
 
     /**
+     * Find suite by project and name
+     *
+     * @param $name
+     * @param $project_id
+     *
+     * @return \PragmaRX\TestsWatcher\Package\Entities\Suite|null
+     */
+    public function findSuiteByNameAndProject($name, $project_id)
+    {
+        return Suite::where('name', $name)
+                ->where('project_id', $project_id)
+                ->first();
+    }
+
+    /**
      * Get the default editor binary.
      */
-    private function getDefaultEditorBinary()
+    protected function getDefaultEditorBinary()
     {
         if (is_null($default = collect(config('ci.editors'))->where('default', true)->first())) {
             die('FATAL ERROR: default editor not configured');
@@ -285,7 +305,7 @@ class Data
      *
      * @return string
      */
-    private function getEditorBinary($suite)
+    protected function getEditorBinary($suite)
     {
         if (empty($suite) || is_null($bin = config("ci.editors.{$suite->editor}.bin"))) {
             return $this->getDefaultEditorBinary();
@@ -328,7 +348,7 @@ class Data
      *
      * @return null|string
      */
-    private function getScreenshots($test, $log)
+    protected function getScreenshots($test, $log)
     {
         $screenshots = $test->suite->tester->name !== 'dusk'
             ? $this->getOutput($test, $test->suite->tester->output_folder, $test->suite->tester->output_png_fail_extension)
@@ -402,7 +422,7 @@ class Data
      *
      * @return array
      */
-    private function getTestInfo($test)
+    protected function getTestInfo($test)
     {
         $run = Run::where('test_id', $test->id)->orderBy('created_at', 'desc')->first();
 
@@ -433,7 +453,7 @@ class Data
      *
      * @return bool
      */
-    private function isAbstractClass($file)
+    protected function isAbstractClass($file)
     {
         return (bool) preg_match(
             '/^abstract\s+class[A-Za-z0-9_\s]{1,100}{/im',
@@ -448,7 +468,7 @@ class Data
      *
      * @return bool
      */
-    private function isTestable($file)
+    protected function isTestable($file)
     {
         return ends_with($file, '.php')
             ? !$this->isAbstractClass($file)
@@ -462,7 +482,7 @@ class Data
      *
      * @return string
      */
-    private function linkFiles($lines, $test)
+    protected function linkFiles($lines, $test)
     {
         $matches = $this->findSourceCodeReferences($lines, $test);
 
@@ -478,7 +498,7 @@ class Data
      *
      * @return string
      */
-    private function makeEditFileUrl($test)
+    protected function makeEditFileUrl($test)
     {
         return route(
             'tests-watcher.file.edit',
@@ -511,7 +531,7 @@ class Data
      *
      * @return array|null
      */
-    private function parseDuskScreenshots($log, $folder)
+    protected function parseDuskScreenshots($log, $folder)
     {
         preg_match_all('/([0-9]\)+\s.+::)(.*)/', $log, $matches, PREG_SET_ORDER);
 
@@ -533,9 +553,22 @@ class Data
      *
      * @return mixed
      */
-    private function removeBefore($diff)
+    protected function removeBefore($diff)
     {
         return str_replace('before', '', $diff);
+    }
+
+    /**
+     * Remove suites that are not in present in config.
+     *
+     * @param $suites
+     * @param $project
+     */
+    public function removeMissingSuites($suites, $project)
+    {
+        Suite::where('project_id', $project->id)->whereNotIn('name', collect($suites)->keys())->each(function($suite) {
+            $suite->delete();
+        });
     }
 
     /**
@@ -545,7 +578,7 @@ class Data
      *
      * @return string
      */
-    private function renderHtml($contents)
+    protected function renderHtml($contents)
     {
         return nl2br(
             htmlentities($contents)
@@ -557,7 +590,7 @@ class Data
      *
      * @param $test
      */
-    private function resetTest($test)
+    protected function resetTest($test)
     {
         Queue::where('test_id', $test->id)->delete();
 
@@ -586,7 +619,7 @@ class Data
      * @param $suite
      * @param $exclusions
      */
-    private function syncTestsForSuite($suite, $exclusions)
+    protected function syncTestsForSuite($suite, $exclusions)
     {
         $files = $this->getAllFilesFromSuite($suite);
 
@@ -616,7 +649,7 @@ class Data
      *
      * @return array
      */
-    private function getAllFilesFromSuite($suite)
+    protected function getAllFilesFromSuite($suite)
     {
         if (!file_exists($suite->testsFullPath)) {
             die('FATAL ERROR: directory not found: '.$suite->testsFullPath.'.');
@@ -761,7 +794,7 @@ class Data
      *
      * @return mixed
      */
-    private function removeTestFromQueue($test)
+    protected function removeTestFromQueue($test)
     {
         Queue::where('test_id', $test->id)->delete();
 
@@ -844,7 +877,7 @@ class Data
      *
      * @return mixed
      */
-    private function findTestByNameAndSuite($file, $suite)
+    protected function findTestByNameAndSuite($file, $suite)
     {
         return Test::where('name', $file->getRelativePathname())->where('suite_id', $suite->id)->first();
     }
@@ -908,7 +941,7 @@ class Data
      *
      * @return mixed|string
      */
-    private function formatLog($log, $test)
+    protected function formatLog($log, $test)
     {
         return !empty($log)
             ? $this->linkFiles($this->ansi2Html($log), $test)
@@ -922,7 +955,7 @@ class Data
      *
      * @return mixed|string
      */
-    private function ansi2Html($log)
+    protected function ansi2Html($log)
     {
         $string = html_entity_decode(
             $this->ansiConverter->convert($log)
@@ -1015,7 +1048,7 @@ class Data
      * @param $enable
      * @param \PragmaRX\TestsWatcher\Package\Entities\Test $test
      */
-    private function enableTest($enable, $test)
+    protected function enableTest($enable, $test)
     {
         $test->timestamps = false;
 
@@ -1040,7 +1073,7 @@ class Data
      * @param $enable
      * @param \PragmaRX\TestsWatcher\Package\Entities\Project $project
      */
-    private function enableProject($enable, $project)
+    protected function enableProject($enable, $project)
     {
         $project->timestamps = false;
 
@@ -1058,7 +1091,7 @@ class Data
      *
      * @return null|string
      */
-    private function getOutput($test, $outputFolder, $extension)
+    protected function getOutput($test, $outputFolder, $extension)
     {
         if (empty($outputFolder)) {
             return null;
@@ -1079,7 +1112,7 @@ class Data
      *
      * @return bool|mixed|string
      */
-    private function encodeFile($file)
+    protected function encodeFile($file)
     {
         $type = pathinfo($file, PATHINFO_EXTENSION);
 
@@ -1167,7 +1200,7 @@ class Data
      *
      * @return mixed
      */
-    private function queryTests($project_id = null, $test_id = null)
+    protected function queryTests($project_id = null, $test_id = null)
     {
         $query = Test::select('ci_tests.*')
                     ->join('ci_suites', 'ci_suites.id', '=', 'ci_tests.suite_id');
@@ -1224,7 +1257,7 @@ class Data
      *
      * @return bool
      */
-    private function testExists($test)
+    protected function testExists($test)
     {
         return !is_null(Test::find($test->id));
     }

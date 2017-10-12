@@ -86,16 +86,13 @@ class Loader extends Base
     {
         $this->showProgress('Loading projects and suites...');
 
-        $this->dataRepository->clearSuites();
-
         foreach ($this->getConfig('projects') as $name => $data) {
+
             $this->showProgress("Project '{$name}'", 'comment');
 
             $project = $this->dataRepository->createOrUpdateProject($name, $data['path'], $data['tests_path']);
 
-            foreach ($data['suites'] as $suite_name => $suite_data) {
-                $this->createSuite($suite_name, $project, $suite_data);
-            }
+            $this->refreshProjectSuites($data, $project);
 
             $this->addToWatchFolders($data['path'], $data['watch_folders']);
 
@@ -123,11 +120,11 @@ class Loader extends Base
      */
     public function addToWatchFolders($path, $watch_folders)
     {
-        foreach ($watch_folders as $folder) {
+        collect($watch_folders)->each(function($folder) use ($path) {
             $this->watchFolders[] = !file_exists($new = make_path([$path, $folder])) && file_exists($folder)
                 ? $folder
                 : $new;
-        }
+        });
     }
 
     /**
@@ -138,10 +135,25 @@ class Loader extends Base
      */
     public function addToExclusions($path, $exclude)
     {
-        foreach ($exclude as $folder) {
+        collect($exclude)->each(function($folder) use ($path) {
             $this->exclusions[] = $excluded = make_path([$path, $folder]);
 
             $this->showProgress("EXCLUDED: {$excluded}");
-        }
+        });
+    }
+
+    /**
+     * Refresh all suites for a project.
+     *
+     * @param $data
+     * @param $project
+     */
+    private function refreshProjectSuites($data, $project)
+    {
+        $this->dataRepository->removeMissingSuites($suites = $data['suites'], $project);
+
+        collect($suites)->map(function($data, $name) use ($project) {
+            $this->dataRepository->createOrUpdateSuite($name, $project, $data);
+        });
     }
 }
