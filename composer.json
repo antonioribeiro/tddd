@@ -8,7 +8,7 @@
         "phpunit", "dusk", "behat", "phpspec", "codeception", "atoum", "tester"
     ],
 
-    "license": "BSD-3-Clause",
+    "license": "MIT",
 
     "authors": [
         {
