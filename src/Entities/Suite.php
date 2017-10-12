@@ -1,6 +1,6 @@
 <?php
 
-namespace PragmaRX\TestsWatcher\Vendor\Laravel\Entities;
+namespace PragmaRX\TestsWatcher\Entities;
 
 class Suite extends Model
 {
@@ -42,7 +42,7 @@ class Suite extends Model
      */
     public function project()
     {
-        return $this->belongsTo('PragmaRX\TestsWatcher\Vendor\Laravel\Entities\Project');
+        return $this->belongsTo('PragmaRX\TestsWatcher\Entities\Project');
     }
 
     /**
@@ -52,7 +52,7 @@ class Suite extends Model
      */
     public function tester()
     {
-        return $this->belongsTo('PragmaRX\TestsWatcher\Vendor\Laravel\Entities\Tester');
+        return $this->belongsTo('PragmaRX\TestsWatcher\Entities\Tester');
     }
 
     /**
@@ -62,7 +62,7 @@ class Suite extends Model
      */
     public function tests()
     {
-        return $this->hasMany('PragmaRX\TestsWatcher\Vendor\Laravel\Entities\Test');
+        return $this->hasMany('PragmaRX\TestsWatcher\Entities\Test');
     }
 
     /**

@@ -1,6 +1,6 @@
 <?php
 
-namespace PragmaRX\TestsWatcher\Vendor\Laravel\Entities;
+namespace PragmaRX\TestsWatcher\Entities;
 
 class User extends Model
 {

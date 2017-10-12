@@ -9,7 +9,7 @@ class Base
     /**
      * The command object.
      *
-     * @object \PragmaRX\TestsWatcher\Vendor\Laravel\Console\Commands\BaseCommand
+     * @object \PragmaRX\TestsWatcher\Console\Commands\BaseCommand
      */
     protected $command;
 

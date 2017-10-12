@@ -6,12 +6,12 @@ use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB as Database;
 use PragmaRX\TestsWatcher\Support\Notifier;
-use PragmaRX\TestsWatcher\Vendor\Laravel\Entities\Project;
-use PragmaRX\TestsWatcher\Vendor\Laravel\Entities\Queue;
-use PragmaRX\TestsWatcher\Vendor\Laravel\Entities\Run;
-use PragmaRX\TestsWatcher\Vendor\Laravel\Entities\Suite;
-use PragmaRX\TestsWatcher\Vendor\Laravel\Entities\Test;
-use PragmaRX\TestsWatcher\Vendor\Laravel\Entities\Tester;
+use PragmaRX\TestsWatcher\Entities\Project;
+use PragmaRX\TestsWatcher\Entities\Queue;
+use PragmaRX\TestsWatcher\Entities\Run;
+use PragmaRX\TestsWatcher\Entities\Suite;
+use PragmaRX\TestsWatcher\Entities\Test;
+use PragmaRX\TestsWatcher\Entities\Tester;
 use SensioLabs\AnsiConverter\AnsiToHtmlConverter;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
@@ -354,7 +354,7 @@ class Data
     /**
      * Find project by id.
      *
-     * @return \PragmaRX\TestsWatcher\Vendor\Laravel\Entities\Project|null
+     * @return \PragmaRX\TestsWatcher\Entities\Project|null
      */
     public function findProjectById($id)
     {
@@ -364,7 +364,7 @@ class Data
     /**
      * Find suite by id.
      *
-     * @return \PragmaRX\TestsWatcher\Vendor\Laravel\Entities\Suite|null
+     * @return \PragmaRX\TestsWatcher\Entities\Suite|null
      */
     public function findSuiteById($id)
     {
@@ -375,7 +375,7 @@ class Data
      * Create or update a test.
      *
      * @param \Symfony\Component\Finder\SplFileInfo                $file
-     * @param \PragmaRX\TestsWatcher\Vendor\Laravel\Entities\Suite $suite
+     * @param \PragmaRX\TestsWatcher\Entities\Suite $suite
      */
     public function createOrUpdateTest($file, $suite)
     {
@@ -699,7 +699,7 @@ class Data
     /**
      * Get a test from the queue.
      *
-     * @return \PragmaRX\TestsWatcher\Vendor\Laravel\Entities\Test|null
+     * @return \PragmaRX\TestsWatcher\Entities\Test|null
      */
     public function getNextTestFromQueue()
     {

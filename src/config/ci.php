@@ -96,7 +96,7 @@ return [
         ],
 
         'users' => [
-            'model' => PragmaRX\TestsWatcher\Vendor\Laravel\Entities\User::class, // App\User::class,
+            'model' => PragmaRX\TestsWatcher\Entities\User::class, // App\User::class,
 
             'emails' => [
                 'laravel-ci@mydomain.com',

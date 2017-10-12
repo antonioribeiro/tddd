@@ -107,7 +107,7 @@ On Laravel 4.*
 Add the service provider to your app/config/app.php:
 
 ``` php
-'PragmaRX\TestsWatcher\Vendor\Laravel\ServiceProvider',
+'PragmaRX\TestsWatcher\ServiceProvider',
 ```
 
 ``` bash
@@ -117,7 +117,7 @@ php artisan config:publish pragmarx/ci
 On Laravel 5.*
 
 ``` bash
-php artisan vendor:publish --provider="PragmaRX\TestsWatcher\Vendor\Laravel\ServiceProvider"
+php artisan vendor:publish --provider="PragmaRX\TestsWatcher\ServiceProvider"
 ```
 
 ## Example of projects

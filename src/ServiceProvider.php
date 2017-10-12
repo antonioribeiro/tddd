@@ -1,6 +1,6 @@
 <?php
 
-namespace PragmaRX\TestsWatcher\Vendor\Laravel;
+namespace PragmaRX\TestsWatcher;
 
 use Event;
 use Illuminate\Support\Facades\Route;
@@ -10,9 +10,9 @@ use PragmaRX\TestsWatcher\Events\UserNotifiedOfFailure;
 use PragmaRX\TestsWatcher\Listeners\MarkAsNotified;
 use PragmaRX\TestsWatcher\Listeners\Notify;
 use PragmaRX\TestsWatcher\Support\Notifier;
-use PragmaRX\TestsWatcher\Vendor\Laravel\Console\Commands\ClearCommand;
-use PragmaRX\TestsWatcher\Vendor\Laravel\Console\Commands\TestCommand;
-use PragmaRX\TestsWatcher\Vendor\Laravel\Console\Commands\WatchCommand;
+use PragmaRX\TestsWatcher\Console\Commands\ClearCommand;
+use PragmaRX\TestsWatcher\Console\Commands\TestCommand;
+use PragmaRX\TestsWatcher\Console\Commands\WatchCommand;
 
 class ServiceProvider extends IlluminateServiceProvider
 {
@@ -42,7 +42,7 @@ class ServiceProvider extends IlluminateServiceProvider
      */
     private function loadMigrations()
     {
-        $this->loadMigrationsFrom(__DIR__.'/../../migrations');
+        $this->loadMigrationsFrom(__DIR__.'/migrations');
     }
 
     /**
@@ -50,7 +50,7 @@ class ServiceProvider extends IlluminateServiceProvider
      */
     private function loadViews()
     {
-        $this->loadViewsFrom(__DIR__.'/../../resources/views', 'pragmarx/ci');
+        $this->loadViewsFrom(__DIR__.'/resources/views', 'pragmarx/ci');
     }
 
     /**
@@ -59,7 +59,7 @@ class ServiceProvider extends IlluminateServiceProvider
     private function publishConfiguration()
     {
         $this->publishes([
-            __DIR__.'/../../config/ci.php' => config_path('ci.php'),
+            __DIR__.'/config/ci.php' => config_path('ci.php'),
         ]);
     }
 
@@ -71,7 +71,7 @@ class ServiceProvider extends IlluminateServiceProvider
     public function register()
     {
         if (!defined('CI_PATH')) {
-            define('CI_PATH', realpath(__DIR__.'/../../../'));
+            define('CI_PATH', realpath(__DIR__.'/../'));
         }
 
         $this->registerResourceWatcher();
@@ -204,10 +204,10 @@ class ServiceProvider extends IlluminateServiceProvider
     {
         Route::group([
             'prefix'     => config('ci.url_prefix'),
-            'namespace'  => 'PragmaRX\TestsWatcher\Vendor\Laravel\Http\Controllers',
+            'namespace'  => 'PragmaRX\TestsWatcher\Http\Controllers',
             'middleware' => 'web',
         ], function () {
-            $this->loadRoutesFrom(__DIR__.'/../../routes/web.php');
+            $this->loadRoutesFrom(__DIR__.'/routes/web.php');
         });
     }
 

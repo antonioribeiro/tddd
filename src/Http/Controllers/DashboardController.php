@@ -1,6 +1,6 @@
 <?php
 
-namespace PragmaRX\TestsWatcher\Vendor\Laravel\Http\Controllers;
+namespace PragmaRX\TestsWatcher\Http\Controllers;
 
 use Illuminate\Routing\Controller;
 use PragmaRX\TestsWatcher\Data\Repositories\Data;

@@ -3,7 +3,7 @@
 namespace PragmaRX\TestsWatcher\Tests;
 
 use Orchestra\Testbench\TestCase as OrchestraTestCase;
-use PragmaRX\TestsWatcher\Vendor\Laravel\ServiceProvider as TestsWatcherServiceProvider;
+use PragmaRX\TestsWatcher\ServiceProvider as TestsWatcherServiceProvider;
 
 abstract class TestCase extends OrchestraTestCase
 {

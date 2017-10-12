@@ -5,7 +5,7 @@ namespace PragmaRX\TestsWatcher\Services;
 use Closure;
 use PragmaRX\TestsWatcher\Data\Repositories\Data as DataRepository;
 use PragmaRX\TestsWatcher\Support\Executor;
-use PragmaRX\TestsWatcher\Vendor\Laravel\Console\Commands\BaseCommand as Command;
+use PragmaRX\TestsWatcher\Console\Commands\BaseCommand as Command;
 
 class Tester extends Base
 {
@@ -154,7 +154,7 @@ class Tester extends Base
     /**
      * Run the tester.
      *
-     * @param \PragmaRX\TestsWatcher\Vendor\Laravel\Console\Commands\BaseCommand $command
+     * @param \PragmaRX\TestsWatcher\Console\Commands\BaseCommand $command
      */
     public function run(Command $command)
     {
@@ -278,7 +278,7 @@ class Tester extends Base
      * Check if the test has passed.
      *
      * @param $exitCode
-     * @param \PragmaRX\TestsWatcher\Vendor\Laravel\Entities\Test $test
+     * @param \PragmaRX\TestsWatcher\Entities\Test $test
      *
      * @return bool
      */
@@ -317,7 +317,7 @@ class Tester extends Base
     /**
      * Check if the test was piped.
      *
-     * @param \PragmaRX\TestsWatcher\Vendor\Laravel\Entities\Test $test
+     * @param \PragmaRX\TestsWatcher\Entities\Test $test
      *
      * @return bool
      */

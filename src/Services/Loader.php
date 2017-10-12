@@ -23,7 +23,7 @@ class Loader extends Base
     /**
      * Command.
      *
-     * @var \PragmaRX\TestsWatcher\Vendor\Laravel\Console\Commands\BaseCommand
+     * @var \PragmaRX\TestsWatcher\Console\Commands\BaseCommand
      */
     protected $command;
 

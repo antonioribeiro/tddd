@@ -1,6 +1,6 @@
 <?php
 
-namespace PragmaRX\TestsWatcher\Vendor\Laravel;
+namespace PragmaRX\TestsWatcher;
 
 /*
  * Part of the Ci package.

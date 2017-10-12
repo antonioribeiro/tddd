@@ -1,6 +1,6 @@
 <?php
 
-namespace PragmaRX\TestsWatcher\Vendor\Laravel\Console\Commands;
+namespace PragmaRX\TestsWatcher\Console\Commands;
 
 class WatchCommand extends BaseCommand
 {
