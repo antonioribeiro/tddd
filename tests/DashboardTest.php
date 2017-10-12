@@ -3,7 +3,7 @@
 namespace PragmaRX\TestsWatcher\Tests;
 
 use PHPUnit\Framework\TestCase;
-use PragmaRX\TestsWatcher\Services\Watcher;
+use PragmaRX\TestsWatcher\Package\Services\Watcher;
 
 class DashboardTest extends TestCase
 {
