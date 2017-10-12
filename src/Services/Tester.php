@@ -3,9 +3,9 @@
 namespace PragmaRX\TestsWatcher\Services;
 
 use Closure;
+use PragmaRX\TestsWatcher\Console\Commands\BaseCommand as Command;
 use PragmaRX\TestsWatcher\Data\Repositories\Data as DataRepository;
 use PragmaRX\TestsWatcher\Support\Executor;
-use PragmaRX\TestsWatcher\Console\Commands\BaseCommand as Command;
 
 class Tester extends Base
 {

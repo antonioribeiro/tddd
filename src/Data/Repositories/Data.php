@@ -5,13 +5,13 @@ namespace PragmaRX\TestsWatcher\Data\Repositories;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB as Database;
-use PragmaRX\TestsWatcher\Support\Notifier;
 use PragmaRX\TestsWatcher\Entities\Project;
 use PragmaRX\TestsWatcher\Entities\Queue;
 use PragmaRX\TestsWatcher\Entities\Run;
 use PragmaRX\TestsWatcher\Entities\Suite;
 use PragmaRX\TestsWatcher\Entities\Test;
 use PragmaRX\TestsWatcher\Entities\Tester;
+use PragmaRX\TestsWatcher\Support\Notifier;
 use SensioLabs\AnsiConverter\AnsiToHtmlConverter;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
@@ -374,7 +374,7 @@ class Data
     /**
      * Create or update a test.
      *
-     * @param \Symfony\Component\Finder\SplFileInfo                $file
+     * @param \Symfony\Component\Finder\SplFileInfo $file
      * @param \PragmaRX\TestsWatcher\Entities\Suite $suite
      */
     public function createOrUpdateTest($file, $suite)
