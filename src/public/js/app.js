@@ -46998,6 +46998,13 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
                 this.$store.commit('setWasRunning', false);
             }
+        },
+        toggleTest: function toggleTest(test) {
+            var _this = this;
+
+            axios.get(this.laravel.url_prefix + '/projects/' + this.selectedProject.id + '/enable/' + !test.enabled).then(function () {
+                return _this.loadTests();
+            });
         }
     })
 });
@@ -47284,7 +47291,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
         toggleTest: function toggleTest(test) {
             var _this = this;
 
-            axios.get(this.laravel.url_prefix + '/tests/enable/' + !test.enabled + '/' + this.selectedProject.id + '/' + test.id).then(function () {
+            axios.get(this.laravel.url_prefix + '/tests/' + this.selectedProject.id + '/' + test.id + '/enable/' + !test.enabled).then(function () {
                 return _this.loadTests();
             });
         },
@@ -47296,7 +47303,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
         enableAll: function enableAll() {
             var _this2 = this;
 
-            axios.get(this.laravel.url_prefix + '/tests/enable/' + !this.allEnabled() + '/' + this.selectedProject.id).then(function () {
+            axios.get(this.laravel.url_prefix + '/tests/' + this.selectedProject.id + '/all/enable/' + !this.allEnabled()).then(function () {
                 return _this2.loadTests();
             });
         },

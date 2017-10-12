@@ -9,13 +9,13 @@ Route::group(['prefix' => '/tests'], function () {
 
     Route::get('/run/{test_id?}', ['as' => 'tests-watcher.tests.run', 'uses' => 'Tests@run']);
 
-    Route::get('/enable/{enable}/{project_id}/{test_id?}', ['as' => 'tests-watcher.tests.enable', 'uses' => 'Tests@enable']);
+    Route::get('/{project_id}/{test_id}/enable/{enable}', ['as' => 'tests-watcher.tests.enable', 'uses' => 'Tests@enable']);
 });
 
 Route::group(['prefix' => '/projects'], function () {
     Route::get('/', ['as' => 'tests-watcher.projects', 'uses' => 'Projects@all']);
 
-    Route::get('/enable/{enable}/{project_id}', ['as' => 'tests-watcher.projects.enable', 'uses' => 'Projects@enable']);
+    Route::get('/{project_id}/enable/{enable}', ['as' => 'tests-watcher.projects.enable', 'uses' => 'Projects@enable']);
 
     Route::get('/{project_id?}/tests', ['as' => 'tests-watcher.project.tests', 'uses' => 'Projects@tests']);
 

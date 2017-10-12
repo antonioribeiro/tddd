@@ -55,7 +55,7 @@ class Tests extends Controller
      *
      * @return mixed
      */
-    public function enable($enable, $project_id, $test_id = null)
+    public function enable($project_id, $test_id, $enable)
     {
         $enabled = $this->dataRepository->enableTests($enable, $project_id, $test_id);
 

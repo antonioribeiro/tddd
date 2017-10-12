@@ -22,7 +22,7 @@ class Projects extends Controller
      *
      * @return mixed
      */
-    public function enable($enable, $project_id)
+    public function enable($project_id, $enable)
     {
         $enabled = $this->dataRepository->enableProjects($enable, $project_id);
 

@@ -181,7 +181,7 @@
             },
 
             toggleTest(test) {
-                axios.get(this.laravel.url_prefix+'/tests/enable/'+!test.enabled+'/'+this.selectedProject.id+'/'+test.id)
+                axios.get(this.laravel.url_prefix+'/tests/'+this.selectedProject.id+'/'+test.id+'/enable/'+!test.enabled)
                     .then(() => this.loadTests());
             },
 
@@ -192,7 +192,7 @@
             },
 
             enableAll() {
-                axios.get(this.laravel.url_prefix+'/tests/enable/'+!this.allEnabled()+'/'+this.selectedProject.id)
+                axios.get(this.laravel.url_prefix+'/tests/'+this.selectedProject.id+'/all/enable/'+!this.allEnabled())
                     .then(() => this.loadTests());
             },
 

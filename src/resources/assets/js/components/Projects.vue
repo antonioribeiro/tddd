@@ -47,6 +47,11 @@
                     this.$store.commit('setWasRunning', false);
                 }
             },
+
+            toggleTest(test) {
+                axios.get(this.laravel.url_prefix+'/projects/'+this.selectedProject.id+'/enable/'+!test.enabled)
+                    .then(() => this.loadTests());
+            },
         }
     }
 </script>

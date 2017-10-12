@@ -956,11 +956,11 @@ class Data
      *
      * @return bool
      */
-    public function enableTests($enable, $project_id, $test_id = null)
+    public function enableTests($enable, $project_id, $test_id)
     {
         $enable = $enable === 'true';
 
-        $tests = $this->queryTests($project_id, $test_id)->get();
+        $tests = $this->queryTests($project_id, $test_id == 'all' ? null : $test_id)->get();
 
         foreach ($tests as $test) {
             $this->enableTest($enable, $test);
