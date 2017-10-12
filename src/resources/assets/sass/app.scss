@@ -74,11 +74,26 @@ a:hover.file {
 /*
  * Projects
  */
-.projects-title {
+.project-title {
   color: $brand-clear;
   text-transform: lowercase;
   font-weight: 800;
   font-size: 1.8em;
+  margin-top: -7px;
+  margin-bottom: 7px;
+}
+
+.search-project {
+  color: #f8f9fa;
+  background-color: #444;
+  border: 1px solid #818182;
+  border-radius: 0 !important;
+}
+
+.search-project:focus {
+  background-color: #444;
+  border-color: #818182;
+  color: #f8f9fa;
 }
 
 .card-projects {
@@ -87,26 +102,28 @@ a:hover.file {
   padding: 10px;
 }
 
+/**
+ * Project list
+ */
+
 .list-group-item {
   cursor: pointer;
-
   font-weight: 800;
+  border: 1px solid rgba(0, 0, 0, 0.125);
 }
 
 .list-group-item.active {
   background-color: $brand-pill;
-  border-color: $brand-pill;
   color: $brand-darkest;
+  border: 1px solid rgba(0, 0, 0, 0.125);
 }
 
 list-group-item.active, .list-group-item.active:hover, .list-group-item.active:focus {
   background-color: $brand-pill-darker;
-  border-color: $brand-pill-darker;
 }
 
 list-group-item, .list-group-item:hover, .list-group-item:focus {
   background-color: $brand-gray;
-  border-color: $brand-gray;
 }
 
 

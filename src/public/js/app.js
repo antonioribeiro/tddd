@@ -46983,13 +46983,51 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    computed: Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["mapState"])(['laravel', 'projects', 'selectedProject', 'selectedPanel']),
+    data: function data() {
+        return {
+            search: ''
+        };
+    },
+
+
+    computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["mapState"])(['laravel', 'projects', 'selectedProject', 'selectedPanel']), {
+        filteredProjects: function filteredProjects() {
+            var vue = this;
+
+            return vue.projects.filter(function (project) {
+                return project.name.search(new RegExp(vue.search, "i")) != -1;
+            });
+        }
+    }),
 
     methods: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["mapMutations"])(['setSelectedProject']), Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["mapActions"])(['loadData']), {
         changeProject: function changeProject(project) {
@@ -47019,47 +47057,98 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "list-group" }, [
-    _c("span", { staticClass: "card-projects-items" }, [
-      _c(
-        "ul",
-        { staticClass: "list-group" },
-        _vm._l(_vm.projects, function(project) {
-          return _c(
-            "li",
-            {
-              class:
-                "list-group-item " +
-                (!project.enabled ? "dim " : "") +
-                (_vm.selectedProject.id == project.id ? "active " : ""),
+  return _c("span", [
+    _c("div", { staticClass: "card bg-inverse card-projects" }, [
+      _c("div", { staticClass: "card-block text-center" }, [
+        _vm._m(0),
+        _vm._v(" "),
+        _c("div", { staticClass: "row justify-content-center" }, [
+          _c("div", { staticClass: "col-10" }, [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.search,
+                  expression: "search"
+                }
+              ],
+              staticClass: "form-control form-control-sm search-project",
+              attrs: { placeholder: "filter" },
+              domProps: { value: _vm.search },
               on: {
-                click: function($event) {
-                  _vm.changeProject(project)
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.search = $event.target.value
                 }
               }
-            },
-            [
-              _c("input", {
-                staticClass: "project-checkbox testCheckbox",
-                attrs: { type: "checkbox" },
-                domProps: { checked: project.enabled },
-                on: {
-                  click: function($event) {
-                    _vm.toggleProject(project)
-                  }
-                }
-              }),
-              _vm._v(
-                "\n\n                " + _vm._s(project.name) + "\n            "
-              )
-            ]
-          )
-        })
-      )
+            })
+          ])
+        ])
+      ])
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "list-group" }, [
+      _c("span", { staticClass: "card-projects-items" }, [
+        _c("span", { staticClass: "row" }, [
+          _c("span", { staticClass: "col-md-12" }, [
+            _c(
+              "ul",
+              { staticClass: "list-group" },
+              _vm._l(_vm.filteredProjects, function(project) {
+                return _c(
+                  "li",
+                  {
+                    class:
+                      "list-group-item " +
+                      (!project.enabled ? "dim " : "") +
+                      (_vm.selectedProject.id == project.id ? "active " : ""),
+                    on: {
+                      click: function($event) {
+                        _vm.changeProject(project)
+                      }
+                    }
+                  },
+                  [
+                    _c("input", {
+                      staticClass: "project-checkbox testCheckbox",
+                      attrs: { type: "checkbox" },
+                      domProps: { checked: project.enabled },
+                      on: {
+                        click: function($event) {
+                          _vm.toggleProject(project)
+                        }
+                      }
+                    }),
+                    _vm._v(
+                      "\n\n                    " +
+                        _vm._s(project.name) +
+                        "\n                "
+                    )
+                  ]
+                )
+              })
+            )
+          ])
+        ])
+      ])
     ])
   ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "row" }, [
+      _c("div", { staticClass: "col project-title" }, [
+        _vm._v("\n                    Projects\n                ")
+      ])
+    ])
+  }
+]
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
@@ -47519,7 +47608,7 @@ var render = function() {
                               }
                             ],
                             staticClass: "form-control",
-                            attrs: { placeholder: "search" },
+                            attrs: { placeholder: "filter" },
                             domProps: { value: _vm.search },
                             on: {
                               input: function($event) {

@@ -25,16 +25,9 @@
                 <div class="container-fluid">
                     <div class="row row-offcanvas row-offcanvas-right">
                         <div class="col-6 col-md-3 sidebar-offcanvas" id="sidebar">
-                            <div class="card bg-inverse card-projects">
-                                <div class="card-block text-center">
-                                    <span class="projects-title">
-                                        Projects
-                                    </span>
-                                </div>
-                            </div>
 
-                            <projects>
-                            </projects>
+
+                            <projects></projects>
                         </div><!--/span-->
 
                         <div class="col-12 col-sm-9">

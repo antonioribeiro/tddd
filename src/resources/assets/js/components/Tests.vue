@@ -24,7 +24,7 @@
                         <div class="row">
                             <div class="col-md-7">
                                 <div class="input-group mb-2 mb-sm-0 search-group">
-                                    <input v-model="search" class="form-control" placeholder="search">
+                                    <input v-model="search" class="form-control" placeholder="filter">
                                     <div v-if="search" @click="search = ''" class="input-group-addon search-addon">
                                         <i class="fa fa-trash"></i>
                                     </div>
