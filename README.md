@@ -7,7 +7,7 @@
 [![Build](https://img.shields.io/scrutinizer/build/g/antonioribeiro/ci.svg?style=flat-square)](https://scrutinizer-ci.com/g/antonioribeiro/ci/?branch=master) 
 [![StyleCI](https://styleci.io/repos/27037779/shield)](https://styleci.io/repos/27037779)
 
-### A Self-Hosted Continuous Testing Service and a Dashboard.
+### A Self-Hosted Continuous Testing Dashboard.
 
 ## Dashboard View
 
