@@ -22,7 +22,7 @@ class DashboardController extends Controller
     /**
      * DashboardController constructor.
      *
-     * @param Data                                    $dataRepository
+     * @param Data                                            $dataRepository
      * @param \PragmaRX\TestsWatcher\Package\Support\Executor $executor
      */
     public function __construct(Data $dataRepository, Executor $executor)
