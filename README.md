@@ -5,7 +5,6 @@
 [![Downloads](https://img.shields.io/packagist/dt/pragmarx/ci.svg?style=flat-square)](https://packagist.org/packages/pragmarx/ci) 
 [![Code Quality](https://img.shields.io/scrutinizer/g/antonioribeiro/ci.svg?style=flat-square)](https://scrutinizer-ci.com/g/antonioribeiro/ci/?branch=master) 
 [![Build](https://img.shields.io/scrutinizer/build/g/antonioribeiro/ci.svg?style=flat-square)](https://scrutinizer-ci.com/g/antonioribeiro/ci/?branch=master) 
-<!-- [![Coverage](https://img.shields.io/scrutinizer/coverage/g/antonioribeiro/ci.svg?style=flat-square)](https://scrutinizer-ci.com/g/antonioribeiro/ci/?branch=master) --> 
 [![StyleCI](https://styleci.io/repos/27037779/shield)](https://styleci.io/repos/27037779)
 
 ### A Self-Hosted Continuous Testing Service and a Dashboard.
@@ -179,3 +178,7 @@ Laravel Ci is licensed under the BSD 3-Clause License - see the `LICENSE` file f
 ## Contributing
 
 Pull requests and issues are welcome.
+
+
+
+<!-- [![Coverage](https://img.shields.io/scrutinizer/coverage/g/antonioribeiro/ci.svg?style=flat-square)](https://scrutinizer-ci.com/g/antonioribeiro/ci/?branch=master) --> 
