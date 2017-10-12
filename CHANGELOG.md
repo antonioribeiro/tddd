@@ -8,9 +8,11 @@
 - Config for PHPStorm editor
 - Config for Sublime Text 3 editor
 - Config for Visual Studio Code editor
+- Option to disable project on Dashboard
 ### Changed
 - Allow better configuration of editor's binary
 - Moved Laravel related classes out from Vendor\Laravel
+- Completely restructure package directory
 ### Fixed
 - Abending when tester used in suite does not exists
 - Piper script not being 

@@ -96,7 +96,7 @@ return [
         ],
 
         'users' => [
-            'model' => PragmaRX\TestsWatcher\Entities\User::class, // App\User::class,
+            'model' => PragmaRX\TestsWatcher\Package\Entities\User::class, // App\User::class,
 
             'emails' => [
                 'laravel-ci@mydomain.com',
@@ -106,16 +106,16 @@ return [
         'channels' => [
             'mail' => [
                 'enabled' => false,
-                'sender'  => PragmaRX\TestsWatcher\Notifications\Channels\Mail::class,
+                'sender'  => PragmaRX\TestsWatcher\Package\Notifications\Channels\Mail::class,
             ],
 
             'slack' => [
                 'enabled' => true,
-                'sender'  => PragmaRX\TestsWatcher\Notifications\Channels\Slack::class,
+                'sender'  => PragmaRX\TestsWatcher\Package\Notifications\Channels\Slack::class,
             ],
         ],
 
-        'notifier' => 'PragmaRX\TestsWatcher\Notifications',
+        'notifier' => 'PragmaRX\TestsWatcher\Package\Notifications',
     ],
 
     /*

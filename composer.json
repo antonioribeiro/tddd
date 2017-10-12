@@ -34,11 +34,11 @@
 
     "autoload": {
         "psr-4": {
-            "PragmaRX\\TestsWatcher\\": "src/",
+            "PragmaRX\\TestsWatcher\\Package\\": "src/package",
             "PragmaRX\\TestsWatcher\\Tests\\": "tests/"
         },
         "psr-0": {
-            "JasonLewis\\ResourceWatcher": "src/Support/jasonlewis/resource-watcher/src"
+            "JasonLewis\\ResourceWatcher": "src/package/Support/jasonlewis/resource-watcher/src"
         }
     },
 
@@ -46,7 +46,7 @@
         "component": "package",
         "laravel": {
             "providers": [
-                "PragmaRX\\TestsWatcher\\ServiceProvider"
+                "PragmaRX\\TestsWatcher\\Package\\ServiceProvider"
             ]
         }
     }
