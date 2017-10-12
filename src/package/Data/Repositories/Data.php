@@ -198,7 +198,7 @@ class Data
      * @param $project_id
      * @param $suite_data
      *
-     * @return Suite|null|boolean
+     * @return Suite|null|bool
      */
     public function createOrUpdateSuite($name, $project_id, $suite_data)
     {
@@ -212,7 +212,7 @@ class Data
 
         return Suite::updateOrCreate(
             [
-                'name' => $name,
+                'name'       => $name,
                 'project_id' => $project_id,
             ],
             [
@@ -272,7 +272,7 @@ class Data
     }
 
     /**
-     * Find suite by project and name
+     * Find suite by project and name.
      *
      * @param $name
      * @param $project_id
@@ -566,7 +566,7 @@ class Data
      */
     public function removeMissingSuites($suites, $project)
     {
-        Suite::where('project_id', $project->id)->whereNotIn('name', collect($suites)->keys())->each(function($suite) {
+        Suite::where('project_id', $project->id)->whereNotIn('name', collect($suites)->keys())->each(function ($suite) {
             $suite->delete();
         });
     }
