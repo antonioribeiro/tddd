@@ -9,6 +9,8 @@
 - Config for Sublime Text 3 editor
 - Config for Visual Studio Code editor
 - Option to disable project on Dashboard
+- Projects can now be disbled
+- No need to refresh page when rebooting watcher anymore
 ### Changed
 - Allow better configuration of editor's binary
 - Moved Laravel related classes out from Vendor\Laravel
