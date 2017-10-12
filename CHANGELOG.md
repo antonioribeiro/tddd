@@ -11,6 +11,7 @@
 - Option to disable project on Dashboard
 - Projects can now be disbled
 - No need to refresh page when rebooting watcher anymore
+- Input to filter projects
 ### Changed
 - Allow better configuration of editor's binary
 - Moved Laravel related classes out from Vendor\Laravel
