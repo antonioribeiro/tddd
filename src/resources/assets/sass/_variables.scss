@@ -34,6 +34,9 @@ $brand-darker-light: lighten($brand-darker, 40%);
 $brand-darkest-light: lighten($brand-darkest, 20%);
 $brand-pill-light: lighten($brand-pill, 20%);
 
+$brand-failed: $brand-danger-light;
+$brand-passed: $brand-success-light;
+
 // Typography
 $icon-font-path: "~bootstrap-sass/assets/fonts/bootstrap/";
 $font-family-sans-serif: "Arsenal", sans-serif;

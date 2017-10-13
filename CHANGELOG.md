@@ -14,6 +14,8 @@
 - Input to filter projects
 - Option to configure the poll interval (defaults to 1500ms)
 - Show spinner on running project
+- Show badge (passed/failed) for each project
+- Button to run all tests on all projects
 ### Changed
 - Allow better configuration of editor's binary
 - Moved Laravel related classes out from Vendor\Laravel

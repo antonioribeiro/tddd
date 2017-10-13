@@ -46915,8 +46915,6 @@ module.exports = Vue$3;
 
                     force: context.state.laravel.project_id ? true : false
                 });
-
-                context.commit('setTests', { projectId: context.getters.selectedProject.id, tests: result.data.tests });
             });
         }
     }
@@ -46977,6 +46975,24 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuex__ = __webpack_require__(1);
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -47156,11 +47172,47 @@ var render = function() {
                       ]),
                       _vm._v(" "),
                       _c("div", { staticClass: "col-2 text-right" }, [
-                        project.running
-                          ? _c("i", {
-                              staticClass:
-                                "fa fa-spinner fa-pulse  fa-spin fa-fw"
-                            })
+                        project.state == "running"
+                          ? _c("span", [
+                              _c("i", {
+                                staticClass:
+                                  "fa fa-spinner fa-pulse  fa-spin fa-fw"
+                              })
+                            ])
+                          : _vm._e(),
+                        _vm._v(" "),
+                        project.state == "failed"
+                          ? _c(
+                              "span",
+                              { staticClass: "project-state text-danger" },
+                              [_c("i", { staticClass: "fa fa-times" })]
+                            )
+                          : _vm._e(),
+                        _vm._v(" "),
+                        project.state == "ok"
+                          ? _c(
+                              "span",
+                              { staticClass: "project-state text-success" },
+                              [_c("i", { staticClass: "fa fa-check" })]
+                            )
+                          : _vm._e(),
+                        _vm._v(" "),
+                        project.state == "queued"
+                          ? _c(
+                              "span",
+                              { staticClass: "project-state text-warning" },
+                              [_c("i", { staticClass: "fa fa-clock-o" })]
+                            )
+                          : _vm._e(),
+                        _vm._v(" "),
+                        project.state == "idle"
+                          ? _c(
+                              "span",
+                              {
+                                staticClass: "project-state text-default pale"
+                              },
+                              [_c("i", { staticClass: "fa fa-pause" })]
+                            )
                           : _vm._e()
                       ])
                     ])
@@ -47358,6 +47410,14 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -47404,6 +47464,9 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
         },
         runAll: function runAll() {
             axios.get(this.laravel.url_prefix + '/tests/run/all/' + this.selectedProject.id);
+        },
+        runAllProjects: function runAllProjects() {
+            axios.get(this.laravel.url_prefix + '/tests/run/all/all');
         },
         reset: function reset() {
             axios.get(this.laravel.url_prefix + '/tests/reset/' + this.selectedProject.id);
@@ -47552,7 +47615,7 @@ var render = function() {
               _c("div", { staticClass: "row align-middle" }, [
                 _c(
                   "div",
-                  { staticClass: "col-md-7 align-middle" },
+                  { staticClass: "col-md-6 align-middle" },
                   [
                     _c("state", {
                       attrs: {
@@ -47616,9 +47679,9 @@ var render = function() {
                   1
                 ),
                 _vm._v(" "),
-                _c("div", { staticClass: "col-md-5 text-right align-middle" }, [
+                _c("div", { staticClass: "col-md-6 text-right align-middle" }, [
                   _c("div", { staticClass: "row" }, [
-                    _c("div", { staticClass: "col-md-7" }, [
+                    _c("div", { staticClass: "col-md-5" }, [
                       _c(
                         "div",
                         {
@@ -47666,7 +47729,24 @@ var render = function() {
                     ]),
                     _vm._v(" "),
                     _vm.selectedProject.enabled
-                      ? _c("div", { staticClass: "col-md-5" }, [
+                      ? _c("div", { staticClass: "col-md-7" }, [
+                          _c(
+                            "div",
+                            {
+                              staticClass: "btn btn-primary",
+                              on: {
+                                click: function($event) {
+                                  _vm.runAllProjects()
+                                }
+                              }
+                            },
+                            [
+                              _vm._v(
+                                "\n                                run projects\n                            "
+                              )
+                            ]
+                          ),
+                          _vm._v(" "),
                           _c(
                             "div",
                             {
@@ -47679,7 +47759,7 @@ var render = function() {
                             },
                             [
                               _vm._v(
-                                "\n                                run all\n                            "
+                                "\n                                run tests\n                            "
                               )
                             ]
                           ),
@@ -47723,9 +47803,11 @@ var render = function() {
                   })
                 ]),
                 _vm._v(" "),
-                _c("th", [_vm._v("run it")]),
+                _c("th", { attrs: { width: "6%" } }, [_vm._v("run")]),
                 _vm._v(" "),
-                _c("th", [_vm._v("state")]),
+                _c("th", { attrs: { width: "6%" } }, [_vm._v("state")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("suite")]),
                 _vm._v(" "),
                 _c("th", { attrs: { width: "55%" } }, [_vm._v("test")]),
                 _vm._v(" "),
@@ -47790,6 +47872,14 @@ var render = function() {
                           staticClass: "fa fa-spinner fa-pulse  fa-spin fa-fw"
                         })
                       : _vm._e()
+                  ]),
+                  _vm._v(" "),
+                  _c("td", [
+                    _vm._v(
+                      "\n                    " +
+                        _vm._s(test.suite_name) +
+                        "\n                "
+                    )
                   ]),
                   _vm._v(" "),
                   _c("td", [

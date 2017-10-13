@@ -443,11 +443,15 @@ trait Helpers
             $suite
         );
 
-        return str_replace(
-            ['{$file}', '{$line}'],
+        $command = trim(str_replace(
+            ['{file}', '{line}'],
             [$file, $line],
             $this->getEditorBinary($suite)
-        );
+        ));
+
+        return ends_with($command, ':')
+            ? substr($command, 0, -1)
+            : $command;
     }
 
     /**

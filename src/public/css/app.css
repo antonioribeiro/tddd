@@ -9240,6 +9240,17 @@ body {
   /* fx, safari, opera */
 }
 
+.pale {
+  filter: alpha(opacity=10);
+  /* internet explorer */
+  -khtml-opacity: 0.1;
+  /* khtml, old safari */
+  -moz-opacity: 0.1;
+  /* mozilla, netscape */
+  opacity: 0.1;
+  /* fx, safari, opera */
+}
+
 th {
   font-weight: 800;
   font-size: 1.3em;
@@ -9483,8 +9494,16 @@ h3 {
   padding: 0.6em .8em .7em;
 }
 
-.badge-dark {
-  background-color: #000000;
+.project-state {
+  font-size: 1.1em;
+}
+
+.project-state-passed {
+  color: #a3c98d;
+}
+
+.project-state-failed {
+  color: #e75b68;
 }
 
 .screenshot {

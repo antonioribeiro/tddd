@@ -38,7 +38,25 @@
                                         {{ project.name }}
                                     </div>
                                     <div class="col-2 text-right">
-                                        <i v-if="project.running" class="fa fa-spinner fa-pulse  fa-spin fa-fw"></i>
+                                        <span v-if="project.state == 'running'">
+                                            <i class="fa fa-spinner fa-pulse  fa-spin fa-fw"></i>
+                                        </span>
+
+                                        <span v-if="project.state == 'failed'" class="project-state text-danger">
+                                            <i class="fa fa-times"></i>
+                                        </span>
+
+                                        <span v-if="project.state == 'ok'" class="project-state text-success">
+                                            <i class="fa fa-check"></i>
+                                        </span>
+
+                                        <span v-if="project.state == 'queued'" class="project-state text-warning">
+                                            <i class="fa fa-clock-o"></i>
+                                        </span>
+
+                                        <span v-if="project.state == 'idle'" class="project-state text-default pale">
+                                            <i class="fa fa-pause"></i>
+                                        </span>
                                     </div>
                                 </div>
                             </li>

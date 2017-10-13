@@ -9,7 +9,7 @@
         <div class="card toolbar">
             <div class="card-block">
                 <div class="row align-middle">
-                    <div class="col-md-7 align-middle">
+                    <div class="col-md-6 align-middle">
                         <state state="idle" :text="'tests: '+this.statistics.count"></state>&nbsp;
                         <state state="ok" :text="'success: '+this.statistics.success"></state>&nbsp;
                         <state state="failed" :text="'failed: '+this.statistics.failed"></state>&nbsp;
@@ -20,9 +20,9 @@
                         <state state="running" :text="'queued: '+this.statistics.queued"></state>&nbsp;
                     </div>
 
-                    <div class="col-md-5 text-right align-middle">
+                    <div class="col-md-6 text-right align-middle">
                         <div class="row">
-                            <div class="col-md-7">
+                            <div class="col-md-5">
                                 <div class="input-group mb-2 mb-sm-0 search-group">
                                     <input v-model="search" class="form-control" placeholder="filter">
                                     <div v-if="search" @click="search = ''" class="input-group-addon search-addon">
@@ -31,9 +31,12 @@
                                 </div>
                             </div>
 
-                            <div class="col-md-5" v-if="selectedProject.enabled">
+                            <div class="col-md-7" v-if="selectedProject.enabled">
+                                <div class="btn btn-primary" @click="runAllProjects()">
+                                    run projects
+                                </div>
                                 <div class="btn btn-danger" @click="runAll()">
-                                    run all
+                                    run tests
                                 </div>
                                 <div class="btn btn-warning" @click="reset()">
                                     reset state
@@ -51,8 +54,9 @@
                     <th>
                         <input @click="enableAll()" type="checkbox" :checked="allEnabled()">
                     </th>
-                    <th>run it</th>
-                    <th>state</th>
+                    <th width="6%">run</th>
+                    <th width="6%">state</th>
+                    <th>suite</th>
                     <th width="55%">test</th>
                     <th>run time</th>
                     <th>last run</th>
@@ -81,6 +85,10 @@
                         {{ test.state }}
 
                         <i v-if="test.state == 'running'" class="fa fa-spinner fa-pulse  fa-spin fa-fw"></i>
+                    </td>
+
+                    <td>
+                        {{ test.suite_name }}
                     </td>
 
                     <td>
@@ -166,6 +174,10 @@
 
             runAll() {
                 axios.get(this.laravel.url_prefix+'/tests/run/all/'+this.selectedProject.id);
+            },
+
+            runAllProjects() {
+                axios.get(this.laravel.url_prefix+'/tests/run/all/all');
             },
 
             reset() {

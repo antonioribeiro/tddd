@@ -51,6 +51,13 @@ body {
   opacity: 0.4;           /* fx, safari, opera */
 }
 
+.pale {
+  filter: alpha(opacity=10); /* internet explorer */
+  -khtml-opacity: 0.1;      /* khtml, old safari */
+  -moz-opacity: 0.1;       /* mozilla, netscape */
+  opacity: 0.1;           /* fx, safari, opera */
+}
+
 th {
   font-weight: 800;
   font-size: 1.3em;
@@ -278,8 +285,16 @@ table > tbody > tr > td.state.state-failed {
     padding: 0.6em .8em .7em;
 }
 
-.badge-dark {
-  background-color: $brand-darkest;
+.project-state {
+  font-size: 1.1em;
+}
+
+.project-state-passed {
+  color: $brand-passed;
+}
+
+.project-state-failed {
+  color: $brand-failed;
 }
 
 .screenshot {

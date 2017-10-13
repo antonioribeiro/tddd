@@ -65,6 +65,7 @@ trait Tests
 
         return [
             'id'            => $test->id,
+            'suite_name'    => $test->suite->name,
             'project_name'  => $test->suite->project->name,
             'project_id'    => $test->suite->project->id,
             'path'          => $test->path.DIRECTORY_SEPARATOR,
@@ -253,11 +254,11 @@ trait Tests
         $query = Test::select('ci_tests.*')
                      ->join('ci_suites', 'ci_suites.id', '=', 'ci_tests.suite_id');
 
-        if ($project_id) {
+        if ($project_id && $project_id != 'all') {
             $query->where('ci_suites.project_id', $project_id);
         }
 
-        if ($test_id) {
+        if ($test_id && $test_id != 'all') {
             $query->where('ci_tests.id', $test_id);
         }
 

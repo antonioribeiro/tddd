@@ -94,8 +94,6 @@ export default {
                                 ? true
                                 : false,
                     });
-
-                    context.commit('setTests', {projectId: context.getters.selectedProject.id, tests: result.data.tests});
                 });
         },
     },

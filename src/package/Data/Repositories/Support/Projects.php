@@ -84,17 +84,44 @@ trait Projects
     /**
      * Get all projects.
      *
-     * @return \Illuminate\Database\Eloquent\Collection|static[]
+     * @return \Illuminate\Database\Eloquent\Collection
      */
     public function getProjects()
     {
         return Project::all()->map(function ($item) {
             $item['tests'] = $this->getProjectTests($item->id);
 
-            $item['running'] = $item['tests']->contains('state', 'running');
+            $item['state'] = $this->getProjectState(collect($item['tests']));
 
             return $item;
         });
+    }
+
+    /**
+     * The the project state.
+     *
+     * @param \Illuminate\Support\Collection $tests
+     * @return string
+     */
+    public function getProjectState($tests)
+    {
+        if ($tests->contains('state', 'running')) {
+            return 'running';
+        }
+
+        if ($tests->contains('state', 'queued')) {
+            return 'queued';
+        }
+
+        if ($tests->contains('state', 'failed')) {
+            return 'failed';
+        }
+
+        if ($tests->every('state', 'ok')) {
+            return 'ok';
+        }
+
+        return 'idle';
     }
 
     /**
@@ -142,7 +169,11 @@ trait Projects
      */
     public function runProjectTests($project_id = null)
     {
+        db_listen();
         $tests = $this->queryTests($project_id)->get();
+
+        info('tests ---------------');
+        info($tests);
 
         foreach ($tests as $test) {
             $this->enableTest(true, $test);
