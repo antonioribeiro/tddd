@@ -46834,7 +46834,7 @@ module.exports = Vue$3;
 
         projects: [],
 
-        selectedProject: null,
+        selectedProjectId: null,
 
         openTest: null,
 
@@ -46850,8 +46850,11 @@ module.exports = Vue$3;
     mutations: {
         setSelectedProject: function setSelectedProject(state, payload) {
             if (!state.selectedProject || payload.force) {
-                state.selectedProject = payload.project;
+                state.selectedProjectId = payload.project.id;
             }
+        },
+        setSelectedProjectId: function setSelectedProjectId(state, projectId) {
+            state.selectedProjectId = projectId;
         },
         setSelectedTest: function setSelectedTest(state, test) {
             state.selectedTest = test;
@@ -46868,23 +46871,37 @@ module.exports = Vue$3;
         setProjects: function setProjects(state, projects) {
             state.projects = projects;
         },
-        setTests: function setTests(state, tests) {
-            state.selectedProject.tests = tests;
-        },
         setWasRunning: function setWasRunning(state, wasIt) {
             state.wasRunning = wasIt;
         }
     },
 
+    getters: {
+        selectedProject: function selectedProject(state) {
+            return state.projects.find(function (project) {
+                return project.id === state.selectedProjectId;
+            });
+        }
+    },
+
     actions: {
+        setSelectedProjectId: function setSelectedProjectId(context, projectId) {
+            var selectedProjectId = context.state.selectedProjectId;
+
+            context.commit('setSelectedProjectId', projectId);
+
+            if (projectId != selectedProjectId) {
+                context.dispatch('loadData');
+            }
+        },
         loadData: function loadData(context) {
-            axios.get(context.state.laravel.url_prefix + '/dashboard/data' + (context.state.selectedProject ? '/' + context.state.selectedProject.id : '')).then(function (result) {
+            axios.get(context.state.laravel.url_prefix + '/dashboard/data').then(function (result) {
                 context.commit('setProjects', result.data.projects);
 
-                var selected = context.state.selectedProject && result.data.projects.filter(function (project) {
-                    return project.id == context.state.selectedProject.id;
+                var selected = context.getters.selectedProject && result.data.projects.filter(function (project) {
+                    return project.id == context.getters.selectedProject.id;
                 })[0] ? result.data.projects.filter(function (project) {
-                    return project.id == context.state.selectedProject.id;
+                    return project.id == context.getters.selectedProject.id;
                 })[0] : null;
 
                 if (!selected) {
@@ -46899,7 +46916,7 @@ module.exports = Vue$3;
                     force: context.state.laravel.project_id ? true : false
                 });
 
-                context.commit('setTests', result.data.tests);
+                context.commit('setTests', { projectId: context.getters.selectedProject.id, tests: result.data.tests });
             });
         }
     }
@@ -47006,6 +47023,13 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 //
 //
 //
+//
+//
+//
+//
+//
+//
+
 
 
 
@@ -47019,7 +47043,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
     },
 
 
-    computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["mapState"])(['laravel', 'projects', 'selectedProject', 'selectedPanel']), {
+    computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["mapState"])(['laravel', 'projects', 'selectedPanel']), Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["mapGetters"])(['selectedProject']), {
         filteredProjects: function filteredProjects() {
             var vue = this;
 
@@ -47029,10 +47053,10 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
         }
     }),
 
-    methods: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["mapMutations"])(['setSelectedProject']), Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["mapActions"])(['loadData']), {
+    methods: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["mapActions"])(['loadData', 'setSelectedProjectId']), {
         changeProject: function changeProject(project) {
             if (this.selectedProject != project) {
-                this.$store.commit('setSelectedProject', { project: project, force: true });
+                this.setSelectedProjectId(project.id);
 
                 this.$store.commit('setSelectedPanel', 'log');
 
@@ -47042,7 +47066,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
         toggleProject: function toggleProject(project) {
             var _this = this;
 
-            axios.get(this.laravel.url_prefix + '/projects/' + project.id + '/enable/' + !project.enabled).then(function () {
+            axios.get(this.laravel.url_prefix + '/projects/' + project.id + '/enable/' + !project.enabled).then(function (response) {
                 return _this.loadData();
             });
         }
@@ -47091,9 +47115,9 @@ var render = function() {
     ]),
     _vm._v(" "),
     _c("div", { staticClass: "list-group" }, [
-      _c("span", { staticClass: "card-projects-items" }, [
-        _c("span", { staticClass: "row" }, [
-          _c("span", { staticClass: "col-md-12" }, [
+      _c("div", { staticClass: "card-projects-items" }, [
+        _c("div", { staticClass: "row" }, [
+          _c("div", { staticClass: "col-md-12" }, [
             _c(
               "ul",
               { staticClass: "list-group" },
@@ -47112,21 +47136,34 @@ var render = function() {
                     }
                   },
                   [
-                    _c("input", {
-                      staticClass: "project-checkbox testCheckbox",
-                      attrs: { type: "checkbox" },
-                      domProps: { checked: project.enabled },
-                      on: {
-                        click: function($event) {
-                          _vm.toggleProject(project)
-                        }
-                      }
-                    }),
-                    _vm._v(
-                      "\n\n                    " +
-                        _vm._s(project.name) +
-                        "\n                "
-                    )
+                    _c("div", { staticClass: "row" }, [
+                      _c("div", { staticClass: "col" }, [
+                        _c("input", {
+                          staticClass: "project-checkbox testCheckbox",
+                          attrs: { type: "checkbox" },
+                          domProps: { checked: project.enabled },
+                          on: {
+                            click: function($event) {
+                              _vm.toggleProject(project)
+                            }
+                          }
+                        }),
+                        _vm._v(
+                          "\n\n                                    " +
+                            _vm._s(project.name) +
+                            "\n                                "
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "col-2 text-right" }, [
+                        project.running
+                          ? _c("i", {
+                              staticClass:
+                                "fa fa-spinner fa-pulse  fa-spin fa-fw"
+                            })
+                          : _vm._e()
+                      ])
+                    ])
                   ]
                 )
               })
@@ -47326,32 +47363,31 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 
 
+
 /* harmony default export */ __webpack_exports__["default"] = ({
-    computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["mapState"])(['laravel', 'projects', 'selectedProject', 'openTest', 'selectedTest', 'wasRunning']), {
+    computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["mapState"])(['laravel', 'projects', 'openTest', 'selectedTest', 'wasRunning']), Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["mapGetters"])(['selectedProject']), {
         tests: function tests() {
             var vue = this;
 
-            var tests = vue.selectedProject.tests.filter(function (test) {
-                var s1 = test.state.search(new RegExp(vue.search, "i")) != -1;
+            if (vue.selectedProject.tests) {
+                var tests = vue.selectedProject.tests.filter(function (test) {
+                    var s1 = test.state.search(new RegExp(vue.search, "i")) != -1;
 
-                var s2 = test.name.search(new RegExp(vue.search, "i")) != -1;
+                    var s2 = test.name.search(new RegExp(vue.search, "i")) != -1;
 
-                var s3 = test.path.search(new RegExp(vue.search, "i")) != -1;
+                    var s3 = test.path.search(new RegExp(vue.search, "i")) != -1;
 
-                return s1 || s2 || s3;
-            });
+                    return s1 || s2 || s3;
+                });
 
-            this.makeStatistics(tests);
+                this.makeStatistics(tests);
 
-            return tests;
+                return tests;
+            }
+
+            return [];
         }
     }),
-
-    watch: {
-        selectedProject: function selectedProject() {
-            this.loadData();
-        }
-    },
 
     data: function data() {
         return {
@@ -47381,21 +47417,10 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
             return this.statistics.count == this.statistics.enabled;
         },
         toggleTest: function toggleTest(test) {
-            var _this = this;
-
-            axios.get(this.laravel.url_prefix + '/tests/' + this.selectedProject.id + '/' + test.id + '/enable/' + !test.enabled).then(function () {
-                return _this.loadData();
-            });
-        },
-        loadData: function loadData() {
-            this.$store.dispatch('loadData');
+            axios.get(this.laravel.url_prefix + '/tests/' + this.selectedProject.id + '/' + test.id + '/enable/' + !test.enabled);
         },
         enableAll: function enableAll() {
-            var _this2 = this;
-
-            axios.get(this.laravel.url_prefix + '/tests/' + this.selectedProject.id + '/all/enable/' + !this.allEnabled()).then(function () {
-                return _this2.loadData();
-            });
+            axios.get(this.laravel.url_prefix + '/tests/' + this.selectedProject.id + '/all/enable/' + !this.allEnabled());
         },
         editFile: function editFile(file) {
             axios.get(file);
@@ -47465,14 +47490,14 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
             return this.statistics.running > 0;
         },
         doOpenTest: function doOpenTest() {
-            var _this3 = this;
+            var _this = this;
 
             if (!this.openTest || !this.selectedProject) {
                 return false;
             }
 
             var test = this.selectedProject.tests.filter(function (test) {
-                return test.id == _this3.openTest;
+                return test.id == _this.openTest;
             })[0];
 
             if (test) {
@@ -47486,9 +47511,11 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
     mounted: function mounted() {
         var vue = this;
 
+        vue.loadData();
+
         setInterval(function () {
             vue.loadData();
-        }, 1500);
+        }, this.laravel.poll_interval);
 
         setInterval(function () {
             vue.doOpenTest();

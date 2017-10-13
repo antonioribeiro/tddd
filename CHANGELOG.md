@@ -12,6 +12,8 @@
 - Projects can now be disbled
 - No need to refresh page when rebooting watcher anymore
 - Input to filter projects
+- Option to configure the poll interval (defaults to 1500ms)
+- Show spinner on running project
 ### Changed
 - Allow better configuration of editor's binary
 - Moved Laravel related classes out from Vendor\Laravel

@@ -21,7 +21,7 @@ Route::group(['prefix' => '/projects'], function () {
 Route::group(['prefix' => '/dashboard'], function () {
     Route::get('/', ['as' => 'tests-watcher.dashboard', 'uses' => 'Dashboard@index']);
 
-    Route::get('/data/{project_id?}', ['as' => 'tests-watcher.dashboard.data', 'uses' => 'Dashboard@data']);
+    Route::get('/data', ['as' => 'tests-watcher.dashboard.data', 'uses' => 'Dashboard@data']);
 });
 
 Route::group(['prefix' => '/files'], function () {

@@ -89,9 +89,9 @@ trait Projects
     public function getProjects()
     {
         return Project::all()->map(function ($item) {
-            if (!isset($item['tests'])) {
-                $item['tests'] = [];
-            }
+            $item['tests'] = $this->getProjectTests($item->id);
+
+            $item['running'] = $item['tests']->contains('state', 'running');
 
             return $item;
         });

@@ -19,16 +19,12 @@ class Dashboard extends Controller
     /**
      * Dashboard index.
      *
-     * @param null $project_id
-     *
      * @return \Illuminate\Http\Response
      */
-    public function data($project_id = null)
+    public function data()
     {
         return $this->success([
             'projects' => $this->dataRepository->getProjects(),
-
-            'tests' => $project_id ? $this->dataRepository->getProjectTests($project_id) : [],
         ]);
     }
 }

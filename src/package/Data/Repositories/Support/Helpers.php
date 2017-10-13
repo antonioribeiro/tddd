@@ -166,6 +166,8 @@ trait Helpers
             'project_id' => request()->get('project_id'),
 
             'test_id' => request()->get('test_id'),
+
+            'poll_interval' => config('ci.poll_interval'),
         ];
 
         return json_encode($data);

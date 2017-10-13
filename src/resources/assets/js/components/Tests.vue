@@ -110,40 +110,42 @@
     import {mapState} from 'vuex';
     import {mapMutations} from 'vuex'
     import {mapActions} from 'vuex'
+    import {mapGetters} from 'vuex'
 
     export default {
         computed: {
             ...mapState([
                 'laravel',
                 'projects',
-                'selectedProject',
                 'openTest',
                 'selectedTest',
                 'wasRunning',
             ]),
 
+            ...mapGetters([
+                'selectedProject',
+            ]),
+
             tests() {
-                var vue = this;
+                let vue = this;
 
-                var tests = vue.selectedProject.tests.filter(function(test) {
-                    var s1 = test.state.search(new RegExp(vue.search, "i")) != -1;
+                if (vue.selectedProject.tests) {
+                    let tests = vue.selectedProject.tests.filter(function(test) {
+                        let s1 = test.state.search(new RegExp(vue.search, "i")) != -1;
 
-                    var s2 = test.name.search(new RegExp(vue.search, "i")) != -1;
+                        let s2 = test.name.search(new RegExp(vue.search, "i")) != -1;
 
-                    var s3 = test.path.search(new RegExp(vue.search, "i")) != -1;
+                        let s3 = test.path.search(new RegExp(vue.search, "i")) != -1;
 
-                    return s1 || s2 || s3;
-                });
+                        return s1 || s2 || s3;
+                    });
 
-                this.makeStatistics(tests);
+                    this.makeStatistics(tests);
 
-                return tests;
-            }
-        },
+                    return tests;
+                }
 
-        watch: {
-            selectedProject() {
-                this.loadData();
+                return [];
             }
         },
 
@@ -181,17 +183,11 @@
             },
 
             toggleTest(test) {
-                axios.get(this.laravel.url_prefix+'/tests/'+this.selectedProject.id+'/'+test.id+'/enable/'+!test.enabled)
-                    .then(() => this.loadData());
-            },
-
-            loadData() {
-                this.$store.dispatch('loadData');
+                axios.get(this.laravel.url_prefix+'/tests/'+this.selectedProject.id+'/'+test.id+'/enable/'+!test.enabled);
             },
 
             enableAll() {
-                axios.get(this.laravel.url_prefix+'/tests/'+this.selectedProject.id+'/all/enable/'+!this.allEnabled())
-                    .then(() => this.loadData());
+                axios.get(this.laravel.url_prefix+'/tests/'+this.selectedProject.id+'/all/enable/'+!this.allEnabled());
             },
 
             editFile(file) {
@@ -280,9 +276,11 @@
         mounted() {
             var vue = this;
 
+            vue.loadData();
+
             setInterval(function () {
                 vue.loadData();
-            }, 1500);
+            }, this.laravel.poll_interval);
 
             setInterval(function () {
                 vue.doOpenTest();

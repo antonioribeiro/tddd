@@ -17,29 +17,35 @@
         </div>
 
         <div class="list-group">
-            <span class="card-projects-items">
-
-                <span class="row">
-                    <span class="col-md-12">
+            <div class="card-projects-items">
+                <div class="row">
+                    <div class="col-md-12">
                         <ul class="list-group">
-                    <li
-                            v-for="project in filteredProjects"
-                            :class="'list-group-item ' + (! project.enabled ? 'dim ' : '') + (selectedProject.id == project.id ? 'active ' : '')"
-                            @click="changeProject(project)"
-                    >
-                        <input
-                                type="checkbox"
-                                class="project-checkbox testCheckbox"
-                                @click="toggleProject(project)"
-                                :checked="project.enabled"
-                        />
+                            <li
+                                v-for="project in filteredProjects"
+                                :class="'list-group-item ' + (! project.enabled ? 'dim ' : '') + (selectedProject.id == project.id ? 'active ' : '')"
+                                @click="changeProject(project)"
+                            >
+                                <div class="row">
+                                    <div class="col">
+                                        <input
+                                            type="checkbox"
+                                            class="project-checkbox testCheckbox"
+                                            @click="toggleProject(project)"
+                                            :checked="project.enabled"
+                                        />
 
-                        {{ project.name }}
-                    </li>
-                </ul>
-                    </span>
-                </span>
-            </span>
+                                        {{ project.name }}
+                                    </div>
+                                    <div class="col-2 text-right">
+                                        <i v-if="project.running" class="fa fa-spinner fa-pulse  fa-spin fa-fw"></i>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
         </div>
     </span>
 </template>
@@ -48,6 +54,7 @@
     import {mapState} from 'vuex';
     import {mapMutations} from 'vuex'
     import {mapActions} from 'vuex'
+    import {mapGetters} from 'vuex'
 
     export default {
         data() {
@@ -60,8 +67,11 @@
             ...mapState([
                 'laravel',
                 'projects',
-                'selectedProject',
                 'selectedPanel'
+            ]),
+
+            ...mapGetters([
+                'selectedProject',
             ]),
 
             filteredProjects() {
@@ -74,13 +84,11 @@
         },
 
         methods: {
-            ...mapMutations(['setSelectedProject']),
-
-            ...mapActions(['loadData']),
+            ...mapActions(['loadData', 'setSelectedProjectId']),
 
             changeProject(project) {
                 if (this.selectedProject != project) {
-                    this.$store.commit('setSelectedProject', {project, force: true});
+                    this.setSelectedProjectId(project.id);
 
                     this.$store.commit('setSelectedPanel', 'log');
 
@@ -90,7 +98,7 @@
 
             toggleProject(project) {
                 axios.get(this.laravel.url_prefix+'/projects/'+project.id+'/enable/'+!project.enabled)
-                    .then(() => this.loadData());
+                    .then(response => this.loadData());
             },
         }
     }

@@ -4,7 +4,7 @@ export default {
 
         projects: [],
 
-        selectedProject: null,
+        selectedProjectId: null,
 
         openTest: null,
 
@@ -20,8 +20,12 @@ export default {
     mutations: {
         setSelectedProject(state, payload) {
             if (!state.selectedProject || payload.force) {
-                state.selectedProject = payload.project;
+                state.selectedProjectId = payload.project.id;
             }
+        },
+
+        setSelectedProjectId(state, projectId) {
+            state.selectedProjectId = projectId;
         },
 
         setSelectedTest(state, test) {
@@ -44,23 +48,37 @@ export default {
             state.projects = projects;
         },
 
-        setTests(state, tests) {
-            state.selectedProject.tests = tests;
-        },
-
         setWasRunning(state, wasIt) {
             state.wasRunning = wasIt;
         },
     },
 
+    getters: {
+        selectedProject: state => {
+            return state.projects.find(function (project) {
+                return project.id === state.selectedProjectId;
+            })
+        },
+    },
+
     actions: {
+        setSelectedProjectId(context, projectId) {
+            let selectedProjectId = context.state.selectedProjectId;
+
+            context.commit('setSelectedProjectId', projectId);
+
+            if (projectId != selectedProjectId) {
+                context.dispatch('loadData');
+            }
+        },
+
         loadData(context) {
-            axios.get(context.state.laravel.url_prefix+'/dashboard/data' + (context.state.selectedProject ? '/'+context.state.selectedProject.id : ''))
+            axios.get(context.state.laravel.url_prefix+'/dashboard/data')
                 .then(function (result) {
                     context.commit('setProjects', result.data.projects);
 
-                    var selected = context.state.selectedProject && result.data.projects.filter(project => project.id == context.state.selectedProject.id)[0]
-                        ? result.data.projects.filter(project => project.id == context.state.selectedProject.id)[0]
+                    var selected = context.getters.selectedProject && result.data.projects.filter(project => project.id == context.getters.selectedProject.id)[0]
+                        ? result.data.projects.filter(project => project.id == context.getters.selectedProject.id)[0]
                         : null;
 
                     if (!selected) {
@@ -77,7 +95,7 @@ export default {
                                 : false,
                     });
 
-                    context.commit('setTests', result.data.tests);
+                    context.commit('setTests', {projectId: context.getters.selectedProject.id, tests: result.data.tests});
                 });
         },
     },
