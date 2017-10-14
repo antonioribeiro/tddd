@@ -52,7 +52,7 @@
                         <input @click="enableAll()" type="checkbox" :checked="allEnabled()">
                     </th>
                     <th width="6%">run</th>
-                    <th width="6%">state</th>
+                    <th width="8%">state</th>
                     <th>suite</th>
                     <th width="55%">test</th>
                     <th>run time</th>

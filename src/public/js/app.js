@@ -47846,7 +47846,7 @@ var render = function() {
                 _vm._v(" "),
                 _c("th", { attrs: { width: "6%" } }, [_vm._v("run")]),
                 _vm._v(" "),
-                _c("th", { attrs: { width: "6%" } }, [_vm._v("state")]),
+                _c("th", { attrs: { width: "8%" } }, [_vm._v("state")]),
                 _vm._v(" "),
                 _c("th", [_vm._v("suite")]),
                 _vm._v(" "),

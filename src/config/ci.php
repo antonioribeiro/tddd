@@ -229,7 +229,7 @@ return [
         ],
 
         'ava' => [
-            'command'        => 'node_modules/.bin/ava',
+            'command'        => 'node_modules/.bin/ava --verbose',
             'require_script' => true,
             'error_pattern'  => '[1-9]+\s+(exception|failure)', // regex, only for tee results
         ],
