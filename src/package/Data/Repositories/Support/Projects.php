@@ -101,6 +101,7 @@ trait Projects
      * The the project state.
      *
      * @param \Illuminate\Support\Collection $tests
+     *
      * @return string
      */
     public function getProjectState($tests)
