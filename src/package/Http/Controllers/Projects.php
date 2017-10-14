@@ -51,6 +51,7 @@ class Projects extends Controller
      * Reset projects tests states.
      *
      * @param Request $request
+     *
      * @return mixed
      */
     public function reset(Request $request)
