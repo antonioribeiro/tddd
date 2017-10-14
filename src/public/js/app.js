@@ -46967,6 +46967,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         },
         isRunning: function isRunning(state, getters) {
             return getters.statistics.running > 0;
+        },
+        filteredProjectsIds: function filteredProjectsIds(state, getters) {
+            return getters.filteredProjects.map(function (project) {
+                return project.id;
+            });
         }
     },
 
@@ -47148,6 +47153,11 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 //
 //
 //
+//
+//
+//
+//
+//
 
 
 
@@ -47155,7 +47165,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["mapState"])(['laravel', 'projects', 'selectedPanel', 'filters']), Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["mapGetters"])(['selectedProject', 'filteredProjects']), {
+    computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["mapState"])(['laravel', 'projects', 'selectedPanel', 'filters']), Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["mapGetters"])(['selectedProject', 'filteredProjects', 'filteredProjectsIds']), {
 
         filter: {
             get: function get() {
@@ -47186,6 +47196,9 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
         },
         resetFilter: function resetFilter() {
             this.$store.commit('setProjectsFilter', '');
+        },
+        runAll: function runAll() {
+            axios.post(this.laravel.url_prefix + '/projects/run', { projects: this.filteredProjectsIds });
         }
     })
 });
@@ -47203,48 +47216,63 @@ var render = function() {
       _c("div", { staticClass: "card-block text-center" }, [
         _vm._m(0),
         _vm._v(" "),
-        _c("div", { staticClass: "row justify-content-center" }, [
-          _c("div", { staticClass: "col-10" }, [
+        _c("div", { staticClass: "row" }, [
+          _c("div", { staticClass: "col-9" }, [
+            _c("div", { staticClass: "input-group search-group" }, [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.filter,
+                    expression: "filter"
+                  }
+                ],
+                staticClass: "form-control form-control-sm search-project",
+                attrs: { placeholder: "filter" },
+                domProps: { value: _vm.filter },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.filter = $event.target.value
+                  }
+                }
+              }),
+              _vm._v(" "),
+              _vm.filter
+                ? _c(
+                    "div",
+                    {
+                      staticClass: "input-group-addon search-addon",
+                      on: {
+                        click: function($event) {
+                          _vm.resetFilter()
+                        }
+                      }
+                    },
+                    [_c("i", { staticClass: "fa fa-trash" })]
+                  )
+                : _vm._e()
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-3 text-right" }, [
             _c(
               "div",
-              { staticClass: "input-group mb-2 mb-sm-0 search-group" },
-              [
-                _c("input", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.filter,
-                      expression: "filter"
-                    }
-                  ],
-                  staticClass: "form-control form-control-sm search-project",
-                  attrs: { placeholder: "filter" },
-                  domProps: { value: _vm.filter },
-                  on: {
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
-                      }
-                      _vm.filter = $event.target.value
-                    }
+              {
+                staticClass: "btn btn-danger",
+                on: {
+                  click: function($event) {
+                    _vm.runAll()
                   }
-                }),
-                _vm._v(" "),
-                _vm.filter
-                  ? _c(
-                      "div",
-                      {
-                        staticClass: "input-group-addon search-addon",
-                        on: {
-                          click: function($event) {
-                            _vm.resetFilter()
-                          }
-                        }
-                      },
-                      [_c("i", { staticClass: "fa fa-trash" })]
-                    )
-                  : _vm._e()
+                }
+              },
+              [
+                _vm._v(
+                  "\n                        run all\n                    "
+                )
               ]
             )
           ])
@@ -47537,9 +47565,6 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 //
 //
 //
-//
-//
-//
 
 
 
@@ -47564,9 +47589,6 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
             axios.get(this.laravel.url_prefix + '/tests/run/' + testId);
         },
         runAll: function runAll() {
-            axios.post(this.laravel.url_prefix + '/projects/run', { projects: this.selectedProject.id });
-        },
-        runAllProjects: function runAllProjects() {
             axios.post(this.laravel.url_prefix + '/projects/run', { projects: this.selectedProject.id });
         },
         reset: function reset() {
@@ -47769,23 +47791,6 @@ var render = function() {
                           _c(
                             "div",
                             {
-                              staticClass: "btn btn-primary",
-                              on: {
-                                click: function($event) {
-                                  _vm.runAllProjects()
-                                }
-                              }
-                            },
-                            [
-                              _vm._v(
-                                "\n                                run projects\n                            "
-                              )
-                            ]
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "div",
-                            {
                               staticClass: "btn btn-danger",
                               on: {
                                 click: function($event) {
@@ -47795,7 +47800,7 @@ var render = function() {
                             },
                             [
                               _vm._v(
-                                "\n                                run tests\n                            "
+                                "\n                                run all\n                            "
                               )
                             ]
                           ),

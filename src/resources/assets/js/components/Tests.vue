@@ -32,11 +32,8 @@
                             </div>
 
                             <div class="col-md-7" v-if="selectedProject.enabled">
-                                <div class="btn btn-primary" @click="runAllProjects()">
-                                    run projects
-                                </div>
                                 <div class="btn btn-danger" @click="runAll()">
-                                    run tests
+                                    run all
                                 </div>
                                 <div class="btn btn-warning" @click="reset()">
                                     reset state
@@ -155,10 +152,6 @@
             },
 
             runAll() {
-                axios.post(this.laravel.url_prefix+'/projects/run', { projects: this.selectedProject.id });
-            },
-
-            runAllProjects() {
                 axios.post(this.laravel.url_prefix+'/projects/run', { projects: this.selectedProject.id });
             },
 

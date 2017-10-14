@@ -244,18 +244,19 @@ trait Tests
     /**
      * Query tests.
      *
-     * @param $project_id
      * @param $test_id
      *
      * @return mixed
      */
-    protected function queryTests($project_id = null, $test_id = null)
+    protected function queryTests($projects, $test_id = null)
     {
+        $projects = (array) $projects;
+
         $query = Test::select('ci_tests.*')
                      ->join('ci_suites', 'ci_suites.id', '=', 'ci_tests.suite_id');
 
-        if ($project_id && $project_id != 'all') {
-            $query->where('ci_suites.project_id', $project_id);
+        if ($projects && $projects != 'all') {
+            $query->whereIn('ci_suites.project_id', $projects);
         }
 
         if ($test_id && $test_id != 'all') {

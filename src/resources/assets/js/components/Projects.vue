@@ -8,9 +8,9 @@
                     </div>
                 </div>
 
-                <div class="row justify-content-center">
-                    <div class="col-10">
-                        <div class="input-group mb-2 mb-sm-0 search-group">
+                <div class="row">
+                    <div class="col-9">
+                        <div class="input-group search-group">
                             <input
                                 v-model="filter"
                                 class="form-control form-control-sm search-project"
@@ -19,6 +19,11 @@
                             <div v-if="filter" @click="resetFilter()" class="input-group-addon search-addon">
                                 <i class="fa fa-trash"></i>
                             </div>
+                        </div>
+                    </div>
+                    <div class="col-3 text-right">
+                        <div class="btn btn-danger" @click="runAll()">
+                            run all
                         </div>
                     </div>
                 </div>
@@ -95,6 +100,7 @@
             ...mapGetters([
                 'selectedProject',
                 'filteredProjects',
+                'filteredProjectsIds',
             ]),
 
             filter: {
@@ -127,6 +133,10 @@
 
             resetFilter() {
                 this.$store.commit('setProjectsFilter', '')
+            },
+
+            runAll() {
+                axios.post(this.laravel.url_prefix+'/projects/run', { projects: this.filteredProjectsIds });
             },
         }
     }

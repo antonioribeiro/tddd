@@ -151,6 +151,12 @@ export default {
         isRunning(state, getters) {
             return getters.statistics.running > 0;
         },
+
+        filteredProjectsIds(state, getters) {
+            return getters.filteredProjects.map(function(project) {
+                return project.id;
+            });
+        }
     },
 
     actions: {

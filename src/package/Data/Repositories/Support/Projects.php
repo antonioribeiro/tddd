@@ -170,11 +170,7 @@ trait Projects
      */
     public function runProjectTests($project_id = null)
     {
-        db_listen();
         $tests = $this->queryTests($project_id)->get();
-
-        info('tests ---------------');
-        info($tests);
 
         foreach ($tests as $test) {
             $this->enableTest(true, $test);
