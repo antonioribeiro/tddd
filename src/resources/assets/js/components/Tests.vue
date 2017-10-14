@@ -24,8 +24,8 @@
                         <div class="row">
                             <div class="col-md-5">
                                 <div class="input-group mb-2 mb-sm-0 search-group">
-                                    <input v-model="search" class="form-control" placeholder="filter">
-                                    <div v-if="search" @click="search = ''" class="input-group-addon search-addon">
+                                    <input v-model="filter" class="form-control" placeholder="filter">
+                                    <div v-if="filter" @click="resetFilter" class="input-group-addon search-addon">
                                         <i class="fa fa-trash"></i>
                                     </div>
                                 </div>
@@ -65,7 +65,7 @@
             </thead>
 
             <tbody>
-                <tr v-for="test in tests" :class="! test.enabled ? 'dim' : ''">
+                <tr v-for="test in filteredTests" :class="! test.enabled ? 'dim' : ''">
                     <td>
                         <input
                             type="checkbox"
@@ -132,37 +132,19 @@
 
             ...mapGetters([
                 'selectedProject',
+                'filteredTests',
+                'setTestsFilter',
+                'statistics',
             ]),
 
-            tests() {
-                let vue = this;
-
-                if (vue.selectedProject.tests) {
-                    let tests = vue.selectedProject.tests.filter(function(test) {
-                        let s1 = test.state.search(new RegExp(vue.search, "i")) != -1;
-
-                        let s2 = test.name.search(new RegExp(vue.search, "i")) != -1;
-
-                        let s3 = test.path.search(new RegExp(vue.search, "i")) != -1;
-
-                        return s1 || s2 || s3;
-                    });
-
-                    this.makeStatistics(tests);
-
-                    return tests;
+            filter: {
+                get () {
+                    return this.$store.state.filters.tests
+                },
+                set (value) {
+                    this.$store.commit('setTestsFilter', value)
                 }
-
-                return [];
-            }
-        },
-
-        data() {
-            return {
-                statistics: {},
-
-                search: '',
-            }
+            },
         },
 
         methods: {
@@ -173,11 +155,11 @@
             },
 
             runAll() {
-                axios.get(this.laravel.url_prefix+'/tests/run/all/'+this.selectedProject.id);
+                axios.post(this.laravel.url_prefix+'/projects/run', { projects: this.selectedProject.id });
             },
 
             runAllProjects() {
-                axios.get(this.laravel.url_prefix+'/tests/run/all/all');
+                axios.post(this.laravel.url_prefix+'/projects/run', { projects: this.selectedProject.id });
             },
 
             reset() {
@@ -206,70 +188,6 @@
                 axios.get(file);
             },
 
-            clear: function () {
-                this.statistics = {
-                    count: 0,
-                    enabled: 0,
-                    running: 0,
-                    queued: 0,
-                    success: 0,
-                    failed: 0,
-                    idle: 0,
-                };
-            },
-
-            sendNotifications: function () {
-                if (this.statistics.failed > 0) {
-                    axios.get(this.laravel.url_prefix+'/projects/'+this.selectedProject.id+'/notify');
-                }
-            },
-
-            makeStatistics(tests) {
-                this.clear();
-
-                var key = null;
-
-                for (key in tests) {
-                    if (tests.hasOwnProperty(key)) {
-                        this.statistics.count++;
-
-                        if (tests[key].enabled) {
-                            this.statistics.enabled++;
-                        }
-
-                        if (tests[key].state == 'queued') {
-                            this.statistics.queued++;
-                        }
-
-                        if (tests[key].state == 'running') {
-                            this.statistics.running++;
-                        }
-
-                        if (tests[key].state == 'ok') {
-                            this.statistics.success++;
-                        }
-
-                        if (tests[key].state == 'failed') {
-                            this.statistics.failed++;
-                        }
-
-                        if (tests[key].state == 'idle') {
-                            this.statistics.idle++;
-                        }
-                    }
-                }
-
-                if (this.wasRunning && !this.isRunning()) {
-                    this.sendNotifications();
-                }
-
-                this.$store.commit('setWasRunning', this.isRunning());
-            },
-
-            isRunning() {
-                return this.statistics.running > 0;
-            },
-
             doOpenTest() {
                 if (!this.openTest || !this.selectedProject) {
                     return false;
@@ -282,6 +200,10 @@
 
                     this.showLog(test);
                 }
+            },
+
+            resetFilter() {
+                this.$store.commit('setTestsFilter', '')
             },
         },
 

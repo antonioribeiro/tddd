@@ -3,8 +3,8 @@
 namespace PragmaRX\TestsWatcher\Package\Data\Repositories\Support;
 
 use Carbon\Carbon;
-use PragmaRX\TestsWatcher\Package\Entities\Run;
-use PragmaRX\TestsWatcher\Package\Entities\Test;
+use PragmaRX\TestsWatcher\Package\Data\Models\Run;
+use PragmaRX\TestsWatcher\Package\Data\Models\Test;
 use PragmaRX\TestsWatcher\Package\Support\Constants;
 
 trait Tests
@@ -32,7 +32,7 @@ trait Tests
      * Create or update a test.
      *
      * @param \Symfony\Component\Finder\SplFileInfo         $file
-     * @param \PragmaRX\TestsWatcher\Package\Entities\Suite $suite
+     * @param \PragmaRX\TestsWatcher\Package\Data\Models\Suite $suite
      */
     public function createOrUpdateTest($file, $suite)
     {
@@ -220,7 +220,7 @@ trait Tests
      * Enable a test.
      *
      * @param $enable
-     * @param \PragmaRX\TestsWatcher\Package\Entities\Test $test
+     * @param \PragmaRX\TestsWatcher\Package\Data\Models\Test $test
      */
     protected function enableTest($enable, $test)
     {

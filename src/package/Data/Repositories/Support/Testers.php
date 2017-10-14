@@ -2,7 +2,7 @@
 
 namespace PragmaRX\TestsWatcher\Package\Data\Repositories\Support;
 
-use PragmaRX\TestsWatcher\Package\Entities\Tester;
+use PragmaRX\TestsWatcher\Package\Data\Models\Tester;
 
 trait Testers
 {

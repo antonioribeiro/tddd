@@ -2,8 +2,8 @@
 
 namespace PragmaRX\TestsWatcher\Package\Data\Repositories\Support;
 
-use PragmaRX\TestsWatcher\Package\Entities\Project;
-use PragmaRX\TestsWatcher\Package\Entities\Test;
+use PragmaRX\TestsWatcher\Package\Data\Models\Project;
+use PragmaRX\TestsWatcher\Package\Data\Models\Test;
 
 trait Projects
 {
@@ -24,7 +24,7 @@ trait Projects
     /**
      * Find project by id.
      *
-     * @return \PragmaRX\TestsWatcher\Package\Entities\Project|null
+     * @return \PragmaRX\TestsWatcher\Package\Data\Models\Project|null
      */
     public function findProjectById($id)
     {
@@ -151,7 +151,7 @@ trait Projects
      * Enable a test.
      *
      * @param $enable
-     * @param \PragmaRX\TestsWatcher\Package\Entities\Project $project
+     * @param \PragmaRX\TestsWatcher\Package\Data\Models\Project $project
      */
     protected function enableProject($enable, $project)
     {

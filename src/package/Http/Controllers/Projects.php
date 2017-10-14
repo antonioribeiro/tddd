@@ -2,6 +2,8 @@
 
 namespace PragmaRX\TestsWatcher\Package\Http\Controllers;
 
+use Illuminate\Http\Request;
+
 class Projects extends Controller
 {
     /**
@@ -29,6 +31,18 @@ class Projects extends Controller
     public function notify($project_id)
     {
         $this->dataRepository->notify($project_id);
+
+        return $this->success();
+    }
+
+    /**
+     * Run project tests.
+     *
+     * @return mixed
+     */
+    public function run(Request $request)
+    {
+        $this->dataRepository->runProjectTests($request->get('projects'));
 
         return $this->success();
     }

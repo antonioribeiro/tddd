@@ -46844,7 +46844,13 @@ module.exports = Vue$3;
 
         logVisible: false,
 
-        wasRunning: false
+        wasRunning: false,
+
+        filters: {
+            projects: '',
+
+            tests: ''
+        }
     },
 
     mutations: {
@@ -46873,6 +46879,12 @@ module.exports = Vue$3;
         },
         setWasRunning: function setWasRunning(state, wasIt) {
             state.wasRunning = wasIt;
+        },
+        setProjectsFilter: function setProjectsFilter(state, filter) {
+            state.filters.projects = filter;
+        },
+        setTestsFilter: function setTestsFilter(state, filter) {
+            state.filters.tests = filter;
         }
     },
 
@@ -46881,6 +46893,76 @@ module.exports = Vue$3;
             return state.projects.find(function (project) {
                 return project.id === state.selectedProjectId;
             });
+        },
+        filteredProjects: function filteredProjects(state) {
+            return state.projects.filter(function (project) {
+                return project.name.search(new RegExp(state.filters.projects, "i")) != -1;
+            });
+        },
+        filteredTests: function filteredTests(state) {
+            var tests = state.projects.find(function (project) {
+                return project.id === state.selectedProjectId;
+            }).tests.filter(function (test) {
+                var s1 = test.state.search(new RegExp(state.filters.tests, "i")) != -1;
+
+                var s2 = test.name.search(new RegExp(state.filters.tests, "i")) != -1;
+
+                var s3 = test.path.search(new RegExp(state.filters.tests, "i")) != -1;
+
+                return s1 || s2 || s3;
+            });
+
+            return tests;
+        },
+        statistics: function statistics(state, getters) {
+            var statistics = {
+                count: 0,
+                enabled: 0,
+                running: 0,
+                queued: 0,
+                success: 0,
+                failed: 0,
+                idle: 0
+            };
+
+            if (!getters.selectedProject || !getters.selectedProject.tests) {
+                return statistics;
+            }
+
+            var tests = getters.selectedProject.tests;
+
+            for (var key in tests) {
+                statistics.count++;
+
+                if (tests[key].enabled) {
+                    statistics.enabled++;
+                }
+
+                if (tests[key].state == 'queued') {
+                    statistics.queued++;
+                }
+
+                if (tests[key].state == 'running') {
+                    statistics.running++;
+                }
+
+                if (tests[key].state == 'ok') {
+                    statistics.success++;
+                }
+
+                if (tests[key].state == 'failed') {
+                    statistics.failed++;
+                }
+
+                if (tests[key].state == 'idle') {
+                    statistics.idle++;
+                }
+            }
+
+            return statistics;
+        },
+        isRunning: function isRunning(state, getters) {
+            return getters.statistics.running > 0;
         }
     },
 
@@ -46916,6 +46998,14 @@ module.exports = Vue$3;
                     force: context.state.laravel.project_id ? true : false
                 });
             });
+
+            if (context.state.wasRunning && !context.getters.isRunning) {
+                if (context.getters.statistics.failed > 0) {
+                    axios.get(context.state.laravel.url_prefix + '/projects/' + context.state.selectedProjectId + '/notify');
+                }
+            }
+
+            context.commit('setWasRunning', context.getters.isRunning);
         }
     }
 });
@@ -47045,6 +47135,15 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -47052,20 +47151,15 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    data: function data() {
-        return {
-            search: ''
-        };
-    },
+    computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["mapState"])(['laravel', 'projects', 'selectedPanel', 'filters']), Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["mapGetters"])(['selectedProject', 'filteredProjects']), {
 
-
-    computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["mapState"])(['laravel', 'projects', 'selectedPanel']), Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["mapGetters"])(['selectedProject']), {
-        filteredProjects: function filteredProjects() {
-            var vue = this;
-
-            return vue.projects.filter(function (project) {
-                return project.name.search(new RegExp(vue.search, "i")) != -1;
-            });
+        filter: {
+            get: function get() {
+                return this.$store.state.filters.projects;
+            },
+            set: function set(value) {
+                this.$store.commit('setProjectsFilter', value);
+            }
         }
     }),
 
@@ -47085,6 +47179,9 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
             axios.get(this.laravel.url_prefix + '/projects/' + project.id + '/enable/' + !project.enabled).then(function (response) {
                 return _this.loadData();
             });
+        },
+        resetFilter: function resetFilter() {
+            this.$store.commit('setProjectFilter', '');
         }
     })
 });
@@ -47097,34 +47194,55 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("span", [
+  return _c("div", [
     _c("div", { staticClass: "card bg-inverse card-projects" }, [
       _c("div", { staticClass: "card-block text-center" }, [
         _vm._m(0),
         _vm._v(" "),
         _c("div", { staticClass: "row justify-content-center" }, [
           _c("div", { staticClass: "col-10" }, [
-            _c("input", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.search,
-                  expression: "search"
-                }
-              ],
-              staticClass: "form-control form-control-sm search-project",
-              attrs: { placeholder: "filter" },
-              domProps: { value: _vm.search },
-              on: {
-                input: function($event) {
-                  if ($event.target.composing) {
-                    return
+            _c(
+              "div",
+              { staticClass: "input-group mb-2 mb-sm-0 search-group" },
+              [
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.filter,
+                      expression: "filter"
+                    }
+                  ],
+                  staticClass: "form-control form-control-sm search-project",
+                  attrs: { placeholder: "filter" },
+                  domProps: { value: _vm.filter },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.filter = $event.target.value
+                    }
                   }
-                  _vm.search = $event.target.value
-                }
-              }
-            })
+                }),
+                _vm._v(" "),
+                _vm.filter
+                  ? _c(
+                      "div",
+                      {
+                        staticClass: "input-group-addon search-addon",
+                        on: {
+                          click: function($event) {
+                            _vm.resetFilter()
+                          }
+                        }
+                      },
+                      [_c("i", { staticClass: "fa fa-trash" })]
+                    )
+                  : _vm._e()
+              ]
+            )
           ])
         ])
       ])
@@ -47425,48 +47543,27 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["mapState"])(['laravel', 'projects', 'openTest', 'selectedTest', 'wasRunning']), Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["mapGetters"])(['selectedProject']), {
-        tests: function tests() {
-            var vue = this;
+    computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["mapState"])(['laravel', 'projects', 'openTest', 'selectedTest', 'wasRunning']), Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["mapGetters"])(['selectedProject', 'filteredTests', 'setTestsFilter', 'statistics']), {
 
-            if (vue.selectedProject.tests) {
-                var tests = vue.selectedProject.tests.filter(function (test) {
-                    var s1 = test.state.search(new RegExp(vue.search, "i")) != -1;
-
-                    var s2 = test.name.search(new RegExp(vue.search, "i")) != -1;
-
-                    var s3 = test.path.search(new RegExp(vue.search, "i")) != -1;
-
-                    return s1 || s2 || s3;
-                });
-
-                this.makeStatistics(tests);
-
-                return tests;
+        filter: {
+            get: function get() {
+                return this.$store.state.filters.tests;
+            },
+            set: function set(value) {
+                this.$store.commit('setTestsFilter', value);
             }
-
-            return [];
         }
     }),
-
-    data: function data() {
-        return {
-            statistics: {},
-
-            search: ''
-        };
-    },
-
 
     methods: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["mapActions"])(['loadData']), {
         runTest: function runTest(testId) {
             axios.get(this.laravel.url_prefix + '/tests/run/' + testId);
         },
         runAll: function runAll() {
-            axios.get(this.laravel.url_prefix + '/tests/run/all/' + this.selectedProject.id);
+            axios.post(this.laravel.url_prefix + '/projects/run', { projects: this.selectedProject.id });
         },
         runAllProjects: function runAllProjects() {
-            axios.get(this.laravel.url_prefix + '/tests/run/all/all');
+            axios.post(this.laravel.url_prefix + '/projects/run', { projects: this.selectedProject.id });
         },
         reset: function reset() {
             axios.get(this.laravel.url_prefix + '/tests/reset/' + this.selectedProject.id);
@@ -47488,70 +47585,6 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
         editFile: function editFile(file) {
             axios.get(file);
         },
-
-
-        clear: function clear() {
-            this.statistics = {
-                count: 0,
-                enabled: 0,
-                running: 0,
-                queued: 0,
-                success: 0,
-                failed: 0,
-                idle: 0
-            };
-        },
-
-        sendNotifications: function sendNotifications() {
-            if (this.statistics.failed > 0) {
-                axios.get(this.laravel.url_prefix + '/projects/' + this.selectedProject.id + '/notify');
-            }
-        },
-
-        makeStatistics: function makeStatistics(tests) {
-            this.clear();
-
-            var key = null;
-
-            for (key in tests) {
-                if (tests.hasOwnProperty(key)) {
-                    this.statistics.count++;
-
-                    if (tests[key].enabled) {
-                        this.statistics.enabled++;
-                    }
-
-                    if (tests[key].state == 'queued') {
-                        this.statistics.queued++;
-                    }
-
-                    if (tests[key].state == 'running') {
-                        this.statistics.running++;
-                    }
-
-                    if (tests[key].state == 'ok') {
-                        this.statistics.success++;
-                    }
-
-                    if (tests[key].state == 'failed') {
-                        this.statistics.failed++;
-                    }
-
-                    if (tests[key].state == 'idle') {
-                        this.statistics.idle++;
-                    }
-                }
-            }
-
-            if (this.wasRunning && !this.isRunning()) {
-                this.sendNotifications();
-            }
-
-            this.$store.commit('setWasRunning', this.isRunning());
-        },
-        isRunning: function isRunning() {
-            return this.statistics.running > 0;
-        },
         doOpenTest: function doOpenTest() {
             var _this = this;
 
@@ -47568,6 +47601,9 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
                 this.showLog(test);
             }
+        },
+        resetFilter: function resetFilter() {
+            this.$store.commit('setTestsFilter', '');
         }
     }),
 
@@ -47693,33 +47729,29 @@ var render = function() {
                               {
                                 name: "model",
                                 rawName: "v-model",
-                                value: _vm.search,
-                                expression: "search"
+                                value: _vm.filter,
+                                expression: "filter"
                               }
                             ],
                             staticClass: "form-control",
                             attrs: { placeholder: "filter" },
-                            domProps: { value: _vm.search },
+                            domProps: { value: _vm.filter },
                             on: {
                               input: function($event) {
                                 if ($event.target.composing) {
                                   return
                                 }
-                                _vm.search = $event.target.value
+                                _vm.filter = $event.target.value
                               }
                             }
                           }),
                           _vm._v(" "),
-                          _vm.search
+                          _vm.filter
                             ? _c(
                                 "div",
                                 {
                                   staticClass: "input-group-addon search-addon",
-                                  on: {
-                                    click: function($event) {
-                                      _vm.search = ""
-                                    }
-                                  }
+                                  on: { click: _vm.resetFilter }
                                 },
                                 [_c("i", { staticClass: "fa fa-trash" })]
                               )
@@ -47821,7 +47853,7 @@ var render = function() {
             _vm._v(" "),
             _c(
               "tbody",
-              _vm._l(_vm.tests, function(test) {
+              _vm._l(_vm.filteredTests, function(test) {
                 return _c("tr", { class: !test.enabled ? "dim" : "" }, [
                   _c("td", [
                     _c("input", {

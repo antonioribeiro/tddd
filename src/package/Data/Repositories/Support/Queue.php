@@ -2,8 +2,8 @@
 
 namespace PragmaRX\TestsWatcher\Package\Data\Repositories\Support;
 
-use PragmaRX\TestsWatcher\Package\Entities\Queue as QueueModel;
-use PragmaRX\TestsWatcher\Package\Entities\Test;
+use PragmaRX\TestsWatcher\Package\Data\Models\Queue as QueueModel;
+use PragmaRX\TestsWatcher\Package\Data\Models\Test;
 use PragmaRX\TestsWatcher\Package\Support\Constants;
 
 trait Queue
@@ -73,7 +73,7 @@ trait Queue
     /**
      * Get a test from the queue.
      *
-     * @return \PragmaRX\TestsWatcher\Package\Entities\Test|null
+     * @return \PragmaRX\TestsWatcher\Package\Data\Models\Test|null
      */
     public function getNextTestFromQueue()
     {

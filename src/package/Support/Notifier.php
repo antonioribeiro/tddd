@@ -16,7 +16,7 @@ class Notifier
      */
     public function enabled()
     {
-        return config('ci.notifications.enabled') == true;
+        return config('ci.notifications.notify_on.fail') == true;
     }
 
     /**

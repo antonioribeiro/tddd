@@ -1,6 +1,6 @@
 <?php
 
-namespace PragmaRX\TestsWatcher\Package\Entities;
+namespace PragmaRX\TestsWatcher\Package\Data\Models;
 
 class Run extends Model
 {

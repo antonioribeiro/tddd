@@ -1,5 +1,5 @@
 <template>
-    <span>
+    <div>
         <div class="card bg-inverse card-projects">
             <div class="card-block text-center">
                 <div class="row">
@@ -10,7 +10,16 @@
 
                 <div class="row justify-content-center">
                     <div class="col-10">
-                        <input v-model="search" class="form-control form-control-sm search-project" placeholder="filter">
+                        <div class="input-group mb-2 mb-sm-0 search-group">
+                            <input
+                                v-model="filter"
+                                class="form-control form-control-sm search-project"
+                                placeholder="filter"
+                            >
+                            <div v-if="filter" @click="resetFilter()" class="input-group-addon search-addon">
+                                <i class="fa fa-trash"></i>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -65,7 +74,7 @@
                 </div>
             </div>
         </div>
-    </span>
+    </div>
 </template>
 
 <script>
@@ -75,29 +84,26 @@
     import {mapGetters} from 'vuex'
 
     export default {
-        data() {
-            return {
-                search: '',
-            }
-        },
-
         computed: {
             ...mapState([
                 'laravel',
                 'projects',
-                'selectedPanel'
+                'selectedPanel',
+                'filters',
             ]),
 
             ...mapGetters([
                 'selectedProject',
+                'filteredProjects',
             ]),
 
-            filteredProjects() {
-                var vue = this;
-
-                return vue.projects.filter(function(project) {
-                    return project.name.search(new RegExp(vue.search, "i")) != -1;
-                });
+            filter: {
+                get () {
+                    return this.$store.state.filters.projects
+                },
+                set (value) {
+                    this.$store.commit('setProjectsFilter', value)
+                }
             }
         },
 
@@ -117,6 +123,10 @@
             toggleProject(project) {
                 axios.get(this.laravel.url_prefix+'/projects/'+project.id+'/enable/'+!project.enabled)
                     .then(response => this.loadData());
+            },
+
+            resetFilter() {
+                this.$store.commit('setProjectFilter', '')
             },
         }
     }

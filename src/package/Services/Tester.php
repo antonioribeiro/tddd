@@ -278,7 +278,7 @@ class Tester extends Base
      * Check if the test has passed.
      *
      * @param $exitCode
-     * @param \PragmaRX\TestsWatcher\Package\Entities\Test $test
+     * @param \PragmaRX\TestsWatcher\Package\Data\Models\Test $test
      *
      * @return bool
      */
@@ -317,7 +317,7 @@ class Tester extends Base
     /**
      * Check if the test was piped.
      *
-     * @param \PragmaRX\TestsWatcher\Package\Entities\Test $test
+     * @param \PragmaRX\TestsWatcher\Package\Data\Models\Test $test
      *
      * @return bool
      */

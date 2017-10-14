@@ -94,7 +94,6 @@ a:hover.file {
   color: #f8f9fa;
   background-color: #444;
   border: 1px solid #818182;
-  border-radius: 0 !important;
 }
 
 .search-project:focus {
@@ -221,11 +220,6 @@ h1, h2, h3 {
   padding: 5px;
   margin-top: -9px;
   width: 100%;
-}
-
-.search-addon {
-  background-color: $brand-primary;
-  color: $brand-clear;
 }
 
 /*

@@ -33,20 +33,6 @@ class Tests extends Controller
     }
 
     /**
-     * Run all tests.
-     *
-     * @param $project_id
-     *
-     * @return mixed
-     */
-    public function runAll($project_id)
-    {
-        $this->dataRepository->runProjectTests($project_id);
-
-        return $this->success();
-    }
-
-    /**
      * Enable tests.
      *
      * @param $enable
