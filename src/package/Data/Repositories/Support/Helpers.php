@@ -487,10 +487,31 @@ trait Helpers
     }
 
     /**
+     * Ansi converter setter.
+     *
      * @param mixed $ansiConverter
      */
     public function setAnsiConverter($ansiConverter)
     {
         $this->ansiConverter = $ansiConverter;
+    }
+
+    /**
+     * Normalize a path removing inconsistences.
+     *
+     * @param $path
+     * @return bool|mixed|string
+     */
+    public function normalizePath($path)
+    {
+        $path = trim($path);
+
+        $path = str_replace(DIRECTORY_SEPARATOR.DIRECTORY_SEPARATOR, DIRECTORY_SEPARATOR, $path);
+
+        if (ends_with($path, DIRECTORY_SEPARATOR)) {
+            $path = substr($path, 0, -1);
+        }
+
+        return $path;
     }
 }

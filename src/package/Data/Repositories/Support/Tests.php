@@ -41,7 +41,7 @@ trait Tests
                 'sha1' => sha1_file($file->getRealPath()),
             ],
             [
-                'path'     => $file->getPath(),
+                'path'     => $this->normalizePath($file->getPath()),
                 'name'     => $file->getFilename(),
                 'suite_id' => $suite->id,
             ]
