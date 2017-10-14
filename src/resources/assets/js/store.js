@@ -65,6 +65,10 @@ export default {
         setTestsFilter(state, filter) {
             state.filters.tests = filter;
         },
+
+        setProjectsFilter(state, filter) {
+            state.filters.projects = filter;
+        },
     },
 
     getters: {

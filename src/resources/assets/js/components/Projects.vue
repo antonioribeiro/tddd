@@ -126,7 +126,7 @@
             },
 
             resetFilter() {
-                this.$store.commit('setProjectFilter', '')
+                this.$store.commit('setProjectsFilter', '')
             },
         }
     }

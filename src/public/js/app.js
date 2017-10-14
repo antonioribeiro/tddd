@@ -46828,6 +46828,8 @@ module.exports = Vue$3;
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 /* harmony default export */ __webpack_exports__["a"] = ({
     state: {
         laravel: window.laravel,
@@ -46853,7 +46855,7 @@ module.exports = Vue$3;
         }
     },
 
-    mutations: {
+    mutations: _defineProperty({
         setSelectedProject: function setSelectedProject(state, payload) {
             if (!state.selectedProject || payload.force) {
                 state.selectedProjectId = payload.project.id;
@@ -46886,7 +46888,9 @@ module.exports = Vue$3;
         setTestsFilter: function setTestsFilter(state, filter) {
             state.filters.tests = filter;
         }
-    },
+    }, 'setProjectsFilter', function setProjectsFilter(state, filter) {
+        state.filters.projects = filter;
+    }),
 
     getters: {
         selectedProject: function selectedProject(state) {
@@ -47181,7 +47185,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
             });
         },
         resetFilter: function resetFilter() {
-            this.$store.commit('setProjectFilter', '');
+            this.$store.commit('setProjectsFilter', '');
         }
     })
 });
