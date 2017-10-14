@@ -500,6 +500,7 @@ trait Helpers
      * Normalize a path removing inconsistences.
      *
      * @param $path
+     *
      * @return bool|mixed|string
      */
     public function normalizePath($path)
