@@ -7,10 +7,13 @@
 // Bootstrap
 @import "~bootstrap/scss/bootstrap";
 
+// Bootstrap
+@import "~csspin/csspin";
+
 body {
   color: $brand-darker;
-  font-family: 'Arsenal';
-  font-weight: 800;
+  font-family: 'Arial';
+  font-weight: 500;
 }
 
 /*
@@ -37,11 +40,11 @@ body {
 .table-header {
   vertical-align: middle;
   margin-bottom: 15px;
+  font-weight: 800;
 }
 
 .table-header .title {
   font-size: 1.8em;
-  font-weight: 800;
 }
 
 .dim {
@@ -59,7 +62,6 @@ body {
 }
 
 th {
-  font-weight: 800;
   font-size: 1.3em;
 }
 
@@ -84,10 +86,10 @@ a:hover.file {
 .project-title {
   color: $brand-clear;
   text-transform: lowercase;
-  font-weight: 800;
   font-size: 1.8em;
   margin-top: -7px;
   margin-bottom: 7px;
+  font-weight: 800;
 }
 
 .search-project {
@@ -114,7 +116,6 @@ a:hover.file {
 
 .list-group-item {
   cursor: pointer;
-  font-weight: 800;
   border: 1px solid rgba(0, 0, 0, 0.125);
 }
 
@@ -150,11 +151,6 @@ list-group-item, .list-group-item:hover, .list-group-item:focus {
 
 .terminal {
   background-color: $brand-darkest;
-}
-
-
-h1, h2, h3 {
-  font-weight: 800;
 }
 
 /*
@@ -301,6 +297,7 @@ table > tbody > tr > td.state.state-failed {
 }
 
 .table-test-path {
+  font-size: 0.7rem;
   font-weight: 100 !important;
   color: $brand-gray-darker;
 }
@@ -319,3 +316,12 @@ table > tbody > tr > td.state.state-failed {
 .project-checkbox {
   margin-right: 5px;
 }
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+h1, h2, h3 {
+  font-weight: 800;
+}
+

@@ -46,4 +46,17 @@ class Projects extends Controller
 
         return $this->success();
     }
+
+    /**
+     * Reset projects tests states.
+     *
+     * @param Request $request
+     * @return mixed
+     */
+    public function reset(Request $request)
+    {
+        $this->dataRepository->reset($request->get('projects'));
+
+        return $this->success();
+    }
 }

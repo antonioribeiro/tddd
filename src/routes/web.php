@@ -15,6 +15,8 @@ Route::group(['prefix' => '/projects'], function () {
 
     Route::get('/{project_id}/notify', ['as' => 'tests-watcher.tests.notify', 'uses' => 'Projects@notify']);
 
+    Route::post('/reset', ['as' => 'tests-watcher.projects.reset', 'uses' => 'Projects@reset']);
+
     Route::post('/run', ['as' => 'tests-watcher.projects.run.all', 'uses' => 'Projects@run']);
 });
 

@@ -8,9 +8,9 @@ export default {
 
         openTest: null,
 
-        selectedTest: null,
+        selectedTestId: null,
 
-        selectedPanel: 'log',
+        _selectedPanel: '',
 
         logVisible: false,
 
@@ -20,7 +20,14 @@ export default {
             projects: '',
 
             tests: '',
-        }
+        },
+
+        constants: {
+            LOG_ID_LOG: 'log',
+            LOG_ID_HTML: 'html',
+            LOG_ID_SCREENSHOTS: 'screenshots',
+            LOG_ID_SNAPSHOT: 'snapshot',
+        },
     },
 
     mutations: {
@@ -34,12 +41,12 @@ export default {
             state.selectedProjectId = projectId;
         },
 
-        setSelectedTest(state, test) {
-            state.selectedTest = test;
+        setSelectedTestId(state, test) {
+            state.selectedTestId = test;
         },
 
         setSelectedPanel(state, panel) {
-            state.selectedPanel = panel;
+            state._selectedPanel = panel;
         },
 
         setOpenTest(state, value) {
@@ -85,6 +92,10 @@ export default {
         },
 
         filteredTests(state) {
+            if (! state.selectedProjectId) {
+                return [];
+            }
+
             let tests = state.projects.find(function (project) {
                 return project.id === state.selectedProjectId;
             }).tests.filter(function(test) {
@@ -156,6 +167,32 @@ export default {
             return getters.filteredProjects.map(function(project) {
                 return project.id;
             });
+        },
+
+        selectedPanel(state, getters) {
+            let selectedPanel = state._selectedPanel;
+
+            if (!selectedPanel || !getters.selectedTest) {
+                return state.constants.LOG_ID_LOG;
+            }
+
+            if (selectedPanel == state.constants.LOG_ID_SCREENSHOTS && !getters.selectedTest.run.screenshots) {
+                selectedPanel = state.constants.LOG_ID_LOG;
+            }
+
+            if (selectedPanel == state.constants.LOG_ID_HTML && !getters.selectedTest.html) {
+                selectedPanel = state.constants.LOG_ID_LOG;
+            }
+
+            return selectedPanel;
+        },
+
+        selectedTest(state, getters) {
+            if (getters.selectedProject && getters.selectedProject.tests && state.selectedTestId) {
+                return getters.selectedProject.tests.filter(test => test.id == state.selectedTestId)[0];
+            }
+
+            return null;
         }
     },
 
@@ -201,6 +238,12 @@ export default {
             }
 
             context.commit('setWasRunning', context.getters.isRunning);
+
+            context.dispatch('checkSelectedPanel');
+        },
+
+        checkSelectedPanel(context) {
+
         },
     },
 };

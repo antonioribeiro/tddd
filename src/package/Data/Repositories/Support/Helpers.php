@@ -128,15 +128,17 @@ trait Helpers
     }
 
     /**
-     * Get the default editor binary.
+     * Get the default editor.
+     *
+     * @return array
      */
-    protected function getDefaultEditorBinary()
+    protected function getDefaultEditor()
     {
         if (is_null($default = collect(config('ci.editors'))->where('default', true)->first())) {
             die('FATAL ERROR: default editor not configured');
         }
 
-        return $default['bin'];
+        return $default;
     }
 
     /**
@@ -148,11 +150,23 @@ trait Helpers
      */
     protected function getEditorBinary($suite)
     {
-        if (empty($suite) || is_null($bin = config("ci.editors.{$suite->editor}.bin"))) {
-            return $this->getDefaultEditorBinary();
+        return $this->getEditor($suite)['bin'];
+    }
+
+    /**
+     * Get the editor.
+     *
+     * @param $suite
+     *
+     * @return array
+     */
+    protected function getEditor($suite)
+    {
+        if (empty($suite) || is_null($editor = config("ci.editors.{$suite->editor}"))) {
+            return $this->getDefaultEditor();
         }
 
-        return $bin;
+        return $editor;
     }
 
     /**

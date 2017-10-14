@@ -74,6 +74,7 @@ trait Tests
             'updated_at'    => $test->updated_at->diffForHumans(),
             'state'         => $test->state,
             'enabled'       => $test->enabled,
+            'editor_name'   => $this->getEditor($test->suite)['name'],
 
             'run'         => $run,
             'notified_at' => is_null($run) ? null : $run->notified_at,

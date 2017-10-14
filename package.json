@@ -24,5 +24,7 @@
     "vuex": "^2.4.0",
     "webpack-livereload-plugin": "^0.11.0"
   },
-  "dependencies": {}
+  "dependencies": {
+    "csspin": "^1.1.4"
+  }
 }

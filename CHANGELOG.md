@@ -15,12 +15,17 @@
 - Option to configure the poll interval (defaults to 1500ms)
 - Show spinner on running project
 - Show badge (passed/failed) for each project
-- Button to run all tests on all projects
+- Button to run all tests on all (filtered) projects
+- Added AVA tester
+- Test state to log modal
+- Option to run test from the log modal
+- Option to reset state of all projects
 ### Changed
 - Allow better configuration of editor's binary
 - Moved Laravel related classes out from Vendor\Laravel
 - Completely restructure package directory
 - License is now MIT
+- Improved regex matcher of editable source files (and lines)
 ### Fixed
 - Abending when tester used in suite does not exists
 - Piper script not being 

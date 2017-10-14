@@ -9,7 +9,7 @@
                 </div>
 
                 <div class="row">
-                    <div class="col-9">
+                    <div class="col-7">
                         <div class="input-group search-group">
                             <input
                                 v-model="filter"
@@ -21,9 +21,12 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-3 text-right">
+                    <div class="col-5 text-right">
                         <div class="btn btn-danger" @click="runAll()">
-                            run all
+                            run
+                        </div>
+                        <div class="btn btn-warning" @click="reset()">
+                            reset
                         </div>
                     </div>
                 </div>
@@ -53,23 +56,23 @@
                                     </div>
                                     <div class="col-2 text-right">
                                         <span v-if="project.state == 'running'">
-                                            <i class="fa fa-spinner fa-pulse  fa-spin fa-fw"></i>
+                                            <i class="fa fa-cog fa-spin fa-fw"></i>
                                         </span>
 
                                         <span v-if="project.state == 'failed'" class="project-state text-danger">
-                                            <i class="fa fa-times"></i>
+                                            <i @click="run(project)" class="fa fa-times cursor-pointer"></i>
                                         </span>
 
                                         <span v-if="project.state == 'ok'" class="project-state text-success">
-                                            <i class="fa fa-check"></i>
+                                            <i @click="run(project)" class="fa fa-check cursor-pointer"></i>
                                         </span>
 
                                         <span v-if="project.state == 'queued'" class="project-state text-warning">
-                                            <i class="fa fa-clock-o"></i>
+                                            <i @click="run(project)" class="fa fa-clock-o cursor-pointer"></i>
                                         </span>
 
                                         <span v-if="project.state == 'idle'" class="project-state text-default pale">
-                                            <i class="fa fa-pause"></i>
+                                            <i @click="run(project)" class="fa fa-pause cursor-pointer"></i>
                                         </span>
                                     </div>
                                 </div>
@@ -135,8 +138,16 @@
                 this.$store.commit('setProjectsFilter', '')
             },
 
+            run(project) {
+                axios.post(this.laravel.url_prefix+'/projects/run', { projects: project.id });
+            },
+
             runAll() {
                 axios.post(this.laravel.url_prefix+'/projects/run', { projects: this.filteredProjectsIds });
+            },
+
+            reset() {
+                axios.post(this.laravel.url_prefix+'/projects/reset/', { projects: this.filteredProjectsIds });
             },
         }
     }

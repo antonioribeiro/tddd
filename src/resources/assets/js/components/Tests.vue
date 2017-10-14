@@ -54,9 +54,9 @@
                     <th width="6%">run</th>
                     <th width="8%">state</th>
                     <th>suite</th>
-                    <th width="55%">test</th>
-                    <th>run time</th>
-                    <th>last run</th>
+                    <th width="50%">test</th>
+                    <th>time</th>
+                    <th>last</th>
                     <th width="5%">log</th>
                 </tr>
             </thead>
@@ -123,14 +123,15 @@
                 'laravel',
                 'projects',
                 'openTest',
-                'selectedTest',
                 'wasRunning',
+                'constants',
             ]),
 
             ...mapGetters([
                 'selectedProject',
                 'filteredTests',
                 'setTestsFilter',
+                'selectedTest',
                 'statistics',
             ]),
 
@@ -160,7 +161,7 @@
             },
 
             showLog(test) {
-                this.$store.commit('setSelectedTest', test);
+                this.$store.commit('setSelectedTestId', test.id);
 
                 jQuery('#logModal').modal('show');
             },
