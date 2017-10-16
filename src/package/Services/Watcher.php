@@ -83,6 +83,7 @@ class Watcher extends Base
      * Check if the changed file is the config file and reload.
      *
      * @param $path
+     *
      * @return bool
      */
     private function isConfig($path)
@@ -237,7 +238,6 @@ class Watcher extends Base
 
     /**
      * Watch the config file for changes.
-     *
      */
     private function watchConfigFile()
     {
