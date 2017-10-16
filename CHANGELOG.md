@@ -1,6 +1,6 @@
 # Changelog
 
-## [0.9.5] - 2017-10-11 --- MASTER
+## [0.9.5] - 2017-10-16 --- MASTER
 ### Added
 - Option to add environment variables to tester script
 - Config for different editors and a default editor
@@ -21,6 +21,7 @@
 - Option to run test from the log modal
 - Option to reset state of all projects
 - Watch and automatically reload config
+- Display tester log in real-time
 ### Changed
 - Allow better configuration of editor's binary
 - Moved Laravel related classes out from Vendor\Laravel
