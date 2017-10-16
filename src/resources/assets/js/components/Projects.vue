@@ -111,7 +111,7 @@
                     return this.$store.state.filters.projects
                 },
                 set (value) {
-                    this.$store.commit('setProjectsFilter', value)
+                    this.$store.dispatch('setProjectsFilter', value)
                 }
             }
         },

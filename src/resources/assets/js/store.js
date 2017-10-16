@@ -65,10 +65,6 @@ export default {
             state.wasRunning = wasIt;
         },
 
-        setProjectsFilter(state, filter) {
-            state.filters.projects = filter;
-        },
-
         setTestsFilter(state, filter) {
             state.filters.tests = filter;
         },
@@ -238,12 +234,14 @@ export default {
             }
 
             context.commit('setWasRunning', context.getters.isRunning);
-
-            context.dispatch('checkSelectedPanel');
         },
 
-        checkSelectedPanel(context) {
+        setProjectsFilter(context, filter) {
+            context.commit('setProjectsFilter', filter);
 
+            if (context.getters.filteredProjectsIds.length > 0 && context.getters.filteredProjectsIds.filter(id => id === context.state.selectedProjectId).length == 0) {
+                context.commit('setSelectedProjectId', context.getters.filteredProjectsIds[0]);
+            }
         },
     },
 };

@@ -47496,8 +47496,6 @@ exports.clearImmediate = clearImmediate;
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
 /* harmony default export */ __webpack_exports__["a"] = ({
     state: {
         laravel: window.laravel,
@@ -47530,7 +47528,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         }
     },
 
-    mutations: _defineProperty({
+    mutations: {
         setSelectedProject: function setSelectedProject(state, payload) {
             if (!state.selectedProject || payload.force) {
                 state.selectedProjectId = payload.project.id;
@@ -47557,15 +47555,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         setWasRunning: function setWasRunning(state, wasIt) {
             state.wasRunning = wasIt;
         },
-        setProjectsFilter: function setProjectsFilter(state, filter) {
-            state.filters.projects = filter;
-        },
         setTestsFilter: function setTestsFilter(state, filter) {
             state.filters.tests = filter;
+        },
+        setProjectsFilter: function setProjectsFilter(state, filter) {
+            state.filters.projects = filter;
         }
-    }, 'setProjectsFilter', function setProjectsFilter(state, filter) {
-        state.filters.projects = filter;
-    }),
+    },
 
     getters: {
         selectedProject: function selectedProject(state) {
@@ -47720,10 +47716,16 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             }
 
             context.commit('setWasRunning', context.getters.isRunning);
-
-            context.dispatch('checkSelectedPanel');
         },
-        checkSelectedPanel: function checkSelectedPanel(context) {}
+        setProjectsFilter: function setProjectsFilter(context, filter) {
+            context.commit('setProjectsFilter', filter);
+
+            if (context.getters.filteredProjectsIds.length > 0 && context.getters.filteredProjectsIds.filter(function (id) {
+                return id === context.state.selectedProjectId;
+            }).length == 0) {
+                context.commit('setSelectedProjectId', context.getters.filteredProjectsIds[0]);
+            }
+        }
     }
 });
 
@@ -47885,7 +47887,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
                 return this.$store.state.filters.projects;
             },
             set: function set(value) {
-                this.$store.commit('setProjectsFilter', value);
+                this.$store.dispatch('setProjectsFilter', value);
             }
         }
     }),
