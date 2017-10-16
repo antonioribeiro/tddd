@@ -3,13 +3,12 @@
 namespace PragmaRX\TestsWatcher\Package\Data\Repositories\Support;
 
 use Carbon\Carbon;
-use PragmaRX\TestsWatcher\Package\Data\Models\Run;
 use PragmaRX\TestsWatcher\Package\Data\Models\Test;
 use PragmaRX\TestsWatcher\Package\Support\Constants;
 
 trait Tests
 {
-    use Queue;
+    use Queue, Runs;
 
     /**
      * Find test by filename and suite.
@@ -38,10 +37,10 @@ trait Tests
     {
         $test = Test::updateOrCreate(
             [
-                'sha1' => sha1_file($file->getRealPath()),
+                'sha1' => sha1_file(($path = $this->normalizePath($file->getPath())).DIRECTORY_SEPARATOR.$file->getFilename()),
             ],
             [
-                'path'     => $this->normalizePath($file->getPath()),
+                'path'     => $path,
                 'name'     => $file->getFilename(),
                 'suite_id' => $suite->id,
             ]
@@ -50,39 +49,6 @@ trait Tests
         if ($test->wasRecentlyCreated && $this->findTestByFileAndSuite($file, $suite)) {
             $this->addTestToQueue($test);
         }
-    }
-
-    /**
-     * Get test info.
-     *
-     * @param $test
-     *
-     * @return array
-     */
-    protected function getTestInfo($test)
-    {
-        $run = Run::where('test_id', $test->id)->orderBy('created_at', 'desc')->first();
-
-        return [
-            'id'            => $test->id,
-            'suite_name'    => $test->suite->name,
-            'project_name'  => $test->suite->project->name,
-            'project_id'    => $test->suite->project->id,
-            'path'          => $test->path.DIRECTORY_SEPARATOR,
-            'name'          => $test->name,
-            'edit_file_url' => $this->makeEditFileUrl($test),
-            'updated_at'    => $test->updated_at->diffForHumans(),
-            'state'         => $test->state,
-            'enabled'       => $test->enabled,
-            'editor_name'   => $this->getEditor($test->suite)['name'],
-
-            'run'         => $run,
-            'notified_at' => is_null($run) ? null : $run->notified_at,
-            'log'         => is_null($run) ? null : $run->log,
-            'html'        => is_null($run) ? null : $run->html,
-            'image'       => is_null($run) ? null : $run->png,
-            'time'        => is_null($run) ? '' : (is_null($run->started_at) ? '' : $this->removeBefore($run->started_at->diffForHumans($run->ended_at))),
-        ];
     }
 
     /**
@@ -120,29 +86,21 @@ trait Tests
     /**
      * Store the test result.
      *
+     * @param $run
      * @param $test
      * @param $lines
      * @param $ok
      * @param $startedAt
      * @param $endedAt
-     *
      * @return mixed
      */
-    public function storeTestResult($test, $lines, $ok, $startedAt, $endedAt)
+    public function storeTestResult($run, $test, $lines, $ok, $startedAt, $endedAt)
     {
         if (!$this->testExists($test)) {
             return false;
         }
 
-        $run = Run::create([
-            'test_id'     => $test->id,
-            'was_ok'      => $ok,
-            'log'         => $this->formatLog($lines, $test) ?: '(empty)',
-            'html'        => $this->getOutput($test, $test->suite->tester->output_folder, $test->suite->tester->output_html_fail_extension),
-            'screenshots' => $this->getScreenshots($test, $lines),
-            'started_at'  => $startedAt,
-            'ended_at'    => $endedAt,
-        ]);
+        $run = $this->updateRun($run, $test, $lines, $ok, $startedAt, $endedAt);
 
         $test->state = $ok ? Constants::STATE_OK : Constants::STATE_FAILED;
 
@@ -165,6 +123,8 @@ trait Tests
         $test->state = Constants::STATE_RUNNING;
 
         $test->save();
+
+        return $this->createNewRunForTest($test);
     }
 
     /**
@@ -291,5 +251,32 @@ trait Tests
     protected function testExists($test)
     {
         return !is_null(Test::find($test->id));
+    }
+
+    /**
+     * Update the run.
+     *
+     * @param $run
+     * @param $test
+     * @param $lines
+     * @param $ok
+     * @param $startedAt
+     * @param $endedAt
+     * @return mixed
+     */
+    private function updateRun($run, $test, $lines, $ok, $startedAt, $endedAt)
+    {
+        $run->test_id = $test->id;
+        $run->was_ok = $ok;
+        $run->log = $this->formatLog($lines, $test) ?: '(empty)';
+        $run->html = $this->getOutput($test, $test->suite->tester->output_folder,
+        $test->suite->tester->output_html_fail_extension);
+        $run->screenshots = $this->getScreenshots($test, $lines);
+        $run->started_at = $startedAt;
+        $run->ended_at = $endedAt;
+
+        $run->save();
+
+        return $run;
     }
 }

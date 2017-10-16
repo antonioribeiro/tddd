@@ -355,7 +355,7 @@ trait Helpers
      *
      * @return mixed|string
      */
-    protected function formatLog($log, $test)
+    public function formatLog($log, $test)
     {
         return !empty($log)
             ? $this->linkFiles($this->ansi2Html($log), $test)

@@ -8,7 +8,9 @@
                     </h3>
 
                     <h3>
-                        <span v-if="selectedTest.state == 'failed' || selectedTest.state == 'ok'" :class="'pull-right badge badge-'+(selectedTest.state == 'failed' ? 'danger' : 'success')">
+                        <span :class="'pull-right badge badge-'+(selectedTest.state == 'failed' ? 'danger' : (selectedTest.state == 'ok' ? 'success' : (selectedTest.state == 'running' || selectedTest.state == 'queued' ? 'warning' : 'secondary')))">
+                            <i v-if="selectedTest.state == 'running'" class="fa fa-cog fa-spin fa-fw"></i>
+                            <i v-if="selectedTest.state == 'queued'" class="fa fa-clock"></i>
                             {{ selectedTest.state }}
                         </span>
                     </h3>
@@ -31,21 +33,9 @@
                         </div>
 
                         <div class="col-4 text-right">
-                            <div @click="runTest(selectedTest.id)" :class="'btn btn-sm btn-'+(selectedTest.state == 'running' ? 'secondary' : (selectedTest.state == 'queued' ? 'warning' : 'danger'))">
-                                <div>
-                                    <span v-if="selectedTest.state == 'running'">
-                                        <i class="fa fa-cog fa-spin fa-fw"></i> running...
-                                    </span>
-
-                                    <span v-if="selectedTest.state == 'queued'">
-                                        <i class="fa fa-clock"></i> in queue
-                                    </span>
-
-                                    <span v-if="selectedTest.state !== 'running' && selectedTest.state !== 'queued'">
-                                        <i class="fa fa-play"></i> run it
-                                    </span>
-                                </div>
-                            </div>
+                            <button :disabled="selectedTest.state == 'running' || selectedTest.state == 'queued'" @click="runTest(selectedTest.id)" :class="'btn btn-sm btn-'+(selectedTest.state !== 'running' && selectedTest.state !== 'queued' ? 'danger' : 'secondary')">
+                                <i class="fa fa-play"></i> run it
+                            </button>
 
                             <div @click="editFile(selectedTest.edit_file_url)" class="btn btn-sm btn-primary">
                                 <i class="fa fa-text-width"></i> open in {{ selectedTest.editor_name }}

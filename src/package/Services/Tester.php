@@ -6,6 +6,7 @@ use Closure;
 use PragmaRX\TestsWatcher\Package\Console\Commands\BaseCommand as Command;
 use PragmaRX\TestsWatcher\Package\Data\Repositories\Data as DataRepository;
 use PragmaRX\TestsWatcher\Package\Support\Executor;
+use Symfony\Component\Process\Process;
 
 class Tester extends Base
 {
@@ -129,18 +130,18 @@ class Tester extends Base
     /**
      * Get the output from pipe or Process.
      *
-     * @param $process \Symfony\Component\Process\Process
+     * @param $buffer \Symfony\Component\Process\Process
      * @param $test
      *
      * @return bool|string
      */
-    private function getOutput($process, $test)
+    private function getOutput($buffer, $test)
     {
-        if ($this->wasPiped($test)) {
-            return $this->getPipedFileContents();
-        }
+        $piped = $this->wasPiped($test) ? $this->getPipedFileContents() : '';
 
-        return $process->getOutput();
+        $buffer = $buffer instanceof Process ? $buffer->getOutput() : $buffer;
+
+        return $piped ?: $buffer;
     }
 
     /**
@@ -243,18 +244,24 @@ class Tester extends Base
 
         $lines = '';
 
-        $this->dataRepository->markTestAsRunning($test);
+        $run = $this->dataRepository->markTestAsRunning($test);
 
         $command = $this->addPiperCommand($test);
 
         $this->showProgress('RUNNING: '.$command, 'comment');
+
+        $logOutput = '';
 
         for ($times = 0; $times <= $test->suite->retries; $times++) {
             if ($times > 0) {
                 $this->showProgress('retrying...');
             }
 
-            $process = $this->executor->exec($command, $test->suite->project->path, function ($type, $buffer) {
+            $process = $this->executor->exec($command, $test->suite->project->path, function ($type, $buffer) use ($run, $test, &$logOutput) {
+                $logOutput .= $buffer;
+
+                $this->dataRepository->updateRunLog($run, $this->getOutput($this->dataRepository->formatLog($logOutput, $test), $test));
+
                 if ($this->config->get('show_progress')) {
                     $this->showProgress($buffer);
                 }
@@ -269,7 +276,7 @@ class Tester extends Base
 
         $this->command->{$ok ? 'info' : 'error'}($ok ? 'OK' : 'FAILED');
 
-        $this->dataRepository->storeTestResult($test, $lines, $ok, $this->executor->startedAt, $this->executor->endedAt);
+        $this->dataRepository->storeTestResult($run, $test, $lines, $ok, $this->executor->startedAt, $this->executor->endedAt);
 
         $this->deleteTeeTempFile();
 
@@ -303,6 +310,7 @@ class Tester extends Base
 
         return count($matches) == 0;
     }
+
 
     /**
      * Check if the tester is using a piper script.
