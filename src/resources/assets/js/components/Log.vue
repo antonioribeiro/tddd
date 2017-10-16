@@ -7,13 +7,11 @@
                         {{ selectedProject.name }} - {{ selectedTest.name }}
                     </h3>
 
-                    <div class="close">
-                        <h3>
-                            <span v-if="selectedTest.state == 'failed' || selectedTest.state == 'ok'" :class="'pull-right badge badge-'+(selectedTest.state == 'failed' ? 'danger' : 'success')">
-                                {{ selectedTest.state }}
-                            </span>
-                        </h3>
-                    </div>
+                    <h3>
+                        <span v-if="selectedTest.state == 'failed' || selectedTest.state == 'ok'" :class="'pull-right badge badge-'+(selectedTest.state == 'failed' ? 'danger' : 'success')">
+                            {{ selectedTest.state }}
+                        </span>
+                    </h3>
                 </div>
 
                 <div class="modal-body">
@@ -40,17 +38,17 @@
                                     </span>
 
                                     <span v-if="selectedTest.state == 'queued'">
-                                        <span class="fa fa-clock"></span> in queue
+                                        <i class="fa fa-clock"></i> in queue
                                     </span>
 
                                     <span v-if="selectedTest.state !== 'running' && selectedTest.state !== 'queued'">
-                                        <span class="fa fa-play"></span> run it
+                                        <i class="fa fa-play"></i> run it
                                     </span>
                                 </div>
                             </div>
 
                             <div @click="editFile(selectedTest.edit_file_url)" class="btn btn-sm btn-primary">
-                                open in {{ selectedTest.editor_name }}
+                                <i class="fa fa-text-width"></i> open in {{ selectedTest.editor_name }}
                             </div>
                         </div>
                     </div>

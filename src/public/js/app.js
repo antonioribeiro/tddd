@@ -48742,8 +48742,6 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 //
 //
 //
-//
-//
 
 
 
@@ -48820,29 +48818,27 @@ var render = function() {
                   )
                 ]),
                 _vm._v(" "),
-                _c("div", { staticClass: "close" }, [
-                  _c("h3", [
-                    _vm.selectedTest.state == "failed" ||
-                    _vm.selectedTest.state == "ok"
-                      ? _c(
-                          "span",
-                          {
-                            class:
-                              "pull-right badge badge-" +
-                              (_vm.selectedTest.state == "failed"
-                                ? "danger"
-                                : "success")
-                          },
-                          [
-                            _vm._v(
-                              "\n                            " +
-                                _vm._s(_vm.selectedTest.state) +
-                                "\n                        "
-                            )
-                          ]
-                        )
-                      : _vm._e()
-                  ])
+                _c("h3", [
+                  _vm.selectedTest.state == "failed" ||
+                  _vm.selectedTest.state == "ok"
+                    ? _c(
+                        "span",
+                        {
+                          class:
+                            "pull-right badge badge-" +
+                            (_vm.selectedTest.state == "failed"
+                              ? "danger"
+                              : "success")
+                        },
+                        [
+                          _vm._v(
+                            "\n                        " +
+                              _vm._s(_vm.selectedTest.state) +
+                              "\n                    "
+                          )
+                        ]
+                      )
+                    : _vm._e()
                 ])
               ]),
               _vm._v(" "),
@@ -48953,7 +48949,7 @@ var render = function() {
                           _vm._v(" "),
                           _vm.selectedTest.state == "queued"
                             ? _c("span", [
-                                _c("span", { staticClass: "fa fa-clock" }),
+                                _c("i", { staticClass: "fa fa-clock" }),
                                 _vm._v(
                                   " in queue\n                                "
                                 )
@@ -48963,7 +48959,7 @@ var render = function() {
                           _vm.selectedTest.state !== "running" &&
                           _vm.selectedTest.state !== "queued"
                             ? _c("span", [
-                                _c("span", { staticClass: "fa fa-play" }),
+                                _c("i", { staticClass: "fa fa-play" }),
                                 _vm._v(
                                   " run it\n                                "
                                 )
@@ -48984,8 +48980,9 @@ var render = function() {
                         }
                       },
                       [
+                        _c("i", { staticClass: "fa fa-text-width" }),
                         _vm._v(
-                          "\n                            open in " +
+                          " open in " +
                             _vm._s(_vm.selectedTest.editor_name) +
                             "\n                        "
                         )
