@@ -311,7 +311,6 @@ class Tester extends Base
         return count($matches) == 0;
     }
 
-
     /**
      * Check if the tester is using a piper script.
      *

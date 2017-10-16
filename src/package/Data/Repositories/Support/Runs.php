@@ -19,14 +19,15 @@ trait Runs
      * Create a new run record for a test.
      *
      * @param $test
+     *
      * @return mixed
      */
     public function createNewRunForTest($test)
     {
         return Run::create([
             'test_id' => $test->id,
-            'log' => '',
-            'was_ok' => false,
+            'log'     => '',
+            'was_ok'  => false,
         ]);
     }
 

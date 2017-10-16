@@ -92,6 +92,7 @@ trait Tests
      * @param $ok
      * @param $startedAt
      * @param $endedAt
+     *
      * @return mixed
      */
     public function storeTestResult($run, $test, $lines, $ok, $startedAt, $endedAt)
@@ -262,6 +263,7 @@ trait Tests
      * @param $ok
      * @param $startedAt
      * @param $endedAt
+     *
      * @return mixed
      */
     private function updateRun($run, $test, $lines, $ok, $startedAt, $endedAt)
