@@ -9,6 +9,8 @@
 
 ### A Self-Hosted Continuous Testing Dashboard.
 
+Test Watcher is a dashboard to watch & run all your tests. It supports any test framework executed via terminal: PHPUnit, Laravel Dusk, Codeception, phpspec, Jest, AVA, Behat, Atoum, rake, and you can add yours, just tell it where the executable is and it's done. Tests Watcher also shows the progress of your tests, let you run a single test or all of them, and open your favorite code editor (PHPStorm, VSCode, Sublime Text, etc.) positioning the cursor in the failing line of your test. If your test framework generate screenshots, it is also able to show it in the log page, with all the reds and greens you are used to see in your terminal.
+
 ## Dashboard View
 
 * Project List: click a project link to see all its tests.
@@ -19,7 +21,7 @@
 * "Show" button, to display the error log of failed tests.
 * Ready for PHPUnit, Laravel Dusk, Codeception, phpspec, atoum and more.
 * Highly configurable, watch anything & test everything!
-
+ 
 ### Videos
 
 - [Preview](https://www.youtube.com/watch?v=sO_aDf3xCgE)
