@@ -57,7 +57,6 @@ class Loader extends Base
 
     /**
      * Read configuration and load testers, projects, suites...
-     *
      */
     public function loadEverything()
     {
@@ -70,7 +69,6 @@ class Loader extends Base
 
     /**
      * Load all testers to database.
-     *
      */
     public function loadTesters()
     {
@@ -85,7 +83,6 @@ class Loader extends Base
 
     /**
      * Load all projects to database.
-     *
      */
     public function loadProjects()
     {
@@ -108,7 +105,6 @@ class Loader extends Base
 
     /**
      * Load all test files to database.
-     *
      */
     public function loadTests()
     {

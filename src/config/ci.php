@@ -28,7 +28,7 @@ return [
      */
     'regex_file_matcher' => '/([A-Za-z0-9\/._-]+)(?::| on line )([1-9][0-9]*)/',
 
-    /**
+    /*
      * Config file
      */
 
