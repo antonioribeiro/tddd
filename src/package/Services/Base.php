@@ -23,10 +23,8 @@ class Base
      */
     protected $config;
 
-
     /**
      * Instantiate a Watcher.
-     *
      */
     public function __construct()
     {
