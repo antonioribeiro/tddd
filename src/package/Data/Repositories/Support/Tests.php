@@ -41,13 +41,13 @@ trait Tests
                 'sha1' => sha1_file($file->getRealPath()),
             ],
             [
-                'path'     => $this->normalizePath($file->getPath()),
-                'name'     => $file->getFilename(),
-                'suite_id' => $suite->id,
+                'path' => $this->normalizePath($file->getPath()),
+                'name' => $file->getFilename(),
+                'suite_id' => $suite->id
             ]
         );
 
-        if ($this->findTestByFileAndSuite($file, $suite)) {
+        if ($test->wasRecentlyCreated && $this->findTestByFileAndSuite($file, $suite)) {
             $this->addTestToQueue($test);
         }
     }

@@ -50,6 +50,8 @@ class Watcher extends Base
         $this->watcher = $watcher;
 
         $this->loader = $loader;
+
+        parent::__construct();
     }
 
     /**
@@ -70,6 +72,25 @@ class Watcher extends Base
 
                 $this->showProgress('QUEUE: test added to queue');
             }
+
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Check if the changed file is the config file and reload.
+     *
+     * @param $path
+     * @return bool
+     */
+    private function isConfig($path)
+    {
+        if ($path == $this->config->get('config_file') && file_exists($path)) {
+            $this->config->set(require $path);
+
+            $this->loader->loadEverything();
 
             return true;
         }
@@ -100,7 +121,7 @@ class Watcher extends Base
      */
     private function initialize()
     {
-        $this->showComment($this->getConfig('names.watcher'), 'info');
+        $this->showComment($this->config->get('names.watcher'), 'info');
 
         if (!$this->is_initialized) {
             $this->loader->loadEverything();
@@ -145,6 +166,8 @@ class Watcher extends Base
             });
         }
 
+        $this->watchConfigFile();
+
         $this->watcher->start();
     }
 
@@ -157,6 +180,10 @@ class Watcher extends Base
      */
     public function fireEvent($event, $resource, $path)
     {
+        if ($this->isConfig($path)) {
+            return;
+        }
+
         if ($this->firedOnlyOne($event, $path)) {
             return;
         }
@@ -206,5 +233,18 @@ class Watcher extends Base
         }
 
         return $queued;
+    }
+
+    /**
+     * Watch the config file for changes.
+     *
+     */
+    private function watchConfigFile()
+    {
+        if (file_exists($file = $this->config->get('config_file'))) {
+            $this->watcher->watch($file);
+
+            $this->showProgress("WATCHING CONFIG: {$file}");
+        }
     }
 }

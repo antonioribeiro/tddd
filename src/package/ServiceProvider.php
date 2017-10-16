@@ -82,6 +82,8 @@ class ServiceProvider extends IlluminateServiceProvider
 
         $this->registerTester();
 
+        $this->registerConfig();
+
         $this->registerWatchCommand();
 
         $this->registerTestCommand();
@@ -186,6 +188,16 @@ class ServiceProvider extends IlluminateServiceProvider
     {
         $this->app->singleton('ci.tester', function ($app) {
             return app('PragmaRX\TestsWatcher\Package\Services\Tester');
+        });
+    }
+
+    /**
+     * Register service tester.
+     */
+    private function registerConfig()
+    {
+        $this->app->singleton('ci.config', function ($app) {
+            return app('PragmaRX\TestsWatcher\Package\Services\Config');
         });
     }
 

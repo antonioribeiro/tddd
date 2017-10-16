@@ -35,6 +35,8 @@ class Loader extends Base
     public function __construct(DataRepository $dataRepository)
     {
         $this->dataRepository = $dataRepository;
+
+        parent::__construct();
     }
 
     /**
@@ -55,6 +57,7 @@ class Loader extends Base
 
     /**
      * Read configuration and load testers, projects, suites...
+     *
      */
     public function loadEverything()
     {
@@ -67,26 +70,28 @@ class Loader extends Base
 
     /**
      * Load all testers to database.
+     *
      */
     public function loadTesters()
     {
         $this->showProgress('Loading testers...', 'info');
 
-        foreach ($this->getConfig('testers') as $name => $data) {
+        foreach ($this->config->get('testers') as $name => $data) {
             $this->dataRepository->createOrUpdateTester($name, $data);
         }
 
-        $this->dataRepository->deleteMissingTesters(array_keys($this->getConfig('testers')));
+        $this->dataRepository->deleteMissingTesters(array_keys($this->config->get('testers')));
     }
 
     /**
      * Load all projects to database.
+     *
      */
     public function loadProjects()
     {
         $this->showProgress('Loading projects and suites...');
 
-        foreach ($this->getConfig('projects') as $name => $data) {
+        foreach ($this->config->get('projects') as $name => $data) {
             $this->showProgress("Project '{$name}'", 'comment');
 
             $project = $this->dataRepository->createOrUpdateProject($name, $data['path'], $data['tests_path']);
@@ -98,11 +103,12 @@ class Loader extends Base
             $this->addToExclusions($data['path'], $data['exclude']);
         }
 
-        $this->dataRepository->deleteMissingProjects(array_keys($this->getConfig('projects')));
+        $this->dataRepository->deleteMissingProjects(array_keys($this->config->get('projects')));
     }
 
     /**
      * Load all test files to database.
+     *
      */
     public function loadTests()
     {

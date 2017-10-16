@@ -19,6 +19,21 @@ class Base
     protected $loader;
 
     /**
+     * @var array
+     */
+    protected $config;
+
+
+    /**
+     * Instantiate a Watcher.
+     *
+     */
+    public function __construct()
+    {
+        $this->config = app('ci.config');
+    }
+
+    /**
      * Get a configuration key.
      *
      * @param $key
@@ -27,13 +42,32 @@ class Base
      *
      * @return mixed
      */
-    protected function getConfig($key)
+    protected function config($key)
     {
-        if (is_null($value = config("ci.{$key}"))) {
+        $this->loadConfig();
+
+        if (is_null($value = array_get($this->config, $key))) {
             throw new \Exception("The configuration key '{$key}' was not defined.");
         }
 
         return $value;
+    }
+
+    private function loadConfig()
+    {
+        if (is_null($this->config)) {
+            $this->config = config('ci');
+        }
+    }
+
+    /**
+     * Set the config.
+     *
+     * @param array $config
+     */
+    public function setConfig($config)
+    {
+        $this->config = $config;
     }
 
     /**
@@ -82,6 +116,11 @@ class Base
         return $event;
     }
 
+    /**
+     * Display messages in terminal.
+     *
+     * @param $messages
+     */
     protected function displayMessages($messages)
     {
         $fatal = $messages->reduce(function ($carry, $message) {

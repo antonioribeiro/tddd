@@ -48,6 +48,8 @@ class Tester extends Base
         $this->dataRepository = $dataRepository;
 
         $this->executor = $executor;
+
+        parent::__construct();
     }
 
     /**
@@ -83,8 +85,8 @@ class Tester extends Base
     {
         $this->pipedFile = null;
 
-        if ($tee = $this->getConfig('tee')) {
-            $this->pipedFile = tempnam($this->getConfig('tmp'), 'tw-');
+        if ($tee = $this->config->get('tee')) {
+            $this->pipedFile = tempnam($this->config->get('tmp'), 'tw-');
 
             $testCommand .= " | {$tee} > {$this->pipedFile}";
         }
@@ -103,10 +105,10 @@ class Tester extends Base
     {
         $this->pipedFile = null;
 
-        if ($script = $this->getConfig('script')) {
+        if ($script = $this->config->get('script')) {
             $testCommand = sprintf(
                 $script,
-                $this->pipedFile = tempnam($this->getConfig('tmp'), 'tw-'),
+                $this->pipedFile = tempnam($this->config->get('tmp'), 'tw-'),
                 $testCommand
             );
         }
@@ -160,7 +162,7 @@ class Tester extends Base
     {
         $this->setCommand($command);
 
-        $this->showProgress($this->getConfig('names.worker'), 'info');
+        $this->showProgress($this->config->get('names.worker'), 'info');
 
         $this->startTester();
     }
@@ -253,7 +255,7 @@ class Tester extends Base
             }
 
             $process = $this->executor->exec($command, $test->suite->project->path, function ($type, $buffer) {
-                if ($this->getConfig('show_progress')) {
+                if ($this->config->get('show_progress')) {
                     $this->showProgress($buffer);
                 }
             });

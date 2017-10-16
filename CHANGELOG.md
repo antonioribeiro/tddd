@@ -20,6 +20,7 @@
 - Test state to log modal
 - Option to run test from the log modal
 - Option to reset state of all projects
+- Watch and automatically reload config
 ### Changed
 - Allow better configuration of editor's binary
 - Moved Laravel related classes out from Vendor\Laravel
