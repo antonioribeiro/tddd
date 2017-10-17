@@ -1,7 +1,8 @@
 # Changelog
 
-## [0.9.5] - 2017-10-16 --- MASTER
+## [0.9.5] - 2017-10-16
 ### Added
+- MySQL Support
 - Option to add environment variables to tester script
 - Config for different editors and a default editor
 - User can now set one different editor for each suite
