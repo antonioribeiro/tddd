@@ -1,6 +1,6 @@
 <?php
 
-namespace PragmaRX\TestsWatcher;
+namespace PragmaRX\TestsWatcher\Package;
 
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Route;
