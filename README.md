@@ -97,14 +97,6 @@ php artisan ci:watch & php artisan ci:work &
 open http://ci.dev/tests-watcher/dashboard
 ``` 
 
-### TLDR;
-
-- Install via Composer
-- Publish the configuration
-- Migrate the database
-- Run `php artisan ci:watch & php artisan ci:work &`
-- Open `http://<domain.dev>/tests-watcher/dashboard`
-
 ### Examples & Starter App
 
 For lots of examples, check [this starter app](https://github.com/antonioribeiro/tests-watcher-starter), which will also help you create an independent dashboard for your tests.
