@@ -85,7 +85,7 @@ This package was tested and is known to be compatible with
 
 #### TL;DR
 
-``` php
+``` bash
 laravel new ci
 cd ci
 composer require pragmarx/ci
