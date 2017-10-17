@@ -83,7 +83,19 @@ This package was tested and is known to be compatible with
 
 ## Installing
 
-#### PostgreSQL is needed, MySQL support is on the way
+#### TL;DR
+
+``` php
+laravel new ci
+cd ci
+composer require pragmarx/ci
+php artisan vendor:publish --provider="PragmaRX\TestsWatcher\Package\ServiceProvider"
+valet link ci
+# configure database on your .env
+php artisan migrate
+php artisan ci:watch & php artisan ci:work &
+open http://ci.dev/tests-watcher/dashboard
+``` 
 
 ### TLDR;
 
