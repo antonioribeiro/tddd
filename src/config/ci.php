@@ -132,7 +132,7 @@ return [
      */
     'editors' => [
         'phpstorm' => [
-            'type' => 'PHPStorm',
+            'name' => 'PHPStorm',
 
             'bin' => '/usr/local/bin/pstorm {file}:{line}',
 
@@ -140,13 +140,13 @@ return [
         ],
 
         'sublime' => [
-            'type' => 'SublimeText 3',
+            'name' => 'SublimeText 3',
 
             'bin' => '/usr/local/bin/subl {file}:{line}',
         ],
 
         'vscode' => [
-            'type' => 'VSCode',
+            'name' => 'VSCode',
 
             'bin' => '/Applications/Visual\ Studio\ Code.app/Contents/Resources/app/bin/code --goto {file}:{line}',
         ],
