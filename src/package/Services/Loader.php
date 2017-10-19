@@ -52,6 +52,7 @@ class Loader extends Base
 
         if (!$this->dataRepository->createOrUpdateSuite($suite_name, $project->id, $suite_data)) {
             $this->displayMessages($this->dataRepository->getMessages());
+            die;
         }
     }
 
@@ -75,6 +76,8 @@ class Loader extends Base
         $this->showProgress('Loading testers...', 'info');
 
         foreach ($this->config->get('testers') as $name => $data) {
+            $this->showProgress("TESTER: $name");
+
             $this->dataRepository->createOrUpdateTester($name, $data);
         }
 
@@ -105,6 +108,7 @@ class Loader extends Base
 
     /**
      * Load all test files to database.
+     *
      */
     public function loadTests()
     {
@@ -154,7 +158,7 @@ class Loader extends Base
         $this->dataRepository->removeMissingSuites($suites = $data['suites'], $project);
 
         collect($suites)->map(function ($data, $name) use ($project) {
-            $this->dataRepository->createOrUpdateSuite($name, $project, $data);
+            $this->createSuite($name, $project, $data);
         });
     }
 }
