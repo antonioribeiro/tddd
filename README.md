@@ -26,8 +26,8 @@ Test Watcher is a dashboard to watch & run all your tests. It supports any test 
 
 - [Preview](https://www.youtube.com/watch?v=sO_aDf3xCgE)
 - [Installing](https://youtu.be/AgkKCLNiV8w)
-- [VueJS Preview](https://youtu.be/ooF4oLD9U7Q)
-- [Laravel Dusk Preview](https://youtu.be/HAdfLYArk_A)
+- [VueJS Preview](https://youtu.be/HAdfLYArk_A)
+- [Laravel Dusk Preview](https://youtu.be/ooF4oLD9U7Q)
 
 ### Screenshots
 
