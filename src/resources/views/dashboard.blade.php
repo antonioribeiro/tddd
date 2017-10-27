@@ -25,16 +25,13 @@
                 <div class="container-fluid">
                     <div class="row row-offcanvas row-offcanvas-right">
                         <div class="col-6 col-md-3 sidebar-offcanvas" id="sidebar">
-
-
                             <projects></projects>
                         </div><!--/span-->
 
                         <div class="col-12 col-sm-9">
                             <div class="table-container">
                                 <div class="table-responsive" id="table-container">
-                                    <tests>
-                                    </tests>
+                                    <tests></tests>
                                 </div>
                             </div>
                         </div><!--/span-->
