@@ -108,7 +108,6 @@ class Loader extends Base
 
     /**
      * Load all test files to database.
-     *
      */
     public function loadTests()
     {
