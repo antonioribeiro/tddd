@@ -20,7 +20,7 @@ class CreateCiRunsTable extends Migration
 
             $table->boolean('was_ok');
 
-            $table->text('log');
+            $table->mediumText('log');
 
             $table->text('html')->nullable();
 
