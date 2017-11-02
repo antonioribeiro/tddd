@@ -1,0 +1,14 @@
+name: "React"
+path: "/Users/antoniocarlos/code/pragmarx/ci/examples/react"
+watch_folders:
+  - src
+exclude: []
+depends: []
+tests_path: src
+suites:
+  unit:
+    tester: react-scripts
+    tests_path: ''
+    command_options: ''
+    file_mask: "*.test.js"
+    retries: 0

@@ -1,5 +1,5 @@
 # TDDD - Test Driven Development Dashboard
-### A Self-Hosted Continuous Tests Watcher & Dashboard
+### A Self-Hosted TDD Dashboard & Tests Watcher 
 
 [![Latest Stable Version](https://img.shields.io/packagist/v/pragmarx/ci.svg?style=flat-square)](https://packagist.org/packages/pragmarx/ci)
 [![License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md) 
@@ -10,7 +10,7 @@
 
 ## What is it?
 
-Continuous TDD Dashboard, namely Tests Watcher, is a dashboard to watch & run all your tests during development. It supports any test framework wich can executed via terminal, it comes with some testers (PHPUnit, Jest, AVA...) preconfigured, but you can easily add yours, just tell it where the executable is and it's done. Ii also shows the progress of your tests, let you run a single test or all of them, and open your favorite code editor (PHPStorm, VSCode, Sublime Text, etc.) positioning the cursor in the failing line of your test. If your test framework generate screenshots, it is also able to show it in the log page, with all the reds and greens you are used to see in your terminal.
+TDD Dashboard, is an app to watch and run all your tests during development. Supports any test framework which can executed via terminal, comes with some testers (PHPUnit, Jest, AVA...) preconfigured, but you can easily add yours, just tell it where the executable is and it's done. It also shows the progress of your tests, let you run a single test or all of them, and open your favorite code editor (PHPStorm, VSCode, Sublime Text, etc.) positioning the cursor in the failing line of your test. If your test framework generate screenshots, it is also able to show it in the log page, with all the reds and greens you are used to see in your terminal.
 
 It uses Laravel as motor, but supports (and has been tested with) many languages, frameworks and testing frameworks:
 
@@ -27,7 +27,7 @@ It uses Laravel as motor, but supports (and has been tested with) many languages
 * [Nette Tester](https://tester.nette.org/)
 * [Symfony](https://symfony.com/doc/current/testing.html)
 
-## Dashboard View
+## Features
 
 * Project List: click a project link to see all its tests.
 * Open files directly in your source code editor (PHPStorm, Sublime Text...).
@@ -35,7 +35,7 @@ It uses Laravel as motor, but supports (and has been tested with) many languages
 * Enable/disable a test. Once disabled if the watcher catches a change in resources, that test will not fire.
 * Real time test state: "idle", "running", "queued", "ok" and "failed".
 * "Show" button, to display the error log of failed tests.
-* Highly configurable, watch anything & test everything!
+* Highly configurable, watch anything and test everything!
  
 ### Videos
 

@@ -1,0 +1,15 @@
+name: "Symfony (4.0-BETA) Flex"
+path: "/Users/antoniocarlos/code/pragmarx/ci/examples/symfony4/vendor/symfony/flex"
+watch_folders:
+  - src
+  - tests
+exclude: []
+depends: []
+tests_path: tests
+suites:
+  unit:
+    tester: simple-phpunit
+    tests_path: ''
+    command_options: ''
+    file_mask: "*Test.php"
+    retries: 0

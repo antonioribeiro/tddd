@@ -1,0 +1,18 @@
+name: "Firewall (PragmRX)"
+path: "/Users/antoniocarlos/code/pragmarx/ci/vendor/pragmarx/firewall"
+watch_folders:
+  - src
+  - tests
+exclude:
+  - tests/database.sqlite
+  - tests/geoipdb
+  - tests/files
+depends: []
+tests_path: tests
+suites:
+  unit:
+    tester: phpunit
+    tests_path: ''
+    command_options: ''
+    file_mask: "*Test.php"
+    retries: 0

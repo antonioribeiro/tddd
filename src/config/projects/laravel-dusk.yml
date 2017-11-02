@@ -1,0 +1,20 @@
+name: "Laravel Dusk"
+path: "/Users/antoniocarlos/code/pragmarx/ci"
+watch_folders:
+  - app
+  - resources
+  - config
+  - routes
+  - tests/Browser
+exclude:
+  - tests/Browser/console
+  - tests/Browser/screenshots
+depends: []
+tests_path: tests
+suites:
+  browser:
+    tester: dusk
+    tests_path: Browser
+    command_options: ''
+    file_mask: "*Test.php"
+    retries: 0

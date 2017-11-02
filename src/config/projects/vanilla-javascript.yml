@@ -1,0 +1,16 @@
+name: "Vanilla Javascript (Jest)"
+path: "/Users/antoniocarlos/code/pragmarx/ci"
+watch_folders:
+  - examples/javascript
+exclude:
+  - storage
+  - ".idea"
+depends: []
+tests_path: examples/javascript/tests
+suites:
+  unit:
+    tester: jest
+    tests_path: ''
+    command_options: ''
+    file_mask: "*.spec.js"
+    retries: 0

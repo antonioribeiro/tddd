@@ -1,0 +1,16 @@
+name: "VueJS (vue-test-utils)"
+path: "/Users/antoniocarlos/code/pragmarx/ci/examples/vue-test-utils"
+watch_folders:
+  - components
+exclude:
+  - node_modules
+depends: []
+tests_path: components
+suites:
+  unit:
+    tester: jest
+    tests_path: ''
+    command_options: ''
+    file_mask: "*.test.js"
+    retries: 0
+    editor: vscode

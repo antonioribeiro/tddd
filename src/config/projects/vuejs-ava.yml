@@ -1,0 +1,17 @@
+name: "VueJS (AVA)"
+path: "/Users/antoniocarlos/code/pragmarx/ci/examples/vue-ava"
+watch_folders:
+  - src
+  - test
+exclude:
+  - node_modules
+depends: []
+tests_path: test
+suites:
+  unit:
+    tester: ava
+    tests_path: ''
+    command_options: ''
+    file_mask: "*.test.js"
+    retries: 0
+    editor: vscode

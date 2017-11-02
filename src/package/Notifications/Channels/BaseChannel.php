@@ -9,9 +9,9 @@ abstract class BaseChannel implements Contract
         return isset($item['action_message'])
                 ? $item['action_message']
                 : (
-                        config('ci.notifications.action_message')
+                        __config('notifications.action_message')
                         ?:
-                        config('ci.notifications.action-message') /// TODO: deprecate
+                        __config('notifications.action-message') /// TODO: deprecate
                     );
     }
 
@@ -20,7 +20,7 @@ abstract class BaseChannel implements Contract
      */
     protected function getActionTitle()
     {
-        return config('ci.notifications.action-title');
+        return __config('notifications.action-title');
     }
 
     /**
@@ -38,7 +38,7 @@ abstract class BaseChannel implements Contract
      */
     protected function getActionLink()
     {
-        return route(config('ci.notifications.routes.dashboard'));
+        return route(__config('notifications.routes.dashboard'));
     }
 
     protected function makeActionTitle($test)

@@ -1,0 +1,3 @@
+code: behat
+name: Behat
+command: sh vendor/bin/behat

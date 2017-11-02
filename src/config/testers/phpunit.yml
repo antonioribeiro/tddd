@@ -1,0 +1,4 @@
+code: phpunit
+name: PHPUnit
+command: vendor/bin/phpunit
+require_script: true

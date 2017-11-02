@@ -1,0 +1,17 @@
+name: "VueJS (Jest)"
+path: "/Users/antoniocarlos/code/pragmarx/ci/examples/vue-jest"
+watch_folders:
+  - src
+  - tests
+exclude:
+  - tests/__snapshots__
+depends: []
+tests_path: tests
+suites:
+  unit:
+    tester: jest
+    tests_path: ''
+    command_options: ''
+    file_mask: "*.test.js"
+    retries: 0
+    editor: vscode

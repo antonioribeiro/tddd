@@ -1,0 +1,4 @@
+code: phpstorm
+name: PHPStorm
+bin: "/usr/local/bin/pstorm {file}:{line}"
+default: true

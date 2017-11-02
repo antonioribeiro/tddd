@@ -1,0 +1,22 @@
+name: "Multiple suites"
+path: "/Users/antoniocarlos/code/pragmarx/ci"
+watch_folders:
+  - app
+exclude:
+  - storage
+  - ".idea"
+depends: []
+tests_path: tests/Multiple/
+suites:
+  page_module:
+    tester: phpunit
+    tests_path: Modules/Page/Tests
+    command_options: ''
+    file_mask: "*Test.php"
+    retries: 0
+  core_module:
+    tester: phpunit
+    tests_path: Modules/Core/Tests
+    command_options: ''
+    file_mask: "*Test.php"
+    retries: 0

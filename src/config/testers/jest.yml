@@ -1,0 +1,6 @@
+code: jest
+name: Jest
+command: npm test
+require_script: true
+output_folder: tests/__snapshots__
+output_html_fail_extension: ".snap"

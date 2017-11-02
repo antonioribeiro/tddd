@@ -1,0 +1,21 @@
+name: "PHPUnit"
+path: "/Users/antoniocarlos/code/pragmarx/ci"
+watch_folders:
+  - app
+  - tests
+exclude: []
+depends: []
+tests_path: tests
+suites:
+  feature:
+    tester: phpunit
+    tests_path: Feature
+    command_options: ''
+    file_mask: "*Test.php"
+    retries: 0
+  unit:
+    tester: phpunit
+    tests_path: Unit
+    command_options: ''
+    file_mask: "*Test.php"
+    retries: 0

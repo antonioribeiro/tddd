@@ -1,0 +1,19 @@
+name: "Ruby on Rails"
+path: "/Users/antoniocarlos/code/pragmarx/ci/examples/ruby-on-rails"
+watch_folders:
+  - app
+  - config
+  - db
+  - lib
+  - test
+exclude: []
+depends: []
+tests_path: test
+suites:
+  unit:
+    tester: rake
+    tests_path: ''
+    command_options: ''
+    file_mask: "*_test.rb"
+    retries: 0
+    editor: vscode

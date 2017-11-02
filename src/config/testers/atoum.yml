@@ -1,0 +1,3 @@
+code: atoum
+name: Atoum
+command: sh vendor/bin/atoum

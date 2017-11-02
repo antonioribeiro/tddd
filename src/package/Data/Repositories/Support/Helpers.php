@@ -110,7 +110,7 @@ trait Helpers
     protected function findSourceCodeReferences($lines, $test)
     {
         preg_match_all(
-            config('ci.regex_file_matcher'),
+            __config('regex_file_matcher'),
             strip_tags($this->brToCR($lines)),
             $matches,
             PREG_SET_ORDER
@@ -134,7 +134,7 @@ trait Helpers
      */
     protected function getDefaultEditor()
     {
-        if (is_null($default = collect(config('ci.editors'))->where('default', true)->first())) {
+        if (is_null($default = collect(__config('editors'))->where('default', true)->first())) {
             die('FATAL ERROR: default editor not configured');
         }
 
@@ -176,14 +176,16 @@ trait Helpers
     public function getJavascriptClientData()
     {
         $data = [
-            'url_prefixes' => config('ci.url_prefixes'),
+            'url_prefixes' => __config('url_prefixes'),
 
             'project_id' => request()->get('project_id'),
 
             'test_id' => request()->get('test_id'),
 
-            'poll_interval' => config('ci.poll_interval'),
+            'poll_interval' => __config('poll_interval'),
         ];
+
+        dd($data);
 
         return json_encode($data);
     }

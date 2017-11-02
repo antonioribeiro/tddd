@@ -17,8 +17,8 @@ class Mail extends BaseChannel
         return (new MailMessage())
             ->line($this->getMessage($item))
             ->from(
-                config('ci.notifications.from.address'),
-                config('ci.notifications.from.name')
+                __config('notifications.from.address'),
+                __config('notifications.from.name')
             )
             ->action($this->getActionTitle(), $this->getActionLink());
     }

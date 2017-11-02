@@ -4,15 +4,15 @@ namespace PragmaRX\TestsWatcher\Package;
 
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\ServiceProvider as IlluminateServiceProvider;
-use PragmaRX\TestsWatcher\Package\Console\Commands\ClearCommand;
-use PragmaRX\TestsWatcher\Package\Console\Commands\TestCommand;
-use PragmaRX\TestsWatcher\Package\Console\Commands\WatchCommand;
-use PragmaRX\TestsWatcher\Package\Events\TestsFailed;
-use PragmaRX\TestsWatcher\Package\Events\UserNotifiedOfFailure;
-use PragmaRX\TestsWatcher\Package\Listeners\MarkAsNotified;
 use PragmaRX\TestsWatcher\Package\Listeners\Notify;
 use PragmaRX\TestsWatcher\Package\Support\Notifier;
+use PragmaRX\TestsWatcher\Package\Events\TestsFailed;
+use PragmaRX\TestsWatcher\Package\Listeners\MarkAsNotified;
+use PragmaRX\TestsWatcher\Package\Events\UserNotifiedOfFailure;
+use PragmaRX\TestsWatcher\Package\Console\Commands\TestCommand;
+use PragmaRX\TestsWatcher\Package\Console\Commands\WatchCommand;
+use PragmaRX\TestsWatcher\Package\Console\Commands\ClearCommand;
+use Illuminate\Support\ServiceProvider as IlluminateServiceProvider;
 
 class ServiceProvider extends IlluminateServiceProvider
 {
@@ -25,6 +25,7 @@ class ServiceProvider extends IlluminateServiceProvider
 
     /**
      * Boot Service Provider.
+     *
      */
     public function boot()
     {
@@ -39,6 +40,7 @@ class ServiceProvider extends IlluminateServiceProvider
 
     /**
      * Configure migrations path.
+     *
      */
     private function loadMigrations()
     {
@@ -47,6 +49,7 @@ class ServiceProvider extends IlluminateServiceProvider
 
     /**
      * Configure views path.
+     *
      */
     private function loadViews()
     {
@@ -55,11 +58,12 @@ class ServiceProvider extends IlluminateServiceProvider
 
     /**
      * Configure config path.
+     *
      */
     private function publishConfiguration()
     {
         $this->publishes([
-            __DIR__.'/../config/ci.php' => config_path('ci.php'),
+            __DIR__.'/../config' => config_path('tddd'),
         ]);
     }
 
@@ -102,23 +106,25 @@ class ServiceProvider extends IlluminateServiceProvider
      */
     public function provides()
     {
-        return ['ci'];
+        return ['tddd'];
     }
 
     /**
      * Register the clear command.
+     *
      */
     private function registerClearCommand()
     {
-        $this->app->singleton('ci.clear.command', function ($app) {
+        $this->app->singleton('tddd.clear.command', function () {
             return new ClearCommand();
         });
 
-        $this->commands('ci.clear.command');
+        $this->commands('tddd.clear.command');
     }
 
     /**
      * Register event listeners.
+     *
      */
     private function registerEventListeners()
     {
@@ -129,80 +135,88 @@ class ServiceProvider extends IlluminateServiceProvider
 
     /**
      * Register the watch command.
+     *
      */
     private function registerNotifier()
     {
-        $this->app->singleton('ci.notifier', function () {
+        $this->app->singleton('tddd.notifier', function () {
             return new Notifier();
         });
     }
 
     /**
      * Register the watch command.
+     *
      */
     private function registerWatchCommand()
     {
-        $this->app->singleton('ci.watch.command', function ($app) {
+        $this->app->singleton('tddd.watch.command', function () {
             return new WatchCommand();
         });
 
-        $this->commands('ci.watch.command');
+        $this->commands('tddd.watch.command');
     }
 
     /**
      * Register the test command.
+     *
      */
     private function registerTestCommand()
     {
-        $this->app->singleton('ci.test.command', function () {
+        $this->app->singleton('tddd.test.command', function () {
             return new TestCommand();
         });
 
-        $this->commands('ci.test.command');
+        $this->commands('tddd.test.command');
     }
 
     /**
      * Register service service.
+     *
      */
     private function registerService()
     {
-        $this->app->singleton('ci', function ($app) {
+        $this->app->singleton('ci', function () {
             return app('PragmaRX\TestsWatcher\Package\Service');
         });
     }
 
     /**
      * Register service watcher.
+     *
      */
     private function registerWatcher()
     {
-        $this->app->singleton('ci.watcher', function ($app) {
+        $this->app->singleton('tddd.watcher', function () {
             return app('PragmaRX\TestsWatcher\Package\Services\Watcher');
         });
     }
 
     /**
      * Register service tester.
+     *
      */
     private function registerTester()
     {
-        $this->app->singleton('ci.tester', function ($app) {
+        $this->app->singleton('tddd.tester', function () {
             return app('PragmaRX\TestsWatcher\Package\Services\Tester');
         });
     }
 
     /**
      * Register service tester.
+     *
      */
     private function registerConfig()
     {
-        $this->app->singleton('ci.config', function ($app) {
+        $this->app->singleton('tddd.config', function () {
             return app('PragmaRX\TestsWatcher\Package\Services\Config');
         });
     }
 
     /**
      * Register the resource watcher.
+     *
      */
     private function registerResourceWatcher()
     {
@@ -211,11 +225,12 @@ class ServiceProvider extends IlluminateServiceProvider
 
     /**
      * Register all routes.
+     *
      */
     private function loadRoutes()
     {
         Route::group([
-            'prefix'     => config('ci.url_prefixes.global'),
+            'prefix'     => config('tddd.url_prefixes.global'),
             'namespace'  => 'PragmaRX\TestsWatcher\Package\Http\Controllers',
             'middleware' => 'web',
         ], function () {
