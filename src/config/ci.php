@@ -16,7 +16,7 @@ return [
         'worker' => $name.' - Worker',
     ],
 
-    /**
+    /*
      * Route URI prefix
      *
      */
@@ -29,7 +29,7 @@ return [
 
         'projects' => '/projects',
 
-        'files' => '/files'
+        'files' => '/files',
     ],
 
     /*
