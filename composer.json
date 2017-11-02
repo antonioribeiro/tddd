@@ -44,7 +44,7 @@
             "JasonLewis\\ResourceWatcher": "src/package/Support/jasonlewis/resource-watcher/src"
         },
         "files": [
-            "vendor/pragmarx/ci/src/package/Support/helpers.php"
+            "src/package/Support/helpers.php"
         ]
     },
 
