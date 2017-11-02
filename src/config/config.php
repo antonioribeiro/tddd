@@ -2,6 +2,6 @@
 
 return [
 
-    'path' => env('APP_CONFIG_PATH', config('tddd'))
+    'path' => env('APP_CONFIG_PATH', config('tddd')),
 
 ];

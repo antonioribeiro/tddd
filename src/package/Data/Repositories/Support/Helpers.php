@@ -171,7 +171,6 @@ trait Helpers
 
     /**
      * Generates data for the javascript client.
-     *
      */
     public function getJavascriptClientData()
     {

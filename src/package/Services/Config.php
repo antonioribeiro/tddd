@@ -2,7 +2,6 @@
 
 namespace PragmaRX\TestsWatcher\Package\Services;
 
-use Illuminate\Http\File;
 use PragmaRX\Support\Yaml;
 
 class Config
@@ -56,7 +55,6 @@ class Config
 
     /**
      * Load the config.
-     *
      */
     protected function loadConfig()
     {
@@ -105,7 +103,6 @@ class Config
 
     /**
      * Invalidate the current config.
-     *
      */
     public function invalidateConfig()
     {

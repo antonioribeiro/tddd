@@ -4,15 +4,15 @@ namespace PragmaRX\TestsWatcher\Package;
 
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Route;
-use PragmaRX\TestsWatcher\Package\Listeners\Notify;
-use PragmaRX\TestsWatcher\Package\Support\Notifier;
-use PragmaRX\TestsWatcher\Package\Events\TestsFailed;
-use PragmaRX\TestsWatcher\Package\Listeners\MarkAsNotified;
-use PragmaRX\TestsWatcher\Package\Events\UserNotifiedOfFailure;
+use Illuminate\Support\ServiceProvider as IlluminateServiceProvider;
+use PragmaRX\TestsWatcher\Package\Console\Commands\ClearCommand;
 use PragmaRX\TestsWatcher\Package\Console\Commands\TestCommand;
 use PragmaRX\TestsWatcher\Package\Console\Commands\WatchCommand;
-use PragmaRX\TestsWatcher\Package\Console\Commands\ClearCommand;
-use Illuminate\Support\ServiceProvider as IlluminateServiceProvider;
+use PragmaRX\TestsWatcher\Package\Events\TestsFailed;
+use PragmaRX\TestsWatcher\Package\Events\UserNotifiedOfFailure;
+use PragmaRX\TestsWatcher\Package\Listeners\MarkAsNotified;
+use PragmaRX\TestsWatcher\Package\Listeners\Notify;
+use PragmaRX\TestsWatcher\Package\Support\Notifier;
 
 class ServiceProvider extends IlluminateServiceProvider
 {
@@ -25,7 +25,6 @@ class ServiceProvider extends IlluminateServiceProvider
 
     /**
      * Boot Service Provider.
-     *
      */
     public function boot()
     {
@@ -40,7 +39,6 @@ class ServiceProvider extends IlluminateServiceProvider
 
     /**
      * Configure migrations path.
-     *
      */
     private function loadMigrations()
     {
@@ -49,7 +47,6 @@ class ServiceProvider extends IlluminateServiceProvider
 
     /**
      * Configure views path.
-     *
      */
     private function loadViews()
     {
@@ -58,7 +55,6 @@ class ServiceProvider extends IlluminateServiceProvider
 
     /**
      * Configure config path.
-     *
      */
     private function publishConfiguration()
     {
@@ -111,7 +107,6 @@ class ServiceProvider extends IlluminateServiceProvider
 
     /**
      * Register the clear command.
-     *
      */
     private function registerClearCommand()
     {
@@ -124,7 +119,6 @@ class ServiceProvider extends IlluminateServiceProvider
 
     /**
      * Register event listeners.
-     *
      */
     private function registerEventListeners()
     {
@@ -135,7 +129,6 @@ class ServiceProvider extends IlluminateServiceProvider
 
     /**
      * Register the watch command.
-     *
      */
     private function registerNotifier()
     {
@@ -146,7 +139,6 @@ class ServiceProvider extends IlluminateServiceProvider
 
     /**
      * Register the watch command.
-     *
      */
     private function registerWatchCommand()
     {
@@ -159,7 +151,6 @@ class ServiceProvider extends IlluminateServiceProvider
 
     /**
      * Register the test command.
-     *
      */
     private function registerTestCommand()
     {
@@ -172,7 +163,6 @@ class ServiceProvider extends IlluminateServiceProvider
 
     /**
      * Register service service.
-     *
      */
     private function registerService()
     {
@@ -183,7 +173,6 @@ class ServiceProvider extends IlluminateServiceProvider
 
     /**
      * Register service watcher.
-     *
      */
     private function registerWatcher()
     {
@@ -194,7 +183,6 @@ class ServiceProvider extends IlluminateServiceProvider
 
     /**
      * Register service tester.
-     *
      */
     private function registerTester()
     {
@@ -205,7 +193,6 @@ class ServiceProvider extends IlluminateServiceProvider
 
     /**
      * Register service tester.
-     *
      */
     private function registerConfig()
     {
@@ -216,7 +203,6 @@ class ServiceProvider extends IlluminateServiceProvider
 
     /**
      * Register the resource watcher.
-     *
      */
     private function registerResourceWatcher()
     {
@@ -225,7 +211,6 @@ class ServiceProvider extends IlluminateServiceProvider
 
     /**
      * Register all routes.
-     *
      */
     private function loadRoutes()
     {
