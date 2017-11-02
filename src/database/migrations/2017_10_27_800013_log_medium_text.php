@@ -15,7 +15,7 @@ class LogMediumText extends Migration
     public function migrateUp()
     {
         Schema::table('ci_runs', function (Blueprint $table) {
-            $table->mediumText('log_new')->nullable()->after('was_ok');;
+            $table->mediumText('log_new')->nullable()->after('was_ok');
         });
 
         Database::statement('update ci_runs set log_new = log;');
