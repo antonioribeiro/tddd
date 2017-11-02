@@ -104,7 +104,7 @@
             },
 
             makeScreenshot(screenshot) {
-                return this.laravel.url_prefix+'/files/'+btoa(screenshot)+'/download?random='+Math.random();
+                return this.laravel.url_prefixes.files+'/'+btoa(screenshot)+'/download?random='+Math.random();
             },
 
             baseName(str) {
@@ -124,7 +124,7 @@
             },
 
             runTest(testId) {
-                axios.get(this.laravel.url_prefix+'/tests/run/'+testId);
+                axios.get(this.laravel.url_prefixes.tests+'/run/'+testId);
             },
 
             editFile(file) {

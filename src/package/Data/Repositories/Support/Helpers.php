@@ -171,11 +171,12 @@ trait Helpers
 
     /**
      * Generates data for the javascript client.
+     *
      */
     public function getJavascriptClientData()
     {
         $data = [
-            'url_prefix' => config('ci.url_prefix'),
+            'url_prefixes' => config('ci.url_prefixes'),
 
             'project_id' => request()->get('project_id'),
 

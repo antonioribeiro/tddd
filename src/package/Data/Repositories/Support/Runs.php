@@ -50,7 +50,7 @@ trait Runs
             'path'          => $test->path.DIRECTORY_SEPARATOR,
             'name'          => $test->name,
             'edit_file_url' => $this->makeEditFileUrl($test),
-            'updated_at'    => $test->updated_at->diffForHumans(),
+            'updated_at'    => $test->updated_at->diffForHumans(null, false, true),
             'state'         => $test->state,
             'enabled'       => $test->enabled,
             'editor_name'   => $this->getEditor($test->suite)['name'],

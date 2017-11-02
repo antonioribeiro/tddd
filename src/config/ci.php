@@ -9,18 +9,28 @@ return [
      *
      */
     'names' => [
-        'dashboard' => $name = 'Laravel Tests-Watcher',
+        'dashboard' => $name = 'Test Driven Development Dashboard',
 
         'watcher' => $name.' - Watcher',
 
         'worker' => $name.' - Worker',
     ],
 
-    /*
+    /**
      * Route URI prefix
      *
      */
-    'url_prefix' => '/tests-watcher',
+    'url_prefixes' => [
+        'global' => '/tests-watcher',
+
+        'dashboard' => '/dashboard',
+
+        'tests' => '/tests',
+
+        'projects' => '/projects',
+
+        'files' => '/files'
+    ],
 
     /*
      * Regex to match file names and li

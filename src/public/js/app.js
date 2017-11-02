@@ -47687,7 +47687,7 @@ exports.clearImmediate = clearImmediate;
             }
         },
         loadData: function loadData(context) {
-            axios.get(context.state.laravel.url_prefix + '/dashboard/data').then(function (result) {
+            axios.get(context.state.laravel.url_prefixes.dashboard + '/data').then(function (result) {
                 context.commit('setProjects', result.data.projects);
 
                 var selected = context.getters.selectedProject && result.data.projects.filter(function (project) {
@@ -47711,7 +47711,7 @@ exports.clearImmediate = clearImmediate;
 
             if (context.state.wasRunning && !context.getters.isRunning) {
                 if (context.getters.statistics.failed > 0) {
-                    axios.get(context.state.laravel.url_prefix + '/projects/' + context.state.selectedProjectId + '/notify');
+                    axios.get(context.state.laravel.url_prefixes.projects + '/' + context.state.selectedProjectId + '/notify');
                 }
             }
 
@@ -47873,6 +47873,14 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -47905,7 +47913,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
         toggleProject: function toggleProject(project) {
             var _this = this;
 
-            axios.get(this.laravel.url_prefix + '/projects/' + project.id + '/enable/' + !project.enabled).then(function (response) {
+            axios.get(this.laravel.url_prefixes.projects + '/' + project.id + '/enable/' + !project.enabled).then(function (response) {
                 return _this.loadData();
             });
         },
@@ -47913,13 +47921,13 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
             this.$store.commit('setProjectsFilter', '');
         },
         run: function run(project) {
-            axios.post(this.laravel.url_prefix + '/projects/run', { projects: project.id });
+            axios.post(this.laravel.url_prefixes.projects + '/run', { projects: project.id });
         },
         runAll: function runAll() {
-            axios.post(this.laravel.url_prefix + '/projects/run', { projects: this.filteredProjectsIds });
+            axios.post(this.laravel.url_prefixes.projects + '/run', { projects: this.filteredProjectsIds });
         },
         reset: function reset() {
-            axios.post(this.laravel.url_prefix + '/projects/reset/', { projects: this.filteredProjectsIds });
+            axios.post(this.laravel.url_prefixes.projects + '/reset/', { projects: this.filteredProjectsIds });
         }
     })
 });
@@ -48010,135 +48018,153 @@ var render = function() {
       ])
     ]),
     _vm._v(" "),
-    _c("div", { staticClass: "list-group" }, [
-      _c("div", { staticClass: "card-projects-items" }, [
-        _c("div", { staticClass: "row" }, [
-          _c("div", { staticClass: "col-md-12" }, [
-            _c(
-              "ul",
-              { staticClass: "list-group" },
-              _vm._l(_vm.filteredProjects, function(project) {
-                return _c(
-                  "li",
-                  {
-                    class:
-                      "list-group-item " +
-                      (!project.enabled ? "dim " : "") +
-                      (_vm.selectedProject.id == project.id ? "active " : ""),
-                    on: {
-                      click: function($event) {
-                        _vm.changeProject(project)
-                      }
-                    }
-                  },
-                  [
-                    _c("div", { staticClass: "row" }, [
-                      _c("div", { staticClass: "col" }, [
-                        _c("input", {
-                          staticClass: "project-checkbox testCheckbox",
-                          attrs: { type: "checkbox" },
-                          domProps: { checked: project.enabled },
-                          on: {
-                            click: function($event) {
-                              _vm.toggleProject(project)
-                            }
+    _vm.filteredProjects.length == 0
+      ? _c(
+          "div",
+          {
+            staticClass:
+              "container d-flex align-items-center justify-content-center",
+            staticStyle: { height: "500px" }
+          },
+          [_vm._m(1)]
+        )
+      : _vm._e(),
+    _vm._v(" "),
+    _vm.filteredProjects.length > 0
+      ? _c("div", { staticClass: "list-group" }, [
+          _c("div", { staticClass: "card-projects-items" }, [
+            _c("div", { staticClass: "row" }, [
+              _c("div", { staticClass: "col-md-12" }, [
+                _c(
+                  "ul",
+                  { staticClass: "list-group" },
+                  _vm._l(_vm.filteredProjects, function(project) {
+                    return _c(
+                      "li",
+                      {
+                        class:
+                          "list-group-item " +
+                          (!project.enabled ? "dim " : "") +
+                          (_vm.selectedProject.id == project.id
+                            ? "active "
+                            : ""),
+                        on: {
+                          click: function($event) {
+                            _vm.changeProject(project)
                           }
-                        }),
-                        _vm._v(
-                          "\n\n                                    " +
-                            _vm._s(project.name) +
-                            "\n                                "
-                        )
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "col-2 text-right" }, [
-                        project.state == "running"
-                          ? _c("span", [
-                              _c("i", {
-                                staticClass: "fa fa-cog fa-spin fa-fw"
-                              })
-                            ])
-                          : _vm._e(),
-                        _vm._v(" "),
-                        project.state == "failed"
-                          ? _c(
-                              "span",
-                              { staticClass: "project-state text-danger" },
-                              [
-                                _c("i", {
-                                  staticClass: "fa fa-times cursor-pointer",
-                                  on: {
-                                    click: function($event) {
-                                      _vm.run(project)
-                                    }
-                                  }
-                                })
-                              ]
+                        }
+                      },
+                      [
+                        _c("div", { staticClass: "row" }, [
+                          _c("div", { staticClass: "col" }, [
+                            _c("input", {
+                              staticClass: "project-checkbox testCheckbox",
+                              attrs: { type: "checkbox" },
+                              domProps: { checked: project.enabled },
+                              on: {
+                                click: function($event) {
+                                  _vm.toggleProject(project)
+                                }
+                              }
+                            }),
+                            _vm._v(
+                              "\n\n                                    " +
+                                _vm._s(project.name) +
+                                "\n                                "
                             )
-                          : _vm._e(),
-                        _vm._v(" "),
-                        project.state == "ok"
-                          ? _c(
-                              "span",
-                              { staticClass: "project-state text-success" },
-                              [
-                                _c("i", {
-                                  staticClass: "fa fa-check cursor-pointer",
-                                  on: {
-                                    click: function($event) {
-                                      _vm.run(project)
-                                    }
-                                  }
-                                })
-                              ]
-                            )
-                          : _vm._e(),
-                        _vm._v(" "),
-                        project.state == "queued"
-                          ? _c(
-                              "span",
-                              { staticClass: "project-state text-warning" },
-                              [
-                                _c("i", {
-                                  staticClass: "fa fa-clock-o cursor-pointer",
-                                  on: {
-                                    click: function($event) {
-                                      _vm.run(project)
-                                    }
-                                  }
-                                })
-                              ]
-                            )
-                          : _vm._e(),
-                        _vm._v(" "),
-                        project.state == "idle"
-                          ? _c(
-                              "span",
-                              {
-                                staticClass: "project-state text-default pale"
-                              },
-                              [
-                                _c("i", {
-                                  staticClass: "fa fa-pause cursor-pointer",
-                                  on: {
-                                    click: function($event) {
-                                      _vm.run(project)
-                                    }
-                                  }
-                                })
-                              ]
-                            )
-                          : _vm._e()
-                      ])
-                    ])
-                  ]
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "col-2 text-right" }, [
+                            project.state == "running"
+                              ? _c("span", [
+                                  _c("i", {
+                                    staticClass: "fa fa-cog fa-spin fa-fw"
+                                  })
+                                ])
+                              : _vm._e(),
+                            _vm._v(" "),
+                            project.state == "failed"
+                              ? _c(
+                                  "span",
+                                  { staticClass: "project-state text-danger" },
+                                  [
+                                    _c("i", {
+                                      staticClass: "fa fa-times cursor-pointer",
+                                      on: {
+                                        click: function($event) {
+                                          _vm.run(project)
+                                        }
+                                      }
+                                    })
+                                  ]
+                                )
+                              : _vm._e(),
+                            _vm._v(" "),
+                            project.state == "ok"
+                              ? _c(
+                                  "span",
+                                  { staticClass: "project-state text-success" },
+                                  [
+                                    _c("i", {
+                                      staticClass: "fa fa-check cursor-pointer",
+                                      on: {
+                                        click: function($event) {
+                                          _vm.run(project)
+                                        }
+                                      }
+                                    })
+                                  ]
+                                )
+                              : _vm._e(),
+                            _vm._v(" "),
+                            project.state == "queued"
+                              ? _c(
+                                  "span",
+                                  { staticClass: "project-state text-warning" },
+                                  [
+                                    _c("i", {
+                                      staticClass:
+                                        "fa fa-clock-o cursor-pointer",
+                                      on: {
+                                        click: function($event) {
+                                          _vm.run(project)
+                                        }
+                                      }
+                                    })
+                                  ]
+                                )
+                              : _vm._e(),
+                            _vm._v(" "),
+                            project.state == "idle"
+                              ? _c(
+                                  "span",
+                                  {
+                                    staticClass:
+                                      "project-state text-default pale"
+                                  },
+                                  [
+                                    _c("i", {
+                                      staticClass: "fa fa-pause cursor-pointer",
+                                      on: {
+                                        click: function($event) {
+                                          _vm.run(project)
+                                        }
+                                      }
+                                    })
+                                  ]
+                                )
+                              : _vm._e()
+                          ])
+                        ])
+                      ]
+                    )
+                  })
                 )
-              })
-            )
+              ])
+            ])
           ])
         ])
-      ])
-    ])
+      : _vm._e()
   ])
 }
 var staticRenderFns = [
@@ -48149,6 +48175,18 @@ var staticRenderFns = [
     return _c("div", { staticClass: "row" }, [
       _c("div", { staticClass: "col project-title" }, [
         _vm._v("\n                    Projects\n                ")
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "row justify-content-center" }, [
+      _c("div", { staticClass: "col-12" }, [
+        _c("h1", { staticClass: "card-title text-center" }, [
+          _vm._v("NO PROJECTS FOUND")
+        ])
       ])
     ])
   }
@@ -48332,6 +48370,18 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -48339,7 +48389,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["mapState"])(['laravel', 'projects', 'openTest', 'wasRunning', 'constants']), Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["mapGetters"])(['selectedProject', 'filteredTests', 'setTestsFilter', 'selectedTest', 'statistics']), {
+    computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["mapState"])(['laravel', 'projects', 'openTest', 'wasRunning', 'constants']), Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["mapGetters"])(['selectedProject', 'filteredTests', 'filteredProjects', 'setTestsFilter', 'selectedTest', 'statistics']), {
 
         filter: {
             get: function get() {
@@ -48353,13 +48403,13 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
     methods: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["mapActions"])(['loadData']), {
         runTest: function runTest(testId) {
-            axios.get(this.laravel.url_prefix + '/tests/run/' + testId);
+            axios.get(this.laravel.url_prefixes.tests + '/run/' + testId);
         },
         runAll: function runAll() {
-            axios.post(this.laravel.url_prefix + '/projects/run', { projects: this.selectedProject.id });
+            axios.post(this.laravel.url_prefixes.projects + '/run', { projects: this.selectedProject.id });
         },
         reset: function reset() {
-            axios.get(this.laravel.url_prefix + '/tests/reset/' + this.selectedProject.id);
+            axios.get(this.laravel.url_prefixes.tests + '/reset/' + this.selectedProject.id);
         },
         showLog: function showLog(test) {
             this.$store.commit('setSelectedTestId', test.id);
@@ -48370,10 +48420,10 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
             return this.statistics.count == this.statistics.enabled;
         },
         toggleTest: function toggleTest(test) {
-            axios.get(this.laravel.url_prefix + '/tests/' + this.selectedProject.id + '/' + test.id + '/enable/' + !test.enabled);
+            axios.get(this.laravel.url_prefixes.tests + '/' + this.selectedProject.id + '/' + test.id + '/enable/' + !test.enabled);
         },
         enableAll: function enableAll() {
-            axios.get(this.laravel.url_prefix + '/tests/' + this.selectedProject.id + '/all/enable/' + !this.allEnabled());
+            axios.get(this.laravel.url_prefixes.tests + '/' + this.selectedProject.id + '/all/enable/' + !this.allEnabled());
         },
         editFile: function editFile(file) {
             axios.get(file);
@@ -48425,333 +48475,370 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm.selectedProject
-    ? _c(
-        "div",
-        [
-          _c("div", { staticClass: "row table-header" }, [
-            _c("div", { staticClass: "col-md-12 title" }, [
-              _vm._v(
-                "\n            " +
-                  _vm._s(_vm.selectedProject.name) +
-                  "\n        "
-              )
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "card toolbar" }, [
-            _c("div", { staticClass: "card-block" }, [
-              _c("div", { staticClass: "row align-middle" }, [
-                _c(
-                  "div",
-                  { staticClass: "col-md-6 align-middle" },
-                  [
-                    _c("state", {
-                      attrs: {
-                        state: "idle",
-                        text: "tests: " + this.statistics.count
-                      }
-                    }),
-                    _vm._v(" \n                    "),
-                    _c("state", {
-                      attrs: {
-                        state: "ok",
-                        text: "success: " + this.statistics.success
-                      }
-                    }),
-                    _vm._v(" \n                    "),
-                    _c("state", {
-                      attrs: {
-                        state: "failed",
-                        text: "failed: " + this.statistics.failed
-                      }
-                    }),
-                    _vm._v(" \n                    "),
-                    _c("state", {
-                      attrs: {
-                        state: "running",
-                        text: "running: " + this.statistics.running
-                      }
-                    }),
-                    _vm._v(" \n                    "),
-                    _c("state", {
-                      attrs: {
-                        state: "enabled",
-                        text: "enabled: " + this.statistics.enabled
-                      }
-                    }),
-                    _vm._v(" \n                    "),
-                    _c("state", {
-                      attrs: {
-                        state: "disabled",
-                        text:
-                          "disabled: " +
-                          (this.statistics.count - this.statistics.enabled)
-                      }
-                    }),
-                    _vm._v(" \n                    "),
-                    _c("state", {
-                      attrs: {
-                        state: "idle",
-                        text: "idle: " + this.statistics.idle
-                      }
-                    }),
-                    _vm._v(" \n                    "),
-                    _c("state", {
-                      attrs: {
-                        state: "running",
-                        text: "queued: " + this.statistics.queued
-                      }
-                    }),
-                    _vm._v(" \n                ")
-                  ],
-                  1
-                ),
-                _vm._v(" "),
-                _c("div", { staticClass: "col-md-6 text-right align-middle" }, [
-                  _c("div", { staticClass: "row" }, [
-                    _c("div", { staticClass: "col-md-5" }, [
-                      _c(
-                        "div",
-                        {
-                          staticClass: "input-group mb-2 mb-sm-0 search-group"
-                        },
-                        [
-                          _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.filter,
-                                expression: "filter"
-                              }
-                            ],
-                            staticClass: "form-control",
-                            attrs: { placeholder: "filter" },
-                            domProps: { value: _vm.filter },
-                            on: {
-                              input: function($event) {
-                                if ($event.target.composing) {
-                                  return
-                                }
-                                _vm.filter = $event.target.value
-                              }
-                            }
-                          }),
-                          _vm._v(" "),
-                          _vm.filter
-                            ? _c(
-                                "div",
-                                {
-                                  staticClass: "input-group-addon search-addon",
-                                  on: { click: _vm.resetFilter }
-                                },
-                                [_c("i", { staticClass: "fa fa-trash" })]
-                              )
-                            : _vm._e()
-                        ]
-                      )
-                    ]),
-                    _vm._v(" "),
-                    _vm.selectedProject.enabled
-                      ? _c("div", { staticClass: "col-md-7" }, [
-                          _c(
-                            "div",
-                            {
-                              staticClass: "btn btn-danger",
-                              on: {
-                                click: function($event) {
-                                  _vm.runAll()
-                                }
-                              }
-                            },
-                            [
-                              _vm._v(
-                                "\n                                run all\n                            "
-                              )
-                            ]
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "div",
-                            {
-                              staticClass: "btn btn-warning",
-                              on: {
-                                click: function($event) {
-                                  _vm.reset()
-                                }
-                              }
-                            },
-                            [
-                              _vm._v(
-                                "\n                                reset state\n                            "
-                              )
-                            ]
-                          )
-                        ])
-                      : _vm._e()
-                  ])
-                ])
-              ])
-            ])
-          ]),
-          _vm._v(" "),
-          _c("table", { staticClass: "table table-striped" }, [
-            _c("thead", [
-              _c("tr", [
-                _c("th", [
-                  _c("input", {
-                    attrs: { type: "checkbox" },
-                    domProps: { checked: _vm.allEnabled() },
-                    on: {
-                      click: function($event) {
-                        _vm.enableAll()
-                      }
-                    }
-                  })
-                ]),
-                _vm._v(" "),
-                _c("th", { attrs: { width: "6%" } }, [_vm._v("run")]),
-                _vm._v(" "),
-                _c("th", { attrs: { width: "8%" } }, [_vm._v("state")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("suite")]),
-                _vm._v(" "),
-                _c("th", { attrs: { width: "50%" } }, [_vm._v("test")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("time")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("last")]),
-                _vm._v(" "),
-                _c("th", { attrs: { width: "5%" } }, [_vm._v("log")])
+  return _c("div", [
+    _vm.filteredProjects.length == 0 || !_vm.selectedProject
+      ? _c("div", [_vm._m(0)])
+      : _vm._e(),
+    _vm._v(" "),
+    _vm.filteredProjects.length > 0 && _vm.selectedProject
+      ? _c(
+          "div",
+          [
+            _c("div", { staticClass: "row table-header" }, [
+              _c("div", { staticClass: "col-md-12 title" }, [
+                _vm._v(
+                  "\n                " +
+                    _vm._s(_vm.selectedProject.name) +
+                    "\n            "
+                )
               ])
             ]),
             _vm._v(" "),
-            _c(
-              "tbody",
-              _vm._l(_vm.filteredTests, function(test) {
-                return _c("tr", { class: !test.enabled ? "dim" : "" }, [
-                  _c("td", [
+            _c("div", { staticClass: "card toolbar" }, [
+              _c("div", { staticClass: "card-block" }, [
+                _c("div", { staticClass: "row align-middle" }, [
+                  _c(
+                    "div",
+                    { staticClass: "col-md-6 align-middle" },
+                    [
+                      _c("state", {
+                        attrs: {
+                          state: "idle",
+                          text: "tests: " + this.statistics.count
+                        }
+                      }),
+                      _vm._v(" \n                        "),
+                      _c("state", {
+                        attrs: {
+                          state: "ok",
+                          text: "success: " + this.statistics.success
+                        }
+                      }),
+                      _vm._v(" \n                        "),
+                      _c("state", {
+                        attrs: {
+                          state: "failed",
+                          text: "failed: " + this.statistics.failed
+                        }
+                      }),
+                      _vm._v(" \n                        "),
+                      _c("state", {
+                        attrs: {
+                          state: "running",
+                          text: "running: " + this.statistics.running
+                        }
+                      }),
+                      _vm._v(" \n                        "),
+                      _c("state", {
+                        attrs: {
+                          state: "enabled",
+                          text: "enabled: " + this.statistics.enabled
+                        }
+                      }),
+                      _vm._v(" \n                        "),
+                      _c("state", {
+                        attrs: {
+                          state: "disabled",
+                          text:
+                            "disabled: " +
+                            (this.statistics.count - this.statistics.enabled)
+                        }
+                      }),
+                      _vm._v(" \n                        "),
+                      _c("state", {
+                        attrs: {
+                          state: "idle",
+                          text: "idle: " + this.statistics.idle
+                        }
+                      }),
+                      _vm._v(" \n                        "),
+                      _c("state", {
+                        attrs: {
+                          state: "running",
+                          text: "queued: " + this.statistics.queued
+                        }
+                      }),
+                      _vm._v(" \n                    ")
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    { staticClass: "col-md-6 text-right align-middle" },
+                    [
+                      _c("div", { staticClass: "row" }, [
+                        _c("div", { staticClass: "col-md-5" }, [
+                          _c(
+                            "div",
+                            {
+                              staticClass:
+                                "input-group mb-2 mb-sm-0 search-group"
+                            },
+                            [
+                              _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.filter,
+                                    expression: "filter"
+                                  }
+                                ],
+                                staticClass: "form-control",
+                                attrs: { placeholder: "filter" },
+                                domProps: { value: _vm.filter },
+                                on: {
+                                  input: function($event) {
+                                    if ($event.target.composing) {
+                                      return
+                                    }
+                                    _vm.filter = $event.target.value
+                                  }
+                                }
+                              }),
+                              _vm._v(" "),
+                              _vm.filter
+                                ? _c(
+                                    "div",
+                                    {
+                                      staticClass:
+                                        "input-group-addon search-addon",
+                                      on: { click: _vm.resetFilter }
+                                    },
+                                    [_c("i", { staticClass: "fa fa-trash" })]
+                                  )
+                                : _vm._e()
+                            ]
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _vm.selectedProject.enabled
+                          ? _c("div", { staticClass: "col-md-7" }, [
+                              _c(
+                                "div",
+                                {
+                                  staticClass: "btn btn-danger",
+                                  on: {
+                                    click: function($event) {
+                                      _vm.runAll()
+                                    }
+                                  }
+                                },
+                                [
+                                  _vm._v(
+                                    "\n                                    run all\n                                "
+                                  )
+                                ]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "div",
+                                {
+                                  staticClass: "btn btn-warning",
+                                  on: {
+                                    click: function($event) {
+                                      _vm.reset()
+                                    }
+                                  }
+                                },
+                                [
+                                  _vm._v(
+                                    "\n                                    reset state\n                                "
+                                  )
+                                ]
+                              )
+                            ])
+                          : _vm._e()
+                      ])
+                    ]
+                  )
+                ])
+              ])
+            ]),
+            _vm._v(" "),
+            _c("table", { staticClass: "table table-striped" }, [
+              _c("thead", [
+                _c("tr", [
+                  _c("th", [
                     _c("input", {
-                      staticClass: "testCheckbox",
                       attrs: { type: "checkbox" },
-                      domProps: { checked: test.enabled },
+                      domProps: { checked: _vm.allEnabled() },
                       on: {
                         click: function($event) {
-                          _vm.toggleTest(test)
+                          _vm.enableAll()
                         }
                       }
                     })
                   ]),
                   _vm._v(" "),
-                  _c("td", [
-                    test.state !== "running" &&
-                    test.state !== "queued" &&
-                    _vm.selectedProject.enabled
-                      ? _c(
-                          "div",
-                          {
-                            class:
-                              "btn btn-sm btn-" +
-                              (test.state == "failed" ? "danger" : "secondary"),
-                            on: {
-                              click: function($event) {
-                                _vm.runTest(test.id)
-                              }
-                            }
-                          },
-                          [
-                            _vm._v(
-                              "\n                        run\n                    "
-                            )
-                          ]
-                        )
-                      : _vm._e()
-                  ]),
+                  _c("th", { attrs: { width: "6%" } }, [_vm._v("run")]),
                   _vm._v(" "),
-                  _c("td", { class: "state state-" + test.state }, [
-                    _vm._v(
-                      "\n                    " +
-                        _vm._s(test.state) +
-                        "\n\n                    "
-                    ),
-                    test.state == "running"
-                      ? _c("i", {
-                          staticClass: "fa fa-spinner fa-pulse  fa-spin fa-fw"
-                        })
-                      : _vm._e()
-                  ]),
+                  _c("th", { attrs: { width: "8%" } }, [_vm._v("state")]),
                   _vm._v(" "),
-                  _c("td", [
-                    _vm._v(
-                      "\n                    " +
-                        _vm._s(test.suite_name) +
-                        "\n                "
-                    )
-                  ]),
+                  _c("th", [_vm._v("suite")]),
                   _vm._v(" "),
-                  _c("td", [
-                    _c(
-                      "div",
-                      {
-                        staticClass: "table-link",
+                  _c("th", { attrs: { width: "50%" } }, [_vm._v("test")]),
+                  _vm._v(" "),
+                  _c("th", [_vm._v("time")]),
+                  _vm._v(" "),
+                  _c("th", [_vm._v("last")]),
+                  _vm._v(" "),
+                  _c("th", { attrs: { width: "5%" } }, [_vm._v("log")])
+                ])
+              ]),
+              _vm._v(" "),
+              _c(
+                "tbody",
+                _vm._l(_vm.filteredTests, function(test) {
+                  return _c("tr", { class: !test.enabled ? "dim" : "" }, [
+                    _c("td", [
+                      _c("input", {
+                        staticClass: "testCheckbox",
+                        attrs: { type: "checkbox" },
+                        domProps: { checked: test.enabled },
                         on: {
                           click: function($event) {
-                            _vm.editFile(test.edit_file_url)
+                            _vm.toggleTest(test)
                           }
                         }
-                      },
-                      [
-                        _c("span", { staticClass: "table-test-path" }, [
-                          _vm._v(_vm._s(test.path))
-                        ]),
-                        _c("span", { staticClass: "table-test-name" }, [
-                          _vm._v(_vm._s(test.name))
-                        ])
-                      ]
-                    )
-                  ]),
-                  _vm._v(" "),
-                  _c("td", [_vm._v(_vm._s(test.time))]),
-                  _vm._v(" "),
-                  _c("td", [_vm._v(_vm._s(test.updated_at))]),
-                  _vm._v(" "),
-                  _c("td", [
-                    test.state !== "running"
-                      ? _c(
-                          "div",
-                          {
-                            class:
-                              "btn btn-sm btn-" +
-                              (test.state == "failed"
-                                ? "primary"
-                                : "secondary"),
-                            on: {
-                              click: function($event) {
-                                _vm.showLog(test)
+                      })
+                    ]),
+                    _vm._v(" "),
+                    _c("td", [
+                      test.state !== "running" &&
+                      test.state !== "queued" &&
+                      _vm.selectedProject.enabled
+                        ? _c(
+                            "div",
+                            {
+                              class:
+                                "btn btn-sm btn-" +
+                                (test.state == "failed"
+                                  ? "danger"
+                                  : "secondary"),
+                              on: {
+                                click: function($event) {
+                                  _vm.runTest(test.id)
+                                }
                               }
+                            },
+                            [
+                              _vm._v(
+                                "\n                            run\n                        "
+                              )
+                            ]
+                          )
+                        : _vm._e()
+                    ]),
+                    _vm._v(" "),
+                    _c("td", { class: "state state-" + test.state }, [
+                      _vm._v(
+                        "\n                        " +
+                          _vm._s(test.state) +
+                          "\n\n                        "
+                      ),
+                      test.state == "running"
+                        ? _c("i", {
+                            staticClass: "fa fa-spinner fa-pulse  fa-spin fa-fw"
+                          })
+                        : _vm._e()
+                    ]),
+                    _vm._v(" "),
+                    _c("td", [
+                      _vm._v(
+                        "\n                        " +
+                          _vm._s(test.suite_name) +
+                          "\n                    "
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("td", [
+                      _c(
+                        "div",
+                        {
+                          staticClass: "table-link",
+                          on: {
+                            click: function($event) {
+                              _vm.editFile(test.edit_file_url)
                             }
-                          },
-                          [
-                            _vm._v(
-                              "\n                        show\n                    "
-                            )
-                          ]
-                        )
-                      : _vm._e()
+                          }
+                        },
+                        [
+                          _c("span", { staticClass: "table-test-path" }, [
+                            _vm._v(_vm._s(test.path))
+                          ]),
+                          _c("span", { staticClass: "table-test-name" }, [
+                            _vm._v(_vm._s(test.name))
+                          ])
+                        ]
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(test.time))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(test.updated_at))]),
+                    _vm._v(" "),
+                    _c("td", [
+                      test.state !== "running"
+                        ? _c(
+                            "div",
+                            {
+                              class:
+                                "btn btn-sm btn-" +
+                                (test.state == "failed"
+                                  ? "primary"
+                                  : "secondary"),
+                              on: {
+                                click: function($event) {
+                                  _vm.showLog(test)
+                                }
+                              }
+                            },
+                            [
+                              _vm._v(
+                                "\n                            show\n                        "
+                              )
+                            ]
+                          )
+                        : _vm._e()
+                    ])
                   ])
-                ])
-              })
-            )
-          ]),
-          _vm._v(" "),
-          _c("log")
-        ],
-        1
-      )
-    : _vm._e()
+                })
+              )
+            ]),
+            _vm._v(" "),
+            _c("log")
+          ],
+          1
+        )
+      : _vm._e()
+  ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      {
+        staticClass:
+          "container d-flex align-items-center justify-content-center super-card",
+        staticStyle: { height: "500px" }
+      },
+      [
+        _c("div", { staticClass: "row justify-content-center" }, [
+          _c("div", { staticClass: "col-12" }, [
+            _c("h1", { staticClass: "card-title text-center" }, [
+              _vm._v("NO SELECTED TEST")
+            ])
+          ])
+        ])
+      ]
+    )
+  }
+]
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
@@ -49021,7 +49108,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
             return 'btn-outline-primary';
         },
         makeScreenshot: function makeScreenshot(screenshot) {
-            return this.laravel.url_prefix + '/files/' + btoa(screenshot) + '/download?random=' + Math.random();
+            return this.laravel.url_prefixes.files + '/' + btoa(screenshot) + '/download?random=' + Math.random();
         },
         baseName: function baseName(str) {
             var base = String(str).substring(str.lastIndexOf('/') + 1);
@@ -49036,7 +49123,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
             return this.selectedTest.html.match(/snapshot/i) ? this.constants.LOG_ID_SNAPSHOT : this.constants.LOG_ID_HTML;
         },
         runTest: function runTest(testId) {
-            axios.get(this.laravel.url_prefix + '/tests/run/' + testId);
+            axios.get(this.laravel.url_prefixes.tests + '/run/' + testId);
         },
         editFile: function editFile(file) {
             axios.get(file);

@@ -33,7 +33,15 @@
             </div>
         </div>
 
-        <div class="list-group">
+        <div v-if="filteredProjects.length == 0" class="container d-flex align-items-center justify-content-center" style="height: 500px;">
+            <div class="row justify-content-center">
+                <div class="col-12">
+                    <h1 class="card-title text-center">NO PROJECTS FOUND</h1>
+                </div>
+            </div>
+        </div>
+
+        <div class="list-group" v-if="filteredProjects.length > 0">
             <div class="card-projects-items">
                 <div class="row">
                     <div class="col-md-12">
@@ -130,7 +138,7 @@
             },
 
             toggleProject(project) {
-                axios.get(this.laravel.url_prefix+'/projects/'+project.id+'/enable/'+!project.enabled)
+                axios.get(this.laravel.url_prefixes.projects+'/'+project.id+'/enable/'+!project.enabled)
                     .then(response => this.loadData());
             },
 
@@ -139,15 +147,15 @@
             },
 
             run(project) {
-                axios.post(this.laravel.url_prefix+'/projects/run', { projects: project.id });
+                axios.post(this.laravel.url_prefixes.projects+'/run', { projects: project.id });
             },
 
             runAll() {
-                axios.post(this.laravel.url_prefix+'/projects/run', { projects: this.filteredProjectsIds });
+                axios.post(this.laravel.url_prefixes.projects+'/run', { projects: this.filteredProjectsIds });
             },
 
             reset() {
-                axios.post(this.laravel.url_prefix+'/projects/reset/', { projects: this.filteredProjectsIds });
+                axios.post(this.laravel.url_prefixes.projects+'/reset/', { projects: this.filteredProjectsIds });
             },
         }
     }
