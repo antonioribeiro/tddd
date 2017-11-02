@@ -1,4 +1,4 @@
-# Continuous Testing Dashboard
+# TDDD - Test Driven Development Dashboard
 ### A Self-Hosted Continuous Tests Watcher & Dashboard
 
 [![Latest Stable Version](https://img.shields.io/packagist/v/pragmarx/ci.svg?style=flat-square)](https://packagist.org/packages/pragmarx/ci)
@@ -10,9 +10,9 @@
 
 ## What is it?
 
-Continuous Testing Dashboard, namely Test Watcher, is a dashboard to watch & run all your tests. It supports any test framework executed via terminal, it comes with some preconfigured, but you can easily add yours, just tell it where the executable is and it's done. Ii also shows the progress of your tests, let you run a single test or all of them, and open your favorite code editor (PHPStorm, VSCode, Sublime Text, etc.) positioning the cursor in the failing line of your test. If your test framework generate screenshots, it is also able to show it in the log page, with all the reds and greens you are used to see in your terminal.
+Continuous TDD Dashboard, namely Tests Watcher, is a dashboard to watch & run all your tests during development. It supports any test framework wich can executed via terminal, it comes with some testers (PHPUnit, Jest, AVA...) preconfigured, but you can easily add yours, just tell it where the executable is and it's done. Ii also shows the progress of your tests, let you run a single test or all of them, and open your favorite code editor (PHPStorm, VSCode, Sublime Text, etc.) positioning the cursor in the failing line of your test. If your test framework generate screenshots, it is also able to show it in the log page, with all the reds and greens you are used to see in your terminal.
 
-It uses Laravel under the hood, but supports (and has been tested with) many languages, frameworks and testing frameworks:
+It uses Laravel as motor, but supports (and has been tested with) many languages, frameworks and testing frameworks:
 
 * [PHPUnit](https://phpunit.de/)
 * [Laravel & Laravel Dusk](https://laravel.com/docs/5.5/dusk)
