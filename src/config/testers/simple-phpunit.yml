@@ -1,4 +1,5 @@
 code: simple-phpunit
 name: Simple PHPUnit (Symfony)
 command: vendor/bin/simple-phpunit
-require_script: true
+pipers:
+  - script

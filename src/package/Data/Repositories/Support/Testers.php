@@ -12,17 +12,16 @@ trait Testers
      * @param $name
      * @param $data
      */
-    public function createOrUpdateTester($name, $data)
+    public function createOrUpdateTester($data)
     {
         Tester::updateOrCreate(
-            ['name' => $name],
+            ['name' => $data['code']],
             [
                 'command'                    => $data['command'],
                 'output_folder'              => array_get($data, 'output_folder'),
                 'output_html_fail_extension' => array_get($data, 'output_html_fail_extension'),
                 'output_png_fail_extension'  => array_get($data, 'output_png_fail_extension'),
-                'require_tee'                => array_get($data, 'require_tee', false),
-                'require_script'             => array_get($data, 'require_script', false),
+                'pipers'                     => array_get($data, 'pipers'),
                 'error_pattern'              => array_get($data, 'error_pattern'),
                 'env'                        => array_get($data, 'env'),
             ]

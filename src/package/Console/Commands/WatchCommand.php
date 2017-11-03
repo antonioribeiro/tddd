@@ -31,7 +31,7 @@ class WatchCommand extends BaseCommand
      */
     public function fire()
     {
-        $this->getLaravel()->make('ci.watcher')->run($this);
+        $this->getLaravel()->make('tddd.watcher')->run($this);
     }
 
     /**

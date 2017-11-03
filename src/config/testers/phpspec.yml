@@ -1,3 +1,5 @@
 code: phpspec
 name: phpspec
 command: phpspec run
+pipers:
+  - script

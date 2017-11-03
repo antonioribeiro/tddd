@@ -7,13 +7,13 @@ action-title: Tests Failed
 action_message: One or more tests have failed.
 from:
   name: Test Driven Development Dashboard
-  address: laravel-tw@mydomain.com
+  address: tddd@mydomain.com
   icon_emoji: ''
   icon_url: https://emojipedia-us.s3.amazonaws.com/thumbs/120/apple/96/lady-beetle_1f41e.png
 users:
   model: PragmaRX\TestsWatcher\Package\Data\Models\User
   emails:
-  - laravel-ci@mydomain.com
+  - tddd@mydomain.com
 channels:
   mail:
     enabled: false

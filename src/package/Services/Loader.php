@@ -35,8 +35,6 @@ class Loader extends Base
     public function __construct(DataRepository $dataRepository)
     {
         $this->dataRepository = $dataRepository;
-
-        parent::__construct();
     }
 
     /**
@@ -75,13 +73,13 @@ class Loader extends Base
     {
         $this->showProgress('Loading testers...', 'info');
 
-        foreach ($this->config->get('testers') as $name => $data) {
-            $this->showProgress("TESTER: $name");
+        foreach ($this->config('testers') as $data) {
+            $this->showProgress("TESTER: {$data['name']}");
 
-            $this->dataRepository->createOrUpdateTester($name, $data);
+            $this->dataRepository->createOrUpdateTester($data);
         }
 
-        $this->dataRepository->deleteMissingTesters(array_keys($this->config->get('testers')));
+        $this->dataRepository->deleteMissingTesters(array_keys($this->config('testers')));
     }
 
     /**
@@ -89,21 +87,22 @@ class Loader extends Base
      */
     public function loadProjects()
     {
-        $this->showProgress('Loading projects and suites...');
+        $this->showProgress('Loading projects and suites...', 'info');
 
-        foreach ($this->config->get('projects') as $name => $data) {
-            $this->showProgress("Project '{$name}'", 'comment');
+        foreach ($this->config('projects') as $data) {
+            $this->showProgress("Project '{$data['name']}'", 'comment');
 
-            $project = $this->dataRepository->createOrUpdateProject($name, $data['path'], $data['tests_path']);
+            $project = $this->dataRepository->createOrUpdateProject($data['name'], $data['path'], $data['tests_path']);
 
             $this->refreshProjectSuites($data, $project);
+
 
             $this->addToWatchFolders($data['path'], $data['watch_folders']);
 
             $this->addToExclusions($data['path'], $data['exclude']);
         }
 
-        $this->dataRepository->deleteMissingProjects(array_keys($this->config->get('projects')));
+        $this->dataRepository->deleteMissingProjects(collect($this->config('projects'))->pluck('name')->toArray());
     }
 
     /**

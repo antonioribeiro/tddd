@@ -47687,7 +47687,7 @@ exports.clearImmediate = clearImmediate;
             }
         },
         loadData: function loadData(context) {
-            axios.get(context.state.laravel.url_prefixes.dashboard + '/data').then(function (result) {
+            axios.get(context.state.laravel.routes.prefixes.dashboard + '/data').then(function (result) {
                 context.commit('setProjects', result.data.projects);
 
                 var selected = context.getters.selectedProject && result.data.projects.filter(function (project) {
@@ -47711,7 +47711,7 @@ exports.clearImmediate = clearImmediate;
 
             if (context.state.wasRunning && !context.getters.isRunning) {
                 if (context.getters.statistics.failed > 0) {
-                    axios.get(context.state.laravel.url_prefixes.projects + '/' + context.state.selectedProjectId + '/notify');
+                    axios.get(context.state.laravel.routes.prefixes.projects + '/' + context.state.selectedProjectId + '/notify');
                 }
             }
 
@@ -47913,7 +47913,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
         toggleProject: function toggleProject(project) {
             var _this = this;
 
-            axios.get(this.laravel.url_prefixes.projects + '/' + project.id + '/enable/' + !project.enabled).then(function (response) {
+            axios.get(this.laravel.routes.prefixes.projects + '/' + project.id + '/enable/' + !project.enabled).then(function (response) {
                 return _this.loadData();
             });
         },
@@ -47921,13 +47921,13 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
             this.$store.commit('setProjectsFilter', '');
         },
         run: function run(project) {
-            axios.post(this.laravel.url_prefixes.projects + '/run', { projects: project.id });
+            axios.post(this.laravel.routes.prefixes.projects + '/run', { projects: project.id });
         },
         runAll: function runAll() {
-            axios.post(this.laravel.url_prefixes.projects + '/run', { projects: this.filteredProjectsIds });
+            axios.post(this.laravel.routes.prefixes.projects + '/run', { projects: this.filteredProjectsIds });
         },
         reset: function reset() {
-            axios.post(this.laravel.url_prefixes.projects + '/reset/', { projects: this.filteredProjectsIds });
+            axios.post(this.laravel.routes.prefixes.projects + '/reset/', { projects: this.filteredProjectsIds });
         }
     })
 });
@@ -48403,13 +48403,13 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
     methods: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["mapActions"])(['loadData']), {
         runTest: function runTest(testId) {
-            axios.get(this.laravel.url_prefixes.tests + '/run/' + testId);
+            axios.get(this.laravel.routes.prefixes.tests + '/run/' + testId);
         },
         runAll: function runAll() {
-            axios.post(this.laravel.url_prefixes.projects + '/run', { projects: this.selectedProject.id });
+            axios.post(this.laravel.routes.prefixes.projects + '/run', { projects: this.selectedProject.id });
         },
         reset: function reset() {
-            axios.get(this.laravel.url_prefixes.tests + '/reset/' + this.selectedProject.id);
+            axios.get(this.laravel.routes.prefixes.tests + '/reset/' + this.selectedProject.id);
         },
         showLog: function showLog(test) {
             this.$store.commit('setSelectedTestId', test.id);
@@ -48420,10 +48420,10 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
             return this.statistics.count == this.statistics.enabled;
         },
         toggleTest: function toggleTest(test) {
-            axios.get(this.laravel.url_prefixes.tests + '/' + this.selectedProject.id + '/' + test.id + '/enable/' + !test.enabled);
+            axios.get(this.laravel.routes.prefixes.tests + '/' + this.selectedProject.id + '/' + test.id + '/enable/' + !test.enabled);
         },
         enableAll: function enableAll() {
-            axios.get(this.laravel.url_prefixes.tests + '/' + this.selectedProject.id + '/all/enable/' + !this.allEnabled());
+            axios.get(this.laravel.routes.prefixes.tests + '/' + this.selectedProject.id + '/all/enable/' + !this.allEnabled());
         },
         editFile: function editFile(file) {
             axios.get(file);
@@ -49108,7 +49108,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
             return 'btn-outline-primary';
         },
         makeScreenshot: function makeScreenshot(screenshot) {
-            return this.laravel.url_prefixes.files + '/' + btoa(screenshot) + '/download?random=' + Math.random();
+            return this.laravel.routes.prefixes.files + '/' + btoa(screenshot) + '/download?random=' + Math.random();
         },
         baseName: function baseName(str) {
             var base = String(str).substring(str.lastIndexOf('/') + 1);
@@ -49123,7 +49123,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
             return this.selectedTest.html.match(/snapshot/i) ? this.constants.LOG_ID_SNAPSHOT : this.constants.LOG_ID_HTML;
         },
         runTest: function runTest(testId) {
-            axios.get(this.laravel.url_prefixes.tests + '/run/' + testId);
+            axios.get(this.laravel.routes.prefixes.tests + '/run/' + testId);
         },
         editFile: function editFile(file) {
             axios.get(file);

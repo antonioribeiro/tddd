@@ -2,9 +2,11 @@
 
 namespace PragmaRX\TestsWatcher\Package\Services;
 
+use Carbon\Carbon;
 use Illuminate\Console\Command;
 use JasonLewis\ResourceWatcher\Watcher as ResourceWatcher;
 use PragmaRX\TestsWatcher\Package\Data\Repositories\Data as DataRepository;
+use Symfony\Component\Finder\SplFileInfo;
 
 class Watcher extends Base
 {
@@ -34,7 +36,14 @@ class Watcher extends Base
      *
      * @var \PragmaRX\TestsWatcher\Package\Data\Repositories\Data
      */
-    private $dataRepository;
+    protected $dataRepository;
+
+    /**
+     * The event cache
+     *
+     * @var array
+     */
+    protected $eventCache = [];
 
     /**
      * Instantiate a Watcher.
@@ -50,8 +59,53 @@ class Watcher extends Base
         $this->watcher = $watcher;
 
         $this->loader = $loader;
+    }
 
-        parent::__construct();
+    /**
+     * Check if the event has expired.
+     *
+     * @param $event
+     * @return bool
+     */
+    protected function eventExpired($event)
+    {
+        $cachedDiff = $this->getCachedEvent($event)->diffInSeconds(Carbon::now());
+
+        $this->showProgress("diff: $cachedDiff");
+
+        return $cachedDiff < $this->config('root.cache.event_timeout', 10);
+    }
+
+    /**
+     * Get an event from cache.
+     *
+     * @param $event
+     * @return mixed|static
+     */
+    protected function getCachedEvent($event)
+    {
+        $path = $event->getResource()->getPath();
+
+        return isset($this->eventCache[$path])
+            ? $this->eventCache[$path]
+            : $this->eventCache[$path] = Carbon::now()->subDay();
+    }
+
+    /**
+     * Check if the event was processed recently.
+     *
+     * @param \JasonLewis\ResourceWatcher\Event $event
+     * @return bool
+     */
+    protected function eventWasProcessed($event)
+    {
+        if ($this->eventExpired($event)) {
+            return true;
+        }
+
+        $this->resetEventCache($event);
+
+        return false;
     }
 
     /**
@@ -62,13 +116,11 @@ class Watcher extends Base
      *
      * @return bool
      */
-    private function firedOnlyOne($event, $path)
+    protected function firedOnlyOne($event, $path)
     {
         if ($test = $this->dataRepository->isTestFile($path)) {
             if ($test->sha1Changed() && !$this->dataRepository->isEnqueued($test)) {
                 $this->dataRepository->addTestToQueue($test);
-
-                $this->showEventMessage($event, $path);
 
                 $this->showProgress('QUEUE: test added to queue');
             }
@@ -86,10 +138,10 @@ class Watcher extends Base
      *
      * @return bool
      */
-    private function isConfig($path)
+    protected function isConfig($path)
     {
-        if ($path == $this->config->get('config_file') && file_exists($path)) {
-            $this->config->set(require $path);
+        if ($this->config()->isConfigFile($path)) {
+            $this->config()->invalidateConfig();
 
             $this->loader->loadEverything();
 
@@ -97,6 +149,16 @@ class Watcher extends Base
         }
 
         return false;
+    }
+
+    /**
+     * Reset the cache entry for an event.
+     *
+     * @param $event
+     */
+    private function resetEventCache($event)
+    {
+        $this->eventCache[$event->getResource()->getPath()] = Carbon::now();
     }
 
     /**
@@ -120,9 +182,9 @@ class Watcher extends Base
     /**
      * Initialize the Watcher.
      */
-    private function initialize()
+    protected function initialize()
     {
-        $this->showComment($this->config->get('names.watcher'), 'info');
+        $this->showComment($this->config('root.names.watcher'), 'info');
 
         if (!$this->is_initialized) {
             $this->loader->loadEverything();
@@ -137,15 +199,21 @@ class Watcher extends Base
      * @param $event
      * @param $path
      */
-    private function showEventMessage($event, $path)
+    protected function showEventMessage($event, $path)
     {
-        $this->showProgress("FILE CHANGED: {$path} was ".$this->getEventName($event->getCode()), 'error');
+        $type = $this->config()->isConfigFile($path)
+            ? 'CONFIGURATION'
+            : 'FILE';
+
+        $change = strtoupper($this->getEventName($event->getCode()));
+
+        $this->showProgress("{$type} {$change}: {$path}", 'error');
     }
 
     /**
      * Watch folders for changes.
      */
-    private function watch()
+    protected function watch()
     {
         $this->showProgress('BOOT: booting watchers...');
 
@@ -181,22 +249,33 @@ class Watcher extends Base
      */
     public function fireEvent($event, $resource, $path)
     {
+        if ($this->eventWasProcessed($event, $resource, $path)) {
+            return;
+        }
+
+        $this->showProgress('event 1');
+        $this->showEventMessage($event, $path);
+
+        $this->showProgress('event 2');
         if ($this->isConfig($path)) {
             return;
         }
+
+        $this->showProgress('event 3');
 
         if ($this->firedOnlyOne($event, $path)) {
             return;
         }
 
+        $this->showProgress('event 4');
         $this->loader->loadEverything();
 
-        $this->showEventMessage($event, $path);
-
+        $this->showProgress('event 5');
         if ($this->queueTestSuites($path)) {
             return;
         }
 
+        $this->showProgress('event 6');
         $this->dataRepository->queueAllTests();
     }
 
@@ -219,7 +298,7 @@ class Watcher extends Base
      *
      * @return bool tests were queued
      */
-    private function queueTestSuites($path)
+    protected function queueTestSuites($path)
     {
         $queued = false;
 
@@ -239,12 +318,12 @@ class Watcher extends Base
     /**
      * Watch the config file for changes.
      */
-    private function watchConfigFile()
+    protected function watchConfigFile()
     {
-        if (file_exists($file = $this->config->get('config_file'))) {
-            $this->watcher->watch($file);
+        $this->showProgress("WATCHING CONFIG FILES");
 
-            $this->showProgress("WATCHING CONFIG: {$file}");
-        }
+        $this->config()->getConfigFiles()->each(function($file) {
+            $this->watcher->watch($file);
+        });
     }
 }

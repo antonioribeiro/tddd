@@ -1,0 +1,10 @@
+names:
+  dashboard: {{ config('app.name') }}
+  watcher: TDDD - Watcher
+  worker: TDDD - Worker
+regex_file_matcher: "/([A-Za-z0-9\\/._-]+)(?::| on line )([1-9][0-9]*)/"
+poll_interval: 300 # milliseconds
+tmp_dir: "/var/tmp/"
+show_progress: false
+cache:
+  event_timeout: 10 # seconds

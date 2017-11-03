@@ -138,7 +138,7 @@
             },
 
             toggleProject(project) {
-                axios.get(this.laravel.url_prefixes.projects+'/'+project.id+'/enable/'+!project.enabled)
+                axios.get(this.laravel.routes.prefixes.projects+'/'+project.id+'/enable/'+!project.enabled)
                     .then(response => this.loadData());
             },
 
@@ -147,15 +147,15 @@
             },
 
             run(project) {
-                axios.post(this.laravel.url_prefixes.projects+'/run', { projects: project.id });
+                axios.post(this.laravel.routes.prefixes.projects+'/run', { projects: project.id });
             },
 
             runAll() {
-                axios.post(this.laravel.url_prefixes.projects+'/run', { projects: this.filteredProjectsIds });
+                axios.post(this.laravel.routes.prefixes.projects+'/run', { projects: this.filteredProjectsIds });
             },
 
             reset() {
-                axios.post(this.laravel.url_prefixes.projects+'/reset/', { projects: this.filteredProjectsIds });
+                axios.post(this.laravel.routes.prefixes.projects+'/reset/', { projects: this.filteredProjectsIds });
             },
         }
     }

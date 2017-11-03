@@ -1,0 +1,6 @@
+prefixes:
+  global: ''
+  dashboard: ''
+  tests: "/tests"
+  projects: "/projects"
+  files: "/files"

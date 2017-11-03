@@ -162,15 +162,15 @@
             ...mapActions(['loadData']),
 
             runTest(testId) {
-                axios.get(this.laravel.url_prefixes.tests+'/run/'+testId);
+                axios.get(this.laravel.routes.prefixes.tests+'/run/'+testId);
             },
 
             runAll() {
-                axios.post(this.laravel.url_prefixes.projects+'/run', { projects: this.selectedProject.id });
+                axios.post(this.laravel.routes.prefixes.projects+'/run', { projects: this.selectedProject.id });
             },
 
             reset() {
-                axios.get(this.laravel.url_prefixes.tests+'/reset/'+this.selectedProject.id);
+                axios.get(this.laravel.routes.prefixes.tests+'/reset/'+this.selectedProject.id);
             },
 
             showLog(test) {
@@ -184,11 +184,11 @@
             },
 
             toggleTest(test) {
-                axios.get(this.laravel.url_prefixes.tests+'/'+this.selectedProject.id+'/'+test.id+'/enable/'+!test.enabled);
+                axios.get(this.laravel.routes.prefixes.tests+'/'+this.selectedProject.id+'/'+test.id+'/enable/'+!test.enabled);
             },
 
             enableAll() {
-                axios.get(this.laravel.url_prefixes.tests+'/'+this.selectedProject.id+'/all/enable/'+!this.allEnabled());
+                axios.get(this.laravel.routes.prefixes.tests+'/'+this.selectedProject.id+'/all/enable/'+!this.allEnabled());
             },
 
             editFile(file) {

@@ -1,5 +1,6 @@
 code: rake
 name: Rake
 command: bin/rails test
-require_script: true
 error_pattern: Test\s+Suites:\s+[0-9]+\s+failed
+pipers:
+  - script

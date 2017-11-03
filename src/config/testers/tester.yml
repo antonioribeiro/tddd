@@ -1,3 +1,5 @@
 code: tester
 name: Tester
 command: sh vendor/bin/tester
+pipers:
+  - script

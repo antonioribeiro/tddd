@@ -4,6 +4,6 @@ command: php artisan dusk
 output_folder: "/Users/antoniocarlos/code/pragmarx/ci/tests/Browser/screenshots"
 output_html_fail_extension: ".fail.html"
 output_png_fail_extension: ".fail.png"
-require_tee: false
-require_script: true
 error_pattern: "(Failures|Errors): [0-9]+"
+pipers:
+  - script

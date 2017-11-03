@@ -2,5 +2,6 @@ code: react-scripts
 name: React Scripts (Tester)
 env: CI=true
 command: npm test
-require_script: true
 error_pattern: Test\s+Suites:\s+[0-9]+\s+failed
+pipers:
+  - script

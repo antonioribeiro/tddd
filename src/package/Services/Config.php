@@ -2,6 +2,7 @@
 
 namespace PragmaRX\TestsWatcher\Package\Services;
 
+use Illuminate\Support\Collection;
 use PragmaRX\Support\Yaml;
 
 class Config
@@ -11,7 +12,7 @@ class Config
      *
      * @var array
      */
-    protected $config;
+    protected $config = [];
 
     /**
      * @var Yaml
@@ -30,7 +31,7 @@ class Config
      */
     private function configIsValid()
     {
-        return !is_null($this->config);
+        return !is_null($this->config) && $this->config !== [];
     }
 
     /**
@@ -38,15 +39,15 @@ class Config
      *
      * @param $key
      *
-     * @throws \Exception
-     *
+     * @param mixed|null $default
      * @return mixed
+     * @throws \Exception
      */
-    public function get($key)
+    public function get($key, $default = null)
     {
         $this->loadConfig();
 
-        if (is_null($value = array_get($this->config, $key))) {
+        if (is_null($value = array_get($this->config, $key, $default))) {
             throw new \Exception("The configuration key '{$key}' was not defined.");
         }
 
@@ -55,6 +56,7 @@ class Config
 
     /**
      * Load the config.
+     *
      */
     protected function loadConfig()
     {
@@ -62,23 +64,17 @@ class Config
             return;
         }
 
-        return $this->loadYamlFiles()->mapWithKeys(function ($value, $key) {
-            dd($value);
-
-            return [$this->removeExtension($key) => $value];
-        });
-
-        // load
+        $this->config = $this->yaml->loadYamlFilesFromDir($this->getConfigPath())->toArray();
     }
 
     /**
-     * Load resource files.
+     * Get a list of all config files.
      *
-     * @return \Illuminate\Support\Collection
+     * @return Collection
      */
-    private function loadYamlFiles()
+    public function getConfigFiles()
     {
-        return $this->yaml->loadYamlFromDir($this->getConfigPath());
+        return $this->yaml->listYamlFilesFromDir($this->getConfigPath())->flatten();
     }
 
     /**
@@ -92,13 +88,13 @@ class Config
     }
 
     /**
-     * Set the config.
+     * Set the config item.
      *
-     * @param array $config
+     * @param $data
      */
-    public function set($config)
+    public function set($data)
     {
-        $this->config = $config;
+        $this->config = array_merge($data, $this->config);
     }
 
     /**
@@ -106,6 +102,17 @@ class Config
      */
     public function invalidateConfig()
     {
-        $this->config = null;
+        $this->config = [];
+    }
+
+    /**
+     * Check if a file is a config file.
+     *
+     * @param $file
+     * @return boolean
+     */
+    public function isConfigFile($file)
+    {
+        return $this->getConfigFiles()->contains($file);
     }
 }

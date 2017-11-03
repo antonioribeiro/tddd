@@ -1,5 +1,6 @@
 code: ava
 name: AVA
 command: node_modules/.bin/ava --verbose
-require_script: true
 error_pattern: "[1-9]+\\s+(exception|failure)"
+pipers:
+  - script

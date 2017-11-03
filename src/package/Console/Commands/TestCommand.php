@@ -31,7 +31,7 @@ class TestCommand extends BaseCommand
      */
     public function fire()
     {
-        $this->getLaravel()->make('ci.tester')->run($this);
+        $this->getLaravel()->make('tddd.tester')->run($this);
     }
 
     /**
