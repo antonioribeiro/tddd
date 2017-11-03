@@ -176,7 +176,7 @@ trait Helpers
     {
         $data = [
             'routes' => [
-                'prefixes' => __config('routes.prefixes')
+                'prefixes' => __config('routes.prefixes'),
             ],
 
             'project_id' => request()->get('project_id'),

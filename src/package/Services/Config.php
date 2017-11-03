@@ -38,10 +38,11 @@ class Config
      * Get a configuration key.
      *
      * @param $key
-     *
      * @param mixed|null $default
-     * @return mixed
+     *
      * @throws \Exception
+     *
+     * @return mixed
      */
     public function get($key, $default = null)
     {
@@ -56,7 +57,6 @@ class Config
 
     /**
      * Load the config.
-     *
      */
     protected function loadConfig()
     {
@@ -109,7 +109,8 @@ class Config
      * Check if a file is a config file.
      *
      * @param $file
-     * @return boolean
+     *
+     * @return bool
      */
     public function isConfigFile($file)
     {

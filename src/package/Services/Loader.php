@@ -96,7 +96,6 @@ class Loader extends Base
 
             $this->refreshProjectSuites($data, $project);
 
-
             $this->addToWatchFolders($data['path'], $data['watch_folders']);
 
             $this->addToExclusions($data['path'], $data['exclude']);
