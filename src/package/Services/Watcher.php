@@ -6,7 +6,6 @@ use Carbon\Carbon;
 use Illuminate\Console\Command;
 use JasonLewis\ResourceWatcher\Watcher as ResourceWatcher;
 use PragmaRX\TestsWatcher\Package\Data\Repositories\Data as DataRepository;
-use Symfony\Component\Finder\SplFileInfo;
 
 class Watcher extends Base
 {
@@ -39,7 +38,7 @@ class Watcher extends Base
     protected $dataRepository;
 
     /**
-     * The event cache
+     * The event cache.
      *
      * @var array
      */
@@ -65,6 +64,7 @@ class Watcher extends Base
      * Check if the event has expired.
      *
      * @param $event
+     *
      * @return bool
      */
     protected function eventExpired($event)
@@ -80,6 +80,7 @@ class Watcher extends Base
      * Get an event from cache.
      *
      * @param $event
+     *
      * @return mixed|static
      */
     protected function getCachedEvent($event)
@@ -95,6 +96,7 @@ class Watcher extends Base
      * Check if the event was processed recently.
      *
      * @param \JasonLewis\ResourceWatcher\Event $event
+     *
      * @return bool
      */
     protected function eventWasProcessed($event)
@@ -320,9 +322,9 @@ class Watcher extends Base
      */
     protected function watchConfigFile()
     {
-        $this->showProgress("WATCHING CONFIG FILES");
+        $this->showProgress('WATCHING CONFIG FILES');
 
-        $this->config()->getConfigFiles()->each(function($file) {
+        $this->config()->getConfigFiles()->each(function ($file) {
             $this->watcher->watch($file);
         });
     }
