@@ -1,7 +1,7 @@
 ## More examples at:
 
 name: "PHPUnit Example"
-path: "/Users/antoniocarlos/code/pragmarx/ci" # absolute
+path: "/Users/antoniocarlos/code/pragmarx/tddd" # absolute
 watch_folders:
   - app   # all other directories are relative
   - tests # watching tests folder so it runs only the changed test

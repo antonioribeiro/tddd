@@ -13,7 +13,7 @@ class AddScreenshots extends Migration
      */
     public function migrateUp()
     {
-        Schema::table('ci_runs', function (Blueprint $table) {
+        Schema::table('tddd_runs', function (Blueprint $table) {
             $table->text('screenshots')->nullable();
             $table->dropColumn('png');
         });
@@ -26,7 +26,7 @@ class AddScreenshots extends Migration
      */
     public function migrateDown()
     {
-        Schema::table('ci_runs', function (Blueprint $table) {
+        Schema::table('tddd_runs', function (Blueprint $table) {
             $table->dropColumn('screenshots');
             $table->text('png')->nullable();
         });

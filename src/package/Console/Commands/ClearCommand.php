@@ -9,7 +9,7 @@ class ClearCommand extends BaseCommand
      *
      * @var string
      */
-    protected $name = 'ci:clear';
+    protected $name = 'tddd:clear';
 
     /**
      * The console command description.
@@ -31,7 +31,7 @@ class ClearCommand extends BaseCommand
      */
     public function fire()
     {
-        app('ci')->clear();
+        app('tddd')->clear();
 
         $this->info('Cleared.');
     }

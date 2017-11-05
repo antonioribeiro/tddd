@@ -163,7 +163,7 @@ trait Suites
 
         // Get filtered projects dependencies
         $depends = $projects->filter(function ($project) use ($filtered_projects) {
-            if (!is_null($depends = config("ci.projects.{$project->name}.depends"))) {
+            if (!is_null($depends = __config("projects.{$project->name}.depends"))) {
                 return collect($depends)->filter(function ($item) use ($filtered_projects) {
                     return !is_null($filtered_projects->where('name', $item)->first());
                 });

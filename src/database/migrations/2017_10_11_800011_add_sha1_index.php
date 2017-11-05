@@ -13,7 +13,7 @@ class AddSha1Index extends Migration
      */
     public function migrateUp()
     {
-        Schema::table('ci_tests', function (Blueprint $table) {
+        Schema::table('tddd_tests', function (Blueprint $table) {
             $table->index('sha1');
         });
     }
@@ -25,8 +25,8 @@ class AddSha1Index extends Migration
      */
     public function migrateDown()
     {
-        Schema::table('ci_tests', function (Blueprint $table) {
-            $table->dropIndex('ci_tests_sha1_index');
+        Schema::table('tddd_tests', function (Blueprint $table) {
+            $table->dropIndex('tddd_tests_sha1_index');
         });
     }
 }

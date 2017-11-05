@@ -9,7 +9,7 @@ class TestCommand extends BaseCommand
      *
      * @var string
      */
-    protected $name = 'ci:work';
+    protected $name = 'tddd:work';
 
     /**
      * The console command description.

@@ -9,7 +9,7 @@ class WatchCommand extends BaseCommand
      *
      * @var string
      */
-    protected $name = 'ci:watch';
+    protected $name = 'tddd:watch';
 
     /**
      * The console command description.

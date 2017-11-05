@@ -13,7 +13,7 @@ class AddPipers extends Migration
      */
     public function migrateUp()
     {
-        Schema::table('ci_testers', function (Blueprint $table) {
+        Schema::table('tddd_testers', function (Blueprint $table) {
             $table->dropColumn('require_tee');
 
             $table->dropColumn('require_script');
@@ -29,7 +29,7 @@ class AddPipers extends Migration
      */
     public function migrateDown()
     {
-        Schema::table('ci_testers', function (Blueprint $table) {
+        Schema::table('tddd_testers', function (Blueprint $table) {
             $table->boolean('require_tee');
 
             $table->boolean('require_script');

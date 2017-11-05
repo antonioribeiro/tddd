@@ -50,7 +50,7 @@ class ServiceProvider extends IlluminateServiceProvider
      */
     private function loadViews()
     {
-        $this->loadViewsFrom(__DIR__.'/../resources/views', 'pragmarx/ci');
+        $this->loadViewsFrom(__DIR__.'/../resources/views', 'pragmarx/tddd');
     }
 
     /**
@@ -70,8 +70,8 @@ class ServiceProvider extends IlluminateServiceProvider
      */
     public function register()
     {
-        if (!defined('CI_PATH')) {
-            define('CI_PATH', realpath(__DIR__.'/../../'));
+        if (!defined('TDDD_PATH')) {
+            define('TDDD_PATH', realpath(__DIR__.'/../../'));
         }
 
         $this->registerResourceWatcher();
@@ -166,7 +166,7 @@ class ServiceProvider extends IlluminateServiceProvider
      */
     private function registerService()
     {
-        $this->app->singleton('ci', function () {
+        $this->app->singleton('tddd', function () {
             return app('PragmaRX\TestsWatcher\Package\Service');
         });
     }

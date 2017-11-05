@@ -162,7 +162,7 @@ trait Helpers
      */
     protected function getEditor($suite)
     {
-        if (empty($suite) || is_null($editor = config("ci.editors.{$suite->editor}"))) {
+        if (empty($suite) || is_null($editor = __config("editors.{$suite->editor}"))) {
             return $this->getDefaultEditor();
         }
 

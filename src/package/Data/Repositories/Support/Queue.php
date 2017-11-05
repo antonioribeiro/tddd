@@ -77,9 +77,9 @@ trait Queue
      */
     public function getNextTestFromQueue()
     {
-        $query = QueueModel::join('ci_tests', 'ci_tests.id', '=', 'ci_queue.test_id')
-                      ->where('ci_tests.enabled', true)
-                      ->where('ci_tests.state', '!=', Constants::STATE_RUNNING);
+        $query = QueueModel::join('tddd_tests', 'tddd_tests.id', '=', 'tddd_queue.test_id')
+                      ->where('tddd_tests.enabled', true)
+                      ->where('tddd_tests.state', '!=', Constants::STATE_RUNNING);
 
         if (!$queue = $query->first()) {
             return;

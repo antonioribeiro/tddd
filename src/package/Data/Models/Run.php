@@ -4,7 +4,7 @@ namespace PragmaRX\TestsWatcher\Package\Data\Models;
 
 class Run extends Model
 {
-    protected $table = 'ci_runs';
+    protected $table = 'tddd_runs';
 
     protected $dates = [
         'created_at',

@@ -13,7 +13,7 @@ class CreateRunsIndexes extends Migration
      */
     public function migrateUp()
     {
-        Schema::table('ci_runs', function (Blueprint $table) {
+        Schema::table('tddd_runs', function (Blueprint $table) {
             $table->index('created_at');
         });
     }
@@ -25,8 +25,8 @@ class CreateRunsIndexes extends Migration
      */
     public function migrateDown()
     {
-        Schema::table('ci_runs', function (Blueprint $table) {
-            $table->dropIndex('ci_runs_created_at_index');
+        Schema::table('tddd_runs', function (Blueprint $table) {
+            $table->dropIndex('tddd_runs_created_at_index');
         });
     }
 }

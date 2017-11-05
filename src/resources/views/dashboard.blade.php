@@ -12,7 +12,7 @@
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
 
     <style>
-        {!! file_get_contents(CI_PATH.'/src/public/css/app.css'); !!}
+        {!! file_get_contents(TDDD_PATH.'/src/public/css/app.css'); !!}
     </style>
 
 	<body>
@@ -39,7 +39,7 @@
         </div>
 
         <script>
-            {!! file_get_contents(CI_PATH.'/src/public/js/app.js'); !!}
+            {!! file_get_contents(TDDD_PATH.'/src/public/js/app.js'); !!}
         </script>
 
         @if(config('app.env') == 'local')

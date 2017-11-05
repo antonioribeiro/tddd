@@ -14,9 +14,9 @@ class CreateRunsStartEnd extends Migration
      */
     public function migrateUp()
     {
-        Database::statement('delete from ci_runs;');
+        Database::statement('delete from tddd_runs;');
 
-        Schema::table('ci_runs', function (Blueprint $table) {
+        Schema::table('tddd_runs', function (Blueprint $table) {
             $table->timestamp('started_at')->nullable();
 
             $table->timestamp('ended_at')->nullable();
@@ -32,7 +32,7 @@ class CreateRunsStartEnd extends Migration
      */
     public function migrateDown()
     {
-        Schema::table('ci_runs', function (Blueprint $table) {
+        Schema::table('tddd_runs', function (Blueprint $table) {
             $table->dropColumn('started_at');
 
             $table->dropColumn('ended_at');

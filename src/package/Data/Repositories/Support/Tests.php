@@ -214,15 +214,15 @@ trait Tests
     {
         $projects = (array) $projects;
 
-        $query = Test::select('ci_tests.*')
-                     ->join('ci_suites', 'ci_suites.id', '=', 'ci_tests.suite_id');
+        $query = Test::select('tddd_tests.*')
+                     ->join('tddd_suites', 'tddd_suites.id', '=', 'tddd_tests.suite_id');
 
         if ($projects && $projects != 'all') {
-            $query->whereIn('ci_suites.project_id', $projects);
+            $query->whereIn('tddd_suites.project_id', $projects);
         }
 
         if ($test_id && $test_id != 'all') {
-            $query->where('ci_tests.id', $test_id);
+            $query->where('tddd_tests.id', $test_id);
         }
 
         return $query;

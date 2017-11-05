@@ -12,7 +12,7 @@ trait Runs
      */
     public function clearRuns()
     {
-        Database::statement('delete from ci_runs');
+        Database::statement('delete from tddd_runs');
     }
 
     /**

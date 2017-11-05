@@ -13,7 +13,7 @@ class AddProjectEnabled extends Migration
      */
     public function migrateUp()
     {
-        Schema::table('ci_projects', function (Blueprint $table) {
+        Schema::table('tddd_projects', function (Blueprint $table) {
             $table->boolean('enabled')->default(true);
         });
     }
@@ -25,7 +25,7 @@ class AddProjectEnabled extends Migration
      */
     public function migrateDown()
     {
-        Schema::table('ci_projects', function (Blueprint $table) {
+        Schema::table('tddd_projects', function (Blueprint $table) {
             $table->dropColumn('enabled');
         });
     }

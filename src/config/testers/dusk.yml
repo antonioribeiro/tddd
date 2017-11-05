@@ -1,7 +1,7 @@
 code: dusk
 name: Laravel Dusk
 command: php artisan dusk
-output_folder: "/Users/antoniocarlos/code/pragmarx/ci/tests/Browser/screenshots"
+output_folder: "/Users/antoniocarlos/code/pragmarx/tddd/tests/Browser/screenshots"
 output_html_fail_extension: ".fail.html"
 output_png_fail_extension: ".fail.png"
 error_pattern: "(Failures|Errors): [0-9]+"

@@ -13,7 +13,7 @@ class AddRegexPattern extends Migration
      */
     public function migrateUp()
     {
-        Schema::table('ci_testers', function (Blueprint $table) {
+        Schema::table('tddd_testers', function (Blueprint $table) {
             $table->string('error_pattern')->nullable();
         });
     }
@@ -25,7 +25,7 @@ class AddRegexPattern extends Migration
      */
     public function migrateDown()
     {
-        Schema::table('ci_testers', function (Blueprint $table) {
+        Schema::table('tddd_testers', function (Blueprint $table) {
             $table->dropColumn('error_pattern');
         });
     }

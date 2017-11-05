@@ -4,7 +4,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use PragmaRX\Support\Migration;
 
-class CreateCiQueueTable extends Migration
+class CreateTdddQueueTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateCiQueueTable extends Migration
      */
     public function migrateUp()
     {
-        Schema::create('ci_queue', function (Blueprint $table) {
+        Schema::create('tddd_queue', function (Blueprint $table) {
             $table->increments('id');
 
             $table->integer('test_id')->unsigned();
@@ -21,10 +21,10 @@ class CreateCiQueueTable extends Migration
             $table->timestamps();
         });
 
-        Schema::table('ci_queue', function (Blueprint $table) {
+        Schema::table('tddd_queue', function (Blueprint $table) {
             $table->foreign('test_id')
                 ->references('id')
-                ->on('ci_tests')
+                ->on('tddd_tests')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
         });
@@ -37,6 +37,6 @@ class CreateCiQueueTable extends Migration
      */
     public function migrateDown()
     {
-        Schema::drop('ci_queue');
+        Schema::drop('tddd_queue');
     }
 }

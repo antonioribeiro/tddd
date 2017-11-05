@@ -4,7 +4,7 @@ namespace PragmaRX\TestsWatcher\Package\Data\Models;
 
 class Tester extends Model
 {
-    protected $table = 'ci_testers';
+    protected $table = 'tddd_testers';
 
     protected $fillable = [
         'name',
