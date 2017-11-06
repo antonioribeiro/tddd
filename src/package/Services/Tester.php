@@ -57,13 +57,13 @@ class Tester extends Base
             [
                 '{$bin}',
                 '{$tempFile}',
-                '{$command}'
+                '{$command}',
             ],
 
             [
                 $piper['bin'],
                 $this->pipedFile = tempnam($this->config('root.tmp_dir'), 'tw-'),
-                $command
+                $command,
             ],
 
             $piper['execute']
