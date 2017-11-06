@@ -46,25 +46,21 @@ class Config
      */
     public function get($key, $default = null)
     {
-        $this->loadConfig();
-
-        if (is_null($value = array_get($this->config, $key, $default))) {
-            throw new \Exception("The configuration key '{$key}' was not defined.");
-        }
-
-        return $value;
+        return array_get($this->loadConfig(), $key, $default);
     }
 
     /**
      * Load the config.
+     *
+     * @return array
      */
     protected function loadConfig()
     {
         if ($this->configIsValid()) {
-            return;
+            return $this->config;
         }
 
-        $this->config = $this->yaml->loadYamlFilesFromDir($this->getConfigPath())->toArray();
+        return $this->config = $this->yaml->loadYamlFilesFromDir($this->getConfigPath())->toArray();
     }
 
     /**
