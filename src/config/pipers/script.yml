@@ -1,3 +1,0 @@
-bin: "/usr/bin/script"
-command_prefix: "{$bin} -q {$tempFile}"
-command_suffix:

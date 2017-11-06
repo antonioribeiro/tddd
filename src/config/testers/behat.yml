@@ -2,4 +2,4 @@ code: behat
 name: Behat
 command: sh vendor/bin/behat
 pipers:
-  - script
+  - script-macos

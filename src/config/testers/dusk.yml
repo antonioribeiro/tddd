@@ -6,4 +6,4 @@ output_html_fail_extension: ".fail.html"
 output_png_fail_extension: ".fail.png"
 error_pattern: "(Failures|Errors): [0-9]+"
 pipers:
-  - script
+  - script-macos

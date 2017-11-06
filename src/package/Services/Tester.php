@@ -53,12 +53,20 @@ class Tester extends Base
 
     private function addPiper($piper, $command)
     {
-        $command = "{$piper['command_prefix']} {$command} {$piper['command_suffix']}";
-
         return str_replace(
-            ['{$bin}', '{$tempFile}'],
-            [$piper['bin'], $this->pipedFile = tempnam($this->config('root.tmp_dir'), 'tw-')],
-            $command
+            [
+                '{$bin}',
+                '{$tempFile}',
+                '{$command}'
+            ],
+
+            [
+                $piper['bin'],
+                $this->pipedFile = tempnam($this->config('root.tmp_dir'), 'tw-'),
+                $command
+            ],
+
+            $piper['execute']
         );
     }
 

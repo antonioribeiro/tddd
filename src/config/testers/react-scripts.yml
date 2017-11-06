@@ -4,4 +4,4 @@ env: CI=true
 command: npm test
 error_pattern: Test\s+Suites:\s+[0-9]+\s+failed
 pipers:
-  - script
+  - script-macos

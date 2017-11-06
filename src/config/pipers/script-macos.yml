@@ -1,0 +1,2 @@
+bin: "/usr/bin/script"
+execute: "{$bin} -q {$tempFile} {$command}"

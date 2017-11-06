@@ -5,4 +5,4 @@ output_folder: tests/_output
 output_html_fail_extension: ".fail.html"
 output_png_fail_extension: ".fail.png"
 pipers:
-  - script
+  - script-macos

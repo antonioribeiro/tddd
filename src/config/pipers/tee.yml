@@ -1,3 +1,2 @@
 bin: "/usr/bin/tee"
-command_prefix:
-command_suffix: " | {$bin} > {$tempFile}"
+execute: "{$command} | {$bin} > {$tempFile}"
