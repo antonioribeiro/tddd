@@ -60,10 +60,10 @@ trait Tests
      *
      * @param $exclusions
      */
-    public function syncTests($exclusions, $showFiles)
+    public function syncTests($exclusions, $showTests)
     {
         foreach ($this->getSuites() as $suite) {
-            $this->syncSuiteTests($suite, $exclusions, $showFiles);
+            $this->syncSuiteTests($suite, $exclusions, $showTests);
         }
     }
 

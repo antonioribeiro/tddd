@@ -9,7 +9,7 @@ class WatchCommand extends BaseCommand
      *
      * @var string
      */
-    protected $signature = 'tddd:watch {--show-files}';
+    protected $signature = 'tddd:watch {--show-tests : Show watched tests}';
 
     /**
      * The console command description.
@@ -31,6 +31,6 @@ class WatchCommand extends BaseCommand
      */
     public function handle()
     {
-        $this->getLaravel()->make('tddd.watcher')->run($this, $this->option('show-files'));
+        $this->getLaravel()->make('tddd.watcher')->run($this, $this->option('show-tests'));
     }
 }

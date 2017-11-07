@@ -98,13 +98,13 @@ trait Suites
      * @param $suite
      * @param $exclusions
      */
-    protected function syncSuiteTests($suite, $exclusions, $showFiles)
+    protected function syncSuiteTests($suite, $exclusions, $showTests)
     {
         $files = $this->getAllFilesFromSuite($suite);
 
         foreach ($files as $file) {
             if (!$this->isExcluded($exclusions, null, $file) && $this->isTestable($file->getRealPath())) {
-                if ($this->createOrUpdateTest($file, $suite) && $showFiles) {
+                if ($this->createOrUpdateTest($file, $suite) && $showTests) {
                     $this->addMessage('NEW TEST: '.$file->getRealPath());
                 }
             } else {
