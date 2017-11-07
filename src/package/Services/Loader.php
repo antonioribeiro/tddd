@@ -2,8 +2,8 @@
 
 namespace PragmaRX\TestsWatcher\Package\Services;
 
-use PragmaRX\TestsWatcher\Package\Facades\Config;
 use PragmaRX\TestsWatcher\Package\Data\Repositories\Data as DataRepository;
+use PragmaRX\TestsWatcher\Package\Facades\Config;
 
 class Loader extends Base
 {
@@ -60,7 +60,7 @@ class Loader extends Base
      */
     public function loadEverything($showTests = false)
     {
-        $this->showProgress('Config loaded from ' . Config::getConfigPath());
+        $this->showProgress('Config loaded from '.Config::getConfigPath());
 
         $this->loadTesters();
 
