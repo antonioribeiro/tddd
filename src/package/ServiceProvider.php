@@ -12,6 +12,7 @@ use PragmaRX\TestsWatcher\Package\Events\TestsFailed;
 use PragmaRX\TestsWatcher\Package\Events\UserNotifiedOfFailure;
 use PragmaRX\TestsWatcher\Package\Listeners\MarkAsNotified;
 use PragmaRX\TestsWatcher\Package\Listeners\Notify;
+use PragmaRX\TestsWatcher\Package\Services\Config;
 use PragmaRX\TestsWatcher\Package\Support\Notifier;
 
 class ServiceProvider extends IlluminateServiceProvider
@@ -24,17 +25,34 @@ class ServiceProvider extends IlluminateServiceProvider
     protected $defer = false;
 
     /**
+     * Config instance.
+     *
+     * @var Config
+     */
+    protected $config;
+
+    /**
      * Boot Service Provider.
      */
     public function boot()
     {
         $this->publishConfiguration();
 
+        $this->loadConfig();
+
         $this->loadMigrations();
 
         $this->loadRoutes();
 
         $this->loadViews();
+    }
+
+    /**
+     * Load config files to Laravel config.
+     */
+    private function loadConfig()
+    {
+        $this->config->loadConfig();
     }
 
     /**
@@ -59,7 +77,7 @@ class ServiceProvider extends IlluminateServiceProvider
     private function publishConfiguration()
     {
         $this->publishes([
-            __DIR__.'/../config' => config_path('tddd'),
+            __DIR__.'/../config' => config_path(),
         ]);
     }
 
@@ -196,8 +214,10 @@ class ServiceProvider extends IlluminateServiceProvider
      */
     private function registerConfig()
     {
-        $this->app->singleton('tddd.config', function () {
-            return app('PragmaRX\TestsWatcher\Package\Services\Config');
+        $config = $this->config = app('PragmaRX\TestsWatcher\Package\Services\Config');
+
+        $this->app->singleton('tddd.config', function () use ($config) {
+            return $config;
         });
     }
 
@@ -215,7 +235,7 @@ class ServiceProvider extends IlluminateServiceProvider
     private function loadRoutes()
     {
         Route::group([
-            'prefix'     => config('tddd.routes.prefixes.global'),
+            'prefix'     => config('routes.prefixes.global'),
             'namespace'  => 'PragmaRX\TestsWatcher\Package\Http\Controllers',
             'middleware' => 'web',
         ], function () {

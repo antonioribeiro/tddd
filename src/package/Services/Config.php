@@ -2,8 +2,8 @@
 
 namespace PragmaRX\TestsWatcher\Package\Services;
 
+use PragmaRX\Support\YamlConfig;
 use Illuminate\Support\Collection;
-use PragmaRX\Support\Yaml;
 
 class Config
 {
@@ -15,11 +15,18 @@ class Config
     protected $config = [];
 
     /**
-     * @var Yaml
+     * @var YamlConfig
      */
     protected $yaml;
 
-    public function __construct(Yaml $yaml)
+    /**
+     * The config path.
+     *
+     * @var array
+     */
+    protected $configPath;
+
+    public function __construct(YamlConfig $yaml)
     {
         $this->yaml = $yaml;
     }
@@ -29,9 +36,9 @@ class Config
      *
      * @return bool
      */
-    private function configIsValid()
+    protected function configIsValid()
     {
-        return !is_null($this->config) && $this->config !== [];
+        return is_array($this->config) && count($this->config) > 0;
     }
 
     /**
@@ -46,21 +53,33 @@ class Config
      */
     public function get($key, $default = null)
     {
-        return array_get($this->loadConfig(), $key, $default);
+        $this->loadConfig();
+
+        return config("tddd.{$key}", $default);
     }
 
     /**
      * Load the config.
      *
-     * @return array
      */
-    protected function loadConfig()
+    public function loadConfig()
     {
         if ($this->configIsValid()) {
-            return $this->config;
+            return;
         }
 
-        return $this->config = $this->yaml->loadYamlFilesFromDir($this->getConfigPath())->toArray();
+        $this->yaml->loadToConfig($this->getConfigPath(), 'tddd', true)->toArray();
+    }
+
+    /**
+     * Force the config to be reloaded.
+     *
+     */
+    public function reloadConfig()
+    {
+        $this->invalidateConfig();
+
+        $this->loadConfig();
     }
 
     /**
@@ -70,7 +89,7 @@ class Config
      */
     public function getConfigFiles()
     {
-        return $this->yaml->listYamlFilesFromDir($this->getConfigPath())->flatten();
+        return $this->yaml->listFiles($this->getConfigPath())->flatten();
     }
 
     /**
@@ -80,7 +99,11 @@ class Config
      */
     public function getConfigPath()
     {
-        return str_replace('{laravel.config.path}', config_path(), config('tddd.config.path'));
+        if (is_null($this->configPath)) {
+            $this->configPath = replace_laravel_paths(config('tddd-base.path'));
+        }
+
+        return $this->configPath;
     }
 
     /**
@@ -91,6 +114,8 @@ class Config
     public function set($data)
     {
         $this->config = array_merge($data, $this->config);
+
+        $this->mergeWithLaravelConfig();
     }
 
     /**

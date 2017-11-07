@@ -73,13 +73,19 @@ class Loader extends Base
     {
         $this->showProgress('Loading testers...', 'info');
 
-        foreach ($this->config('testers') as $data) {
+        if (!is_arrayable($testers = $this->config('testers')) or count($testers) == 0) {
+            $this->showProgress('No testers found.', 'error');
+
+            return;
+        }
+
+        foreach ($testers as $data) {
             $this->showProgress("TESTER: {$data['name']}");
 
             $this->dataRepository->createOrUpdateTester($data);
         }
 
-        $this->dataRepository->deleteMissingTesters(array_keys($this->config('testers')));
+        $this->dataRepository->deleteMissingTesters(array_keys($testers));
     }
 
     /**
@@ -89,7 +95,13 @@ class Loader extends Base
     {
         $this->showProgress('Loading projects and suites...', 'info');
 
-        foreach ($this->config('projects') as $data) {
+        if (!is_arrayable($projects = $this->config('projects')) or count($projects) == 0) {
+            $this->showProgress('No projects found.', 'error');
+
+            return;
+        }
+
+        foreach ($projects as $data) {
             $this->showProgress("Project '{$data['name']}'", 'comment');
 
             $project = $this->dataRepository->createOrUpdateProject($data['name'], $data['path'], $data['tests_path']);

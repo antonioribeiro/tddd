@@ -71,8 +71,6 @@ class Watcher extends Base
     {
         $cachedDiff = $this->getCachedEvent($event)->diffInSeconds(Carbon::now());
 
-        $this->showProgress("diff: $cachedDiff");
-
         return $cachedDiff < $this->config('root.cache.event_timeout', 10);
     }
 
@@ -218,6 +216,12 @@ class Watcher extends Base
     protected function watch()
     {
         $this->showProgress('BOOT: booting watchers...');
+
+        if (is_null($this->loader->watchFolders)) {
+            $this->showProgress('No watch folders found.', 'error');
+
+            return;
+        }
 
         foreach ($this->loader->watchFolders as $folder) {
             if (!file_exists($folder)) {
