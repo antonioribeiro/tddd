@@ -2,8 +2,8 @@
 
 namespace PragmaRX\TestsWatcher\Package\Services;
 
-use PragmaRX\Support\YamlConfig;
 use Illuminate\Support\Collection;
+use PragmaRX\Support\YamlConfig;
 
 class Config
 {
@@ -60,7 +60,6 @@ class Config
 
     /**
      * Load the config.
-     *
      */
     public function loadConfig()
     {
@@ -73,7 +72,6 @@ class Config
 
     /**
      * Force the config to be reloaded.
-     *
      */
     public function reloadConfig()
     {

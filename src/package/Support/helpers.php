@@ -45,19 +45,17 @@ if (!function_exists('replace_laravel_paths')) {
     }
 }
 
-
 if (!function_exists('is_arrayable')) {
     /**
      * Check if a variable is arrayable.
      *
      * @param mixed $id
      *
-     * @return boolean
+     * @return bool
      */
     function is_arrayable($id)
     {
-        return (is_array($id) ||
-            $id instanceof \Illuminate\Contracts\Support\Arrayable);
+        return is_array($id) ||
+            $id instanceof \Illuminate\Contracts\Support\Arrayable;
     }
 }
-
