@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="UTF-8">
-		<title>{{ __config('root.names.dashboard') }}</title>
+		<title>{{ config('tddd.root.names.dashboard') }}</title>
 	</head>
 
     <script>
@@ -17,7 +17,7 @@
 
 	<body>
         <nav class="navbar navbar-toggleable-md navbar-inverse bg-inverse fixed-top">
-            <a class="navbar-brand" href="#">{{ __config('root.names.dashboard') }}</a>
+            <a class="navbar-brand" href="#">{{ config('tddd.root.names.dashboard') }}</a>
         </nav>
 
         <div id="app" class="app">

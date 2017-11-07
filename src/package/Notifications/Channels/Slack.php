@@ -17,13 +17,13 @@ class Slack extends BaseChannel
         $notification = (new SlackMessage())
             ->error()
             ->from(
-                __config('notifications.from.name'),
-                $icon = (__config('notifications.from.icon_emoji') ?: null)
+                config('tddd.notifications.from.name'),
+                $icon = (config('tddd.notifications.from.icon_emoji') ?: null)
             )
             ->content($this->getMessage($tests));
 
         if (is_null($icon)) {
-            $notification->image(__config('notifications.from.icon_url') ?: null);
+            $notification->image(config('tddd.notifications.from.icon_url') ?: null);
         }
 
         $tests->each(function ($test) use ($notification) {

@@ -40,7 +40,7 @@ class Status extends Notification
     {
         $name = substr($name, 2);
 
-        return instantiate(__config('notifications.channels.'.strtolower($name).'.sender'));
+        return instantiate(config('tddd.notifications.channels.'.strtolower($name).'.sender'));
     }
 
     /**

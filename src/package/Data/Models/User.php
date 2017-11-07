@@ -25,7 +25,7 @@ class User extends Model
      */
     private function routeNotificationForEmail()
     {
-        return __config('notifications.user.email');
+        return config('tddd.notifications.user.email');
     }
 
     /**

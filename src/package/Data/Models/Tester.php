@@ -22,7 +22,7 @@ class Tester extends Model
         $pipers = collect(json_decode($value));
 
         return $pipers->mapWithKeys(function ($piper) {
-            return [$piper => __config("pipers.{$piper}")];
+            return [$piper => config("tddd.pipers.{$piper}")];
         });
     }
 

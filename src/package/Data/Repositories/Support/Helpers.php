@@ -110,7 +110,7 @@ trait Helpers
     protected function findSourceCodeReferences($lines, $test)
     {
         preg_match_all(
-            __config('root.regex_file_matcher'),
+            config('tddd.root.regex_file_matcher'),
             strip_tags($this->brToCR($lines)),
             $matches,
             PREG_SET_ORDER
@@ -134,7 +134,7 @@ trait Helpers
      */
     protected function getDefaultEditor()
     {
-        if (is_null($default = collect(__config('editors'))->where('default', true)->first())) {
+        if (is_null($default = collect(config('tddd.editors'))->where('default', true)->first())) {
             die('FATAL ERROR: default editor not configured');
         }
 
@@ -162,7 +162,7 @@ trait Helpers
      */
     protected function getEditor($suite)
     {
-        if (empty($suite) || is_null($editor = __config("editors.{$suite->editor}"))) {
+        if (empty($suite) || is_null($editor = config("tddd.editors.{$suite->editor}"))) {
             return $this->getDefaultEditor();
         }
 
@@ -176,14 +176,14 @@ trait Helpers
     {
         $data = [
             'routes' => [
-                'prefixes' => __config('routes.prefixes'),
+                'prefixes' => config('tddd.routes.prefixes'),
             ],
 
             'project_id' => request()->get('project_id'),
 
             'test_id' => request()->get('test_id'),
 
-            'poll_interval' => __config('root.poll_interval'),
+            'poll_interval' => config('tddd.root.poll_interval'),
         ];
 
         return json_encode($data);
