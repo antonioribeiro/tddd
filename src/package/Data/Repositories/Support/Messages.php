@@ -30,7 +30,7 @@ trait Messages
      * @internal param $string
      * @internal param $string1
      */
-    protected function addMessage($type, $body)
+    protected function addMessage($body, $type = 'line')
     {
         $this->messages->push(['type' => $type, 'body' => $body]);
     }

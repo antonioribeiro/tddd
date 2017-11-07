@@ -5,11 +5,11 @@ namespace PragmaRX\TestsWatcher\Package\Console\Commands;
 class TestCommand extends BaseCommand
 {
     /**
-     * The console command name.
+     * The name and signature of the console command.
      *
      * @var string
      */
-    protected $name = 'tddd:work';
+    protected $signature = 'tddd:work';
 
     /**
      * The console command description.
@@ -27,18 +27,10 @@ class TestCommand extends BaseCommand
     }
 
     /**
-     * Execute the console command.
-     */
-    public function fire()
-    {
-        $this->getLaravel()->make('tddd.tester')->run($this);
-    }
-
-    /**
      * Handle command.
      */
     public function handle()
     {
-        $this->fire();
+        $this->getLaravel()->make('tddd.tester')->run($this);
     }
 }

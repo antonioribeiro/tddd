@@ -168,11 +168,11 @@ class Watcher extends Base
      *
      * @return bool
      */
-    public function run(Command $command)
+    public function run(Command $command, $showFiles = false)
     {
         $this->setCommand($command);
 
-        $this->initialize();
+        $this->initialize($showFiles);
 
         $this->watch();
 
@@ -182,12 +182,12 @@ class Watcher extends Base
     /**
      * Initialize the Watcher.
      */
-    protected function initialize()
+    protected function initialize($showFiles)
     {
         $this->showComment($this->config('root.names.watcher'), 'info');
 
         if (!$this->is_initialized) {
-            $this->loader->loadEverything();
+            $this->loader->loadEverything($showFiles);
 
             $this->is_initialized = true;
         }

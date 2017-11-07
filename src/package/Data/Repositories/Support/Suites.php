@@ -23,7 +23,7 @@ trait Suites
         $project_id = $project_id instanceof Project ? $project_id->id : $project_id;
 
         if (is_null($tester = Tester::where('name', $suite_data['tester'])->first())) {
-            $this->addMessage('error', "Tester {$suite_data['tester']} not found.");
+            $this->addMessage("Tester {$suite_data['tester']} not found.", 'error');
 
             return false;
         }
@@ -98,13 +98,15 @@ trait Suites
      * @param $suite
      * @param $exclusions
      */
-    protected function syncSuiteTests($suite, $exclusions)
+    protected function syncSuiteTests($suite, $exclusions, $showFiles)
     {
         $files = $this->getAllFilesFromSuite($suite);
 
         foreach ($files as $file) {
             if (!$this->isExcluded($exclusions, null, $file) && $this->isTestable($file->getRealPath())) {
-                $this->createOrUpdateTest($file, $suite);
+                if ($this->createOrUpdateTest($file, $suite) && $showFiles) {
+                    $this->addMessage('NEW TEST: '.$file->getRealPath());
+                }
             } else {
                 // If the test already exists, delete it.
                 //

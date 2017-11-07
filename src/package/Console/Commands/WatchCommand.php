@@ -5,11 +5,11 @@ namespace PragmaRX\TestsWatcher\Package\Console\Commands;
 class WatchCommand extends BaseCommand
 {
     /**
-     * The console command name.
+     * The name and signature of the console command.
      *
      * @var string
      */
-    protected $name = 'tddd:watch';
+    protected $signature = 'tddd:watch {--show-files}';
 
     /**
      * The console command description.
@@ -29,16 +29,8 @@ class WatchCommand extends BaseCommand
     /**
      * Execute the console command.
      */
-    public function fire()
-    {
-        $this->getLaravel()->make('tddd.watcher')->run($this);
-    }
-
-    /**
-     * Execute the console command.
-     */
     public function handle()
     {
-        $this->fire();
+        $this->getLaravel()->make('tddd.watcher')->run($this, $this->option('show-files'));
     }
 }

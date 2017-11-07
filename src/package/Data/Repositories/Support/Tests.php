@@ -32,6 +32,8 @@ trait Tests
      *
      * @param \Symfony\Component\Finder\SplFileInfo            $file
      * @param \PragmaRX\TestsWatcher\Package\Data\Models\Suite $suite
+     *
+     * @return boolean
      */
     public function createOrUpdateTest($file, $suite)
     {
@@ -49,6 +51,8 @@ trait Tests
         if ($test->wasRecentlyCreated && $this->findTestByFileAndSuite($file, $suite)) {
             $this->addTestToQueue($test);
         }
+
+        return $test->wasRecentlyCreated;
     }
 
     /**
@@ -56,10 +60,10 @@ trait Tests
      *
      * @param $exclusions
      */
-    public function syncTests($exclusions)
+    public function syncTests($exclusions, $showFiles)
     {
         foreach ($this->getSuites() as $suite) {
-            $this->syncSuiteTests($suite, $exclusions);
+            $this->syncSuiteTests($suite, $exclusions, $showFiles);
         }
     }
 

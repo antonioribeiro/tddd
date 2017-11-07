@@ -58,7 +58,7 @@ class Loader extends Base
     /**
      * Read configuration and load testers, projects, suites...
      */
-    public function loadEverything()
+    public function loadEverything($showFiles = false)
     {
         $this->showProgress('Config loaded from ' . Config::getConfigPath());
 
@@ -66,7 +66,7 @@ class Loader extends Base
 
         $this->loadProjects();
 
-        $this->loadTests();
+        $this->loadTests($showFiles);
     }
 
     /**
@@ -122,11 +122,13 @@ class Loader extends Base
     /**
      * Load all test files to database.
      */
-    public function loadTests()
+    public function loadTests($showFiles)
     {
         $this->showProgress('Loading tests...', 'info');
 
-        $this->dataRepository->syncTests($this->exclusions);
+        $this->dataRepository->syncTests($this->exclusions, $showFiles);
+
+        $this->displayMessages($this->dataRepository->getMessages());
     }
 
     /**
