@@ -33,7 +33,7 @@ trait Tests
      * @param \Symfony\Component\Finder\SplFileInfo            $file
      * @param \PragmaRX\TestsWatcher\Package\Data\Models\Suite $suite
      *
-     * @return boolean
+     * @return bool
      */
     public function createOrUpdateTest($file, $suite)
     {
