@@ -2,4 +2,4 @@ code: behat
 name: Behat
 command: sh vendor/bin/behat
 pipers:
-  - script-macos
+  - "script-{{ config('tddd-base.host_os') }}"

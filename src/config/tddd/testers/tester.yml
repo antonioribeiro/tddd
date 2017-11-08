@@ -2,4 +2,4 @@ code: tester
 name: Tester
 command: sh vendor/bin/tester
 pipers:
-  - script-macos
+  - "script-{{ config('tddd-base.host_os') }}"

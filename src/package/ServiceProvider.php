@@ -235,7 +235,7 @@ class ServiceProvider extends IlluminateServiceProvider
     private function loadRoutes()
     {
         Route::group([
-            'prefix'     => config('routes.prefixes.global'),
+            'prefix'     => config('tddd.routes.prefixes.global'),
             'namespace'  => 'PragmaRX\TestsWatcher\Package\Http\Controllers',
             'middleware' => 'web',
         ], function () {

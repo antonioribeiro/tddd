@@ -2,4 +2,4 @@ code: phpspec
 name: phpspec
 command: phpspec run
 pipers:
-  - script-macos
+  - "script-{{ config('tddd-base.host_os') }}"

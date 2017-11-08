@@ -2,4 +2,4 @@ code: phpunit
 name: PHPUnit
 command: vendor/bin/phpunit
 pipers:
-  - script-macos
+  - "script-{{ config('tddd-base.host_os') }}"

@@ -3,4 +3,4 @@ name: Rake
 command: bin/rails test
 error_pattern: Test\s+Suites:\s+[0-9]+\s+failed
 pipers:
-  - script-macos
+  - "script-{{ config('tddd-base.host_os') }}"
