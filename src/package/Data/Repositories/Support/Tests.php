@@ -39,7 +39,7 @@ trait Tests
     {
         $test = Test::updateOrCreate(
             [
-                'sha1' => sha1_file(($path = $this->normalizePath($file->getPath())).DIRECTORY_SEPARATOR.$file->getFilename()),
+                'sha1' => sha1(($path = $this->normalizePath($file->getPath())).DIRECTORY_SEPARATOR.$file->getFilename()),
             ],
             [
                 'path'     => $path,

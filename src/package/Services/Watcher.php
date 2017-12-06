@@ -166,6 +166,7 @@ class Watcher extends Base
      *
      * @param Command $command
      *
+     * @param bool $showTests
      * @return bool
      */
     public function run(Command $command, $showTests = false)

@@ -104,7 +104,9 @@ trait Suites
 
         foreach ($files as $file) {
             if (!$this->isExcluded($exclusions, null, $file) && $this->isTestable($file->getRealPath())) {
-                if ($this->createOrUpdateTest($file, $suite) && $showTests) {
+                $this->createOrUpdateTest($file, $suite);
+
+                if ($showTests) {
                     $this->addMessage('NEW TEST: '.$file->getRealPath());
                 }
             } else {
