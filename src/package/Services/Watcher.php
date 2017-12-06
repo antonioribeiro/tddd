@@ -103,8 +103,8 @@ class Watcher extends Base
      * Watch for file changes.
      *
      * @param Command $command
+     * @param bool    $showTests
      *
-     * @param bool $showTests
      * @return bool
      */
     public function run(Command $command)
