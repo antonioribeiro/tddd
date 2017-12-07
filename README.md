@@ -10,7 +10,7 @@
 
 ## What is it?
 
-TDD Dashboard, is an app to watch and run all your tests during development. Supports any test framework which can executed via terminal, comes with some testers (PHPUnit, Jest, AVA...) preconfigured, but you can easily add yours, just tell it where the executable is and it's done. It also shows the progress of your tests, let you run a single test or all of them, and open your favorite code editor (PHPStorm, VSCode, Sublime Text, etc.) positioning the cursor in the failing line of your test. If your test framework generate screenshots, it is also able to show it in the log page, with all the reds and greens you are used to see in your terminal.
+TDD Dashboard, is an app (built as a Laravel PHP package) to watch and run all your tests during development. It supports any test framework working on terminal, and comes with some testers (PHPUnit, phpspec, behat, Jest, AVA...) preconfigured, but you can easily add yours, just tell it where the executable is and it's done. It also shows the progress of your tests, let you run a single test or all of them, and open your favorite code editor (PHPStorm, VSCode, Sublime Text, etc.) going right to the failing line of your test. If your test framework generate screenshots, it is also able to show it in the log page, with all the reds and greens you are used to see in your terminal.
 
 It uses Laravel as motor, but supports (and has been tested with) many languages, frameworks and testing frameworks:
 
