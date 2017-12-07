@@ -1,11 +1,13 @@
 {
-    "name": "pragmarx/ci",
+    "name": "pragmarx/tddd",
 
-    "description": "A Test Driven Development Dashboard & Watcher Package",
+    "description": "A Test Driven Development Dashboard Package",
 
     "keywords": [
-        "laravel", "ci", "continuous integration", "test", "testing", "tdd", "bdd", "watcher",
-        "phpunit", "dusk", "behat", "phpspec", "codeception", "atoum", "tester"
+        "laravel", "ci", "continuous integration", "test",
+        "testing", "test-driven development", "tdd", "bdd",
+        "watcher", "phpunit", "dusk", "behat", "phpspec",
+        "codeception", "atoum", "tester"
     ],
 
     "license": "MIT",
