@@ -1,7 +1,7 @@
 {
     "name": "pragmarx/tddd",
 
-    "description": "A Test Driven Development Dashboard Package",
+    "description": "A Self-Hosted TDD Dashboard & Tests Watcher",
 
     "keywords": [
         "laravel", "ci", "continuous integration", "test",
@@ -33,7 +33,7 @@
     },
 
     "require-dev": {
-        "phpunit/phpunit": ">=5.7",
+        "phpunit/phpunit": ">=6.4",
         "orchestra/testbench": "~3.5"
     },
 
