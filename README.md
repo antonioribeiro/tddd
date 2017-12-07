@@ -1,11 +1,11 @@
 # TDDD - Test Driven Development Dashboard
 ### A Self-Hosted TDD Dashboard & Tests Watcher 
 
-[![Latest Stable Version](https://img.shields.io/packagist/v/pragmarx/ci.svg?style=flat-square)](https://packagist.org/packages/pragmarx/ci)
+[![Latest Stable Version](https://img.shields.io/packagist/v/pragmarx/tddd.svg?style=flat-square)](https://packagist.org/packages/pragmarx/tddd)
 [![License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md) 
-[![Downloads](https://img.shields.io/packagist/dt/pragmarx/ci.svg?style=flat-square)](https://packagist.org/packages/pragmarx/ci) 
-[![Code Quality](https://img.shields.io/scrutinizer/g/antonioribeiro/ci.svg?style=flat-square)](https://scrutinizer-ci.com/g/antonioribeiro/ci/?branch=master) 
-[![Build](https://img.shields.io/scrutinizer/build/g/antonioribeiro/ci.svg?style=flat-square)](https://scrutinizer-ci.com/g/antonioribeiro/ci/?branch=master) 
+[![Downloads](https://img.shields.io/packagist/dt/pragmarx/tddd.svg?style=flat-square)](https://packagist.org/packages/pragmarx/tddd) 
+[![Code Quality](https://img.shields.io/scrutinizer/g/antonioribeiro/tddd.svg?style=flat-square)](https://scrutinizer-tddd.com/g/antonioribeiro/tddd/?branch=master) 
+[![Build](https://img.shields.io/scrutinizer/build/g/antonioribeiro/tddd.svg?style=flat-square)](https://scrutinizer-tddd.com/g/antonioribeiro/tddd/?branch=master) 
 [![StyleCI](https://styleci.io/repos/27037779/shield)](https://styleci.io/repos/27037779)
 
 ## What is it?
@@ -48,14 +48,14 @@ It uses Laravel as motor, but supports (and has been tested with) many languages
 
 #### Dashboard
 
-![visits](https://raw.githubusercontent.com/antonioribeiro/ci/master/docs/dashboard.png)
+![visits](https://raw.githubusercontent.com/antonioribeiro/tddd/master/docs/dashboard.png)
 
 #### Error Log
-![visits](https://raw.githubusercontent.com/antonioribeiro/ci/master/docs/errorlog1.png)
+![visits](https://raw.githubusercontent.com/antonioribeiro/tddd/master/docs/errorlog1.png)
 
-![visits](https://raw.githubusercontent.com/antonioribeiro/ci/master/docs/errorlog2.png)
+![visits](https://raw.githubusercontent.com/antonioribeiro/tddd/master/docs/errorlog2.png)
 
-![visits](https://raw.githubusercontent.com/antonioribeiro/ci/master/docs/errorlog3.png)
+![visits](https://raw.githubusercontent.com/antonioribeiro/tddd/master/docs/errorlog3.png)
 
 ## Command Line Interface
 
@@ -66,7 +66,7 @@ The Artisan commands **Watcher** and **Tester** are responsible for watching res
 Keep track of your files and enqueue your tests every time a project or test file is changed. If a project file changes, it will enqueue all your tests, if a test file changes, it will enqueue only that particular test. This is how you run it:
 
 ``` bash
-php artisan ci:watch
+php artisan tddd:watch
 ```
 
 ### Tester
@@ -74,7 +74,7 @@ php artisan ci:watch
 Responsible for taking tests from the run queue, execute it and log the results. Tester will only execute enabled tests. This is how you run it:
 
 ``` bash
-php artisan ci:test
+php artisan tddd:test
 ```
 
 ### Notifications
@@ -101,15 +101,15 @@ This package was tested and is known to be compatible with
 #### TL;DR
 
 ``` bash
-laravel new ci
-cd ci
-composer require pragmarx/ci
+laravel new tddd
+cd tddd
+composer require pragmarx/tddd
 php artisan vendor:publish --provider="PragmaRX\TestsWatcher\Package\ServiceProvider"
-valet link ci
+valet link tddd
 # configure database on your .env
 php artisan migrate
-php artisan ci:watch & php artisan ci:work &
-open http://ci.dev/tests-watcher/dashboard
+php artisan tddd:watch & php artisan tddd:work &
+open http://tddd.dev/tests-watcher/dashboard
 ``` 
 
 ### Examples & Starter App
@@ -121,7 +121,7 @@ For lots of examples, check [this starter app](https://github.com/antonioribeiro
 Require it with [Composer](http://getcomposer.org/):
 
 ``` bash
-composer require pragmarx/ci
+composer require pragmarx/tddd
 ```
 
 Create a database, configure on your Laravel app and migrate it
@@ -141,7 +141,7 @@ Add the service provider to your app/config/app.php:
 ```
 
 ``` bash
-php artisan config:publish pragmarx/ci
+php artisan config:publish pragmarx/tddd
 ```
 
 On Laravel 5.*
@@ -204,4 +204,4 @@ Pull requests and issues are welcome.
 
 
 
-<!-- [![Coverage](https://img.shields.io/scrutinizer/coverage/g/antonioribeiro/ci.svg?style=flat-square)](https://scrutinizer-ci.com/g/antonioribeiro/ci/?branch=master) --> 
+<!-- [![Coverage](https://img.shields.io/scrutinizer/coverage/g/antonioribeiro/tddd.svg?style=flat-square)](https://scrutinizer-tddd.com/g/antonioribeiro/tddd/?branch=master) --> 
