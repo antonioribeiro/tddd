@@ -22,7 +22,7 @@ class Controller extends IlluminateController
     /**
      * DashboardController constructor.
      *
-     * @param Data                                            $dataRepository
+     * @param Data                                    $dataRepository
      * @param \PragmaRX\Tddd\Package\Support\Executor $executor
      */
     public function __construct(Data $dataRepository, Executor $executor)
