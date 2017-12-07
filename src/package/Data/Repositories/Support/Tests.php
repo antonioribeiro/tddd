@@ -124,6 +124,7 @@ trait Tests
      * Mark a test as being running.
      *
      * @param $test
+     *
      * @return mixed
      */
     public function markTestAsRunning($test)
