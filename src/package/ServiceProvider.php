@@ -5,7 +5,6 @@ namespace PragmaRX\Tddd\Package;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider as IlluminateServiceProvider;
-use PragmaRX\Tddd\Package\Console\Commands\ClearCommand;
 use PragmaRX\Tddd\Package\Console\Commands\TestCommand;
 use PragmaRX\Tddd\Package\Console\Commands\WatchCommand;
 use PragmaRX\Tddd\Package\Events\TestsFailed;
@@ -106,8 +105,6 @@ class ServiceProvider extends IlluminateServiceProvider
 
         $this->registerTestCommand();
 
-        $this->registerClearCommand();
-
         $this->registerNotifier();
 
         $this->registerEventListeners();
@@ -121,18 +118,6 @@ class ServiceProvider extends IlluminateServiceProvider
     public function provides()
     {
         return ['tddd'];
-    }
-
-    /**
-     * Register the clear command.
-     */
-    private function registerClearCommand()
-    {
-        $this->app->singleton('tddd.clear.command', function () {
-            return new ClearCommand();
-        });
-
-        $this->commands('tddd.clear.command');
     }
 
     /**
