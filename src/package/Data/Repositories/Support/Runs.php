@@ -12,7 +12,7 @@ trait Runs
      */
     public function clearRuns()
     {
-        Database::statement('delete from ci_runs');
+        Database::statement('delete from tddd_runs');
     }
 
     /**
@@ -54,6 +54,7 @@ trait Runs
             'state'         => $test->state,
             'enabled'       => $test->enabled,
             'editor_name'   => $this->getEditor($test->suite)['name'],
+            'coverage'      => ['enabled' => $test->suite->coverage_enabled, 'index' => $test->suite->coverage_index],
 
             'run'         => $run,
             'notified_at' => is_null($run) ? null : $run->notified_at,

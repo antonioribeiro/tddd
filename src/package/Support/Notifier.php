@@ -16,7 +16,7 @@ class Notifier
      */
     public function enabled()
     {
-        return config('ci.notifications.notify_on.fail') == true;
+        return config('tddd.notifications.notify_on.fail') == true;
     }
 
     /**
@@ -32,7 +32,7 @@ class Notifier
             return false;
         }
 
-        collect(config('ci.notifications.channels'))->each(function ($value, $channel) use ($tests) {
+        collect(config('tddd.notifications.channels'))->each(function ($value, $channel) use ($tests) {
             event(new TestsFailed($tests, $channel));
 
             event(new UserNotifiedOfFailure($tests));

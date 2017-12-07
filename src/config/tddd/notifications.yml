@@ -1,0 +1,24 @@
+notify_on:
+  fail: true
+  pass: false
+routes:
+  dashboard: tests-watcher.dashboard
+action-title: Tests Failed
+action_message: One or more tests have failed.
+from:
+  name: Test Driven Development Dashboard
+  address: tddd@mydomain.com
+  icon_emoji: ''
+  icon_url: https://emojipedia-us.s3.amazonaws.com/thumbs/120/apple/96/lady-beetle_1f41e.png
+users:
+  model: PragmaRX\TestsWatcher\Package\Data\Models\User
+  emails:
+  - tddd@mydomain.com
+channels:
+  mail:
+    enabled: false
+    sender: PragmaRX\TestsWatcher\Package\Notifications\Channels\Mail
+  slack:
+    enabled: true
+    sender: PragmaRX\TestsWatcher\Package\Notifications\Channels\Slack
+notifier: PragmaRX\TestsWatcher\Notifications

@@ -14,9 +14,9 @@ class AddTestPath extends Migration
      */
     public function migrateUp()
     {
-        Database::statement('delete from ci_tests;');
+        Database::statement('delete from tddd_tests;');
 
-        Schema::table('ci_tests', function (Blueprint $table) {
+        Schema::table('tddd_tests', function (Blueprint $table) {
             $table->string('path')->nullable();
         });
     }
@@ -28,7 +28,7 @@ class AddTestPath extends Migration
      */
     public function migrateDown()
     {
-        Schema::table('ci_tests', function (Blueprint $table) {
+        Schema::table('tddd_tests', function (Blueprint $table) {
             $table->dropColumn('path');
         });
     }

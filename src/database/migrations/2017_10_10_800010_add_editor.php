@@ -4,7 +4,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use PragmaRX\Support\Migration;
 
-class AddEditor extends Migration
+class AddCoverage extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class AddEditor extends Migration
      */
     public function migrateUp()
     {
-        Schema::table('ci_suites', function (Blueprint $table) {
+        Schema::table('tddd_suites', function (Blueprint $table) {
             $table->string('editor')->nullable();
         });
     }
@@ -25,7 +25,7 @@ class AddEditor extends Migration
      */
     public function migrateDown()
     {
-        Schema::table('ci_suites', function (Blueprint $table) {
+        Schema::table('tddd_suites', function (Blueprint $table) {
             $table->dropColumn('editor');
         });
     }

@@ -27,6 +27,10 @@
                                 screenshots
                             </div>
                             &nbsp;
+                            <div v-if="selectedTest.coverage.enabled"  :class="'btn btn-pill ' + getPillColor(constants.LOG_ID_COVERAGE)" @click="setPanelCoverage()">
+                                coverage
+                            </div>
+                            &nbsp;
                             <div v-if="selectedTest.html" :class="'btn btn-pill ' + getPillColor(constants.LOG_ID_HTML)" @click="setPanelHtml()">
                                 {{ getHtmlPaneName() }}
                             </div>
@@ -52,6 +56,16 @@
                                 <h3>{{ String(screenshot).substring(screenshot.lastIndexOf('/') + 1) }}</h3>
                                 <img :src="makeScreenshot(screenshot)" :alt="screenshot" class="screenshot"/>
                             </div>
+                        </div>
+
+                        <div v-if="selectedPanel == constants.LOG_ID_COVERAGE" :class="'tab-pane ' + (selectedPanel == constants.LOG_ID_COVERAGE ? 'active' : '')">
+                            <iframe
+                                id="serviceFrameSend"
+                                :src="'/html?index=' + selectedTest.coverage.index"
+                                width="100%"
+                                height="1000"
+                                frameborder="0">
+                            </iframe>
                         </div>
 
                         <div v-if="selectedPanel == constants.LOG_ID_HTML"  v-html="selectedTest.html" :class="'tab-pane ' + (selectedPanel == constants.LOG_ID_HTML ? 'active' : '')">
@@ -80,6 +94,11 @@
             ...mapState(['laravel', 'logVisible', 'constants']),
 
             ...mapGetters(['selectedPanel', 'selectedTest', 'selectedProject']),
+
+            coverage() {
+                console.log('coverate', this.laravel.root.coverage);
+                return this.laravel.root.coverage;
+            }
         },
 
         methods: {
@@ -95,6 +114,10 @@
                 this.$store.commit('setSelectedPanel', this.constants.LOG_ID_HTML);
             },
 
+            setPanelCoverage() {
+                this.$store.commit('setSelectedPanel', this.constants.LOG_ID_COVERAGE);
+            },
+
             getPillColor(button) {
                 if (button == this.selectedPanel) {
                     return 'btn-primary';
@@ -104,7 +127,7 @@
             },
 
             makeScreenshot(screenshot) {
-                return this.laravel.url_prefixes.files+'/'+btoa(screenshot)+'/download?random='+Math.random();
+                return this.laravel.routes.prefixes.files+'/'+btoa(screenshot)+'/download?random='+Math.random();
             },
 
             baseName(str) {
@@ -124,7 +147,7 @@
             },
 
             runTest(testId) {
-                axios.get(this.laravel.url_prefixes.tests+'/run/'+testId);
+                axios.get(this.laravel.routes.prefixes.tests+'/run/'+testId);
             },
 
             editFile(file) {

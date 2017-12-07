@@ -1,0 +1,5 @@
+code: tester
+name: Tester
+command: sh vendor/bin/tester
+pipers:
+  - "script-{{ config('tddd-base.host_os') }}"

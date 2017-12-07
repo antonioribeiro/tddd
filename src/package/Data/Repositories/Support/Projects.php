@@ -66,8 +66,8 @@ trait Projects
 
 			        updated_at desc";
 
-        $query = Test::select('ci_tests.*')
-                     ->join('ci_suites', 'ci_suites.id', '=', 'suite_id')
+        $query = Test::select('tddd_tests.*')
+                     ->join('tddd_suites', 'tddd_suites.id', '=', 'suite_id')
                      ->orderByRaw($order);
 
         if ($project_id) {

@@ -5,11 +5,11 @@ namespace PragmaRX\TestsWatcher\Package\Console\Commands;
 class ClearCommand extends BaseCommand
 {
     /**
-     * The console command name.
+     * The name and signature of the console command.
      *
      * @var string
      */
-    protected $name = 'ci:clear';
+    protected $signature = 'tddd:clear';
 
     /**
      * The console command description.
@@ -29,18 +29,10 @@ class ClearCommand extends BaseCommand
     /**
      * Execute the console command.
      */
-    public function fire()
-    {
-        app('ci')->clear();
-
-        $this->info('Cleared.');
-    }
-
-    /**
-     * Execute the console command.
-     */
     public function handle()
     {
-        $this->fire();
+        app('tddd')->clear();
+
+        $this->info('Cleared.');
     }
 }

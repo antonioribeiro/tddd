@@ -13,7 +13,7 @@ class AddRequireScript extends Migration
      */
     public function migrateUp()
     {
-        Schema::table('ci_testers', function (Blueprint $table) {
+        Schema::table('tddd_testers', function (Blueprint $table) {
             $table->boolean('require_script')->default(false);
         });
     }
@@ -25,7 +25,7 @@ class AddRequireScript extends Migration
      */
     public function migrateDown()
     {
-        Schema::table('ci_testers', function (Blueprint $table) {
+        Schema::table('tddd_testers', function (Blueprint $table) {
             $table->dropColumn('require_script');
         });
     }

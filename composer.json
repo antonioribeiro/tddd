@@ -1,11 +1,13 @@
 {
-    "name": "pragmarx/ci",
+    "name": "pragmarx/tddd",
 
-    "description": "A Tests Watcher Service & Dashboard Package",
+    "description": "A Test Driven Development Dashboard Package",
 
     "keywords": [
-        "laravel", "ci", "continuous integration", "test", "testing", "tdd", "bdd", "watcher",
-        "phpunit", "dusk", "behat", "phpspec", "codeception", "atoum", "tester"
+        "laravel", "ci", "continuous integration", "test",
+        "testing", "test-driven development", "tdd", "bdd",
+        "watcher", "phpunit", "dusk", "behat", "phpspec",
+        "codeception", "atoum", "tester"
     ],
 
     "license": "MIT",
@@ -26,7 +28,8 @@
         "symfony/process": "~3",
         "guzzlehttp/guzzle": "~6.3",
         "jolicode/jolinotif": "~1.2",
-        "doctrine/dbal": "~2.6"
+        "doctrine/dbal": "~2.6",
+        "symfony/yaml": "~3.2"
     },
 
     "require-dev": {
@@ -41,7 +44,10 @@
         },
         "psr-0": {
             "JasonLewis\\ResourceWatcher": "src/package/Support/jasonlewis/resource-watcher/src"
-        }
+        },
+        "files": [
+            "src/package/Support/helpers.php"
+        ]
     },
 
     "extra": {

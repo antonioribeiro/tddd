@@ -4,7 +4,7 @@ namespace PragmaRX\TestsWatcher\Package\Data\Models;
 
 class Project extends Model
 {
-    protected $table = 'ci_projects';
+    protected $table = 'tddd_projects';
 
     protected $fillable = [
         'name',

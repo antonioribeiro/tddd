@@ -1,0 +1,3 @@
+code: vscode
+name: VSCode
+bin: "/Applications/Visual\\ Studio\\ Code.app/Contents/Resources/app/bin/code --goto {file}:{line}"

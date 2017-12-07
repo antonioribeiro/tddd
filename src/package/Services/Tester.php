@@ -49,8 +49,25 @@ class Tester extends Base
         $this->dataRepository = $dataRepository;
 
         $this->executor = $executor;
+    }
 
-        parent::__construct();
+    private function addPiper($piper, $command)
+    {
+        return str_replace(
+            [
+                '{$bin}',
+                '{$tempFile}',
+                '{$command}',
+            ],
+
+            [
+                $piper['bin'],
+                $this->pipedFile = tempnam($this->config('root.tmp_dir'), 'tw-'),
+                $command,
+            ],
+
+            $piper['execute']
+        );
     }
 
     /**
@@ -62,59 +79,11 @@ class Tester extends Base
      */
     private function addPiperCommand($test)
     {
-        if ($test->suite->tester->require_tee) {
-            return $this->addTee($test->testCommand);
-        }
+        $command = collect($test->suite->tester->pipers)->reduce(function ($carry, $piper) use ($test) {
+            return $this->addPiper($piper, $carry);
+        }, $test->testCommand);
 
-        if ($test->suite->tester->require_script) {
-            return $this->addScript($test->testCommand);
-        }
-
-        return "{$test->env} {$test->testCommand}";
-    }
-
-    /**
-     * Add tee to test command.
-     *
-     * @param $testCommand
-     *
-     * @return string
-     *
-     * @internal param $test
-     */
-    private function addTee($testCommand)
-    {
-        $this->pipedFile = null;
-
-        if ($tee = $this->config->get('tee')) {
-            $this->pipedFile = tempnam($this->config->get('tmp'), 'tw-');
-
-            $testCommand .= " | {$tee} > {$this->pipedFile}";
-        }
-
-        return $testCommand;
-    }
-
-    /**
-     * Add tee to test command.
-     *
-     * @param $testCommand
-     *
-     * @return string
-     */
-    private function addScript($testCommand)
-    {
-        $this->pipedFile = null;
-
-        if ($script = $this->config->get('script')) {
-            $testCommand = sprintf(
-                $script,
-                $this->pipedFile = tempnam($this->config->get('tmp'), 'tw-'),
-                $testCommand
-            );
-        }
-
-        return $testCommand;
+        return trim("{$test->env} {$command}");
     }
 
     /**
@@ -163,7 +132,7 @@ class Tester extends Base
     {
         $this->setCommand($command);
 
-        $this->showProgress($this->config->get('names.worker'), 'info');
+        $this->showProgress($this->config('root.names.worker'), 'info');
 
         $this->startTester();
     }
@@ -177,8 +146,7 @@ class Tester extends Base
      */
     private function shouldPipe($test)
     {
-        return $test->suite->tester->require_tee ||
-            $test->suite->tester->require_script;
+        return $test->suite->tester->pipers->count() > 0;
     }
 
     /**
@@ -262,7 +230,7 @@ class Tester extends Base
 
                 $this->dataRepository->updateRunLog($run, $this->getOutput($this->dataRepository->formatLog($logOutput, $test), $test));
 
-                if ($this->config->get('show_progress')) {
+                if ($this->config('root.show_progress')) {
                     $this->showProgress($buffer);
                 }
             });
@@ -297,7 +265,7 @@ class Tester extends Base
             return false;
         }
 
-        if (!$this->usesPiper($test) || empty($test->suite->tester->error_pattern)) {
+        if (!$this->shouldPipe($test) || empty($test->suite->tester->error_pattern)) {
             return true;
         }
 
@@ -309,18 +277,6 @@ class Tester extends Base
         );
 
         return count($matches) == 0;
-    }
-
-    /**
-     * Check if the tester is using a piper script.
-     *
-     * @param $test
-     *
-     * @return bool
-     */
-    private function usesPiper($test)
-    {
-        return $test->suite->tester->require_tee || $test->suite->tester->require_script;
     }
 
     /**

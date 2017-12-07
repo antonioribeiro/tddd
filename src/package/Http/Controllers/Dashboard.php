@@ -12,7 +12,7 @@ class Dashboard extends Controller
     public function index()
     {
         return
-            view('pragmarx/ci::dashboard')
+            view('pragmarx/tddd::dashboard')
                 ->with('laravel', $this->dataRepository->getJavascriptClientData());
     }
 

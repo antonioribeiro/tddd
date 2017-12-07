@@ -1,0 +1,5 @@
+code: phpunit
+name: PHPUnit
+command: vendor/bin/phpunit
+pipers:
+  - "script-{{ config('tddd-base.host_os') }}"

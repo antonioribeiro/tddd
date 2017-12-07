@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="UTF-8">
-		<title>{{ config('ci.names.dashboard') }}</title>
+		<title>{{ config('tddd.root.names.dashboard') }}</title>
 	</head>
 
     <script>
@@ -12,12 +12,12 @@
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
 
     <style>
-        {!! file_get_contents(CI_PATH.'/src/public/css/app.css'); !!}
+        {!! file_get_contents(TDDD_PATH.'/src/public/css/app.css'); !!}
     </style>
 
 	<body>
         <nav class="navbar navbar-toggleable-md navbar-inverse bg-inverse fixed-top">
-            <a class="navbar-brand" href="#">{{ config('ci.names.dashboard') }}</a>
+            <a class="navbar-brand" href="#">{{ config('tddd.root.names.dashboard') }}</a>
         </nav>
 
         <div id="app" class="app">
@@ -39,7 +39,7 @@
         </div>
 
         <script>
-            {!! file_get_contents(CI_PATH.'/src/public/js/app.js'); !!}
+            {!! file_get_contents(TDDD_PATH.'/src/public/js/app.js'); !!}
         </script>
 
         @if(config('app.env') == 'local')

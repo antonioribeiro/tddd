@@ -3,6 +3,7 @@
 namespace PragmaRX\TestsWatcher\Package\Services;
 
 use JasonLewis\ResourceWatcher\Event;
+use PragmaRX\TestsWatcher\Package\Facades\Config as ConfigFacade;
 
 class Base
 {
@@ -19,19 +20,6 @@ class Base
     protected $loader;
 
     /**
-     * @var array
-     */
-    protected $config;
-
-    /**
-     * Instantiate a Watcher.
-     */
-    public function __construct()
-    {
-        $this->config = app('ci.config');
-    }
-
-    /**
      * Get a configuration key.
      *
      * @param $key
@@ -40,32 +28,13 @@ class Base
      *
      * @return mixed
      */
-    protected function config($key)
+    protected function config($key = null, $default = null)
     {
-        $this->loadConfig();
-
-        if (is_null($value = array_get($this->config, $key))) {
-            throw new \Exception("The configuration key '{$key}' was not defined.");
+        if (is_null($key)) {
+            return app('tddd.config');
         }
 
-        return $value;
-    }
-
-    private function loadConfig()
-    {
-        if (is_null($this->config)) {
-            $this->config = config('ci');
-        }
-    }
-
-    /**
-     * Set the config.
-     *
-     * @param array $config
-     */
-    public function setConfig($config)
-    {
-        $this->config = $config;
+        return ConfigFacade::get($key, $default);
     }
 
     /**

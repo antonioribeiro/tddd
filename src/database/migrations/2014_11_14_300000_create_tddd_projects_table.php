@@ -4,7 +4,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use PragmaRX\Support\Migration;
 
-class CreateCiTestersTable extends Migration
+class CreateTdddProjectsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,18 +13,14 @@ class CreateCiTestersTable extends Migration
      */
     public function migrateUp()
     {
-        Schema::create('ci_testers', function (Blueprint $table) {
+        Schema::create('tddd_projects', function (Blueprint $table) {
             $table->increments('id');
 
             $table->string('name');
 
-            $table->string('command');
+            $table->string('path');
 
-            $table->string('output_folder')->nullable();
-
-            $table->string('output_html_fail_extension')->nullable();
-
-            $table->string('output_png_fail_extension')->nullable();
+            $table->string('tests_path');
 
             $table->timestamps();
         });
@@ -37,6 +33,6 @@ class CreateCiTestersTable extends Migration
      */
     public function migrateDown()
     {
-        Schema::drop('ci_testers');
+        Schema::drop('tddd_projects');
     }
 }

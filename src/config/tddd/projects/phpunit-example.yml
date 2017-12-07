@@ -1,0 +1,23 @@
+## More examples at:
+
+name: "PHPUnit Example"
+path: "{{ config('tddd.root.code.path') }}/pragmarx/tddd" # absolute
+watch_folders:
+  - app   # all other directories are relative
+  - tests # watching tests folder so it runs only the changed test
+exclude: []
+depends: []
+tests_path: tests # root tests path relative to $path
+suites:
+  unit:
+    tester: phpunit
+    tests_path: Unit # relative to $tests_path
+    command_options: ''
+    file_mask: "*Test.php"
+    retries: 0
+  functional:
+    tester: dusk
+    tests_path: Browser
+    command_options: ''
+    file_mask: "*Test.php"
+    retries: 0

@@ -47524,7 +47524,8 @@ exports.clearImmediate = clearImmediate;
             LOG_ID_LOG: 'log',
             LOG_ID_HTML: 'html',
             LOG_ID_SCREENSHOTS: 'screenshots',
-            LOG_ID_SNAPSHOT: 'snapshot'
+            LOG_ID_SNAPSHOT: 'snapshot',
+            LOG_ID_COVERAGE: 'coverage'
         }
     },
 
@@ -47687,7 +47688,7 @@ exports.clearImmediate = clearImmediate;
             }
         },
         loadData: function loadData(context) {
-            axios.get(context.state.laravel.url_prefixes.dashboard + '/data').then(function (result) {
+            axios.get(context.state.laravel.routes.prefixes.dashboard + '/data').then(function (result) {
                 context.commit('setProjects', result.data.projects);
 
                 var selected = context.getters.selectedProject && result.data.projects.filter(function (project) {
@@ -47711,7 +47712,7 @@ exports.clearImmediate = clearImmediate;
 
             if (context.state.wasRunning && !context.getters.isRunning) {
                 if (context.getters.statistics.failed > 0) {
-                    axios.get(context.state.laravel.url_prefixes.projects + '/' + context.state.selectedProjectId + '/notify');
+                    axios.get(context.state.laravel.routes.prefixes.projects + '/' + context.state.selectedProjectId + '/notify');
                 }
             }
 
@@ -47913,7 +47914,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
         toggleProject: function toggleProject(project) {
             var _this = this;
 
-            axios.get(this.laravel.url_prefixes.projects + '/' + project.id + '/enable/' + !project.enabled).then(function (response) {
+            axios.get(this.laravel.routes.prefixes.projects + '/' + project.id + '/enable/' + !project.enabled).then(function (response) {
                 return _this.loadData();
             });
         },
@@ -47921,13 +47922,13 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
             this.$store.commit('setProjectsFilter', '');
         },
         run: function run(project) {
-            axios.post(this.laravel.url_prefixes.projects + '/run', { projects: project.id });
+            axios.post(this.laravel.routes.prefixes.projects + '/run', { projects: project.id });
         },
         runAll: function runAll() {
-            axios.post(this.laravel.url_prefixes.projects + '/run', { projects: this.filteredProjectsIds });
+            axios.post(this.laravel.routes.prefixes.projects + '/run', { projects: this.filteredProjectsIds });
         },
         reset: function reset() {
-            axios.post(this.laravel.url_prefixes.projects + '/reset/', { projects: this.filteredProjectsIds });
+            axios.post(this.laravel.routes.prefixes.projects + '/reset/', { projects: this.filteredProjectsIds });
         }
     })
 });
@@ -48403,13 +48404,13 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
     methods: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["mapActions"])(['loadData']), {
         runTest: function runTest(testId) {
-            axios.get(this.laravel.url_prefixes.tests + '/run/' + testId);
+            axios.get(this.laravel.routes.prefixes.tests + '/run/' + testId);
         },
         runAll: function runAll() {
-            axios.post(this.laravel.url_prefixes.projects + '/run', { projects: this.selectedProject.id });
+            axios.post(this.laravel.routes.prefixes.projects + '/run', { projects: this.selectedProject.id });
         },
         reset: function reset() {
-            axios.get(this.laravel.url_prefixes.tests + '/reset/' + this.selectedProject.id);
+            axios.get(this.laravel.routes.prefixes.tests + '/reset/' + this.selectedProject.id);
         },
         showLog: function showLog(test) {
             this.$store.commit('setSelectedTestId', test.id);
@@ -48420,10 +48421,10 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
             return this.statistics.count == this.statistics.enabled;
         },
         toggleTest: function toggleTest(test) {
-            axios.get(this.laravel.url_prefixes.tests + '/' + this.selectedProject.id + '/' + test.id + '/enable/' + !test.enabled);
+            axios.get(this.laravel.routes.prefixes.tests + '/' + this.selectedProject.id + '/' + test.id + '/enable/' + !test.enabled);
         },
         enableAll: function enableAll() {
-            axios.get(this.laravel.url_prefixes.tests + '/' + this.selectedProject.id + '/all/enable/' + !this.allEnabled());
+            axios.get(this.laravel.routes.prefixes.tests + '/' + this.selectedProject.id + '/all/enable/' + !this.allEnabled());
         },
         editFile: function editFile(file) {
             axios.get(file);
@@ -49081,6 +49082,20 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -49088,7 +49103,12 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["mapState"])(['laravel', 'logVisible', 'constants']), Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["mapGetters"])(['selectedPanel', 'selectedTest', 'selectedProject'])),
+    computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["mapState"])(['laravel', 'logVisible', 'constants']), Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["mapGetters"])(['selectedPanel', 'selectedTest', 'selectedProject']), {
+        coverage: function coverage() {
+            console.log('coverate', this.laravel.root.coverage);
+            return this.laravel.root.coverage;
+        }
+    }),
 
     methods: {
         setPanelLog: function setPanelLog() {
@@ -49100,6 +49120,9 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
         setPanelHtml: function setPanelHtml() {
             this.$store.commit('setSelectedPanel', this.constants.LOG_ID_HTML);
         },
+        setPanelCoverage: function setPanelCoverage() {
+            this.$store.commit('setSelectedPanel', this.constants.LOG_ID_COVERAGE);
+        },
         getPillColor: function getPillColor(button) {
             if (button == this.selectedPanel) {
                 return 'btn-primary';
@@ -49108,7 +49131,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
             return 'btn-outline-primary';
         },
         makeScreenshot: function makeScreenshot(screenshot) {
-            return this.laravel.url_prefixes.files + '/' + btoa(screenshot) + '/download?random=' + Math.random();
+            return this.laravel.routes.prefixes.files + '/' + btoa(screenshot) + '/download?random=' + Math.random();
         },
         baseName: function baseName(str) {
             var base = String(str).substring(str.lastIndexOf('/') + 1);
@@ -49123,7 +49146,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
             return this.selectedTest.html.match(/snapshot/i) ? this.constants.LOG_ID_SNAPSHOT : this.constants.LOG_ID_HTML;
         },
         runTest: function runTest(testId) {
-            axios.get(this.laravel.url_prefixes.tests + '/run/' + testId);
+            axios.get(this.laravel.routes.prefixes.tests + '/run/' + testId);
         },
         editFile: function editFile(file) {
             axios.get(file);
@@ -49234,6 +49257,29 @@ var render = function() {
                           [
                             _vm._v(
                               "\n                            screenshots\n                        "
+                            )
+                          ]
+                        )
+                      : _vm._e(),
+                    _vm._v(
+                      "\n                         \n                        "
+                    ),
+                    _vm.selectedTest.coverage.enabled
+                      ? _c(
+                          "div",
+                          {
+                            class:
+                              "btn btn-pill " +
+                              _vm.getPillColor(_vm.constants.LOG_ID_COVERAGE),
+                            on: {
+                              click: function($event) {
+                                _vm.setPanelCoverage()
+                              }
+                            }
+                          },
+                          [
+                            _vm._v(
+                              "\n                            coverage\n                        "
                             )
                           ]
                         )
@@ -49373,6 +49419,33 @@ var render = function() {
                               ])
                             }
                           )
+                        )
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _vm.selectedPanel == _vm.constants.LOG_ID_COVERAGE
+                      ? _c(
+                          "div",
+                          {
+                            class:
+                              "tab-pane " +
+                              (_vm.selectedPanel ==
+                              _vm.constants.LOG_ID_COVERAGE
+                                ? "active"
+                                : "")
+                          },
+                          [
+                            _c("iframe", {
+                              attrs: {
+                                id: "serviceFrameSend",
+                                src:
+                                  "/html?index=" +
+                                  _vm.selectedTest.coverage.index,
+                                width: "100%",
+                                height: "1000",
+                                frameborder: "0"
+                              }
+                            })
+                          ]
                         )
                       : _vm._e(),
                     _vm._v(" "),

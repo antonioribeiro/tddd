@@ -4,7 +4,7 @@ namespace PragmaRX\TestsWatcher\Package\Data\Models;
 
 class Queue extends Model
 {
-    protected $table = 'ci_queue';
+    protected $table = 'tddd_queue';
 
     protected $fillable = [
         'test_id',

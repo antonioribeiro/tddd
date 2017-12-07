@@ -4,7 +4,7 @@ namespace PragmaRX\TestsWatcher\Package\Data\Models;
 
 class Suite extends Model
 {
-    protected $table = 'ci_suites';
+    protected $table = 'tddd_suites';
 
     protected $fillable = [
         'name',
@@ -16,6 +16,8 @@ class Suite extends Model
         'command_options',
         'max_retries',
         'editor',
+        'coverage_enabled',
+        'coverage_index',
     ];
 
     /**

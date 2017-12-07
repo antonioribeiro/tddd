@@ -1,0 +1,5 @@
+code: simple-phpunit
+name: Simple PHPUnit (Symfony)
+command: vendor/bin/simple-phpunit
+pipers:
+  - "script-{{ config('tddd-base.host_os') }}"

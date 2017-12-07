@@ -1,0 +1,7 @@
+code: jest
+name: Jest
+command: npm test
+output_folder: tests/__snapshots__
+output_html_fail_extension: ".snap"
+pipers:
+  - "script-{{ config('tddd-base.host_os') }}"

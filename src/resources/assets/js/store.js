@@ -27,6 +27,7 @@ export default {
             LOG_ID_HTML: 'html',
             LOG_ID_SCREENSHOTS: 'screenshots',
             LOG_ID_SNAPSHOT: 'snapshot',
+            LOG_ID_COVERAGE: 'coverage',
         },
     },
 
@@ -204,7 +205,7 @@ export default {
         },
 
         loadData(context) {
-            axios.get(context.state.laravel.url_prefixes.dashboard+'/data')
+            axios.get(context.state.laravel.routes.prefixes.dashboard+'/data')
                 .then(function (result) {
                     context.commit('setProjects', result.data.projects);
 
@@ -229,7 +230,7 @@ export default {
 
             if (context.state.wasRunning && !context.getters.isRunning) {
                 if (context.getters.statistics.failed > 0) {
-                    axios.get(context.state.laravel.url_prefixes.projects+'/'+context.state.selectedProjectId+'/notify');
+                    axios.get(context.state.laravel.routes.prefixes.projects+'/'+context.state.selectedProjectId+'/notify');
                 }
             }
 

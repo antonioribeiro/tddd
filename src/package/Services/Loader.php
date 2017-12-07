@@ -3,6 +3,7 @@
 namespace PragmaRX\TestsWatcher\Package\Services;
 
 use PragmaRX\TestsWatcher\Package\Data\Repositories\Data as DataRepository;
+use PragmaRX\TestsWatcher\Package\Facades\Config;
 
 class Loader extends Base
 {
@@ -35,8 +36,6 @@ class Loader extends Base
     public function __construct(DataRepository $dataRepository)
     {
         $this->dataRepository = $dataRepository;
-
-        parent::__construct();
     }
 
     /**
@@ -59,13 +58,15 @@ class Loader extends Base
     /**
      * Read configuration and load testers, projects, suites...
      */
-    public function loadEverything()
+    public function loadEverything($showTests = false)
     {
+        $this->showProgress('Config loaded from '.Config::getConfigPath());
+
         $this->loadTesters();
 
         $this->loadProjects();
 
-        $this->loadTests();
+        $this->loadTests($showTests);
     }
 
     /**
@@ -75,13 +76,19 @@ class Loader extends Base
     {
         $this->showProgress('Loading testers...', 'info');
 
-        foreach ($this->config->get('testers') as $name => $data) {
-            $this->showProgress("TESTER: $name");
+        if (!is_arrayable($testers = $this->config('testers')) or count($testers) == 0) {
+            $this->showProgress('No testers found.', 'error');
 
-            $this->dataRepository->createOrUpdateTester($name, $data);
+            return;
         }
 
-        $this->dataRepository->deleteMissingTesters(array_keys($this->config->get('testers')));
+        foreach ($testers as $data) {
+            $this->showProgress("TESTER: {$data['name']}");
+
+            $this->dataRepository->createOrUpdateTester($data);
+        }
+
+        $this->dataRepository->deleteMissingTesters(array_keys($testers));
     }
 
     /**
@@ -89,12 +96,18 @@ class Loader extends Base
      */
     public function loadProjects()
     {
-        $this->showProgress('Loading projects and suites...');
+        $this->showProgress('Loading projects and suites...', 'info');
 
-        foreach ($this->config->get('projects') as $name => $data) {
-            $this->showProgress("Project '{$name}'", 'comment');
+        if (!is_arrayable($projects = $this->config('projects')) or count($projects) == 0) {
+            $this->showProgress('No projects found.', 'error');
 
-            $project = $this->dataRepository->createOrUpdateProject($name, $data['path'], $data['tests_path']);
+            return;
+        }
+
+        foreach ($projects as $data) {
+            $this->showProgress("Project '{$data['name']}'", 'comment');
+
+            $project = $this->dataRepository->createOrUpdateProject($data['name'], $data['path'], $data['tests_path']);
 
             $this->refreshProjectSuites($data, $project);
 
@@ -103,17 +116,19 @@ class Loader extends Base
             $this->addToExclusions($data['path'], $data['exclude']);
         }
 
-        $this->dataRepository->deleteMissingProjects(array_keys($this->config->get('projects')));
+        $this->dataRepository->deleteMissingProjects(collect($this->config('projects'))->pluck('name')->toArray());
     }
 
     /**
      * Load all test files to database.
      */
-    public function loadTests()
+    public function loadTests($showTests)
     {
         $this->showProgress('Loading tests...', 'info');
 
-        $this->dataRepository->syncTests($this->exclusions);
+        $this->dataRepository->syncTests($this->exclusions, $showTests);
+
+        $this->displayMessages($this->dataRepository->getMessages());
     }
 
     /**

@@ -13,7 +13,7 @@ class AddSha1 extends Migration
      */
     public function migrateUp()
     {
-        Schema::table('ci_tests', function (Blueprint $table) {
+        Schema::table('tddd_tests', function (Blueprint $table) {
             $table->string('sha1')->nullable();
         });
     }
@@ -25,7 +25,7 @@ class AddSha1 extends Migration
      */
     public function migrateDown()
     {
-        Schema::table('ci_tests', function (Blueprint $table) {
+        Schema::table('tddd_tests', function (Blueprint $table) {
             $table->dropColumn('sha1');
         });
     }

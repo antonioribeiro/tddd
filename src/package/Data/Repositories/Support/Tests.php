@@ -32,23 +32,29 @@ trait Tests
      *
      * @param \Symfony\Component\Finder\SplFileInfo            $file
      * @param \PragmaRX\TestsWatcher\Package\Data\Models\Suite $suite
+     *
+     * @return bool
      */
     public function createOrUpdateTest($file, $suite)
     {
-        $test = Test::updateOrCreate(
-            [
-                'sha1' => sha1(($path = $this->normalizePath($file->getPath())).DIRECTORY_SEPARATOR.$file->getFilename()),
-            ],
-            [
+        $test = Test::where('path', $path = $this->normalizePath($file->getPath()))
+                    ->where('name', $name = trim($file->getFilename()))
+                    ->first();
+
+        if (is_null($test)) {
+            $test = Test::create([
+                'sha1'     => sha1("$path/$name"),
                 'path'     => $path,
-                'name'     => $file->getFilename(),
+                'name'     => $name,
                 'suite_id' => $suite->id,
-            ]
-        );
+            ]);
+        }
 
         if ($test->wasRecentlyCreated && $this->findTestByFileAndSuite($file, $suite)) {
             $this->addTestToQueue($test);
         }
+
+        return $test->wasRecentlyCreated;
     }
 
     /**
@@ -56,10 +62,10 @@ trait Tests
      *
      * @param $exclusions
      */
-    public function syncTests($exclusions)
+    public function syncTests($exclusions, $showTests)
     {
         foreach ($this->getSuites() as $suite) {
-            $this->syncSuiteTests($suite, $exclusions);
+            $this->syncSuiteTests($suite, $exclusions, $showTests);
         }
     }
 
@@ -118,6 +124,8 @@ trait Tests
      * Mark a test as being running.
      *
      * @param $test
+     *
+     * @return mixed
      */
     public function markTestAsRunning($test)
     {
@@ -214,15 +222,15 @@ trait Tests
     {
         $projects = (array) $projects;
 
-        $query = Test::select('ci_tests.*')
-                     ->join('ci_suites', 'ci_suites.id', '=', 'ci_tests.suite_id');
+        $query = Test::select('tddd_tests.*')
+                     ->join('tddd_suites', 'tddd_suites.id', '=', 'tddd_tests.suite_id');
 
         if ($projects && $projects != 'all') {
-            $query->whereIn('ci_suites.project_id', $projects);
+            $query->whereIn('tddd_suites.project_id', $projects);
         }
 
         if ($test_id && $test_id != 'all') {
-            $query->where('ci_tests.id', $test_id);
+            $query->where('tddd_tests.id', $test_id);
         }
 
         return $query;

@@ -1,0 +1,2 @@
+bin: "/usr/bin/tee"
+execute: "{$command} | {$bin} > {$tempFile}"

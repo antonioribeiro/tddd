@@ -13,8 +13,8 @@ class Notify
      */
     private function getNotifiableUsers()
     {
-        return collect(config('ci.notifications.users.emails'))->map(function ($item) {
-            $model = instantiate(config('ci.notifications.users.model'));
+        return collect(config('tddd.notifications.users.emails'))->map(function ($item) {
+            $model = instantiate(config('tddd.notifications.users.model'));
 
             $model->email = $item;
 

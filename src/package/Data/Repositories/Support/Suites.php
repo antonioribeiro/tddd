@@ -23,7 +23,7 @@ trait Suites
         $project_id = $project_id instanceof Project ? $project_id->id : $project_id;
 
         if (is_null($tester = Tester::where('name', $suite_data['tester'])->first())) {
-            $this->addMessage('error', "Tester {$suite_data['tester']} not found.");
+            $this->addMessage("Tester {$suite_data['tester']} not found.", 'error');
 
             return false;
         }
@@ -34,12 +34,14 @@ trait Suites
                 'project_id' => $project_id,
             ],
             [
-                'tester_id'       => $tester->id,
-                'tests_path'      => array_get($suite_data, 'tests_path'),
-                'command_options' => array_get($suite_data, 'command_options'),
-                'file_mask'       => array_get($suite_data, 'file_mask'),
-                'retries'         => array_get($suite_data, 'retries'),
-                'editor'          => array_get($suite_data, 'editor'),
+                'tester_id'        => $tester->id,
+                'tests_path'       => array_get($suite_data, 'tests_path'),
+                'command_options'  => array_get($suite_data, 'command_options'),
+                'file_mask'        => array_get($suite_data, 'file_mask'),
+                'retries'          => array_get($suite_data, 'retries'),
+                'editor'           => array_get($suite_data, 'editor'),
+                'coverage_enabled' => array_get($suite_data, 'coverage.enabled', false),
+                'coverage_index'   => array_get($suite_data, 'coverage.index'),
             ]
         );
     }
@@ -98,13 +100,17 @@ trait Suites
      * @param $suite
      * @param $exclusions
      */
-    protected function syncSuiteTests($suite, $exclusions)
+    protected function syncSuiteTests($suite, $exclusions, $showTests)
     {
         $files = $this->getAllFilesFromSuite($suite);
 
         foreach ($files as $file) {
             if (!$this->isExcluded($exclusions, null, $file) && $this->isTestable($file->getRealPath())) {
                 $this->createOrUpdateTest($file, $suite);
+
+                if ($showTests) {
+                    $this->addMessage('NEW TEST: '.$file->getRealPath());
+                }
             } else {
                 // If the test already exists, delete it.
                 //
@@ -163,7 +169,7 @@ trait Suites
 
         // Get filtered projects dependencies
         $depends = $projects->filter(function ($project) use ($filtered_projects) {
-            if (!is_null($depends = config("ci.projects.{$project->name}.depends"))) {
+            if (!is_null($depends = config("tddd.projects.{$project->name}.depends"))) {
                 return collect($depends)->filter(function ($item) use ($filtered_projects) {
                     return !is_null($filtered_projects->where('name', $item)->first());
                 });

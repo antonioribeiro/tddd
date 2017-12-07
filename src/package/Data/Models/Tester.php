@@ -4,7 +4,7 @@ namespace PragmaRX\TestsWatcher\Package\Data\Models;
 
 class Tester extends Model
 {
-    protected $table = 'ci_testers';
+    protected $table = 'tddd_testers';
 
     protected $fillable = [
         'name',
@@ -12,9 +12,22 @@ class Tester extends Model
         'output_folder',
         'output_html_fail_extension',
         'output_png_fail_extension',
-        'require_tee',
-        'require_script',
+        'pipers',
         'error_pattern',
         'env',
     ];
+
+    public function getPipersAttribute($value)
+    {
+        $pipers = collect(json_decode($value));
+
+        return $pipers->mapWithKeys(function ($piper) {
+            return [$piper => config("tddd.pipers.{$piper}")];
+        });
+    }
+
+    public function setPipersAttribute($value)
+    {
+        $this->attributes['pipers'] = collect($value)->toJson();
+    }
 }
