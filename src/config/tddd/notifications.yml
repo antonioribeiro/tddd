@@ -11,14 +11,14 @@ from:
   icon_emoji: ''
   icon_url: https://emojipedia-us.s3.amazonaws.com/thumbs/120/apple/96/lady-beetle_1f41e.png
 users:
-  model: PragmaRX\TestsWatcher\Package\Data\Models\User
+  model: PragmaRX\Tddd\Package\Data\Models\User
   emails:
   - tddd@mydomain.com
 channels:
   mail:
     enabled: false
-    sender: PragmaRX\TestsWatcher\Package\Notifications\Channels\Mail
+    sender: PragmaRX\Tddd\Package\Notifications\Channels\Mail
   slack:
     enabled: true
-    sender: PragmaRX\TestsWatcher\Package\Notifications\Channels\Slack
-notifier: PragmaRX\TestsWatcher\Notifications
+    sender: PragmaRX\Tddd\Package\Notifications\Channels\Slack
+notifier: PragmaRX\Tddd\Notifications

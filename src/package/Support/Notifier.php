@@ -1,11 +1,11 @@
 <?php
 
-namespace PragmaRX\TestsWatcher\Package\Support;
+namespace PragmaRX\Tddd\Package\Support;
 
 use Joli\JoliNotif\Notification;
 use Joli\JoliNotif\NotifierFactory;
-use PragmaRX\TestsWatcher\Package\Events\TestsFailed;
-use PragmaRX\TestsWatcher\Package\Events\UserNotifiedOfFailure;
+use PragmaRX\Tddd\Package\Events\TestsFailed;
+use PragmaRX\Tddd\Package\Events\UserNotifiedOfFailure;
 
 class Notifier
 {

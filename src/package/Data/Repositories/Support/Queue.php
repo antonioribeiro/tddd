@@ -1,10 +1,10 @@
 <?php
 
-namespace PragmaRX\TestsWatcher\Package\Data\Repositories\Support;
+namespace PragmaRX\Tddd\Package\Data\Repositories\Support;
 
-use PragmaRX\TestsWatcher\Package\Data\Models\Queue as QueueModel;
-use PragmaRX\TestsWatcher\Package\Data\Models\Test;
-use PragmaRX\TestsWatcher\Package\Support\Constants;
+use PragmaRX\Tddd\Package\Data\Models\Queue as QueueModel;
+use PragmaRX\Tddd\Package\Data\Models\Test;
+use PragmaRX\Tddd\Package\Support\Constants;
 
 trait Queue
 {
@@ -73,7 +73,7 @@ trait Queue
     /**
      * Get a test from the queue.
      *
-     * @return \PragmaRX\TestsWatcher\Package\Data\Models\Test|null
+     * @return \PragmaRX\Tddd\Package\Data\Models\Test|null
      */
     public function getNextTestFromQueue()
     {

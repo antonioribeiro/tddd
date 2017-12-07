@@ -1,6 +1,6 @@
 <?php
 
-namespace PragmaRX\TestsWatcher\Package\Data\Repositories\Support;
+namespace PragmaRX\Tddd\Package\Data\Repositories\Support;
 
 use Illuminate\Support\Collection;
 

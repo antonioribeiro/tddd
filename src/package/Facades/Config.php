@@ -1,6 +1,6 @@
 <?php
 
-namespace PragmaRX\TestsWatcher\Package\Facades;
+namespace PragmaRX\Tddd\Package\Facades;
 
 use Illuminate\Support\Facades\Facade;
 

@@ -1,10 +1,10 @@
 <?php
 
-namespace PragmaRX\TestsWatcher\Package\Listeners;
+namespace PragmaRX\Tddd\Package\Listeners;
 
 use Notification;
-use PragmaRX\TestsWatcher\Package\Events\TestsFailed;
-use PragmaRX\TestsWatcher\Package\Notifications\Status;
+use PragmaRX\Tddd\Package\Events\TestsFailed;
+use PragmaRX\Tddd\Package\Notifications\Status;
 
 class Notify
 {

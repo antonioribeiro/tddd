@@ -1,6 +1,6 @@
 <?php
 
-namespace PragmaRX\TestsWatcher\Package\Notifications;
+namespace PragmaRX\Tddd\Package\Notifications;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;

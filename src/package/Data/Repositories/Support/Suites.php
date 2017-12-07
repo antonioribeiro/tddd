@@ -1,10 +1,10 @@
 <?php
 
-namespace PragmaRX\TestsWatcher\Package\Data\Repositories\Support;
+namespace PragmaRX\Tddd\Package\Data\Repositories\Support;
 
-use PragmaRX\TestsWatcher\Package\Data\Models\Project;
-use PragmaRX\TestsWatcher\Package\Data\Models\Suite;
-use PragmaRX\TestsWatcher\Package\Data\Models\Tester;
+use PragmaRX\Tddd\Package\Data\Models\Project;
+use PragmaRX\Tddd\Package\Data\Models\Suite;
+use PragmaRX\Tddd\Package\Data\Models\Tester;
 use Symfony\Component\Finder\Finder;
 
 trait Suites
@@ -52,7 +52,7 @@ trait Suites
      * @param $name
      * @param $project_id
      *
-     * @return \PragmaRX\TestsWatcher\Package\Data\Models\Suite|null
+     * @return \PragmaRX\Tddd\Package\Data\Models\Suite|null
      */
     public function findSuiteByNameAndProject($name, $project_id)
     {
@@ -74,7 +74,7 @@ trait Suites
     /**
      * Find suite by id.
      *
-     * @return \PragmaRX\TestsWatcher\Package\Data\Models\Suite|null
+     * @return \PragmaRX\Tddd\Package\Data\Models\Suite|null
      */
     public function findSuiteById($id)
     {

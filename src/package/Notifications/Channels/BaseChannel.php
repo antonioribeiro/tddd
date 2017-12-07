@@ -1,6 +1,6 @@
 <?php
 
-namespace PragmaRX\TestsWatcher\Package\Notifications\Channels;
+namespace PragmaRX\Tddd\Package\Notifications\Channels;
 
 abstract class BaseChannel implements Contract
 {

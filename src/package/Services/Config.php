@@ -1,6 +1,6 @@
 <?php
 
-namespace PragmaRX\TestsWatcher\Package\Services;
+namespace PragmaRX\Tddd\Package\Services;
 
 use Illuminate\Support\Collection;
 use PragmaRX\Support\YamlConfig;

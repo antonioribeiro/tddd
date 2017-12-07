@@ -1,6 +1,6 @@
 <?php
 
-namespace PragmaRX\TestsWatcher\Package\Http\Controllers;
+namespace PragmaRX\Tddd\Package\Http\Controllers;
 
 use File;
 use Illuminate\Http\Request;

@@ -1,9 +1,9 @@
 <?php
 
-namespace PragmaRX\TestsWatcher\Package\Listeners;
+namespace PragmaRX\Tddd\Package\Listeners;
 
-use PragmaRX\TestsWatcher\Package\Data\Repositories\Data;
-use PragmaRX\TestsWatcher\Package\Events\UserNotifiedOfFailure;
+use PragmaRX\Tddd\Package\Data\Repositories\Data;
+use PragmaRX\Tddd\Package\Events\UserNotifiedOfFailure;
 
 class MarkAsNotified
 {

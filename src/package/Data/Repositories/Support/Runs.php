@@ -1,9 +1,9 @@
 <?php
 
-namespace PragmaRX\TestsWatcher\Package\Data\Repositories\Support;
+namespace PragmaRX\Tddd\Package\Data\Repositories\Support;
 
 use Illuminate\Support\Facades\DB as Database;
-use PragmaRX\TestsWatcher\Package\Data\Models\Run;
+use PragmaRX\Tddd\Package\Data\Models\Run;
 
 trait Runs
 {

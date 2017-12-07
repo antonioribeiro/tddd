@@ -1,9 +1,9 @@
 <?php
 
-namespace PragmaRX\TestsWatcher\Package\Services;
+namespace PragmaRX\Tddd\Package\Services;
 
-use PragmaRX\TestsWatcher\Package\Data\Repositories\Data as DataRepository;
-use PragmaRX\TestsWatcher\Package\Facades\Config;
+use PragmaRX\Tddd\Package\Data\Repositories\Data as DataRepository;
+use PragmaRX\Tddd\Package\Facades\Config;
 
 class Loader extends Base
 {
@@ -31,7 +31,7 @@ class Loader extends Base
     /**
      * Instantiate a Watcher.
      *
-     * @param \PragmaRX\TestsWatcher\Package\Data\Repositories\Data $dataRepository
+     * @param \PragmaRX\Tddd\Package\Data\Repositories\Data $dataRepository
      */
     public function __construct(DataRepository $dataRepository)
     {

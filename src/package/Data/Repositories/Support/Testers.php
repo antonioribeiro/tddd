@@ -1,8 +1,8 @@
 <?php
 
-namespace PragmaRX\TestsWatcher\Package\Data\Repositories\Support;
+namespace PragmaRX\Tddd\Package\Data\Repositories\Support;
 
-use PragmaRX\TestsWatcher\Package\Data\Models\Tester;
+use PragmaRX\Tddd\Package\Data\Models\Tester;
 
 trait Testers
 {

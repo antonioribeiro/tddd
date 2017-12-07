@@ -1,6 +1,6 @@
 <?php
 
-namespace PragmaRX\TestsWatcher\Package\Support;
+namespace PragmaRX\Tddd\Package\Support;
 
 use Carbon\Carbon;
 use Closure;

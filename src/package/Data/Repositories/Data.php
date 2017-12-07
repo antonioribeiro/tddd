@@ -1,15 +1,15 @@
 <?php
 
-namespace PragmaRX\TestsWatcher\Package\Data\Repositories;
+namespace PragmaRX\Tddd\Package\Data\Repositories;
 
-use PragmaRX\TestsWatcher\Package\Data\Repositories\Support\Helpers;
-use PragmaRX\TestsWatcher\Package\Data\Repositories\Support\Messages;
-use PragmaRX\TestsWatcher\Package\Data\Repositories\Support\Notifications;
-use PragmaRX\TestsWatcher\Package\Data\Repositories\Support\Projects;
-use PragmaRX\TestsWatcher\Package\Data\Repositories\Support\Suites;
-use PragmaRX\TestsWatcher\Package\Data\Repositories\Support\Testers;
-use PragmaRX\TestsWatcher\Package\Data\Repositories\Support\Tests;
-use PragmaRX\TestsWatcher\Package\Support\Notifier;
+use PragmaRX\Tddd\Package\Data\Repositories\Support\Helpers;
+use PragmaRX\Tddd\Package\Data\Repositories\Support\Messages;
+use PragmaRX\Tddd\Package\Data\Repositories\Support\Notifications;
+use PragmaRX\Tddd\Package\Data\Repositories\Support\Projects;
+use PragmaRX\Tddd\Package\Data\Repositories\Support\Suites;
+use PragmaRX\Tddd\Package\Data\Repositories\Support\Testers;
+use PragmaRX\Tddd\Package\Data\Repositories\Support\Tests;
+use PragmaRX\Tddd\Package\Support\Notifier;
 use SensioLabs\AnsiConverter\AnsiToHtmlConverter;
 
 class Data

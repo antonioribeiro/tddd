@@ -1,6 +1,6 @@
 <?php
 
-namespace PragmaRX\TestsWatcher\Package\Data\Models;
+namespace PragmaRX\Tddd\Package\Data\Models;
 
 class Queue extends Model
 {
@@ -17,6 +17,6 @@ class Queue extends Model
      */
     public function test()
     {
-        return $this->belongsTo('PragmaRX\TestsWatcher\Package\Data\Models\Test');
+        return $this->belongsTo('PragmaRX\Tddd\Package\Data\Models\Test');
     }
 }

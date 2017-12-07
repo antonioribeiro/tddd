@@ -1,19 +1,19 @@
 <?php
 
-namespace PragmaRX\TestsWatcher\Package;
+namespace PragmaRX\Tddd\Package;
 
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider as IlluminateServiceProvider;
-use PragmaRX\TestsWatcher\Package\Console\Commands\ClearCommand;
-use PragmaRX\TestsWatcher\Package\Console\Commands\TestCommand;
-use PragmaRX\TestsWatcher\Package\Console\Commands\WatchCommand;
-use PragmaRX\TestsWatcher\Package\Events\TestsFailed;
-use PragmaRX\TestsWatcher\Package\Events\UserNotifiedOfFailure;
-use PragmaRX\TestsWatcher\Package\Listeners\MarkAsNotified;
-use PragmaRX\TestsWatcher\Package\Listeners\Notify;
-use PragmaRX\TestsWatcher\Package\Services\Config;
-use PragmaRX\TestsWatcher\Package\Support\Notifier;
+use PragmaRX\Tddd\Package\Console\Commands\ClearCommand;
+use PragmaRX\Tddd\Package\Console\Commands\TestCommand;
+use PragmaRX\Tddd\Package\Console\Commands\WatchCommand;
+use PragmaRX\Tddd\Package\Events\TestsFailed;
+use PragmaRX\Tddd\Package\Events\UserNotifiedOfFailure;
+use PragmaRX\Tddd\Package\Listeners\MarkAsNotified;
+use PragmaRX\Tddd\Package\Listeners\Notify;
+use PragmaRX\Tddd\Package\Services\Config;
+use PragmaRX\Tddd\Package\Support\Notifier;
 
 class ServiceProvider extends IlluminateServiceProvider
 {
@@ -185,7 +185,7 @@ class ServiceProvider extends IlluminateServiceProvider
     private function registerService()
     {
         $this->app->singleton('tddd', function () {
-            return app('PragmaRX\TestsWatcher\Package\Service');
+            return app('PragmaRX\Tddd\Package\Service');
         });
     }
 
@@ -195,7 +195,7 @@ class ServiceProvider extends IlluminateServiceProvider
     private function registerWatcher()
     {
         $this->app->singleton('tddd.watcher', function () {
-            return app('PragmaRX\TestsWatcher\Package\Services\Watcher');
+            return app('PragmaRX\Tddd\Package\Services\Watcher');
         });
     }
 
@@ -205,7 +205,7 @@ class ServiceProvider extends IlluminateServiceProvider
     private function registerTester()
     {
         $this->app->singleton('tddd.tester', function () {
-            return app('PragmaRX\TestsWatcher\Package\Services\Tester');
+            return app('PragmaRX\Tddd\Package\Services\Tester');
         });
     }
 
@@ -214,7 +214,7 @@ class ServiceProvider extends IlluminateServiceProvider
      */
     private function registerConfig()
     {
-        $config = $this->config = app('PragmaRX\TestsWatcher\Package\Services\Config');
+        $config = $this->config = app('PragmaRX\Tddd\Package\Services\Config');
 
         $this->app->singleton('tddd.config', function () use ($config) {
             return $config;
@@ -236,7 +236,7 @@ class ServiceProvider extends IlluminateServiceProvider
     {
         Route::group([
             'prefix'     => config('tddd.routes.prefixes.global'),
-            'namespace'  => 'PragmaRX\TestsWatcher\Package\Http\Controllers',
+            'namespace'  => 'PragmaRX\Tddd\Package\Http\Controllers',
             'middleware' => 'web',
         ], function () {
             $this->loadRoutesFrom(__DIR__.'/../routes/web.php');

@@ -1,11 +1,11 @@
 <?php
 
-namespace PragmaRX\TestsWatcher\Package\Services;
+namespace PragmaRX\Tddd\Package\Services;
 
 use Closure;
-use PragmaRX\TestsWatcher\Package\Console\Commands\BaseCommand as Command;
-use PragmaRX\TestsWatcher\Package\Data\Repositories\Data as DataRepository;
-use PragmaRX\TestsWatcher\Package\Support\Executor;
+use PragmaRX\Tddd\Package\Console\Commands\BaseCommand as Command;
+use PragmaRX\Tddd\Package\Data\Repositories\Data as DataRepository;
+use PragmaRX\Tddd\Package\Support\Executor;
 use Symfony\Component\Process\Process;
 
 class Tester extends Base
@@ -20,7 +20,7 @@ class Tester extends Base
     /**
      * The data repository.
      *
-     * @object \PragmaRX\TestsWatcher\Package\Data\Repositories\Data
+     * @object \PragmaRX\Tddd\Package\Data\Repositories\Data
      */
     protected $dataRepository;
 
@@ -34,7 +34,7 @@ class Tester extends Base
     /**
      * The shell executor.
      *
-     * @var \PragmaRX\TestsWatcher\Package\Support\Executor
+     * @var \PragmaRX\Tddd\Package\Support\Executor
      */
     private $executor;
 
@@ -126,7 +126,7 @@ class Tester extends Base
     /**
      * Run the tester.
      *
-     * @param \PragmaRX\TestsWatcher\Package\Console\Commands\BaseCommand $command
+     * @param \PragmaRX\Tddd\Package\Console\Commands\BaseCommand $command
      */
     public function run(Command $command)
     {
@@ -255,7 +255,7 @@ class Tester extends Base
      * Check if the test has passed.
      *
      * @param $exitCode
-     * @param \PragmaRX\TestsWatcher\Package\Data\Models\Test $test
+     * @param \PragmaRX\Tddd\Package\Data\Models\Test $test
      *
      * @return bool
      */
@@ -282,7 +282,7 @@ class Tester extends Base
     /**
      * Check if the test was piped.
      *
-     * @param \PragmaRX\TestsWatcher\Package\Data\Models\Test $test
+     * @param \PragmaRX\Tddd\Package\Data\Models\Test $test
      *
      * @return bool
      */

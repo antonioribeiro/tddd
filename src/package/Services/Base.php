@@ -1,21 +1,21 @@
 <?php
 
-namespace PragmaRX\TestsWatcher\Package\Services;
+namespace PragmaRX\Tddd\Package\Services;
 
 use JasonLewis\ResourceWatcher\Event;
-use PragmaRX\TestsWatcher\Package\Facades\Config as ConfigFacade;
+use PragmaRX\Tddd\Package\Facades\Config as ConfigFacade;
 
 class Base
 {
     /**
      * The command object.
      *
-     * @object \PragmaRX\TestsWatcher\Package\Console\Commands\BaseCommand
+     * @object \PragmaRX\Tddd\Package\Console\Commands\BaseCommand
      */
     protected $command;
 
     /**
-     * @var \PragmaRX\TestsWatcher\Package\Services\Loader
+     * @var \PragmaRX\Tddd\Package\Services\Loader
      */
     protected $loader;
 

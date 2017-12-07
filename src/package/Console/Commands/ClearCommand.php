@@ -1,6 +1,6 @@
 <?php
 
-namespace PragmaRX\TestsWatcher\Package\Console\Commands;
+namespace PragmaRX\Tddd\Package\Console\Commands;
 
 class ClearCommand extends BaseCommand
 {

@@ -1,10 +1,10 @@
 <?php
 
-namespace PragmaRX\TestsWatcher\Package\Data\Repositories\Support;
+namespace PragmaRX\Tddd\Package\Data\Repositories\Support;
 
 use Carbon\Carbon;
-use PragmaRX\TestsWatcher\Package\Data\Models\Test;
-use PragmaRX\TestsWatcher\Package\Support\Constants;
+use PragmaRX\Tddd\Package\Data\Models\Test;
+use PragmaRX\Tddd\Package\Support\Constants;
 
 trait Tests
 {
@@ -31,7 +31,7 @@ trait Tests
      * Create or update a test.
      *
      * @param \Symfony\Component\Finder\SplFileInfo            $file
-     * @param \PragmaRX\TestsWatcher\Package\Data\Models\Suite $suite
+     * @param \PragmaRX\Tddd\Package\Data\Models\Suite $suite
      *
      * @return bool
      */
@@ -190,7 +190,7 @@ trait Tests
      * Enable a test.
      *
      * @param $enable
-     * @param \PragmaRX\TestsWatcher\Package\Data\Models\Test $test
+     * @param \PragmaRX\Tddd\Package\Data\Models\Test $test
      */
     protected function enableTest($enable, $test)
     {

@@ -1,6 +1,6 @@
 <?php
 
-namespace PragmaRX\TestsWatcher\Package\Data\Models;
+namespace PragmaRX\Tddd\Package\Data\Models;
 
 class Suite extends Model
 {
@@ -44,7 +44,7 @@ class Suite extends Model
      */
     public function project()
     {
-        return $this->belongsTo('PragmaRX\TestsWatcher\Package\Data\Models\Project');
+        return $this->belongsTo('PragmaRX\Tddd\Package\Data\Models\Project');
     }
 
     /**
@@ -54,7 +54,7 @@ class Suite extends Model
      */
     public function tester()
     {
-        return $this->belongsTo('PragmaRX\TestsWatcher\Package\Data\Models\Tester');
+        return $this->belongsTo('PragmaRX\Tddd\Package\Data\Models\Tester');
     }
 
     /**
@@ -64,7 +64,7 @@ class Suite extends Model
      */
     public function tests()
     {
-        return $this->hasMany('PragmaRX\TestsWatcher\Package\Data\Models\Test');
+        return $this->hasMany('PragmaRX\Tddd\Package\Data\Models\Test');
     }
 
     /**

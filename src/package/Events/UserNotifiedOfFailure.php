@@ -1,6 +1,6 @@
 <?php
 
-namespace PragmaRX\TestsWatcher\Package\Events;
+namespace PragmaRX\Tddd\Package\Events;
 
 use Illuminate\Contracts\Queue\ShouldQueue;
 

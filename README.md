@@ -104,7 +104,7 @@ This package was tested and is known to be compatible with
 laravel new tddd
 cd tddd
 composer require pragmarx/tddd
-php artisan vendor:publish --provider="PragmaRX\TestsWatcher\Package\ServiceProvider"
+php artisan vendor:publish --provider="PragmaRX\Tddd\Package\ServiceProvider"
 valet link tddd
 # configure database on your .env
 php artisan migrate
@@ -137,7 +137,7 @@ On Laravel 4.*
 Add the service provider to your app/config/app.php:
 
 ``` php
-'PragmaRX\TestsWatcher\Package\ServiceProvider',
+'PragmaRX\Tddd\Package\ServiceProvider',
 ```
 
 ``` bash
@@ -147,7 +147,7 @@ php artisan config:publish pragmarx/tddd
 On Laravel 5.*
 
 ``` bash
-php artisan vendor:publish --provider="PragmaRX\TestsWatcher\Package\ServiceProvider"
+php artisan vendor:publish --provider="PragmaRX\Tddd\Package\ServiceProvider"
 ```
 
 ## Example of projects

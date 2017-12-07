@@ -1,11 +1,11 @@
 <?php
 
-namespace PragmaRX\TestsWatcher\Package\Services;
+namespace PragmaRX\Tddd\Package\Services;
 
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use JasonLewis\ResourceWatcher\Watcher as ResourceWatcher;
-use PragmaRX\TestsWatcher\Package\Data\Repositories\Data as DataRepository;
+use PragmaRX\Tddd\Package\Data\Repositories\Data as DataRepository;
 
 class Watcher extends Base
 {
@@ -33,7 +33,7 @@ class Watcher extends Base
     /**
      * Watcher Repository.
      *
-     * @var \PragmaRX\TestsWatcher\Package\Data\Repositories\Data
+     * @var \PragmaRX\Tddd\Package\Data\Repositories\Data
      */
     protected $dataRepository;
 

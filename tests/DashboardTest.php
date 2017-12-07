@@ -1,9 +1,9 @@
 <?php
 
-namespace PragmaRX\TestsWatcher\Tests;
+namespace PragmaRX\Tddd\Tests;
 
 use PHPUnit\Framework\TestCase;
-use PragmaRX\TestsWatcher\Package\Services\Watcher;
+use PragmaRX\Tddd\Package\Services\Watcher;
 
 class DashboardTest extends TestCase
 {

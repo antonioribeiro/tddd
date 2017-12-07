@@ -1,9 +1,9 @@
 <?php
 
-namespace PragmaRX\TestsWatcher\Tests;
+namespace PragmaRX\Tddd\Tests;
 
 use Orchestra\Testbench\TestCase as OrchestraTestCase;
-use PragmaRX\TestsWatcher\Package\ServiceProvider as TestsWatcherServiceProvider;
+use PragmaRX\Tddd\Package\ServiceProvider as TdddServiceProvider;
 
 abstract class TestCase extends OrchestraTestCase
 {
@@ -62,7 +62,7 @@ abstract class TestCase extends OrchestraTestCase
         $this->app = $app;
 
         return [
-            TestsWatcherServiceProvider::class,
+            TdddServiceProvider::class,
         ];
     }
 }
