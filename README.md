@@ -183,7 +183,7 @@ php artisan vendor:publish --provider="PragmaRX\TestsWatcher\Package\ServiceProv
 
 #### Tests are running fine in terminal but failing in the dashboard? 
 
-You have first to remember they are being executed in isolation, and, also, the environment is not exactly the same, so things like a cache and session may affect yoru results. 
+You have first to remember they are being executed in isolation, and, also, the environment is not exactly the same, so things like a cache and session may affect your results. 
 
 ## Requirements
 
