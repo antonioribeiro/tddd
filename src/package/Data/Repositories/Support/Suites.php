@@ -34,12 +34,14 @@ trait Suites
                 'project_id' => $project_id,
             ],
             [
-                'tester_id'       => $tester->id,
-                'tests_path'      => array_get($suite_data, 'tests_path'),
-                'command_options' => array_get($suite_data, 'command_options'),
-                'file_mask'       => array_get($suite_data, 'file_mask'),
-                'retries'         => array_get($suite_data, 'retries'),
-                'editor'          => array_get($suite_data, 'editor'),
+                'tester_id'        => $tester->id,
+                'tests_path'       => array_get($suite_data, 'tests_path'),
+                'command_options'  => array_get($suite_data, 'command_options'),
+                'file_mask'        => array_get($suite_data, 'file_mask'),
+                'retries'          => array_get($suite_data, 'retries'),
+                'editor'           => array_get($suite_data, 'editor'),
+                'coverage_enabled' => array_get($suite_data, 'coverage.enabled', false),
+                'coverage_index'   => array_get($suite_data, 'coverage.index'),
             ]
         );
     }

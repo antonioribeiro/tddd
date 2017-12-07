@@ -16,6 +16,8 @@ class Suite extends Model
         'command_options',
         'max_retries',
         'editor',
+        'coverage_enabled',
+        'coverage_index',
     ];
 
     /**

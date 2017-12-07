@@ -47524,7 +47524,8 @@ exports.clearImmediate = clearImmediate;
             LOG_ID_LOG: 'log',
             LOG_ID_HTML: 'html',
             LOG_ID_SCREENSHOTS: 'screenshots',
-            LOG_ID_SNAPSHOT: 'snapshot'
+            LOG_ID_SNAPSHOT: 'snapshot',
+            LOG_ID_COVERAGE: 'coverage'
         }
     },
 
@@ -49081,6 +49082,20 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -49088,7 +49103,12 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["mapState"])(['laravel', 'logVisible', 'constants']), Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["mapGetters"])(['selectedPanel', 'selectedTest', 'selectedProject'])),
+    computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["mapState"])(['laravel', 'logVisible', 'constants']), Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["mapGetters"])(['selectedPanel', 'selectedTest', 'selectedProject']), {
+        coverage: function coverage() {
+            console.log('coverate', this.laravel.root.coverage);
+            return this.laravel.root.coverage;
+        }
+    }),
 
     methods: {
         setPanelLog: function setPanelLog() {
@@ -49099,6 +49119,9 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
         },
         setPanelHtml: function setPanelHtml() {
             this.$store.commit('setSelectedPanel', this.constants.LOG_ID_HTML);
+        },
+        setPanelCoverage: function setPanelCoverage() {
+            this.$store.commit('setSelectedPanel', this.constants.LOG_ID_COVERAGE);
         },
         getPillColor: function getPillColor(button) {
             if (button == this.selectedPanel) {
@@ -49241,6 +49264,29 @@ var render = function() {
                     _vm._v(
                       "\n                         \n                        "
                     ),
+                    _vm.selectedTest.coverage.enabled
+                      ? _c(
+                          "div",
+                          {
+                            class:
+                              "btn btn-pill " +
+                              _vm.getPillColor(_vm.constants.LOG_ID_COVERAGE),
+                            on: {
+                              click: function($event) {
+                                _vm.setPanelCoverage()
+                              }
+                            }
+                          },
+                          [
+                            _vm._v(
+                              "\n                            coverage\n                        "
+                            )
+                          ]
+                        )
+                      : _vm._e(),
+                    _vm._v(
+                      "\n                         \n                        "
+                    ),
                     _vm.selectedTest.html
                       ? _c(
                           "div",
@@ -49373,6 +49419,33 @@ var render = function() {
                               ])
                             }
                           )
+                        )
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _vm.selectedPanel == _vm.constants.LOG_ID_COVERAGE
+                      ? _c(
+                          "div",
+                          {
+                            class:
+                              "tab-pane " +
+                              (_vm.selectedPanel ==
+                              _vm.constants.LOG_ID_COVERAGE
+                                ? "active"
+                                : "")
+                          },
+                          [
+                            _c("iframe", {
+                              attrs: {
+                                id: "serviceFrameSend",
+                                src:
+                                  "/html?index=" +
+                                  _vm.selectedTest.coverage.index,
+                                width: "100%",
+                                height: "1000",
+                                frameborder: "0"
+                              }
+                            })
+                          ]
                         )
                       : _vm._e(),
                     _vm._v(" "),

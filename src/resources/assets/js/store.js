@@ -27,6 +27,7 @@ export default {
             LOG_ID_HTML: 'html',
             LOG_ID_SCREENSHOTS: 'screenshots',
             LOG_ID_SNAPSHOT: 'snapshot',
+            LOG_ID_COVERAGE: 'coverage',
         },
     },
 

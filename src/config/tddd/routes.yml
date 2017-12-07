@@ -4,3 +4,4 @@ prefixes:
   tests: "/tests"
   projects: "/projects"
   files: "/files"
+  html: "/html"

@@ -37,16 +37,18 @@ trait Tests
      */
     public function createOrUpdateTest($file, $suite)
     {
-        $test = Test::updateOrCreate(
-            [
-                'sha1' => sha1(($path = $this->normalizePath($file->getPath())).DIRECTORY_SEPARATOR.$file->getFilename()),
-            ],
-            [
+        $test = Test::where('path', $path = $this->normalizePath($file->getPath()))
+                    ->where('name', $name = trim($file->getFilename()))
+                    ->first();
+
+        if (is_null($test)) {
+            $test = Test::create([
+                'sha1'     => sha1("$path/$name"),
                 'path'     => $path,
-                'name'     => $file->getFilename(),
+                'name'     => $name,
                 'suite_id' => $suite->id,
-            ]
-        );
+            ]);
+        }
 
         if ($test->wasRecentlyCreated && $this->findTestByFileAndSuite($file, $suite)) {
             $this->addTestToQueue($test);
@@ -122,6 +124,7 @@ trait Tests
      * Mark a test as being running.
      *
      * @param $test
+     * @return mixed
      */
     public function markTestAsRunning($test)
     {

@@ -4,7 +4,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use PragmaRX\Support\Migration;
 
-class AddCoverage extends Migration
+class AddEditor extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,9 @@ class AddCoverage extends Migration
     public function migrateUp()
     {
         Schema::table('tddd_suites', function (Blueprint $table) {
-            $table->string('editor')->nullable();
+            $table->string('coverage_enabled')->boolean(false);
+
+            $table->string('coverage_index')->nullable();
         });
     }
 
@@ -26,7 +28,9 @@ class AddCoverage extends Migration
     public function migrateDown()
     {
         Schema::table('tddd_suites', function (Blueprint $table) {
-            $table->dropColumn('editor');
+            $table->dropColumn('coverage_enabled');
+
+            $table->dropColumn('coverage_index');
         });
     }
 }

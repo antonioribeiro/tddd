@@ -31,3 +31,7 @@ Route::group(['prefix' => config('tddd.routes.prefixes.files')], function () {
 
     Route::get('/{filename}/download', ['as' => 'tests-watcher.image.download', 'uses' => 'Files@imageDownload']);
 });
+
+Route::group(['prefix' => config('tddd.routes.prefixes.html')], function () {
+    Route::get('/', ['as' => 'tests-watcher.html.view', 'uses' => 'Html@view']);
+});

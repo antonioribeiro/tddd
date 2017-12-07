@@ -10,3 +10,6 @@ cache:
   event_timeout: 10 # seconds
 code:
   path: "{{ config('tddd-base.user_home') }}/code"
+coverage:
+  enabled: true
+  index: coverage/index.html
