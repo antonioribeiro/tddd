@@ -11,5 +11,4 @@ cache:
 code:
   path: "{{ config('tddd-base.user_home') }}/code"
 coverage:
-  enabled: true
-  index: coverage/index.html
+  path: coverage # under /public
