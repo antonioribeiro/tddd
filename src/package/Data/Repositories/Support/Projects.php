@@ -197,7 +197,7 @@ trait Projects
      */
     public function toggleAll()
     {
-        Project::all()->each(function($project) {
+        Project::all()->each(function ($project) {
             $this->enableProject(!$project->enabled, $project);
         });
     }
