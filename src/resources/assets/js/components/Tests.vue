@@ -110,7 +110,7 @@
                         <td>{{ test.updated_at }}</td>
 
                         <td>
-                            <div @click="showLog(test)" v-if="test.state !== 'running'" :class="'btn btn-sm btn-' + (test.state == 'failed' ? 'primary' : 'secondary')">
+                            <div @click="showLog(test)" v-if="test.log" :class="'btn btn-sm btn-' + (test.state == 'failed' ? 'primary' : 'secondary')">
                                 show
                             </div>
                         </td>
