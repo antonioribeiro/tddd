@@ -1,5 +1,24 @@
 # Changelog
 
+## [0.9.9] - 2017-12-08
+### Added
+- Toggle enabled/disabled projects
+
+## [0.9.8] - 2017-12-08
+### Added
+- Always display log show button
+
+## [0.9.7] - 2017-12-07
+### Changed
+- Removed clear artisan command
+
+## [0.9.6] - 2017-12-07
+### Added
+- Tests coverage tab on tests log view
+### Changed
+- Config files are now in yaml format
+- Renamed package to TDDD - Test Driven Development Dashboard
+
 ## [0.9.5] - 2017-10-16
 ### Added
 - MySQL Support

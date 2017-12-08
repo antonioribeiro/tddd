@@ -47212,6 +47212,9 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 //
 //
 //
+//
+//
+//
 
 
 
@@ -47259,6 +47262,13 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
         },
         reset: function reset() {
             axios.post(this.laravel.routes.prefixes.projects + '/reset/', { projects: this.filteredProjectsIds });
+        },
+        toggleAll: function toggleAll() {
+            var _this2 = this;
+
+            axios.get(this.laravel.routes.prefixes.projects + '/toggle-all').then(function (response) {
+                return _this2.loadData();
+            });
         }
     })
 });
@@ -47277,7 +47287,7 @@ var render = function() {
         _vm._m(0),
         _vm._v(" "),
         _c("div", { staticClass: "row" }, [
-          _c("div", { staticClass: "col-7" }, [
+          _c("div", { staticClass: "col-6" }, [
             _c("div", { staticClass: "input-group search-group" }, [
               _c("input", {
                 directives: [
@@ -47318,7 +47328,20 @@ var render = function() {
             ])
           ]),
           _vm._v(" "),
-          _c("div", { staticClass: "col-5 text-right" }, [
+          _c("div", { staticClass: "col-6 text-right" }, [
+            _c(
+              "div",
+              {
+                staticClass: "btn btn-info",
+                on: {
+                  click: function($event) {
+                    _vm.toggleAll()
+                  }
+                }
+              },
+              [_vm._v("\n                        toggle\n                    ")]
+            ),
+            _vm._v(" "),
             _c(
               "div",
               {

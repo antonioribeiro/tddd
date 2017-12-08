@@ -60,4 +60,16 @@ class Projects extends Controller
 
         return $this->success();
     }
+
+    /**
+     * Toggle the enabled state of all projects.
+     *
+     * @return mixed
+     */
+    public function toggleAll()
+    {
+        $this->dataRepository->toggleAll();
+
+        return $this->success();
+    }
 }

@@ -9,7 +9,7 @@
                 </div>
 
                 <div class="row">
-                    <div class="col-7">
+                    <div class="col-6">
                         <div class="input-group search-group">
                             <input
                                 v-model="filter"
@@ -21,7 +21,10 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-5 text-right">
+                    <div class="col-6 text-right">
+                        <div class="btn btn-info" @click="toggleAll()">
+                            toggle
+                        </div>
                         <div class="btn btn-danger" @click="runAll()">
                             run
                         </div>
@@ -156,6 +159,11 @@
 
             reset() {
                 axios.post(this.laravel.routes.prefixes.projects+'/reset/', { projects: this.filteredProjectsIds });
+            },
+
+            toggleAll() {
+                axios.get(this.laravel.routes.prefixes.projects+'/toggle-all')
+                    .then(response => this.loadData());
             },
         }
     }

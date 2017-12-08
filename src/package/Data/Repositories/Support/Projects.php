@@ -191,4 +191,14 @@ trait Projects
             $this->resetTest($test);
         }
     }
+
+    /**
+     * Toggle the enabled state of all projects.
+     */
+    public function toggleAll()
+    {
+        Project::all()->each(function($project) {
+            $this->enableProject(!$project->enabled, $project);
+        });
+    }
 }

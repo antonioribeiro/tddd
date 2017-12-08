@@ -24,6 +24,8 @@ Route::group(['prefix' => config('tddd.routes.prefixes.projects')], function () 
     Route::post('/reset', ['as' => 'tests-watcher.projects.reset', 'uses' => 'Projects@reset']);
 
     Route::post('/run', ['as' => 'tests-watcher.projects.run.all', 'uses' => 'Projects@run']);
+
+    Route::get('/toggle-all', ['as' => 'tests-watcher.projects.toggle-all', 'uses' => 'Projects@toggleAll']);
 });
 
 Route::group(['prefix' => config('tddd.routes.prefixes.files')], function () {
