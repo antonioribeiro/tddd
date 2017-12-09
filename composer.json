@@ -28,7 +28,7 @@
         "symfony/process": "~3",
         "guzzlehttp/guzzle": "~6.3",
         "jolicode/jolinotif": "~1.2",
-        "doctrine/dbal": "~2.6",
+        "doctrine/dbal": "~2.5",
         "symfony/yaml": "~3.2"
     },
 
