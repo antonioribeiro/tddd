@@ -43,6 +43,7 @@ abstract class TestCase extends OrchestraTestCase
 
     protected function setUp()
     {
+        dd('configure');
         parent::setUp();
 
         $this->configureDatabase();
