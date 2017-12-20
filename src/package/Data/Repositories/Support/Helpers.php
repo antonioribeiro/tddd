@@ -77,7 +77,7 @@ trait Helpers
     protected function createLinks($lines, $matches, $test)
     {
         foreach ($matches as $line) {
-            if (count($line) > 0 && count($line[0]) > 0) {
+            if (!empty($line) && is_array($line) && count($line) > 0 && is_array($line[0]) && count($line[0]) > 0) {
                 $occurence = strpos($lines, $line[0]) === false ? 1 : 0;
 
                 $lines = str_replace(
