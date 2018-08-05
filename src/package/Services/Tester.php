@@ -214,9 +214,11 @@ class Tester extends Base
 
         $run = $this->dataRepository->markTestAsRunning($test);
 
-        $command = $this->addPiperCommand($test);
+        $command = replace_suite_paths($test->suite, $this->addPiperCommand($test));
 
-        $this->showProgress('RUNNING: '.$command, 'comment');
+        chdir($test->suite->project->path);
+
+        $this->showProgress('RUNNING: '.$command.' - at '.$test->suite->project->path.' - cwd:'.getcwd(), 'comment');
 
         $logOutput = '';
 

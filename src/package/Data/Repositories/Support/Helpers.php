@@ -209,7 +209,11 @@ trait Helpers
             return;
         }
 
-        return json_encode((array) $screenshots);
+        $screenshots = collect($screenshots)->map(function ($path) use ($test) {
+            return replace_suite_paths($test->suite, $path);
+        });
+
+        return json_encode($screenshots->toArray());
     }
 
     /**
@@ -285,12 +289,14 @@ trait Helpers
      */
     protected function parseDuskScreenshots($log, $folder)
     {
-        preg_match_all('/([0-9]\)+\s.+::)(.*)/', $log, $matches, PREG_SET_ORDER);
+        preg_match_all('/[0-9]\)+\s(.+::.*)/', $log, $matches, PREG_SET_ORDER);
 
         $result = [];
 
         foreach ($matches as $line) {
-            $name = str_replace("\r", '', $line[2]);
+            $name = str_replace("\r", '', $line[1]);
+            $name = str_replace("\\", '_', $name);
+            $name = str_replace("::", '_', $name);
 
             $result[] = $folder.DIRECTORY_SEPARATOR."failure-{$name}-0.png";
         }
@@ -415,10 +421,10 @@ trait Helpers
             return;
         }
 
-        $file = make_path([
+        $file = replace_suite_paths($test->suite, make_path([
             make_path([$test->suite->project->path, $outputFolder]),
             str_replace(['.php', '::', '\\', '/'], ['', '.', '', ''], $test->name).$extension,
-        ]);
+        ]));
 
         return file_exists($file) ? $this->renderHtml(file_get_contents($file)) : null;
     }

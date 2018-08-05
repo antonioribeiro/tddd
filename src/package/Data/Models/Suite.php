@@ -76,6 +76,6 @@ class Suite extends Model
     {
         $command = $this->tester->command.' '.$this->command_options;
 
-        return str_replace('%project_path%', $this->project->path, $command);
+        return replace_suite_paths($this, $command);
     }
 }

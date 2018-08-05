@@ -42,3 +42,15 @@ if (!function_exists('is_arrayable')) {
             $id instanceof \Illuminate\Contracts\Support\Arrayable;
     }
 }
+
+if (!function_exists('replace_suite_paths')) {
+    /**
+     * Replace suite paths strings.
+     *
+     * @return string
+     */
+    function replace_suite_paths($suite, $string)
+    {
+        return str_replace('{$project_path}', $suite->project->path, $string);
+    }
+}
