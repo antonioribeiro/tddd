@@ -43,7 +43,7 @@
         </script>
 
         @if(config('app.env') == 'local')
-            <script src="//localhost:35729/livereload.js"></script>
+            <script src="//localhost:35729/livereloadxxx.js"></script>
         @endif
     </body>
 </html>

@@ -16,6 +16,11 @@ export default {
 
         wasRunning: false,
 
+        broadcasting: {
+            socket: null,
+            channel: null,
+        },
+
         filters: {
             projects: '',
 
@@ -73,6 +78,18 @@ export default {
         setProjectsFilter(state, filter) {
             state.filters.projects = filter;
         },
+
+        bootBroadcastingSocket(state, closure) {
+            if (laravel.root.broadcasting.enabled) {
+                state.broadcasting.socket =  new Pusher(laravel.root.broadcasting.pusher.key, {
+                    cluster: laravel.root.broadcasting.pusher.cluster,
+                });
+
+                state.broadcasting.channel = state.broadcasting.socket.subscribe(laravel.root.broadcasting.pusher.channel_name);
+
+                state.broadcasting.channel.bind('tddd:data-updated', closure)
+            }
+        }
     },
 
     getters: {
@@ -246,3 +263,4 @@ export default {
         },
     },
 };
+

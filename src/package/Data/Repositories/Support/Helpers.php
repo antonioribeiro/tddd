@@ -183,8 +183,6 @@ trait Helpers
 
             'test_id' => request()->get('test_id'),
 
-            'poll_interval' => config('tddd.root.poll_interval'),
-
             'root' => config('tddd.root'),
         ];
 

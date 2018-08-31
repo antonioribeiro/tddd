@@ -4,6 +4,7 @@ namespace PragmaRX\Tddd\Package\Data\Repositories\Support;
 
 use PragmaRX\Tddd\Package\Data\Models\Project;
 use PragmaRX\Tddd\Package\Data\Models\Test;
+use PragmaRX\Tddd\Package\Support\Constants;
 
 trait Projects
 {
@@ -54,8 +55,6 @@ trait Projects
      */
     public function getProjectTests($project_id = null)
     {
-        $tests = [];
-
         $order = "(case
 						when state = 'running' then 1
 						when state = 'failed' then 2
@@ -74,11 +73,23 @@ trait Projects
             $query->where('project_id', $project_id);
         }
 
-        foreach ($query->get() as $test) {
-            $tests[] = $this->getTestInfo($test);
-        }
+        return collect($query->get())->map(function ($test) {
+            return $this->getTestInfo($test);
+        });
+    }
 
-        return collect($tests);
+    /**
+     * Get all projects.
+     *
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function getProjectsAndCacheResult()
+    {
+        $projects = $this->getProjects();
+
+        app('tddd.cache')->put(Constants::CACHE_PROJECTS_KEY, sha1($projects->toJson()));
+
+        return $projects;
     }
 
     /**
@@ -95,6 +106,34 @@ trait Projects
 
             return $item;
         });
+    }
+
+    /**
+     * Get a SHA1 for all projects.
+     *
+     * @return boolean
+     */
+    public function projectSha1HasChanged()
+    {
+        $currentSha1 = sha1($projectsJson = $this->getProjects()->toJson());
+
+        $oldSha1 = app('tddd.cache')->get(Constants::CACHE_PROJECTS_KEY);
+
+        if ($hasChanged = $currentSha1 != $oldSha1) {
+            app('tddd.cache')->put(Constants::CACHE_PROJECTS_KEY, sha1($projectsJson));
+        }
+
+        return $hasChanged;
+    }
+
+    /**
+     * Get a SHA1 for all projects.
+     *
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function getProjectsSha1()
+    {
+        return sha1($this->getProjects()->toJson());
     }
 
     /**

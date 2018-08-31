@@ -2,7 +2,6 @@
 
 namespace PragmaRX\Tddd\Package\Data\Repositories\Support;
 
-use Illuminate\Support\Facades\DB as Database;
 use PragmaRX\Tddd\Package\Data\Models\Run;
 
 trait Runs
@@ -12,7 +11,7 @@ trait Runs
      */
     public function clearRuns()
     {
-        Database::statement('delete from tddd_runs');
+        Run::truncate();
     }
 
     /**

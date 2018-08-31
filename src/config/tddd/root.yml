@@ -3,12 +3,26 @@ names:
   watcher: TDDD - Watcher
   worker: TDDD - Worker
 regex_file_matcher: "/([A-Za-z0-9\\/._-]+)(?::| on line )([1-9][0-9]*)/"
-poll_interval: 300 # milliseconds
+poll:
+  enabled: false
+  interval: 300 # milliseconds
 tmp_dir: "/var/tmp/"
 show_progress: false
 cache:
   event_timeout: 10 # seconds
+  instance: 'cache'
 code:
   path: "{{ config('tddd-base.user_home') }}/code"
 coverage:
   path: coverage # under /public
+broadcasting:
+    enabled: true
+    pusher:
+      key: "{{ config('broadcasting.connections.pusher.key') }}"
+      secret: "{{ config('broadcasting.connections.pusher.secret') }}"
+      app_id: "{{ config('broadcasting.connections.pusher.app_id') }}"
+      cluster: "{{ env('PUSHER_CLUSTER') }}"
+      channel_name: "tddd"
+cache:
+  enabled: true
+  instance: 'cache'

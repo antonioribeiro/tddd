@@ -62,9 +62,18 @@ trait Queue
 
             QueueModel::updateOrCreate(['test_id' => $test->id]);
 
+            // After queueing, if it's the only one, it may take the test and run it right away,
+            // so we must wait a little for it to happen
+            sleep(1);
+
+            // We then get a fresh model, which may have a different state now
+            $test = $test->fresh();
+
             if ($force || !in_array($test->state, [Constants::STATE_RUNNING, Constants::STATE_QUEUED])) {
                 $test->state = Constants::STATE_QUEUED;
+
                 $test->timestamps = false;
+
                 $test->save();
             }
         }

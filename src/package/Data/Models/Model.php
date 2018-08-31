@@ -2,10 +2,33 @@
 
 namespace PragmaRX\Tddd\Package\Data\Models;
 
+use PragmaRX\Tddd\Package\Support\Constants;
+use PragmaRX\Tddd\Package\Events\DataUpdated;
+use PragmaRX\Tddd\Package\Data\Repositories\Data as DataRepository;
 use Illuminate\Database\Eloquent\Model as Eloquent;
 
 class Model extends Eloquent
 {
+    private function broadcastDataUpdated()
+    {
+        if (app(DataRepository::class)->projectSha1HasChanged()) {
+            broadcast(new DataUpdated());
+        }
+    }
+
+    /**
+     * Save the model to the database.
+     *
+     * @param  array  $options
+     * @return bool
+     */
+    public function save(array $options = [])
+    {
+        parent::save($options);
+
+        $this->broadcastDataUpdated();
+    }
+
     /**
      * Get the connection of the entity.
      *

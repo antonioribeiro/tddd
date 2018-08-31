@@ -24,7 +24,7 @@ class Dashboard extends Controller
     public function data()
     {
         return $this->success([
-            'projects' => $this->dataRepository->getProjects(),
+            'projects' => $this->dataRepository->getProjectsAndCacheResult(),
         ]);
     }
 }

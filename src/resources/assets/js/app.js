@@ -38,7 +38,8 @@ Vue.component('log', require('./components/Log.vue'));
  * Start application
  */
 
-const app = new Vue({
+
+new Vue({
     el: '#app',
 
     store: new Vuex.Store(store),

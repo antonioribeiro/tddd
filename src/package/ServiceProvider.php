@@ -4,15 +4,16 @@ namespace PragmaRX\Tddd\Package;
 
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\ServiceProvider as IlluminateServiceProvider;
+use PragmaRX\Tddd\Package\Services\Cache;
+use PragmaRX\Tddd\Package\Services\Config;
+use PragmaRX\Tddd\Package\Listeners\Notify;
+use PragmaRX\Tddd\Package\Support\Notifier;
+use PragmaRX\Tddd\Package\Events\TestsFailed;
+use PragmaRX\Tddd\Package\Listeners\MarkAsNotified;
+use PragmaRX\Tddd\Package\Events\UserNotifiedOfFailure;
 use PragmaRX\Tddd\Package\Console\Commands\TestCommand;
 use PragmaRX\Tddd\Package\Console\Commands\WatchCommand;
-use PragmaRX\Tddd\Package\Events\TestsFailed;
-use PragmaRX\Tddd\Package\Events\UserNotifiedOfFailure;
-use PragmaRX\Tddd\Package\Listeners\MarkAsNotified;
-use PragmaRX\Tddd\Package\Listeners\Notify;
-use PragmaRX\Tddd\Package\Services\Config;
-use PragmaRX\Tddd\Package\Support\Notifier;
+use Illuminate\Support\ServiceProvider as IlluminateServiceProvider;
 
 class ServiceProvider extends IlluminateServiceProvider
 {
@@ -49,7 +50,7 @@ class ServiceProvider extends IlluminateServiceProvider
     /**
      * Load config files to Laravel config.
      */
-    private function loadConfig()
+    protected function loadConfig()
     {
         $this->config->loadConfig();
     }
@@ -57,7 +58,7 @@ class ServiceProvider extends IlluminateServiceProvider
     /**
      * Configure migrations path.
      */
-    private function loadMigrations()
+    protected function loadMigrations()
     {
         $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
     }
@@ -65,7 +66,7 @@ class ServiceProvider extends IlluminateServiceProvider
     /**
      * Configure views path.
      */
-    private function loadViews()
+    protected function loadViews()
     {
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'pragmarx/tddd');
     }
@@ -73,7 +74,7 @@ class ServiceProvider extends IlluminateServiceProvider
     /**
      * Configure config path.
      */
-    private function publishConfiguration()
+    protected function publishConfiguration()
     {
         $this->publishes([
             __DIR__.'/../config' => config_path(),
@@ -101,6 +102,8 @@ class ServiceProvider extends IlluminateServiceProvider
 
         $this->registerConfig();
 
+        $this->registerCache();
+
         $this->registerWatchCommand();
 
         $this->registerTestCommand();
@@ -123,7 +126,7 @@ class ServiceProvider extends IlluminateServiceProvider
     /**
      * Register event listeners.
      */
-    private function registerEventListeners()
+    protected function registerEventListeners()
     {
         Event::listen(TestsFailed::class, Notify::class);
 
@@ -133,7 +136,7 @@ class ServiceProvider extends IlluminateServiceProvider
     /**
      * Register the watch command.
      */
-    private function registerNotifier()
+    protected function registerNotifier()
     {
         $this->app->singleton('tddd.notifier', function () {
             return new Notifier();
@@ -143,7 +146,7 @@ class ServiceProvider extends IlluminateServiceProvider
     /**
      * Register the watch command.
      */
-    private function registerWatchCommand()
+    protected function registerWatchCommand()
     {
         $this->app->singleton('tddd.watch.command', function () {
             return new WatchCommand();
@@ -155,7 +158,7 @@ class ServiceProvider extends IlluminateServiceProvider
     /**
      * Register the test command.
      */
-    private function registerTestCommand()
+    protected function registerTestCommand()
     {
         $this->app->singleton('tddd.test.command', function () {
             return new TestCommand();
@@ -167,7 +170,7 @@ class ServiceProvider extends IlluminateServiceProvider
     /**
      * Register service service.
      */
-    private function registerService()
+    protected function registerService()
     {
         $this->app->singleton('tddd', function () {
             return app('PragmaRX\Tddd\Package\Service');
@@ -177,7 +180,7 @@ class ServiceProvider extends IlluminateServiceProvider
     /**
      * Register service watcher.
      */
-    private function registerWatcher()
+    protected function registerWatcher()
     {
         $this->app->singleton('tddd.watcher', function () {
             return app('PragmaRX\Tddd\Package\Services\Watcher');
@@ -187,7 +190,7 @@ class ServiceProvider extends IlluminateServiceProvider
     /**
      * Register service tester.
      */
-    private function registerTester()
+    protected function registerTester()
     {
         $this->app->singleton('tddd.tester', function () {
             return app('PragmaRX\Tddd\Package\Services\Tester');
@@ -197,7 +200,17 @@ class ServiceProvider extends IlluminateServiceProvider
     /**
      * Register service tester.
      */
-    private function registerConfig()
+    protected function registerCache()
+    {
+        $this->app->singleton('tddd.cache', function () {
+            return new Cache();
+        });
+    }
+
+    /**
+     * Register service tester.
+     */
+    protected function registerConfig()
     {
         $config = $this->config = app('PragmaRX\Tddd\Package\Services\Config');
 
@@ -209,7 +222,7 @@ class ServiceProvider extends IlluminateServiceProvider
     /**
      * Register the resource watcher.
      */
-    private function registerResourceWatcher()
+    protected function registerResourceWatcher()
     {
         $this->app->register('JasonLewis\ResourceWatcher\Integration\LaravelServiceProvider');
     }
@@ -217,7 +230,7 @@ class ServiceProvider extends IlluminateServiceProvider
     /**
      * Register all routes.
      */
-    private function loadRoutes()
+    protected function loadRoutes()
     {
         Route::group([
             'prefix'     => config('tddd.routes.prefixes.global'),

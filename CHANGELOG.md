@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.0.0] - 2018-08-28
+### Added
+- Pusher broadcasting
+- Ability to disble pooling
+### Breaking Changes
+- Add PUSHER_CLUSTER=<cluster name> to your .env file
+- Update your root.yml according to config/tddd/root.yml, regarding the pooling key
+
 ## [0.9.9] - 2017-12-08
 ### Added
 - Toggle enabled/disabled projects

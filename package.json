@@ -14,17 +14,17 @@
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "bootstrap": "^4.0.0-beta",
     "cross-env": "^5.0.1",
+    "csspin": "^1.1.4",
     "jquery": "^3.1.1",
     "laravel-mix": "^1.0",
     "less": "^2.7.2",
     "lodash": "^4.17.4",
     "node-sass": "^4.5.3",
     "popper.js": "^1.12.5",
+    "pusher-js": "^4.3.0",
     "vue": "^2.1.10",
     "vuex": "^2.4.0",
     "webpack-livereload-plugin": "^0.11.0"
   },
-  "dependencies": {
-    "csspin": "^1.1.4"
-  }
+  "dependencies": {}
 }

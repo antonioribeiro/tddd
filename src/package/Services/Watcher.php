@@ -260,29 +260,22 @@ class Watcher extends Base
             return;
         }
 
-        $this->showProgress('event 1');
         $this->showEventMessage($event, $path);
 
-        $this->showProgress('event 2');
         if ($this->isConfig($path)) {
             return;
         }
-
-        $this->showProgress('event 3');
 
         if ($this->firedOnlyOne($event, $path)) {
             return;
         }
 
-        $this->showProgress('event 4');
         $this->loader->loadEverything();
 
-        $this->showProgress('event 5');
         if ($this->queueTestSuites($path)) {
             return;
         }
 
-        $this->showProgress('event 6');
         $this->dataRepository->queueAllTests();
     }
 
