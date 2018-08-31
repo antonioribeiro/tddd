@@ -12,10 +12,11 @@ class Cache extends Base
     protected $cache;
 
     /**
-     * Put a value to the cache store
+     * Put a value to the cache store.
+     *
+     * @throws \Exception
      *
      * @return mixed
-     * @throws \Exception
      */
     public function put($key, $value, $minutes = 525600)
     {
@@ -25,10 +26,11 @@ class Cache extends Base
     }
 
     /**
-     * Get a value from the cache store
+     * Get a value from the cache store.
+     *
+     * @throws \Exception
      *
      * @return mixed
-     * @throws \Exception
      */
     public function get($key)
     {
@@ -40,8 +42,9 @@ class Cache extends Base
     /**
      * Get the cache instance.
      *
-     * @return array|\Illuminate\Foundation\Application|mixed
      * @throws \Exception
+     *
+     * @return array|\Illuminate\Foundation\Application|mixed
      */
     protected function getCacheInstance()
     {

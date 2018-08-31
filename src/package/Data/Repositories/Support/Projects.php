@@ -111,7 +111,7 @@ trait Projects
     /**
      * Get a SHA1 for all projects.
      *
-     * @return boolean
+     * @return bool
      */
     public function projectSha1HasChanged()
     {

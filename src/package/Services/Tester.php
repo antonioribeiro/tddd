@@ -3,10 +3,10 @@
 namespace PragmaRX\Tddd\Package\Services;
 
 use Closure;
-use Symfony\Component\Process\Process;
-use PragmaRX\Tddd\Package\Support\Executor;
 use PragmaRX\Tddd\Package\Console\Commands\BaseCommand as Command;
 use PragmaRX\Tddd\Package\Data\Repositories\Data as DataRepository;
+use PragmaRX\Tddd\Package\Support\Executor;
+use Symfony\Component\Process\Process;
 
 class Tester extends Base
 {
