@@ -2,8 +2,8 @@
 
 namespace PragmaRX\Tddd\Package\Services;
 
-use PragmaRX\Tddd\Package\Facades\Config;
 use PragmaRX\Tddd\Package\Data\Repositories\Data as DataRepository;
+use PragmaRX\Tddd\Package\Facades\Config;
 
 class Loader extends Base
 {

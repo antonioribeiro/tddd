@@ -2,10 +2,9 @@
 
 namespace PragmaRX\Tddd\Package\Data\Models;
 
-use PragmaRX\Tddd\Package\Support\Constants;
-use PragmaRX\Tddd\Package\Events\DataUpdated;
-use PragmaRX\Tddd\Package\Data\Repositories\Data as DataRepository;
 use Illuminate\Database\Eloquent\Model as Eloquent;
+use PragmaRX\Tddd\Package\Data\Repositories\Data as DataRepository;
+use PragmaRX\Tddd\Package\Events\DataUpdated;
 
 class Model extends Eloquent
 {
@@ -19,7 +18,8 @@ class Model extends Eloquent
     /**
      * Save the model to the database.
      *
-     * @param  array  $options
+     * @param array $options
+     *
      * @return bool
      */
     public function save(array $options = [])

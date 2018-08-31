@@ -4,16 +4,16 @@ namespace PragmaRX\Tddd\Package;
 
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Route;
-use PragmaRX\Tddd\Package\Services\Cache;
-use PragmaRX\Tddd\Package\Services\Config;
-use PragmaRX\Tddd\Package\Listeners\Notify;
-use PragmaRX\Tddd\Package\Support\Notifier;
-use PragmaRX\Tddd\Package\Events\TestsFailed;
-use PragmaRX\Tddd\Package\Listeners\MarkAsNotified;
-use PragmaRX\Tddd\Package\Events\UserNotifiedOfFailure;
+use Illuminate\Support\ServiceProvider as IlluminateServiceProvider;
 use PragmaRX\Tddd\Package\Console\Commands\TestCommand;
 use PragmaRX\Tddd\Package\Console\Commands\WatchCommand;
-use Illuminate\Support\ServiceProvider as IlluminateServiceProvider;
+use PragmaRX\Tddd\Package\Events\TestsFailed;
+use PragmaRX\Tddd\Package\Events\UserNotifiedOfFailure;
+use PragmaRX\Tddd\Package\Listeners\MarkAsNotified;
+use PragmaRX\Tddd\Package\Listeners\Notify;
+use PragmaRX\Tddd\Package\Services\Cache;
+use PragmaRX\Tddd\Package\Services\Config;
+use PragmaRX\Tddd\Package\Support\Notifier;
 
 class ServiceProvider extends IlluminateServiceProvider
 {
