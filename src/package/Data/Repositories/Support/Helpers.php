@@ -293,8 +293,8 @@ trait Helpers
 
         foreach ($matches as $line) {
             $name = str_replace("\r", '', $line[1]);
-            $name = str_replace("\\", '_', $name);
-            $name = str_replace("::", '_', $name);
+            $name = str_replace('\\', '_', $name);
+            $name = str_replace('::', '_', $name);
 
             $result[] = $folder.DIRECTORY_SEPARATOR."failure-{$name}-0.png";
         }
