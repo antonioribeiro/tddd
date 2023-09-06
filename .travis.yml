@@ -17,6 +17,7 @@ cache:
 
 before_script:
   - travis_retry composer update ${COMPOSER_FLAGS} --no-interaction --prefer-dist
+  - composer config --no-plugins allow-plugins.kylekatarnls/update-helper true
 
 script:
   - vendor/bin/phpunit --coverage-text --coverage-clover=coverage.clover
